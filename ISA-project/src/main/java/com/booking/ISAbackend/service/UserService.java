@@ -1,14 +1,10 @@
-package service;
+package com.booking.ISAbackend.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.booking.ISAbackend.model.MyUser;
-import com.booking.ISAbackend.model.RegistrationRequest;
 
-import dto.UserRequest;
-import repository.UserRepository;
+import com.booking.ISAbackend.dto.UserRequest;
 
 public interface UserService {
 	

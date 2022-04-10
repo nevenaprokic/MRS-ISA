@@ -1,33 +1,21 @@
-package service.impl;
+package com.booking.ISAbackend.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.booking.ISAbackend.model.MyUser;
-import com.booking.ISAbackend.model.RegistrationRequest;
 
-import dto.UserRequest;
-import repository.UserRepository;
-import service.RoleService;
-import service.UserService;
+import com.booking.ISAbackend.dto.UserRequest;
+import com.booking.ISAbackend.repository.UserRepository;
+import com.booking.ISAbackend.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private RoleService roleService;
 
 	@Override
 	public MyUser findById(Integer id) {

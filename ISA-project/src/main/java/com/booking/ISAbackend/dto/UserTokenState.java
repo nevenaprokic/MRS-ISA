@@ -1,4 +1,4 @@
-package dto;
+package com.booking.ISAbackend.dto;
 
 public class UserTokenState {
 	

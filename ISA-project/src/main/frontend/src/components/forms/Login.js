@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '../layout/Card';
 import { useForm } from "react-hook-form";
+import { alignProperty } from '@mui/material/styles/cssUtils';
+import api from '../../app/api';
 
 const theme = createTheme();
 
@@ -17,9 +19,28 @@ export default function LogIn() {
     const { register, handleSubmit, formState: { errors } } = useForm({});
 
     const onSubmit = (data) => {
-        console.log("LOGIN");
-        console.log(data);
+        api
+            .post("auth/login", data)
+            .then((token) => {
+                console.log(token);
+                localStorage.setItem("user", token);
+                console.log("Uspesna prijava");
+            })
+            .catch((err) => {
+                console.log("Nije uspesna prijava");
+            });
+        
+        // fetch("http://localhost:8081/auth/login", {
+        //   method:"POST",
+        //   headers:{"Content-Type":"application/json"},
+        //   body:JSON.stringify(data)
+        // }).then(() => {
+        //   console.log("AAA");
+        // })
+
       }
+
+      
   return (<Card>
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>

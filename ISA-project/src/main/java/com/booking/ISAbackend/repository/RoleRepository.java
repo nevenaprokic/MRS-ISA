@@ -1,4 +1,4 @@
-package repository;
+package com.booking.ISAbackend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

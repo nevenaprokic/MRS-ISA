@@ -1,4 +1,4 @@
-package security.auth;
+package com.booking.ISAbackend.security;
 
 import java.util.Date;
 
@@ -20,15 +20,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenUtils {
 
 	// Izdavac tokena
-	@Value("spring-security-example")
+	@Value("ISA-backend")
 	private String APP_NAME;
 
 	// Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
 	@Value("somesecret")
 	public String SECRET;
 
-	// Period vazenja tokena - 30 minuta
-	@Value("1800000")
+	// Period vazenja tokena
+	@Value("88000000")
 	private int EXPIRES_IN;
 	
 	// Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
