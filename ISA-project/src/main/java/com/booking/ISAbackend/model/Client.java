@@ -2,6 +2,8 @@ package com.booking.ISAbackend.model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -9,7 +11,9 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Client extends MyUser {
 
+	@Enumerated(EnumType.STRING)
 	private ClientCategory clientCategory;
+	
 	private Integer penal;
 	
 	@ManyToMany

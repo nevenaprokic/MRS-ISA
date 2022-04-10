@@ -10,6 +10,7 @@ public class DeleteRequest {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	private String description;
 	
 	@OneToOne
