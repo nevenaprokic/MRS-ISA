@@ -12,34 +12,34 @@ import Card from '../layout/Card';
 import { useForm } from "react-hook-form";
 import { alignProperty } from '@mui/material/styles/cssUtils';
 import api from '../../app/api';
+import jwt from 'jwt-decode';
+
 
 const theme = createTheme();
 
 export default function LogIn() {
+
     const { register, handleSubmit, formState: { errors } } = useForm({});
 
     const onSubmit = (data) => {
-        api
-            .post("auth/login", data)
-            .then((token) => {
-                console.log(token);
-                localStorage.setItem("user", token);
-                console.log("Uspesna prijava");
-            })
-            .catch((err) => {
-                console.log("Nije uspesna prijava");
-            });
-        
-        // fetch("http://localhost:8081/auth/login", {
-        //   method:"POST",
-        //   headers:{"Content-Type":"application/json"},
-        //   body:JSON.stringify(data)
-        // }).then(() => {
-        //   console.log("AAA");
-        // })
+      api
+          .post("auth/login", data)
+          .then((res) => {
+              const token = res.data.accessToken;
+              console.log(jwt(token)); // dekodiranje tokena, da dobijes podatke
+              localStorage.setItem("user", token);
+              console.log("Uspesna prijava");
+              openUserHomePage();
+          })
+          .catch((err) => {
+              console.log("Nije uspesna prijava");
+          });
 
-      }
-
+        }
+  function openUserHomePage(){
+      //prepraviti da se otvara home page za svaku rolu posebno
+      window.location = "/user-home-page/instructor";
+    }
       
   return (<Card>
     <ThemeProvider theme={theme}>
@@ -122,3 +122,4 @@ export default function LogIn() {
     </ThemeProvider></Card>
   );
 }
+
