@@ -17,4 +17,20 @@ public class Address {
 	private String state;
 	@Column(nullable = false)
 	private String street;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getStreet() {
+		return street;
+	}
 }

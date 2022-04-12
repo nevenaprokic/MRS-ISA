@@ -24,7 +24,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public
+class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
     // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
@@ -80,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe sledecim putanjama:
-                .authorizeRequests().antMatchers("/auth/**").permitAll()		// /auth/**
+                .authorizeRequests().antMatchers("/**").permitAll()		// /auth/**
                 .antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 .antMatchers("/api/foo").permitAll()		// /api/foo
 

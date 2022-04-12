@@ -12,12 +12,12 @@ import { Button } from '@mui/material';
 import logo from '../../logo.png';
 
 
+
 const drawerWidth = 240;
 
 export default function InstructorHomePage() {
 
   const openProfilePage = function(){
-    console.log("caoooo");
     window.location = "/user-profile/instructor";
   }
 

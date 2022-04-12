@@ -7,9 +7,9 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
-function BasicInfoBox(){
+function BasicInfoBox({basicData}){
     return (
-        <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%"}}>
+        <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
         <Box className="infoBoxContainer">
       
       <div className="infoBox">
@@ -20,21 +20,21 @@ function BasicInfoBox(){
                   <PersonIcon color="action"/>
               </div>
               <label className="boxItemTitle">First name: </label>
-              <label className="boxItemText">{"Mika"}</label>
+              <label className="boxItemText">{basicData.firstName}</label>
           </div>
           <div>
               <div className="boxItem">
                   <PersonIcon color="action"/>
               </div>
               <label className="boxItemTitle">Last Name: </label>
-              <label className="boxItemText">{"Mikic"}</label>
+              <label className="boxItemText">{basicData.lastName}</label>
           </div>
           <div>
               <div className="boxItem">
                   <LocalPhoneIcon color="action"/>
               </div>
               <label className="boxItemTitle">Phone: </label>
-              <label className="boxItemText">{"0631332312"}</label>
+              <label className="boxItemText">{basicData.phoneNumber}</label>
           </div>
           </div>
                 
