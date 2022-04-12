@@ -1,3 +1,4 @@
+
 /*Addresses*/
 insert into address (street, city, state) values ('Omladinska 19', 'Novi Sad', 'Srbija');
 insert into address (street, city, state) values ('Jevrejska 44', 'Beograd', 'Srbija');
@@ -183,3 +184,4 @@ insert into subscribe(my_user_id, offer_id) values (3,3);
 insert into subscribe(my_user_id, offer_id) values (3,4);
 insert into subscribe(my_user_id, offer_id) values (4,9);
 insert into subscribe(my_user_id, offer_id) values (4,6);
+

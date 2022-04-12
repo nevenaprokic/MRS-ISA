@@ -12,4 +12,8 @@ public class Instructor extends Owner{
 	
 	@OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY)
 	private List<Adventure> adventures;
+
+	public String getBiography(){
+		return biography;
+	}
 }

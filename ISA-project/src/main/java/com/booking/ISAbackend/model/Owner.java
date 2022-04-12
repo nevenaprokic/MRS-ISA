@@ -11,4 +11,8 @@ public class Owner extends MyUser {
 
 	@Enumerated(EnumType.STRING)
 	private OwnerCategory ownerCategory;
+
+	public OwnerCategory getOwnerCategory(){
+		return ownerCategory;
+	}
 }
