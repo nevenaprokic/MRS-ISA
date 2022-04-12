@@ -12,14 +12,18 @@ import Card from '../layout/Card';
 import { NativeSelect, InputLabel, FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
+import sendOwnerRegistration from '../../services/ownerRegistration';
 
 const theme = createTheme();
 export default function RegistrationOwner() {
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
     const password = useRef({});
     password.current = watch("password", "");
+
     const onSubmit = (data) => {
+
         console.log(data);
+        sendOwnerRegistration(data);
       }
 
     return (<Card>
