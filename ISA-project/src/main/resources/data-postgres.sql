@@ -1,4 +1,3 @@
-
 /*Addresses*/
 insert into address (street, city, state) values ('Omladinska 19', 'Novi Sad', 'Srbija');
 insert into address (street, city, state) values ('Jevrejska 44', 'Beograd', 'Srbija');
@@ -114,8 +113,8 @@ insert into photo(path) values('brvnara1.jpg');
 insert into photo(path) values('brvnara2.jpg');
 
 /*QUICK RESERVATION*/
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_astion,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_astion,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
 
 /*REGISTRATION REQUEST*/
 
@@ -184,4 +183,3 @@ insert into subscribe(my_user_id, offer_id) values (3,3);
 insert into subscribe(my_user_id, offer_id) values (3,4);
 insert into subscribe(my_user_id, offer_id) values (4,9);
 insert into subscribe(my_user_id, offer_id) values (4,6);
-
