@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.model;
 
+import com.booking.ISAbackend.client.Client;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

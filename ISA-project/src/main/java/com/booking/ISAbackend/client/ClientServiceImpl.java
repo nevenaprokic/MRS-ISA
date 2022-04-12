@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.client;
 
+import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
+import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.model.ClientCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +17,11 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private ConfirmationTokenService confirmationTokenService;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
 
-//    @Autowired
-//    private EmailSender emailSender;
+    @Autowired
+    private EmailSender emailSender;
 
     @Override
     public String save(ClientRequest cr) throws InterruptedException {
@@ -41,10 +43,10 @@ public class ClientServiceImpl implements ClientService {
 
         String token = UUID.randomUUID().toString();
 
-        //confirmationTokenService.createVerificationToken(c, token);
+        confirmationTokenService.createVerificationToken(c, token);
         // TODO: send email
 
-        //emailSender.sendConfirmationAsync(cr.getEmail(), token);
+        emailSender.sendConfirmationAsync(cr.getEmail(), token);
 
         return token;
     }
