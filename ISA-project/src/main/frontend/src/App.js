@@ -6,6 +6,7 @@ import LogIn from './components/forms/Login';
 import RegistrationOwner from './components/forms/RegistrationOwner';
 import OwnerProfile from './components/profilePages/OwnerProfile';
 import InstructorHomePage from './components/homePages/InstructorHomePage';
+import RegistrationClient from './components/forms/RegistrationClient';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/registration/registration-owner' element={<RegistrationOwner/>}/>
           <Route path='/user-home-page/instructor' element={<InstructorHomePage/>}/>
           <Route path='/user-profile/instructor' element={<OwnerProfile/>}/>
+          <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
         </Routes>
      
       </Layout>
