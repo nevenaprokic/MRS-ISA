@@ -1,0 +1,83 @@
+import "../../../style/AddAdventurePage.scss" 
+import * as React from 'react';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { green } from '@mui/material/colors';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+function AdditionalServices({inputList, setInputList, errors, registerForm}){
+    
+    const handleInputChange = function(index,e) {
+        const value = e.target.value;
+        const list = [...inputList];
+        list[index][this] = value;
+        setInputList(list);
+      };
+       
+    const handleRemoveClick = index => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+      };
+
+    const handleAddClick = () => {
+        setInputList([...inputList, { serviceName: "", servicePrice: "" }]);
+      };
+
+    return(
+
+        <Grid container spacing={3} >
+          
+            <Grid item xs={12}>
+                <label>Additional services</label>
+            </Grid>
+
+            {inputList?.map((x, i) => {
+              return (
+                  <>
+              <Grid item xs={12} sm={7.5}>
+                  <TextField
+                  label="Service Description" 
+                  fullWidth
+                  value={x.serviceName} 
+                  onChange={handleInputChange.bind('serviceName', i)} 
+                  placeholder="Name"
+              />
+              </Grid>
+            <Grid item xs={12} sm={2.5}> 
+              <TextField
+                fullWidth
+                label="Price"
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="end">€</InputAdornment>,
+                 
+                }}
+                
+                onChange={handleInputChange.bind('servicePrice', i)} 
+                {...registerForm(`servicePrice${i}`, {validate: value => (inputList[i].serviceName === '' || (inputList[i].serviceName !== '' && value.match(/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/)))})}
+
+              >
+              {(errors[`servicePrice${i}`]) && <label className="requiredLabel">Required!Only numbers with a maximum of two decimal places are allowed</label>}
+              </TextField>
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              {inputList.length !== 1 && <IconButton aria-label="delete" size="large" onClick={() => handleRemoveClick(i)}><DeleteIcon sx={{ fontSize: 30 }}/></IconButton>}
+              
+              {inputList.length - 1 === i && <IconButton aria-label="delete" size="large" onClick={() => handleAddClick(i)}><AddCircleIcon sx={{ color: green[500], fontSize: 35 }}/></IconButton>}
+              
+            </Grid>
+            </>
+              );
+            })}
+       
+
+        </Grid>
+        
+    )
+}
+
+export default AdditionalServices;

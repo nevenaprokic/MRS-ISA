@@ -1,0 +1,55 @@
+@use "@material/button/styles";
+
+$content_width: 100%;
+$light: #FEF5ED;
+$middleGreen: #ADC2A9;
+
+.formContainer{
+    width: $content_width;
+    margin-top: 7%;
+    margin-left: 50%;
+    border: solid thin $middleGreen;
+    padding: 5%;
+    border-radius: 5%;
+    transform: translateX(-50%);
+    color: #007F73;
+    margin-bottom: 7%;
+    // background-color: #FDFFFA;
+    background-color: #e7ebe6;
+}
+
+.nameContainer{
+    width: 90%;
+}
+.uploadGalleryContainer{
+    margin-top: 2%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 2%;
+}
+
+.uploadedImg{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px ;
+    border: solid 0.5px lightgrey;
+    border-radius: 2%;
+    padding-bottom: 2%;
+    
+}
+
+.uploadPhotoLabel{
+    font-size: 14px;
+    color: gray;
+}
+
+.img{
+    display: inline;
+    margin: 5px;
+}
+
+.requiredLabel{
+    color: #990000;
+    font-size: small;
+}
+
