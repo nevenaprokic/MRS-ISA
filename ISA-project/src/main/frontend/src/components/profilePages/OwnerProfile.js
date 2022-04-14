@@ -14,9 +14,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { getUsernameFromToken } from '../../app/jwtTokenUtils';
 import { getInstructorByUsername } from "../../services/userService";
 import { useState, useEffect } from 'react';
-
-
-
 function OwnerProfile(){
 
     const [ownerData, setOwnerData] = useState();
@@ -25,17 +22,10 @@ function OwnerProfile(){
         async function setownerData() {
         let username = getUsernameFromToken();
         const requestData = await getInstructorByUsername(username);
-        setOwnerData(!!requestData ? requestData.data : {});
-        //  requestData.data.email;
-        // firstName: requestData.data.firstName,
-        //             lastName: requestData.data.lastName,
-        //             telephone: requestData.data.phoneNumber,
-        //             phoneNumber: requestData.data.phoneNumber,
-        //             street: requestData.data.street,
-        //             city: requestData.data.city,
-        //             state: requestData.data.state};
+        setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
+        console.log(ownerData);
 
-    return requestData;    
+        return requestData;    
     }
        setownerData();
        
@@ -75,7 +65,7 @@ function OwnerProfile(){
                 <AddressInfoBox addressData={ownerData}/>
                 
                 <Grid xs={12} sm={5}/>
-                <AdditionalinfoBox/>
+                <AdditionalinfoBox additionalDate={ownerData}/>
                 
 
             </Grid>

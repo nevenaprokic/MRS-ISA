@@ -21,6 +21,10 @@ export default function InstructorHomePage() {
     window.location = "/user-profile/instructor";
   }
 
+  const addNewAdventureHandler = function(){
+    window.location = "/instructor/add-adventure";
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -47,19 +51,20 @@ export default function InstructorHomePage() {
         
         <Divider />
         <List>
-              <Button>Pocetna strana</Button>
-              <Button onClick={openProfilePage}>Profilna strana</Button>
+              <Button>Home page</Button>
+              <Button onClick={openProfilePage}>My profile</Button>
               <Divider />
-              <Button>Dostupne avanture</Button>
+              <Button>My adventures</Button>
               <Divider />
-              <Button>Istorija rezervacija</Button>
-              <Button>Izvestaji o rezervacijama</Button>
-              <Button>Nova rezervacija</Button>
-              <Button>Kreiranje akcija</Button>
+              <Button onClick={addNewAdventureHandler}>Add new adventure</Button>
+              <Button>Reservation history</Button>
+              <Button>Reservation reports</Button>
+              <Button>New reservation</Button>
+              <Button>Add new action</Button>
               <Divider />
-              <Button>Kalendar</Button>
+              <Button>My calendar</Button>
               <Divider />
-              <Button>Izvestaj o poslovanju</Button>
+              <Button>Business reports</Button>
           </List>
       </Drawer>
       <Box

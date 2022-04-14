@@ -10,4 +10,12 @@ public class Photo {
 
     @Column(nullable = false)
     private String path;
+
+    public Photo(String url) {
+        this.path = url;
+    }
+
+    public Photo() {
+
+    }
 }

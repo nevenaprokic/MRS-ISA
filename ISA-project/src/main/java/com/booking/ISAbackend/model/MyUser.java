@@ -47,6 +47,8 @@ public class MyUser implements UserDetails{
 	@OneToOne(mappedBy = "myUser")
 	private DeleteRequest deleteRequest;
 
+	public MyUser() {
+
 	@Column(nullable = false)
 	private boolean emailVerified = false;
 
@@ -146,6 +148,20 @@ public class MyUser implements UserDetails{
 	public DeleteRequest getDeleteRequest() {
 		return deleteRequest;
 	}
+
+
+	public MyUser(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.deleted = deleted;
+		this.role = role;
+		this.address = address;
+
+	}
+
 
 	public void setId(Integer id) {
 		this.id = id;

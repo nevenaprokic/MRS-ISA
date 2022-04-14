@@ -9,6 +9,17 @@ public class AdditionalService {
     private Integer id;
     @Column(nullable = false)
     private String name;
+
+    public AdditionalService(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
+
     @Column(nullable = false)
     private Double price;
+
+
+    public AdditionalService() {
+
+    }
 }
