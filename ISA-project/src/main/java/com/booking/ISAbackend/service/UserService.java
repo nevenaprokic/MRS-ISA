@@ -14,5 +14,5 @@ public interface UserService {
 	MyUser findByEmail(String email);
     List<MyUser> findAll ();
     MyUser save(UserRequest userRequest);
-    MyUser findInstructorByEmail(String email);
+    Instructor findInstructorByEmail(String email);
 }

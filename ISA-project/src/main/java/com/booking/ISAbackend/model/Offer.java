@@ -38,4 +38,76 @@ public class Offer {
 
 	@ManyToMany(mappedBy = "subscribedOffers")
 	private List<Client> subscribedClients;
+
+	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.photos = photos;
+		this.numberOfPerson = numberOfPerson;
+		this.rulesOfConduct = rulesOfConduct;
+		this.additionalServices = additionalServices;
+		this.cancellationConditions = cancellationConditions;
+		this.deleted = deleted;
+		this.address = address;
+		this.quickReservations = quickReservations;
+		this.reservations = reservations;
+		this.subscribedClients = subscribedClients;
+	}
+
+	public Offer() {
+
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public List<Photo> getPhotos() {
+		return photos;
+	}
+
+	public Integer getNumberOfPerson() {
+		return numberOfPerson;
+	}
+
+	public String getRulesOfConduct() {
+		return rulesOfConduct;
+	}
+
+	public List<AdditionalService> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public String getCancellationConditions() {
+		return cancellationConditions;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public List<QuickReservation> getQuickReservations() {
+		return quickReservations;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public List<Client> getSubscribedClients() {
+		return subscribedClients;
+	}
 }

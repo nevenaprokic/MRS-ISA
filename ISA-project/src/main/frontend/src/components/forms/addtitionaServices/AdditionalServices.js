@@ -58,7 +58,7 @@ function AdditionalServices({inputList, setInputList, errors, registerForm}){
                 }}
                 
                 onChange={handleInputChange.bind('servicePrice', i)} 
-                {...registerForm(`servicePrice${i}`, {validate: value => (inputList[i].serviceName === '' || (inputList[i].serviceName !== '' && value.match(/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/)))})}
+                
 
               >
               {(errors[`servicePrice${i}`]) && <label className="requiredLabel">Required!Only numbers with a maximum of two decimal places are allowed</label>}

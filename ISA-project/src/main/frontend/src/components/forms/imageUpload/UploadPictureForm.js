@@ -33,7 +33,7 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
                     Upload photos
                     </Button>
                 </label>
-               
+            
             </Grid>
             <Grid>
                 <label className="uploadPhotoLabel">You can add photos from previous adventures</label>

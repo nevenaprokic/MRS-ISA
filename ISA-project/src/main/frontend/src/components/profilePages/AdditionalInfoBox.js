@@ -8,7 +8,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import ArticleIcon from '@mui/icons-material/Article';
 
 
-function AdditionalinfoBox(){
+function AdditionalinfoBox({additionalDate}){
     return(
 
         <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
@@ -22,7 +22,7 @@ function AdditionalinfoBox(){
                   <AssessmentIcon color="action"/>
               </div>
               <label className="boxItemTitle">User kategory: </label>
-              <label className="boxItemText">Normal</label>
+              <label className="boxItemText">{additionalDate.userCategory}</label>
           </div>
           <div>
               <div className="boxItem">

@@ -48,14 +48,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public MyUser findInstructorByEmail(String email) {
-//		MyUser user = userRepository.findByEmail(email);
-//		System.out.println(user.getId());
-//		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
-//		Optional<Owner> owner = ownerRepository.findById(user.getId());
-//		System.out.println(instructor);
-
-		return userRepository.findByEmail(email);
+	public Instructor findInstructorByEmail(String email) {
+		MyUser user = userRepository.findByEmail(email);
+		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
+		return instructor.orElse(null);
 	}
 
 

@@ -38,22 +38,23 @@ public class UserController {
 
 	@GetMapping("instructorProfileInfo")
 	@Transactional
-	public ResponseEntity<UserProfileData> getInstructorProfileInfo(@RequestParam String email){
+	public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
 
 
-		MyUser myUser =  userService.findInstructorByEmail(email);
-//		Instructor instructor = new Instructor();
-		Address address = myUser.getAddress();
+		Instructor instructor =  userService.findInstructorByEmail(email);
+
+		Address address = instructor.getAddress();
 		System.out.println(address.getCity());
-		UserProfileData data = new UserProfileData(myUser.getEmail(),
-																myUser.getFirstName(),
-																myUser.getLastName(),
-																myUser.getPhoneNumber(),
-																myUser.getAddress().getStreet(),
-																myUser.getAddress().getCity(),
-																myUser.getAddress().getState()
-																);
+		InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
+				instructor.getFirstName(),
+				instructor.getLastName(),
+				instructor.getPhoneNumber(),
+				instructor.getAddress().getStreet(),
+				instructor.getAddress().getCity(),
+				instructor.getAddress().getState(),
+				instructor.getOwnerCategory().toString(),
+				instructor.getBiography());
 		return ResponseEntity.ok(data);
 
 	}
