@@ -49,6 +49,23 @@ public class MyUser implements UserDetails{
 
 	public MyUser() {
 
+	@Column(nullable = false)
+	private boolean emailVerified = false;
+
+	public MyUser(){}
+
+	public MyUser(Integer id, String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, DeleteRequest deleteRequest, Boolean emailVerified) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.deleted = deleted;
+		this.role = role;
+		this.address = address;
+		this.deleteRequest = deleteRequest;
+		this.emailVerified = emailVerified;
 	}
 
 
@@ -75,6 +92,14 @@ public class MyUser implements UserDetails{
 		return password;
 	}
 
+	public boolean isEmailVerified() {
+		return emailVerified;
+	}
+
+	public void setEmailVerified(boolean emailVerified) {
+		this.emailVerified = emailVerified;
+	}
+
 	@Override
 	public String getUsername() {
 		return email;
@@ -97,7 +122,7 @@ public class MyUser implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return emailVerified;
 	}
 
 	public String getPhoneNumber() {
@@ -124,6 +149,7 @@ public class MyUser implements UserDetails{
 		return deleteRequest;
 	}
 
+
 	public MyUser(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -137,4 +163,43 @@ public class MyUser implements UserDetails{
 	}
 
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public void setDeleteRequest(DeleteRequest deleteRequest) {
+		this.deleteRequest = deleteRequest;
+	}
 }

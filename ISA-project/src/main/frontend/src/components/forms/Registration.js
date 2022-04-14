@@ -15,9 +15,13 @@ const theme = createTheme();
 
 export default function Registration(){
     let navigate = useNavigate(); 
-  const routeChangeClient = () =>{ 
-    console.log("Klijent registracija.")
-  }
+
+    const routeChangeClient = () =>{ 
+      console.log("Klijent registracija.");
+      let path = `registration-client`; 
+      navigate(path);
+    }
+    
   const routeChangeOwner = () =>{ 
     let path = `registration-owner`; 
     navigate(path);

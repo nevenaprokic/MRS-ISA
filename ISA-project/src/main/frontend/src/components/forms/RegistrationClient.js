@@ -1,7 +1,10 @@
 import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -9,23 +12,34 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '../layout/Card';
-import { NativeSelect, InputLabel, FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
-import sendOwnerRegistration from '../../services/ownerRegistration';
+import api from '../../app/api';
 
 const theme = createTheme();
-export default function RegistrationOwner() {
+export default function RegistrationClient() {
+    
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
+
     const password = useRef({});
     password.current = watch("password", "");
 
     const onSubmit = (data) => {
-
-        console.log(data);
-        sendOwnerRegistration(data);
-      }
-
+      //event.preventDefault();
+      //const data = new FormData(event.currentTarget);
+      console.log(data);
+      api
+            .post("auth/client/registration", data)
+            .then((res) => {
+                // const token = res.data.accessToken;
+                console.log(res); // dekodiranje tokena, da dobijes podatke
+            })
+            .catch((err) => {
+                console.log("Nije uspesna registracija");
+            });
+     
+    };
+  
     return (<Card>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
@@ -69,8 +83,8 @@ export default function RegistrationOwner() {
                     variant="standard"
                     {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
                   />
+                   {errors.lastName && <p style={{color:'#ED6663'}}>Please check the Last Name</p>}
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Last Name</p>}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -80,14 +94,13 @@ export default function RegistrationOwner() {
                     name="email"
                     autoComplete="email"
                     variant="standard"
-                    type="email"
                     {...register("email",
                             {
-                                required: true,
                                 pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                            })} />
+                            })}
+                  />
+                  {errors.email && <p style={{color:'#ED6663'}}>Please check the Email</p>}
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Email</p>}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -96,12 +109,11 @@ export default function RegistrationOwner() {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="password"
+                    autoComplete="new-password"
                     variant="standard"
                     {...register("password")}
                   />
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Password</p>}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -110,14 +122,13 @@ export default function RegistrationOwner() {
                     label="Confirm password"
                     type="password"
                     id="confirmPassword"
-                    autoComplete="confirmPassword"
+                    autoComplete="new-password"
                     variant="standard"
                     {...register("confirmPassword", {
-                      validate: value =>
-                        value === password.current || "The passwords do not match!"
-                    })}
+                        validate: value =>
+                          value === password.current || "The passwords do not match!"
+                      })}
                   />
-                  {errors.confirmPassword && <p style={{color:'#ED6663'}}>{errors.confirmPassword.message}</p>}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -128,15 +139,15 @@ export default function RegistrationOwner() {
                     type="tel"
                     id="phoneNumber"
                     autoComplete="phone-number"
+                    //pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                     variant="standard"
                     {...register("phoneNumber",
                             {
-                                required: true,
-                                pattern: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
+                                //pattern: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
                             })} 
                   />
+                  {errors.phoneNumber && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="street"
@@ -148,8 +159,8 @@ export default function RegistrationOwner() {
                     variant="standard"
                     {...register("street", {pattern: /^[a-zA-Z0-9 ]+$/})}
                   />
+                   {errors.street && <p style={{color:'#ED6663'}}>Please check the Street</p>}
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Street</p>}
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
@@ -161,8 +172,8 @@ export default function RegistrationOwner() {
                     variant="standard"
                     {...register("city", {pattern: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
                   />
+                  {errors.city && <p style={{color:'#ED6663'}}>Please check the City</p>}
                 </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the City</p>}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -174,44 +185,7 @@ export default function RegistrationOwner() {
                     variant="standard"
                     {...register("state", {pattern: /[A-Z][a-z]+(?: +[A-Z][a-z]+)*/})}
                   />
-                </Grid>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the State</p>}
-                <Grid item xs={12}>
-                    <FormControl fullWidth>
-                    <InputLabel variant="standard" htmlFor="type">
-                        Type of owner
-                    </InputLabel>
-                    <NativeSelect
-                        defaultValue={30}
-                        {...register("type", {required:true})}
-                        inputProps={{
-                        name: 'type',
-                        id: 'type',
-                        }
-                        }
-                    >
-                        <option value={10}>Instructor</option>
-                        <option value={20}>Cottage owner</option>
-                        <option value={30}>Ship owner</option>
-                    </NativeSelect>
-                    </FormControl>
-                    <div><br/></div>
-                    <Grid item xs={12}>
-                        <TextField
-                         required
-                         fullWidth
-                         name="explanation"
-                         autoComplete="explanation"
-                        id="explanation"
-                        label="Multiline"
-                        multiline
-                        rows={4}
-                        defaultValue="Explanation of registration"
-                        variant="standard"
-                        {...register("explanation")}
-                        />
-                </Grid>
-                    
+                  {errors.state && <p style={{color:'#ED6663'}}>Please check the State</p>}
                 </Grid>
               </Grid>
               <Button

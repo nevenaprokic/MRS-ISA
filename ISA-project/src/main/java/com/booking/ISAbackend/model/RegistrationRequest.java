@@ -34,4 +34,20 @@ public class RegistrationRequest {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
 	private Address address;
+
+	public RegistrationRequest(String description, String personType, String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Address address) {
+		this.description = description;
+		this.personType = personType;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.deleted = deleted;
+		this.address = address;
+	}
+
+	public RegistrationRequest() {
+
+	}
 }
