@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.exceptions.*;

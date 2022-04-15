@@ -1,6 +1,9 @@
 package com.booking.ISAbackend.model;
 
 import javax.persistence.*;
+
+import com.booking.ISAbackend.client.Client;
+
 import java.util.List;
 
 @Entity
