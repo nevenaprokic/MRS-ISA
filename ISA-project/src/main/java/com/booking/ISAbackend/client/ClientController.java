@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     @GetMapping("clientProfileInfo")
-    //@Transactional
+    //@Transactional // zbog lazy loading-a
     public ResponseEntity<ClientDTO> getInstructorProfileInfo(@RequestParam String email){
 
         Client client = clientService.findByEmail(email);
