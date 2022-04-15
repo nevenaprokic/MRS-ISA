@@ -10,6 +10,10 @@ import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MainNavigationHome from '../layout/MainNavigationHome';
+import Grid from '@mui/material/Grid';
+import Search from '../forms/search/Search';
+import SearchIcon from '@mui/icons-material/Search';
+import Album from '../pages/home';
 
 
 function TabPanel(props) {
@@ -101,7 +105,15 @@ export default function CottageOwnerHomePage() {
                     <Tab label="Business report" {...a11yProps(8)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                  pocetni prozor
+                  <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <Search/>
+                          </Grid>
+                        </Box>
+                      <Album/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     Item Two
