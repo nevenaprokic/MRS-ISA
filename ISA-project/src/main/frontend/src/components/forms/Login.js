@@ -38,7 +38,8 @@ export default function LogIn() {
         }
   function openUserHomePage(){
       //prepraviti da se otvara home page za svaku rolu posebno
-      window.location = "/user-home-page/instructor";
+      //window.location = "/user-home-page/instructor";
+      window.location = "/user-home-page/client";
     }
       
   return (<Card>

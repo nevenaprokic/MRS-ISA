@@ -44,10 +44,4 @@ public class Address {
 	public String getStreet() {
 		return street;
 	}
-
-	public Address(String street, String city, String state){
-		this.street = street;
-		this.city = city;
-		this.state = state;
-	}
 }

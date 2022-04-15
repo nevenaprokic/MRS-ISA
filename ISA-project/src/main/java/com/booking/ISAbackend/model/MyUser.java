@@ -47,12 +47,10 @@ public class MyUser implements UserDetails{
 	@OneToOne(mappedBy = "myUser")
 	private DeleteRequest deleteRequest;
 
-	public MyUser() {
+	public MyUser() {}
 
 	@Column(nullable = false)
-	private boolean emailVerified = false;
-
-	public MyUser(){}
+	private Boolean emailVerified;
 
 	public MyUser(Integer id, String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, DeleteRequest deleteRequest, Boolean emailVerified) {
 		this.id = id;
