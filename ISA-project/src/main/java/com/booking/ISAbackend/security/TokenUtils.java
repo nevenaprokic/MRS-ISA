@@ -1,6 +1,8 @@
 package com.booking.ISAbackend.security;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,18 +55,22 @@ public class TokenUtils {
 	/**
 	 * Funkcija za generisanje JWT tokena.
 	 * 
-	 * @param username Korisničko ime korisnika kojem se token izdaje
+	 * @param user Korisnik kojem se token izdaje
 	 * @return JWT token
 	 */
-	public String generateToken(String username) {
+	public String generateToken(MyUser user) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", user.getRole());
+
 		return Jwts.builder()
+				.setClaims(claims)
 				.setIssuer(APP_NAME)
-				.setSubject(username)
+				.setSubject(user.getUsername())
 				.setAudience(generateAudience())
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
 				.signWith(SIGNATURE_ALGORITHM, SECRET)
-				.claim("username", username).compact();
+				.claim("username", user.getUsername()).compact();
 
 		
 
