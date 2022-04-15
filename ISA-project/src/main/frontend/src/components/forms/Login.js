@@ -29,7 +29,7 @@ export default function LogIn() {
               console.log(jwt(token)); // dekodiranje tokena, da dobijes podatke
               localStorage.setItem("user", token);
               console.log("Uspesna prijava");
-              openUserHomePage();
+              //openUserHomePage();
           })
           .catch((err) => {
               console.log("Nije uspesna prijava");
