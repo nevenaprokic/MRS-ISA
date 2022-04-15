@@ -29,17 +29,21 @@ export default function LogIn() {
               console.log(jwt(token)); // dekodiranje tokena, da dobijes podatke
               localStorage.setItem("user", token);
               console.log("Uspesna prijava");
-              openUserHomePage();
+              console.log(jwt(token).role.name);
+              openUserHomePage(token);
           })
           .catch((err) => {
               console.log("Nije uspesna prijava");
           });
 
         }
-  function openUserHomePage(){
+  function openUserHomePage(token){
       //prepraviti da se otvara home page za svaku rolu posebno
       //window.location = "/user-home-page/instructor";
-      window.location = "/user-profile/client";
+      if(jwt(token).role.name == "COTTAGE_OWNER")
+        window.location = "/user-profile/cottage-owner";
+      else
+        window.location = "/user-profile/client";
     }
       
   return (<Card>
