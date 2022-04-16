@@ -55,7 +55,6 @@ public class UserController {
 		Instructor instructor =  userService.findInstructorByEmail(email);
 
 		Address address = instructor.getAddress();
-		System.out.println(address.getCity());
 		InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
 				instructor.getFirstName(),
 				instructor.getLastName(),

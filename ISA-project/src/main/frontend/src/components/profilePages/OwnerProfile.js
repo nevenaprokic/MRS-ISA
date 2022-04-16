@@ -93,7 +93,7 @@ function OwnerProfile(){
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
                 >
                     
-                        <ChangeOwnerData/>
+                        <ChangeOwnerData currentOwnerData={ownerData}/>
                     
                 </Modal>
         

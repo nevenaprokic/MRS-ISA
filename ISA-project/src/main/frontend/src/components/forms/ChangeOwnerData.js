@@ -33,14 +33,17 @@ export default function ChangeOwnerData({currentOwnerData}) {
     },
   });
 
-
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
+
+
 
   const onSubmit = (data) => {
 
       console.log(data);
-      sendOwnerRegistration(data);
+      
     }
+
+    
   return (
     <div className="changeDataContainer">
       <ThemeProvider theme={theme}>
@@ -67,55 +70,55 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="firstName"
                   id="firstName"
-                  placeholder='Pera'
+                  placeholder={currentOwnerData.firstName}
                    {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the First Name</p>}
+                {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="lastName"
                   id="lastName"
-                  placeholder='Peric'
+                  placeholder={currentOwnerData.lastName}
                    {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the Last Name</p>}
+                {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  placeholder='0920421842'
+                  placeholder={currentOwnerData.phoneNumber}
                    {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the phone number</p>}
+                {errors.phoneNumber && <label className="errorLabel">Only numbers are allowed!</label>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="street"
                   id="street"
-                  placeholder='neka ulica'
+                  placeholder={currentOwnerData.street}
                    {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the street</p>}
+                {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="city"
                   id="city"
-                  placeholder='Neki grad'
-                   {...register("citu=y", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                  placeholder={currentOwnerData.city}
+                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the city</p>}
+                {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="state"
                   id="start"
-                  placeholder='Neka drzava'
+                  placeholder={currentOwnerData.state}
                    {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
-                {errors.firstName && <p style={{color:'#ED6663'}}>Please check the state</p>}
+                {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>      
                 
               
