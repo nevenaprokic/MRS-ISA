@@ -1,10 +1,7 @@
 package com.booking.ISAbackend.validation;
 
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPeopleNumberException;
-import com.booking.ISAbackend.exceptions.InvalidPriceException;
-import com.booking.ISAbackend.exceptions.RequiredFiledException;
+import com.booking.ISAbackend.exceptions.*;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -74,6 +71,30 @@ public class Validator {
             }
         }
         return true;
+    }
+
+    public static boolean onlyLetterAndSpacesValidation(String dataForValidation) throws OnlyLettersAndSpacesException {
+        String regex = "^[a-zA-Z\\s]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dataForValidation);
+        if(matcher.matches()){
+            return true;
+        }
+        else{
+            throw new OnlyLettersAndSpacesException("invalid data: " + dataForValidation + "! Only letters and spaces are allowded.");
+        }
+    }
+
+    public static boolean phoneNumberValidation(String phoneNumber) throws InvalidPhoneNumberException {
+        String regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"; //neki validator za broj telefona, proveriti da li je okej ovaj
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        if(matcher.matches()){
+            return true;
+        }
+        else{
+            throw new InvalidPhoneNumberException("invalid phone number: " + phoneNumber + "!Allowded pattern for phone number: "); //OVDE DODATI KOJI PATERN
+        }
     }
 
 }

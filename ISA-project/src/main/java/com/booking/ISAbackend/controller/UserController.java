@@ -1,8 +1,12 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.dto.OwnerRegistrationRequest;
 import com.booking.ISAbackend.dto.UserProfileData;
+import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.MyUser;
@@ -77,6 +81,18 @@ public class UserController {
 				return new ResponseEntity<>("User  with this email alredy exists!", HttpStatus.BAD_REQUEST);
 		}catch (Exception e){
 			return new ResponseEntity<>("You haven't successfully submitted your registration request!", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("changeOwnerData")
+	public ResponseEntity<String> changeOwnerData(@RequestBody NewOwnerDataDTO newData){
+		try{
+			userService.changeOwnerData(newData);
+			return ResponseEntity.ok("Successfully changed you data");
+		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
+			e.printStackTrace();
+			return ResponseEntity.status(400).body(e.getMessage());
+
 		}
 	}
 }

@@ -17,7 +17,7 @@ import "../../style/ChangeOwnerData.scss"
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-
+import { changeOwnerData } from "../../services/userService";
 
 
 export default function ChangeOwnerData({currentOwnerData}) {
@@ -40,10 +40,10 @@ export default function ChangeOwnerData({currentOwnerData}) {
   const onSubmit = (data) => {
 
       console.log(data);
-      
+      changeOwnerData(data);
     }
 
-    
+
   return (
     <div className="changeDataContainer">
       <ThemeProvider theme={theme}>
@@ -114,12 +114,22 @@ export default function ChangeOwnerData({currentOwnerData}) {
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="state"
-                  id="start"
+                  id="state"
                   placeholder={currentOwnerData.state}
                    {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
-              </FormControl>      
+              </FormControl>  
+              <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "95%"}}>
+                <TextField
+                  id="biography"
+                  multiline
+                  placeholder={currentOwnerData.biography}
+                  variant="standard"
+                  {...register("biography")}
+                />
+                
+              </FormControl>     
                 
               
               </Grid>
