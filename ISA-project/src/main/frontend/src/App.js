@@ -8,6 +8,7 @@ import OwnerProfile from './components/profilePages/OwnerProfile';
 import InstructorHomePage from './components/homePages/InstructorHomePage';
 import AddAdventurePage from './components/forms/adventure/AddAdventurePage';
 import RegistrationClient from './components/forms/RegistrationClient';
+import ChangeOwnerData from './components/forms/ChangeOwnerData';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/user-profile/instructor' element={<OwnerProfile/>}/>
           <Route path='/instructor/add-adventure' element={<AddAdventurePage/>}/>
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
+          <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
         </Routes>
      
       </Layout>

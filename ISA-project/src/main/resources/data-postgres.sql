@@ -1,66 +1,66 @@
 -- --
--- -- /*Addresses*/
-insert into address (street, city, state) values ('Omladinska 19', 'Novi Sad', 'Srbija');
-insert into address (street, city, state) values ('Jevrejska 44', 'Beograd', 'Srbija');
-insert into address (street, city, state) values ('Bulevar kralja Aleksandra 37', 'Beograd', 'Srbija');
-insert into address (street, city, state) values ('Fruskogorksa 14', 'Novi Sad', 'Srbija');
-insert into address (street, city, state) values ('Bulevar oslobodjenja 119', 'Novi Sad', 'Srbija');
-insert into address (street, city, state) values ('Somborska 39', 'Novi Sad', 'Srbija');
-insert into address (street, city, state) values ('Lasla Gala 4', 'Beograd', 'Srbija');
-insert into address (street, city, state) values ('Bulevar kralja Petra 137', 'Beograd', 'Srbija');
-insert into address (street, city, state) values ('Fruskogorksa 60', 'Novi Sad', 'Srbija');
-insert into address (street, city, state) values ('Mise Dimitrijevica 19', 'Novi Sad', 'Srbija');
+-- -- -- /*Addresses*/
+-- insert into address (street, city, state) values ('Omladinska 19', 'Novi Sad', 'Srbija');
+-- insert into address (street, city, state) values ('Jevrejska 44', 'Beograd', 'Srbija');
+-- insert into address (street, city, state) values ('Bulevar kralja Aleksandra 37', 'Beograd', 'Srbija');
+-- insert into address (street, city, state) values ('Fruskogorksa 14', 'Novi Sad', 'Srbija');
+-- insert into address (street, city, state) values ('Bulevar oslobodjenja 119', 'Novi Sad', 'Srbija');
+-- insert into address (street, city, state) values ('Somborska 39', 'Novi Sad', 'Srbija');
+-- insert into address (street, city, state) values ('Lasla Gala 4', 'Beograd', 'Srbija');
+-- insert into address (street, city, state) values ('Bulevar kralja Petra 137', 'Beograd', 'Srbija');
+-- insert into address (street, city, state) values ('Fruskogorksa 60', 'Novi Sad', 'Srbija');
+-- insert into address (street, city, state) values ('Mise Dimitrijevica 19', 'Novi Sad', 'Srbija');
 --
--- /*ROLE*/
-insert into role(name) values ('CLIENT');
-insert into role(name) values ('ADMIN');
-insert into role(name) values ('COTTAGE_OWNER');
-insert into role(name) values ('SHIP_OWNER');
-insert into role(name) values ('INSTRUCTOR');
--- -- /*CLIENTS*/
-insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'pera@gmail.com', 'Petar', 'Peric', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '124890', 1, false);/*sifra*/
-insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'marko@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '124891', 2, false);/*klijent2*/
-insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'sara@gmail.com', 'Sara', 'Mirkovic', '$2a$10$GLP6wpgzOsuq316wup3UlOX7HzPTT5F/86R5PcC/MHw.NYim3vD5a', '124892', 3, false);/*klijent3*/
-insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '124893', 4, false);/*klijent4*/
-
-insert into client (client_category, penal, id) values ('CASUAL_CLIENT', 3, 1);
-insert into client (client_category, penal, id) values ('CASUAL_CLIENT', 0, 2);
-insert into client (client_category, penal, id) values ('CLOSE_CLIENT', 1, 3);
-insert into client (client_category, penal, id) values ('BEST_CLIENT', 0, 4);
+--  /*ROLE*/
+-- insert into role(name) values ('CLIENT');
+-- insert into role(name) values ('ADMIN');
+-- insert into role(name) values ('COTTAGE_OWNER');
+-- insert into role(name) values ('SHIP_OWNER');
+-- insert into role(name) values ('INSTRUCTOR');
+-- /*CLIENTS*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'pera@gmail.com', 'Petar', 'Peric', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '124890', 1, false);/*sifra*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'marko@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '124891', 2, false);/*klijent2*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'sara@gmail.com', 'Sara', 'Mirkovic', '$2a$10$GLP6wpgzOsuq316wup3UlOX7HzPTT5F/86R5PcC/MHw.NYim3vD5a', '124892', 3, false);/*klijent3*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '124893', 4, false);/*klijent4*/
 --
--- -- /*COTTAGE OWNERS*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mile@gmail.com', 'Mile', 'Kostic', '$2a$10$6HD4yHeA6yMoWmTuiFLw8ewp2TlXRwLsdu6CSkzYLLvFl.A17i5Cq', '124894', 5, false);/*vlasnik1*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mara@gmail.com', 'Mara', 'Dabovic', '$2a$10$ZFhTzzIdX6.j47kW/wCaA.xIJjpt6LCq4ASEa/iUr78LTGIfJSsEC', '124895', 6, false);/*vlasnik2*/
--- --
--- -- insert  into owner(owner_category, id) values ('REGULAR', 5);
--- -- insert  into owner(owner_category, id) values ('SILVER', 6);
--- --
--- -- insert into cottage_owner(id) values (5);
--- -- insert into cottage_owner(id) values (6);
--- --
--- -- /*SHIP OWNERS*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'nikola@gmail.com', 'Nikola', 'Nikic', '$2a$10$WVmXrwpduGmr0uLbVQ27zekrOvcpn9c6G3yEuTjbqkTBbD5xevs0i', '124896', 7, false);/*vlasnik3*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '124897', 8, false);/*vlasnik4*/
--- --
--- -- insert  into owner(owner_category, id) values ('REGULAR', 7);
--- -- insert  into owner(owner_category, id) values ('GOLD', 8);
--- --
--- -- insert into ship_owner(id) values (7);
--- -- insert into ship_owner(id) values (8);
--- --
--- -- /*INSTRUCTORS*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milan@gmail.com', 'Milan', 'Lakovic', '$2a$10$/xjKdbSgVfsSHEeMbEZOJu7CVFb9dCoLcr/eParcvedbmKfOaeId2', '124898', 9, false);/*instr1*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milica@gmail.com', 'Milica', 'Matic', '$2a$10$UwJxipMMlAZZRwxyEMuk/.2wn2UuFt.quxqu0Gj6vnGC.3goMKCu.', '124899', 10, false);/*instr2*/
--- --
--- -- insert  into owner(owner_category, id) values ('GOLD', 9);
--- -- insert  into owner(owner_category, id) values ('REGULAR', 10);
--- --
--- -- insert into instructor(biography, id) values ('Pecanjem se bavim od svoje 5 godine. Povedite drustvo i idemo na zabavu!',9);
--- -- insert into instructor(biography, id) values ('Svaki dan je nova avantura, pridruzi se mojoj!',10);
--- --
--- -- /*ADMIN*/
--- -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (2, true, 'sava@gmail.com', 'Sava', 'Urosevic', '$2a$10$/6BuFPptMiQChPXx4GbDX.iVVpwXH9EMSVrAcbF3ZSjdt/JDMX826', '124899', 1, false);/*admin1*/
--- -- insert  into admin(id) values (11);
+-- insert into client (client_category, penal, id) values ('CASUAL_CLIENT', 3, 1);
+-- insert into client (client_category, penal, id) values ('CASUAL_CLIENT', 0, 2);
+-- insert into client (client_category, penal, id) values ('CLOSE_CLIENT', 1, 3);
+-- insert into client (client_category, penal, id) values ('BEST_CLIENT', 0, 4);
+--
+-- /*COTTAGE OWNERS*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mile@gmail.com', 'Mile', 'Kostic', '$2a$10$6HD4yHeA6yMoWmTuiFLw8ewp2TlXRwLsdu6CSkzYLLvFl.A17i5Cq', '124894', 5, false);/*vlasnik1*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mara@gmail.com', 'Mara', 'Dabovic', '$2a$10$ZFhTzzIdX6.j47kW/wCaA.xIJjpt6LCq4ASEa/iUr78LTGIfJSsEC', '124895', 6, false);/*vlasnik2*/
+--
+-- insert  into owner(owner_category, id) values ('REGULAR', 5);
+-- insert  into owner(owner_category, id) values ('SILVER', 6);
+--
+-- insert into cottage_owner(id) values (5);
+-- insert into cottage_owner(id) values (6);
+--
+-- /*SHIP OWNERS*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'nikola@gmail.com', 'Nikola', 'Nikic', '$2a$10$WVmXrwpduGmr0uLbVQ27zekrOvcpn9c6G3yEuTjbqkTBbD5xevs0i', '124896', 7, false);/*vlasnik3*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '124897', 8, false);/*vlasnik4*/
+--
+-- insert  into owner(owner_category, id) values ('REGULAR', 7);
+-- insert  into owner(owner_category, id) values ('GOLD', 8);
+--
+-- insert into ship_owner(id) values (7);
+-- insert into ship_owner(id) values (8);
+--
+--  /*INSTRUCTORS*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milan@gmail.com', 'Milan', 'Lakovic', '$2a$10$/xjKdbSgVfsSHEeMbEZOJu7CVFb9dCoLcr/eParcvedbmKfOaeId2', '124898', 9, false);/*instr1*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milica@gmail.com', 'Milica', 'Matic', '$2a$10$UwJxipMMlAZZRwxyEMuk/.2wn2UuFt.quxqu0Gj6vnGC.3goMKCu.', '124899', 10, false);/*instr2*/
+--
+-- insert  into owner(owner_category, id) values ('GOLD', 9);
+-- insert  into owner(owner_category, id) values ('REGULAR', 10);
+--
+-- insert into instructor(biography, id) values ('Pecanjem se bavim od svoje 5 godine. Povedite drustvo i idemo na zabavu!',9);
+-- insert into instructor(biography, id) values ('Svaki dan je nova avantura, pridruzi se mojoj!',10);
+--
+--  /*ADMIN*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (2, true, 'sava@gmail.com', 'Sava', 'Urosevic', '$2a$10$/6BuFPptMiQChPXx4GbDX.iVVpwXH9EMSVrAcbF3ZSjdt/JDMX826', '124899', 1, false);/*admin1*/
+-- insert  into admin(id) values (11);
 -- --
 -- -- /*ADDITIONAL SERVICES*/
 -- -- insert into additional_service(name,price) values ('dorucak', 200);

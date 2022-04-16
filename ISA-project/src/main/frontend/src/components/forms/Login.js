@@ -29,7 +29,7 @@ export default function LogIn() {
               console.log(jwt(token)); // dekodiranje tokena, da dobijes podatke
               localStorage.setItem("user", token);
               console.log("Uspesna prijava");
-              //openUserHomePage();
+              openUserHomePage();
           })
           .catch((err) => {
               console.log("Nije uspesna prijava");
@@ -39,7 +39,7 @@ export default function LogIn() {
   function openUserHomePage(){
       //prepraviti da se otvara home page za svaku rolu posebno
       //window.location = "/user-home-page/instructor";
-      window.location = "/user-home-page/client";
+      window.location = "/user-home-page/instructor";
     }
       
   return (<Card>
