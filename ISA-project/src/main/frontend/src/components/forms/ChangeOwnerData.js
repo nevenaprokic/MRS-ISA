@@ -43,9 +43,12 @@ export default function ChangeOwnerData({currentOwnerData}) {
       changeOwnerData(data);
     }
 
+    const closeDataChangeContainer = function(){
+      window.location = "/user-profile/instructor";
+    }
 
   return (
-    <div className="changeDataContainer">
+    <div className="changeDataContainer" id="changeDataContainer">
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -61,9 +64,18 @@ export default function ChangeOwnerData({currentOwnerData}) {
             }}
           >
               <div><br/></div>
-            <Typography component="h1" variant="h5" sx={{color:"#CC7351"}}>
-              Change data
-            </Typography>
+              <div className="header">
+                  <div className='tittle'>
+                      <Typography component="h1" variant="h5" sx={{color:"#CC7351"}}>
+                        Change data
+                      </Typography>
+                  </div>
+                  <div className="closeBtn" >
+                    <Button size="large" onClick={closeDataChangeContainer} sx={{}}>x</Button>
+                  </div>
+                 
+                </div>
+             
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
