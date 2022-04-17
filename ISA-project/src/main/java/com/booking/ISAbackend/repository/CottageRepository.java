@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CottageRepository extends JpaRepository<Cottage, Integer> {
     List<Cottage> findCottageByCottageOwnerEmail(String email);
+    Cottage findCottageById(Integer id);
 }

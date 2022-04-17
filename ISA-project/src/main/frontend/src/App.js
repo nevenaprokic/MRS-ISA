@@ -11,12 +11,11 @@ import RegistrationClient from './components/forms/RegistrationClient';
 import ClientProfile from './components/profilePages/ClientProfile';
 import CottageOwnerHomePage from './components/homePages/CottageOwnerHomePage';
 import MainNavigation from './components/layout/MainNavigation';
+import CottageProfilePage from './components/profilePages/cottageProfile/CottageProfilePage';
 
 function App() {
   return (
     <div>
- 
-       
         <Routes>
           <Route path="/" element={<MainNavigation />} />
           <Route path="/log-in" element={<LogIn />} />
@@ -28,13 +27,9 @@ function App() {
           <Route path='/user-profile/cottage-owner' element={<CottageOwnerHomePage/>}/>
           <Route path='/instructor/add-adventure' element={<AddAdventurePage/>}/>
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
+          <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
         </Routes>
-     
- 
-      
     </div>
-    
-
   );
 }
 

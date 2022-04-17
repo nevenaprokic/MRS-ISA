@@ -7,4 +7,5 @@ import java.util.List;
 public interface CottageService {
     List<Cottage> findAll();
     List<Cottage> findCottageByCottageOwnerEmail(String email);
+    Cottage findCottageById(Integer id);
 }

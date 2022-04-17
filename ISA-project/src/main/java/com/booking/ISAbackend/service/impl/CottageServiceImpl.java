@@ -24,4 +24,9 @@ public class CottageServiceImpl implements CottageService {
         return cottageRepository.findCottageByCottageOwnerEmail(email);
     }
 
+    @Override
+    public Cottage findCottageById(Integer id) {
+        return  cottageRepository.findCottageById(id);
+    }
+
 }

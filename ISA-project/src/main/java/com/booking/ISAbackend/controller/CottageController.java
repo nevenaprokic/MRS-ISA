@@ -25,6 +25,7 @@ public class CottageController {
     @GetMapping("getCottages")
     @Transactional
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
+        System.out.println(email);
         List<Cottage> cottages = cottageService.findCottageByCottageOwnerEmail(email);
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
@@ -33,11 +34,25 @@ public class CottageController {
                 photos.add(p.getPath());
             }
             System.out.println(c.getPhotos());
-            CottageDTO cottageDTO = new CottageDTO(c.getName(), c.getDescription(),
+            CottageDTO cottageDTO = new CottageDTO(c.getId(),c.getName(), c.getDescription(),
             c.getPrice(), photos, c.getNumberOfPerson(), c.getRulesOfConduct(), c.getCancellationConditions());
             dto.add(cottageDTO);
         }
         return ResponseEntity.ok(dto);
+    }
 
+    @GetMapping("getCottageInfo")
+    @Transactional
+    public ResponseEntity<CottageDTO> getCottageInfo(@RequestParam String idCottage){
+        System.out.println(idCottage);
+        Cottage cottage = cottageService.findCottageById(Integer.parseInt(idCottage));
+        List<String> photos = new ArrayList<>();
+        for(Photo p: cottage.getPhotos()){
+            photos.add(p.getPath());
+        }
+        System.out.println(cottage.getPhotos());
+        CottageDTO cottageDTO = new CottageDTO(cottage.getId(),cottage.getName(), cottage.getDescription(),
+                cottage.getPrice(), photos, cottage.getNumberOfPerson(), cottage.getRulesOfConduct(), cottage.getCancellationConditions());
+        return  ResponseEntity.ok(cottageDTO);
     }
 }

@@ -14,3 +14,17 @@ export function getCottageByCottageOwnerEmail(username){
             return err.message;
         });
 }
+export function getCottageById(id){
+    console.log(id.id);
+    return api
+        .get("/getCottageInfo", {
+            params:{
+                idCottage:id.id
+            }
+        })
+        .then((data) => data)
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}
