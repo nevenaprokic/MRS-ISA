@@ -9,6 +9,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useNavigate } from "react-router-dom";
+import MainNavigation from '../layout/MainNavigationHome';
 
 
 const theme = createTheme();
@@ -28,6 +29,7 @@ export default function Registration(){
   }
   return (<Card>
     <ThemeProvider theme={theme}>
+      <MainNavigation/>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid

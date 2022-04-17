@@ -16,6 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Album from '../pages/home';
 
 
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -50,6 +51,7 @@ function TabPanel(props) {
   }
 
 export default function CottageOwnerHomePage() {
+   
 
     const [value, setValue] = React.useState(0);
 

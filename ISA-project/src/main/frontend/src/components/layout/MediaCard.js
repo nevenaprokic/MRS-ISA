@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const secondaryTheme = createTheme({
     palette: {
       primary: { main:'#9DAB86'},
@@ -14,26 +15,25 @@ const secondaryTheme = createTheme({
 
 });
 
-export default function MediaCard() {
-    
+export default function MediaCard({cottage}) {
+  console.log(cottage.photos[0]);
+  const imag = require('/src/components/images/'+ cottage.photos[0]);
+  let img = "../images/"+ cottage.photos[1];
   return (
     <ThemeProvider theme={secondaryTheme}>
         <Card sx={{ maxWidth: 345 }}>
         <CardMedia
             component="img"
             height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
-            alt="green iguana"
+            image={imag}
+            alt="slike"
         />
         <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
-            Name : 
+            Name : {cottage.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-            Description : 
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-            Mark : 
+            Description : {cottage.description}
             </Typography>
         </CardContent>
         <CardActions>

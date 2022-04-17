@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { alignProperty } from '@mui/material/styles/cssUtils';
 import api from '../../app/api';
 import jwt from 'jwt-decode';
+import MainNavigation from '../layout/MainNavigationHome';
 
 
 const theme = createTheme();
@@ -48,6 +49,7 @@ export default function LogIn() {
       
   return (<Card>
     <ThemeProvider theme={theme}>
+      <MainNavigation/>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
