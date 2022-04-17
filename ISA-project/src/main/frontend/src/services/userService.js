@@ -16,6 +16,20 @@ export function getInstructorByUsername(username){
         return err.message;
     });
 }
+export function getCottageOwnerByUsername(username){
+    return api
+       .get("/cottageOwnerProfileInfo",{
+        params: {
+            email: username
+          }
+       } 
+     )
+       .then((responseData) => responseData)
+    .catch((err) => {
+        console.log("Nije uspesna prijava");
+        return err.message;
+    });
+}
 
 export function addAdventure(adventureData){
     let email = getUsernameFromToken();

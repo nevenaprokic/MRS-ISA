@@ -31,13 +31,7 @@ function AdditionalinfoBox({additionalDate}){
               <label className="boxItemTitle">Penalties: </label>
               <label className="boxItemText">1</label>
           </div>
-          <div>
-              <div className="boxItem">
-              <ArticleIcon color="action"/>
-              </div>
-              <label className="boxItemTitle">Biography: </label>
-              <label className="boxItemText">Nesto nesto nesto</label>
-          </div>
+          
           </div>
         </Box>
       </Grid>
