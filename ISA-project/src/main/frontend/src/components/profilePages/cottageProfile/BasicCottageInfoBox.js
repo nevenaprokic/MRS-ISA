@@ -8,9 +8,11 @@ import ArticleIcon from '@mui/icons-material/Article';
 import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from "@emotion/react";
-import { useState } from "react";
 import ReadMoreReact from 'read-more-react';
 import ShowMoreText from "react-show-more-text";
+import getAddressByCottageId from '../../../services/AddressService';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 const theme = createTheme({
     palette: {
@@ -23,7 +25,6 @@ const theme = createTheme({
     },
   });
 
-  let description = "aaaaadkks anldkbj asbfjk safbjksbf akjbfsz vaskjfjahfdiqfnv hfasndasfaskfh fhfkasf asfkeifanfkzsvnaskhfipe hahsdsha sahd asdha  dhsadsa ahsdsah sahdhsa hsafha hafhafahfa ahfahsfhashf ahdfhasfhsa ahfa fhhf ahfhashfah afhfahsfhas ahfsahfhsahf hsadsa ahsdsah sahdhsa hsafha hafhafahfa ahfahsfhashf ahdfhasfhsa ahfa fhhf ahfhashfah afhfahsfhas ahfsahfhsahf ashfahf ashfahf"
   let shownTextlength = 250; //maksimalna velicina stringa za prvi prikaz
   
   function executeOnClick(isExpanded) {
@@ -35,7 +36,21 @@ const theme = createTheme({
 
 
 function BasicAdventureInfiBox({basicInfo}){
-    return (
+
+    const [addressData, setAddressData] = useState();
+  
+    useEffect(() => {
+        async function setData() {
+        let address = await getAddressByCottageId(basicInfo.id);
+        setAddressData(!!address ? address.data : {});   
+
+        return address;    
+    }
+      setData();
+       
+    }, [])
+    if(addressData){
+        return (
         
             <div className="basicInfoContainer">
                  <div>
@@ -44,7 +59,7 @@ function BasicAdventureInfiBox({basicInfo}){
                         <HomeIcon color="action"/>
                     </div>
                     <label className="basicBoxItemTitle">Address: </label>
-                    <label className="basicBoxItemText">{"Neka ulica 10"}, {"Neki grad"}, {"neka drzava"}</label>
+                    <label className="basicBoxItemText">{addressData.street}, {addressData.city}, {addressData.state}</label>
                 </div>
                 <div>
         
@@ -52,7 +67,7 @@ function BasicAdventureInfiBox({basicInfo}){
                         <MeetingRoom color="action"/>
                     </div>
                     <label className="basicBoxItemTitle">Rooms number: </label>
-                    <label className="basicBoxItemText">{"4"}</label>
+                    <label className="basicBoxItemText">{basicInfo.roomNumber}</label>
                 </div>
                 <div>
         
@@ -60,7 +75,7 @@ function BasicAdventureInfiBox({basicInfo}){
                         <HotelIcon color="action"/>
                     </div>
                     <label className="basicBoxItemTitle">Beds number: </label>
-                    <label className="basicBoxItemText">{"6"}</label>
+                    <label className="basicBoxItemText">{basicInfo.bedNumber}</label>
                 </div>
                 <div>
         
@@ -87,7 +102,7 @@ function BasicAdventureInfiBox({basicInfo}){
                             width={280}
                             truncatedEndingComponent={"... "}
                         >
-                            {description}
+                            {basicInfo.description}
                         </ShowMoreText>
                     </div>
                    
@@ -101,6 +116,8 @@ function BasicAdventureInfiBox({basicInfo}){
 
     );
 
+    }
+    
 }
 
 export default BasicAdventureInfiBox;

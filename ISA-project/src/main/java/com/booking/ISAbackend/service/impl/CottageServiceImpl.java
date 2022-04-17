@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.repository.CottageRepository;
 import com.booking.ISAbackend.service.CottageService;
@@ -27,6 +28,12 @@ public class CottageServiceImpl implements CottageService {
     @Override
     public Cottage findCottageById(Integer id) {
         return  cottageRepository.findCottageById(id);
+    }
+    @Override
+    public Address findAddressByCottageId(Integer id){
+        Cottage cottage = cottageRepository.findCottageById(id);
+        Address address = cottage.getAddress();
+        return address;
     }
 
 }

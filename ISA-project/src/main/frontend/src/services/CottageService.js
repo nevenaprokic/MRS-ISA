@@ -15,11 +15,10 @@ export function getCottageByCottageOwnerEmail(username){
         });
 }
 export function getCottageById(id){
-    console.log(id.id);
     return api
         .get("/getCottageInfo", {
             params:{
-                idCottage:id.id
+                idCottage:id
             }
         })
         .then((data) => data)

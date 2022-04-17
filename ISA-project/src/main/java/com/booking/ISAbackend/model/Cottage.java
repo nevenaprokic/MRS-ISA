@@ -14,4 +14,7 @@ public class Cottage extends Offer{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "my_user_id")
 	private CottageOwner cottageOwner;
+
+	public Integer getRoomNumber() {return roomNumber;}
+	public  Integer getBedNumber() {return  bedNumber;}
 }

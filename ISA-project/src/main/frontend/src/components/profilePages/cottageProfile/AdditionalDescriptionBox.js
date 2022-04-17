@@ -6,8 +6,7 @@ import MeetingRoom from "@mui/icons-material/MeetingRoom";
 import ArticleIcon from '@mui/icons-material/Article';
 import ShowMoreText from "react-show-more-text";
 
-function AdditionalDescriptionBox(){
-    let description = "aaaaadkks anldkbj asbfjk safbjksbf akjbfsz vaskjfjahfdiqfnv hfasndasfaskfh fhfkasf asfkeifanfkzsvnaskhfipe hahsdsha sahd asdha  dhsadsa ahsdsah sahdhsa hsafha hafhafahfa ahfahsfhashf ahdfhasfhsa ahfa fhhf ahfhashfah afhfahsfhas ahfsahfhsahf hsadsa ahsdsah sahdhsa hsafha hafhafahfa ahfahsfhashf ahdfhasfhsa ahfa fhhf ahfhashfah afhfahsfhas ahfsahfhsahf ashfahf ashfahf"
+function AdditionalDescriptionBox({additionData}){
     function executeOnClick(isExpanded) {
         console.log(isExpanded);
     }
@@ -34,7 +33,7 @@ function AdditionalDescriptionBox(){
                             width={280}
                             truncatedEndingComponent={"... "}
                         >
-                            {description}
+                            {additionData.rulesOfConduct}
                         </ShowMoreText>
                     </div>
                 </div>
@@ -59,7 +58,7 @@ function AdditionalDescriptionBox(){
                             width={280}
                             truncatedEndingComponent={"... "}
                         >
-                            {description}
+                            {additionData.cancellationConditions}
                         </ShowMoreText>
                     </div>
                 </div>

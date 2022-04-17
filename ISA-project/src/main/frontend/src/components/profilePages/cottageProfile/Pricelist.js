@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import EuroIcon from '@mui/icons-material/Euro';
 
 
-function PriceList(){
+function PriceList({basicPrice}){
 
     function createData(name, price) {
         return { name, price };
@@ -32,7 +32,7 @@ function PriceList(){
                
             </div>
             <div className="basePrice">
-                <label>Osnovna cena: {"200"} €</label>
+                <label>Basic price: {basicPrice} €</label>
             </div>
             
             <div className="tableContainer">

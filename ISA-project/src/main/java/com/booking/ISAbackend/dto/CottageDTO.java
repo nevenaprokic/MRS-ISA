@@ -1,7 +1,4 @@
-package com.booking.ISAbackend.dto;
-
-import com.booking.ISAbackend.client.Client;
-import com.booking.ISAbackend.model.*;
+package com.booking.ISAbackend.dto;;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class CottageDTO {
 
 
 
-    public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions) {
+    public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,6 +26,8 @@ public class CottageDTO {
         this.numberOfPerson = numberOfPerson;
         this.rulesOfConduct = rulesOfConduct;
         this.cancellationConditions = cancellationConditions;
+        this.roomNumber = roomNumber;
+        this.bedNumber = bedNumber;
     }
 
     public CottageDTO() {
@@ -64,5 +63,9 @@ public class CottageDTO {
     public String getCancellationConditions() {
         return cancellationConditions;
     }
+
+    public Integer getRoomNumber(){return  roomNumber;}
+
+    public Integer getBedNumber() {return  bedNumber;}
 
 }

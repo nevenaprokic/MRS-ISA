@@ -24,9 +24,7 @@ export default function MediaCard({ cottage }) {
     });
   };
 
-  console.log(cottage.photos[0]);
   const imag = require("/src/components/images/" + cottage.photos[0]);
-  let img = "../images/" + cottage.photos[1];
   return (
     <ThemeProvider theme={secondaryTheme}>
       <Card sx={{ maxWidth: 345 }}>
