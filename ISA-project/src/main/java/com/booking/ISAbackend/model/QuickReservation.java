@@ -28,4 +28,36 @@ public class QuickReservation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public LocalDate getEndDateAction() {
+		return endDateAction;
+	}
+
+	public LocalDate getStartDateAction() {
+		return startDateAction;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public List<AdditionalService> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public Integer getNumberOfPerson() {
+		return numberOfPerson;
+	}
+
+	public Offer getOffer() {
+		return offer;
+	}
 }

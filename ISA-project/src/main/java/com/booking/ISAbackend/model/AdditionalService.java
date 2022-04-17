@@ -22,4 +22,12 @@ public class AdditionalService {
     public AdditionalService() {
 
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
 }
