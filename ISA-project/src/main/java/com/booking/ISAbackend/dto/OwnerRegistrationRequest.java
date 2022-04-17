@@ -3,23 +3,85 @@ package com.booking.ISAbackend.dto;
 
 public class OwnerRegistrationRequest {
 
-    public String explanation;
+    private String explanation;
 
-    public String type;
+    private String type;
 
-    public String firstName;
+    private String firstName;
 
-    public String lastName;
+    private String lastName;
 
-    public String password;
+    private String password;
 
-    public String phoneNumber;
+    private String confirmPassword;
 
-    public String email;
+    private String phoneNumber;
 
-    public String street;
+    private String email;
 
-    public String city;
+    private String street;
 
-    public String state;
+    private String city;
+
+    private String state;
+
+    public OwnerRegistrationRequest(){}
+
+    public OwnerRegistrationRequest(String explanation, String type, String firstName, String lastName, String password, String confirmPassword, String phoneNumber, String email, String street, String city, String state) {
+        this.explanation = explanation;
+        this.type = type;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getConfirmPassword(){
+        return confirmPassword;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
 }
