@@ -3,6 +3,7 @@ package com.booking.ISAbackend.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.booking.ISAbackend.model.CottageOwner;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.MyUser;
 
@@ -15,4 +16,5 @@ public interface UserService {
     List<MyUser> findAll ();
     MyUser save(UserRequest userRequest);
     Instructor findInstructorByEmail(String email);
+    CottageOwner findCottageOwnerByEmail(String email);
 }

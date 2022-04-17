@@ -14,6 +14,7 @@ import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import Album from '../pages/home';
+import OwnerProfile from '../profilePages/OwnerProfile';
 
 
 
@@ -117,11 +118,8 @@ export default function CottageOwnerHomePage() {
                         </Box>
                       <Album/>
                 </TabPanel>
-                <TabPanel value={value} index={1}>
-                    Item Two
-                </TabPanel>
                 <TabPanel value={value} index={2}>
-                    Item Three
+                    <OwnerProfile/>
                 </TabPanel>
                 <TabPanel value={value} index={3}>
                     Item Four

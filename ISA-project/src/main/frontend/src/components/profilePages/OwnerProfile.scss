@@ -4,9 +4,9 @@ $boxTitleColor: #808780;
 
 .ownerprofileContainer{
     width: $content_width;
-    margin-top: 7%;
+    margin-top: 0%;
     margin-left: 50%;
-    padding: 3%;
+    padding: 2%;
     transform: translateX(-50%);
     color: gray;
     margin-bottom: 7%;
@@ -44,6 +44,7 @@ $boxTitleColor: #808780;
     background-color: #D3E4CD;
     height: 100%;
     border-radius: 5%;
+    margin-bottom: 7%;
 }
 
 .boxItemText{

@@ -11,8 +11,8 @@ import BasicInfoBox from "./BasicInfoBox";
 import AddressInfoBox from "./AddressInfoBox";
 import AdditionalinfoBox from "./AdditionalInfoBox";
 import SettingsIcon from '@mui/icons-material/Settings';
-import { getUsernameFromToken } from '../../app/jwtTokenUtils';
-import { getInstructorByUsername } from "../../services/userService";
+import { getRoleFromToken, getUsernameFromToken } from '../../app/jwtTokenUtils';
+import { getInstructorByUsername, getCottageOwnerByUsername } from "../../services/userService";
 import { useState, useEffect } from 'react';
 function OwnerProfile(){
 
@@ -21,7 +21,13 @@ function OwnerProfile(){
     useEffect(() => {
         async function setownerData() {
         let username = getUsernameFromToken();
-        const requestData = await getInstructorByUsername(username);
+        let role = getRoleFromToken();
+        let requestData = null;
+        if(role == "COTTAGE_OWNER"){
+            requestData = await getCottageOwnerByUsername(username);
+        }else if(role == "INSTRUCTOR"){
+            requestData = await getInstructorByUsername(username);
+        }
         setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
         console.log(ownerData);
 
@@ -35,10 +41,10 @@ function OwnerProfile(){
         return(
             <div className="ownerprofileContainer">
 
-            <Grid container component="main" sx={{ height: '80vh' }}>
+            <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Grid item xs={12} sm={5}>
-                    <img src={profileIcon} width="70%"></img>
+                    <img src={profileIcon} width="40%"></img>
                 </Grid>
 
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
