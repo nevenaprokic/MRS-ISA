@@ -1,24 +1,25 @@
 package com.booking.ISAbackend.service.impl;
 
-import java.beans.Transient;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
 
 import com.booking.ISAbackend.model.CottageOwner;
 import com.booking.ISAbackend.model.Instructor;
-import com.booking.ISAbackend.model.Owner;
 import com.booking.ISAbackend.repository.CottageOwnerRepository;
 import com.booking.ISAbackend.repository.InstructorRepository;
 import com.booking.ISAbackend.repository.OwnerRepository;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.booking.ISAbackend.model.MyUser;
@@ -39,6 +40,9 @@ public class UserServiceImpl implements UserService{
 	private OwnerRepository ownerRepository;
 	@Autowired
 	private CottageOwnerRepository cottageOwnerRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -75,6 +79,18 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
+		MyUser currentUser = userRepository.findByEmail(email);
+		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
+		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
+			currentUser.setPassword(newPasswordHash);
+			userRepository.save(currentUser);
+			return true;
+		}
+		throw new InvalidPasswordException("Data is invalid.");
+	}
+
+	@Override
 	@Transactional
 	public void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		Instructor instructor = findInstructorByEmail(newData.getEmail());
@@ -84,8 +100,6 @@ public class UserServiceImpl implements UserService{
 				if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
 					instructor.setFirstName(newData.getFirstName());
 				}
-
-
 			}
 			if(!newData.getLastName().equals("")){
 				if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){

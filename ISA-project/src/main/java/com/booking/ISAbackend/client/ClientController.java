@@ -1,6 +1,9 @@
 package com.booking.ISAbackend.client;
 
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,19 @@ public class ClientController {
         );
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("updateProfileInfo")
+    @Transactional
+    public ResponseEntity<String> updateInfo(@RequestParam String email, @RequestBody ClientDTO dto) {
+        try{
+            clientService.updateInfo(email, dto);
+            return ResponseEntity.ok("Successfully updated personal info");
+        } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
+
+            return ResponseEntity.status(400).body("Data is invalid.");
+
+        }
     }
 
 }

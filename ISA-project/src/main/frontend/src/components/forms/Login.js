@@ -56,6 +56,7 @@ export default function LogIn() {
       else{
         alert("Undefined user role");
       }
+
     }
       
   return (<Card>

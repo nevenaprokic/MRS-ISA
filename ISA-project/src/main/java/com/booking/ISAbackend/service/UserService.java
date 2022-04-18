@@ -1,10 +1,11 @@
 package com.booking.ISAbackend.service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 
@@ -23,4 +24,6 @@ public interface UserService {
     Instructor findInstructorByEmail(String email);
     void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     CottageOwner findCottageOwnerByEmail(String email);
+
+    Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException;
 }
