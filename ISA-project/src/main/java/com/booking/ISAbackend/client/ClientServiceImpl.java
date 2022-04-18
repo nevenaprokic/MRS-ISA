@@ -81,14 +81,38 @@ public class ClientServiceImpl implements ClientService {
         Client c = clientRepository.findByEmail(email);
         Address address = c.getAddress();
         if(c != null){
-            c.setFirstName(dto.getFirstName());
-            c.setLastName(dto.getLastName());
-            c.setPhoneNumber(dto.getPhoneNumber());
-            address.setStreet(dto.getStreet());
-            address.setCity(dto.getCity());
-            address.setState(dto.getState());
-
-            clientRepository.save(c);
+            if(!dto.getFirstName().equals("")){
+                if(Validator.onlyLetterAndSpacesValidation(dto.getFirstName())) {
+                    c.setFirstName(dto.getFirstName());
+                }
+            }
+            if(!dto.getLastName().equals("")){
+                if(Validator.onlyLetterAndSpacesValidation(dto.getLastName())){
+                    c.setLastName(dto.getLastName());
+                }
+            }
+            if(!dto.getPhoneNumber().equals("")){
+                if(Validator.phoneNumberValidation(dto.getPhoneNumber())){
+                    c.setPhoneNumber(dto.getPhoneNumber());
+                }
+            }
+            if(!dto.getStreet().equals("")){
+                if(Validator.isValidAdress(dto.getStreet(), address.getCity(), address.getState()))
+                {
+                    address.setStreet(dto.getStreet());
+                }
+            }
+            if(!dto.getCity().equals("")){
+                if(Validator.isValidAdress(address.getStreet(), dto.getCity(), address.getState()))
+                {
+                    address.setCity(dto.getCity());
+                }
+            }
+            if(!dto.getState().equals("")){
+                if(Validator.isValidAdress(address.getStreet(), address.getCity(), dto.getState())) {
+                    address.setState(dto.getState());
+                }
+            }
     }
     }
 

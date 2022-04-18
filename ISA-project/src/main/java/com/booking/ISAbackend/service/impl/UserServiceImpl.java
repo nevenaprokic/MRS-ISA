@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService{
 	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		MyUser currentUser = userRepository.findByEmail(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
-		if (data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
+		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
 			currentUser.setPassword(newPasswordHash);
 			userRepository.save(currentUser);
 			return true;
@@ -100,8 +100,6 @@ public class UserServiceImpl implements UserService{
 				if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
 					instructor.setFirstName(newData.getFirstName());
 				}
-
-
 			}
 			if(!newData.getLastName().equals("")){
 				if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){
