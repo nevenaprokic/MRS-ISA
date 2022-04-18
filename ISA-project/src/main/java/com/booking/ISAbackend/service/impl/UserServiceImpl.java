@@ -4,13 +4,17 @@ import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
+
+import com.booking.ISAbackend.model.CottageOwner;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.Owner;
+import com.booking.ISAbackend.repository.CottageOwnerRepository;
 import com.booking.ISAbackend.repository.InstructorRepository;
 import com.booking.ISAbackend.repository.OwnerRepository;
 import com.booking.ISAbackend.validation.Validator;
@@ -33,6 +37,8 @@ public class UserServiceImpl implements UserService{
 	private InstructorRepository instructorRepository;
 	@Autowired
 	private OwnerRepository ownerRepository;
+	@Autowired
+	private CottageOwnerRepository cottageOwnerRepository;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -60,6 +66,12 @@ public class UserServiceImpl implements UserService{
 		MyUser user = userRepository.findByEmail(email);
 		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
 		return instructor.orElse(null);
+	}
+	@Override
+	public CottageOwner findCottageOwnerByEmail(String email){
+		MyUser user = userRepository.findByEmail(email);
+		Optional<CottageOwner> cottageOwner = cottageOwnerRepository.findById(user.getId());
+		return cottageOwner.orElse(null);
 	}
 
 	@Override

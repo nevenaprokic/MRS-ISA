@@ -18,4 +18,7 @@ public class Photo {
     public Photo() {
 
     }
+    public String getPath(){
+        return path;
+    }
 }

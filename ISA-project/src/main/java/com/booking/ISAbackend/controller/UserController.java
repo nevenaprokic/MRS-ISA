@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.dto.CottageOwnerProfileInfo;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.dto.OwnerRegistrationRequest;
@@ -11,6 +12,7 @@ import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.MyUser;
 import com.booking.ISAbackend.model.RegistrationRequest;
+import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.RegistrationRequestRepository;
 import com.booking.ISAbackend.service.RegistrationRequestService;
 import org.apache.commons.logging.Log;
@@ -71,6 +73,26 @@ public class UserController {
 		return ResponseEntity.ok(data);
 
 	}
+    @GetMapping("cottageOwnerProfileInfo")
+    @Transactional
+    public ResponseEntity<CottageOwnerProfileInfo> getCottageOwnerProfileInfo(@RequestParam String email){
+        //odraditi autentifikaciju i autorizaciju
+
+
+        CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
+
+        Address address = cottageOwner.getAddress();
+        CottageOwnerProfileInfo data = new CottageOwnerProfileInfo(cottageOwner.getEmail(),
+                cottageOwner.getFirstName(),
+                cottageOwner.getLastName(),
+                cottageOwner.getPhoneNumber(),
+                cottageOwner.getAddress().getStreet(),
+                cottageOwner.getAddress().getCity(),
+                cottageOwner.getAddress().getState(),
+                cottageOwner.getOwnerCategory().toString());
+        return ResponseEntity.ok(data);
+
+    }
 	@PostMapping("registrationOwner")
 	public ResponseEntity<String> sendOwnerRegistration(@RequestBody OwnerRegistrationRequest request){
 		try {

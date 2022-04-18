@@ -86,7 +86,7 @@ public class Validator {
     }
 
     public static boolean phoneNumberValidation(String phoneNumber) throws InvalidPhoneNumberException {
-        String regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"; //neki validator za broj telefona, proveriti da li je okej ovaj
+        String regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$"; //neki validator za broj telefona, proveriti da li je okej ovaj
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phoneNumber);
         if(matcher.matches()){
@@ -95,6 +95,48 @@ public class Validator {
         else{
             throw new InvalidPhoneNumberException("invalid phone number: " + phoneNumber + "!Allowded pattern for phone number: "); //OVDE DODATI KOJI PATERN
         }
+    }
+    public static boolean isMachPassword(String password, String confirmPassword) throws InvalidPasswordException{
+        if(!password.equals(confirmPassword))
+            throw new InvalidPasswordException("The passwords do not match!");
+        return true;
+    }
+
+    public static boolean isValidEmail(String email) throws InvalidEmail{
+        String regex = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        Pattern emailPattern = Pattern.compile(regex);
+        Matcher matcherEmail = emailPattern.matcher(email);
+
+        if(matcherEmail.matches()) return true;
+
+        else if (!matcherEmail.matches()) {
+            throw new InvalidEmail("Invalid email address!");
+        }
+        return false;
+    }
+    public static boolean isValidCredentials(String credential) throws InvalidCredential{
+        String regex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+        Pattern credentialPattern = Pattern.compile(regex);
+        Matcher matcherCredential = credentialPattern.matcher(credential);
+
+        if(matcherCredential.matches()) return true;
+
+        else if (!matcherCredential.matches()) {
+            throw new InvalidCredential("Invalid credential! Only letters are allowed");
+        }
+        return false;
+    }
+    public static boolean isValidPhoneNumber(String phoneNumber) throws  InvalidPhoneNumber{
+        String regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+        Pattern phoneNumberPattern = Pattern.compile(regex);
+        Matcher matcherPhoneNumber = phoneNumberPattern.matcher(phoneNumber);
+
+        if(matcherPhoneNumber.matches()) return true;
+
+        else if (!matcherPhoneNumber.matches()) {
+            throw new InvalidPhoneNumber("Invalid phone number! Only numbers are allowed");
+        }
+        return false;
     }
 
 }

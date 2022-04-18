@@ -13,6 +13,7 @@ import { NativeSelect, InputLabel, FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
 import sendOwnerRegistration from '../../services/ownerRegistration';
+import MainNavigation from '../layout/MainNavigationHome';
 
 const theme = createTheme();
 export default function RegistrationOwner() {
@@ -28,6 +29,7 @@ export default function RegistrationOwner() {
 
     return (<Card>
       <ThemeProvider theme={theme}>
+        <MainNavigation/>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box

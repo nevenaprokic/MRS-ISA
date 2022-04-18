@@ -60,6 +60,7 @@ public class Offer {
 	public Offer() {
 
 	}
+	public Integer getId() {return id;}
 
 	public String getName() {
 		return name;
