@@ -14,9 +14,31 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { getRoleFromToken, getUsernameFromToken } from '../../app/jwtTokenUtils';
 import { getInstructorByUsername, getCottageOwnerByUsername } from "../../services/userService";
 import { useState, useEffect } from 'react';
+import ChangeOwnerData from "../forms/ChangeOwnerData";
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
+
 function OwnerProfile(){
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        paleGreen: "#dae0d2"
+      };
+
     const [ownerData, setOwnerData] = useState();
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         async function setownerData() {
@@ -36,6 +58,8 @@ function OwnerProfile(){
        setownerData();
        
     }, [])
+
+
 
     if(!! ownerData){
         return(
@@ -63,10 +87,21 @@ function OwnerProfile(){
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change private data</Button>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
                             
                     </Typography>         
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                >
+                    
+                        <ChangeOwnerData currentOwnerData={ownerData}/>
+                    
+                </Modal>
         
                 <AddressInfoBox addressData={ownerData}/>
                 

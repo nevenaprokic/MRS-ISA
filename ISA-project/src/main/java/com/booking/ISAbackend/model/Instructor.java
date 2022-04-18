@@ -29,4 +29,8 @@ public class Instructor extends Owner{
 	public List<Adventure> getAdventures() {
 		return adventures;
 	}
+
+	public void setBiography(String biography) {
+		this.biography = biography;
+	}
 }

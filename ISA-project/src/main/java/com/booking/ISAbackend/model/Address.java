@@ -44,4 +44,16 @@ public class Address {
 	public String getStreet() {
 		return street;
 	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
 }

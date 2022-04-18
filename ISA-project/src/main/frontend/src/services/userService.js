@@ -1,6 +1,7 @@
 import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import OwnerProfile from "../components/profilePages/OwnerProfile";
 
 export function getInstructorByUsername(username){
     return api
@@ -37,5 +38,16 @@ export function addAdventure(adventureData){
     api
     .post("/adventure/addAdventure", adventureData)
     .then((responseData) => alert(responseData))
-    .catch((err) => alert(err));
+    .catch((err) => alert(err.response));
+}
+
+export function changeOwnerData(newOwnerData){
+    let email = getUsernameFromToken();
+    newOwnerData["email"] = email;
+    api
+    .post("/changeOwnerData", newOwnerData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                window.location = "/user-profile/instructor"})
+    .catch((err) => alert(err.data));
 }

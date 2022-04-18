@@ -73,6 +73,29 @@ public class Validator {
         return true;
     }
 
+    public static boolean onlyLetterAndSpacesValidation(String dataForValidation) throws OnlyLettersAndSpacesException {
+        String regex = "^[a-zA-Z\\s]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dataForValidation);
+        if(matcher.matches()){
+            return true;
+        }
+        else{
+            throw new OnlyLettersAndSpacesException("invalid data: " + dataForValidation + "! Only letters and spaces are allowded.");
+        }
+    }
+
+    public static boolean phoneNumberValidation(String phoneNumber) throws InvalidPhoneNumberException {
+        String regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$"; //neki validator za broj telefona, proveriti da li je okej ovaj
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        if(matcher.matches()){
+            return true;
+        }
+        else{
+            throw new InvalidPhoneNumberException("invalid phone number: " + phoneNumber + "!Allowded pattern for phone number: "); //OVDE DODATI KOJI PATERN
+        }
+    }
     public static boolean isMachPassword(String password, String confirmPassword) throws InvalidPasswordException{
         if(!password.equals(confirmPassword))
             throw new InvalidPasswordException("The passwords do not match!");

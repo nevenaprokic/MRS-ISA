@@ -8,6 +8,7 @@ import OwnerProfile from './components/profilePages/OwnerProfile';
 import InstructorHomePage from './components/homePages/InstructorHomePage';
 import AddAdventurePage from './components/forms/adventure/AddAdventurePage';
 import RegistrationClient from './components/forms/RegistrationClient';
+import ChangeOwnerData from './components/forms/ChangeOwnerData';
 import ClientProfile from './components/profilePages/ClientProfile';
 import CottageOwnerHomePage from './components/homePages/CottageOwnerHomePage';
 import MainNavigation from './components/layout/MainNavigation';
@@ -27,6 +28,7 @@ function App() {
           <Route path='/user-profile/cottage-owner' element={<CottageOwnerHomePage/>}/>
           <Route path='/instructor/add-adventure' element={<AddAdventurePage/>}/>
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
+          <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
           <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
         </Routes>
     </div>

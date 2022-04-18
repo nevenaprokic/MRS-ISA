@@ -1,4 +1,4 @@
--- -- --
+
 -- -- /*Addresses*/
 -- insert into address (street, city, state) values ('Omladinska 19', 'Novi Sad', 'Srbija');
 -- insert into address (street, city, state) values ('Jevrejska 44', 'Beograd', 'Srbija');
@@ -10,14 +10,15 @@
 -- insert into address (street, city, state) values ('Bulevar kralja Petra 137', 'Beograd', 'Srbija');
 -- insert into address (street, city, state) values ('Fruskogorksa 60', 'Novi Sad', 'Srbija');
 -- insert into address (street, city, state) values ('Mise Dimitrijevica 19', 'Novi Sad', 'Srbija');
--- --
+--
 -- -- /*ROLE*/
 -- insert into role(name) values ('CLIENT');
 -- insert into role(name) values ('ADMIN');
 -- insert into role(name) values ('COTTAGE_OWNER');
 -- insert into role(name) values ('SHIP_OWNER');
 -- insert into role(name) values ('INSTRUCTOR');
--- -- -- /*CLIENTS*/
+-- -- /*CLIENTS*/
+--
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'pera@gmail.com', 'Petar', 'Peric', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '124890', 1, false);/*sifra*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'marko@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '124891', 2, false);/*klijent2*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'sara@gmail.com', 'Sara', 'Mirkovic', '$2a$10$GLP6wpgzOsuq316wup3UlOX7HzPTT5F/86R5PcC/MHw.NYim3vD5a', '124892', 3, false);/*klijent3*/
@@ -37,7 +38,7 @@
 --
 -- insert into cottage_owner(id) values (5);
 -- insert into cottage_owner(id) values (6);
-
+--
 -- /*SHIP OWNERS*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'nikola@gmail.com', 'Nikola', 'Nikic', '$2a$10$WVmXrwpduGmr0uLbVQ27zekrOvcpn9c6G3yEuTjbqkTBbD5xevs0i', '124896', 7, false);/*vlasnik3*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '124897', 8, false);/*vlasnik4*/
@@ -48,7 +49,8 @@
 -- insert into ship_owner(id) values (7);
 -- insert into ship_owner(id) values (8);
 --
--- /*INSTRUCTORS*/
+--  /*INSTRUCTORS*/
+--
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milan@gmail.com', 'Milan', 'Lakovic', '$2a$10$/xjKdbSgVfsSHEeMbEZOJu7CVFb9dCoLcr/eParcvedbmKfOaeId2', '124898', 9, false);/*instr1*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milica@gmail.com', 'Milica', 'Matic', '$2a$10$UwJxipMMlAZZRwxyEMuk/.2wn2UuFt.quxqu0Gj6vnGC.3goMKCu.', '124899', 10, false);/*instr2*/
 --
@@ -58,6 +60,77 @@
 -- insert into instructor(biography, id) values ('Pecanjem se bavim od svoje 5 godine. Povedite drustvo i idemo na zabavu!',9);
 -- insert into instructor(biography, id) values ('Svaki dan je nova avantura, pridruzi se mojoj!',10);
 --
+--  /*ADMIN*/
+-- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (2, true, 'sava@gmail.com', 'Sava', 'Urosevic', '$2a$10$/6BuFPptMiQChPXx4GbDX.iVVpwXH9EMSVrAcbF3ZSjdt/JDMX826', '124899', 1, false);/*admin1*/
+-- insert  into admin(id) values (11);
+-- --
+-- -- /*ADDITIONAL SERVICES*/
+-- -- insert into additional_service(name,price) values ('dorucak', 200);
+-- -- insert into additional_service(name,price) values ('rucak', 500);
+-- -- insert into additional_service(name,price) values ('klima', 500);
+-- -- insert into additional_service(name,price) values ('vecera', 300);
+-- -- insert into additional_service(name,price) values ('fen', 80);
+-- --
+-- --
+-- -- /*COTTAGE*/
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,4000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u miru i tisini u prirodi.','Jela',3,2500,'Nije dozvoljeno bilo kakvo unistavanje imovine.',3);
+-- --
+-- -- insert into cottage(bed_number, room_number, id, my_user_id) values (2,2,1,5);
+-- -- insert into cottage(bed_number, room_number, id, my_user_id) values (4,3,2,5);
+-- -- insert into cottage(bed_number, room_number, id, my_user_id) values (3,2,3,6);
+-- --
+-- -- /*SHIP*/
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6);
+-- --
+-- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
+-- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
+-- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
+-- --
+-- -- /*ADVENTURE*/
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje u Kikindi',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na jezeru',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
+-- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Dunavu',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',9);
+-- --
+-- -- insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',7,9);
+-- -- insert into adventure(additional_equipment, id, my_user_id) values ('Ne poseduje pecarosku opremu',8,9);
+-- -- insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',9,10);
+-- --
+-- --
+-- -- /*RESERVATION*/
+-- -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,7);
+-- -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
+-- -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
+-- --
+-- --
+-- -- /*COMPLAINT*/
+-- -- insert into complaint(text,reservation_id) values('Sve pohvale!',2);
+-- --
+-- -- /*DELETE REQUEST*/
+-- -- insert into delete_request(description, my_user_id) values('Ne zelim vise da poslujem!',7);
+-- --
+-- -- /*MARK*/
+-- -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
+-- --
+-- -- /*PHOTO*/
+-- -- insert into photo(path) values('pecanje an dunavu1.jpg');
+-- -- insert into photo(path) values('bela ladja1.jpg');
+-- -- insert into photo(path) values('brvnara1.jpg');
+-- -- insert into photo(path) values('brvnara2.jpg');
+-- --
+-- -- /*QUICK RESERVATION*/
+-- -- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
+-- -- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
+-- --
+-- -- /*REGISTRATION REQUEST*/
+-- --
+-- --
+-- -- /*RESERVATION REPORT*/
+-- -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
+-- --
 -- /*ADMIN*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (2, true, 'sava@gmail.com', 'Sava', 'Urosevic', '$2a$10$/6BuFPptMiQChPXx4GbDX.iVVpwXH9EMSVrAcbF3ZSjdt/JDMX826', '124899', 1, false);/*admin1*/
 -- insert  into admin(id) values (11);
@@ -130,7 +203,7 @@
 -- /*RESERVATION REPORT*/
 -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
 --
-
+--
 --
 -- /*TRANSACTION*/
 -- insert into transaction (date,price,reservation_id) values ('2022-04-01',6000,1);
