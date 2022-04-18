@@ -15,7 +15,8 @@ import { useRef, useState, useEffect } from "react";
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { useToasts } from 'react-toast-notifications'
+import { getUsernameFromToken } from '../../app/jwtTokenUtils';
+import api from '../../app/api';
 
 export default function ChangePassword({close}) {
 
@@ -30,20 +31,18 @@ export default function ChangePassword({close}) {
     },
   });
 
-  const { addToast } = useToasts();
-
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
   const password = useRef({});
   password.current = watch("newPassword1", "");
 
   const onSubmit = (data) => {
-    console.log("Menjam lozinku.");
-    // if (register['password'] !== register['repeatPassword']) {
-    //     addToast("Passwords do not match", { appearance: 'warning' })
-    //     return;
-    //   }
-    // //changePassword(data);
+      api
+      .post("updatePassword?email=" + getUsernameFromToken(), data)
+      .catch((err) => {
+          console.log("Nije uspesna promena lozinke.");
+      });
+
     close();
   }
 
@@ -104,7 +103,7 @@ export default function ChangePassword({close}) {
                   required
                    {...register("newPassword2", {
                     validate: value =>
-                      value === password.current || addToast("Passwords do not match", { appearance: 'warning' })
+                      value === password.current || "Lozinke se ne slazu"
                   })}/>
                 <FormHelperText id="standard-weight-helper-text">Confirm new password</FormHelperText>
                 {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}

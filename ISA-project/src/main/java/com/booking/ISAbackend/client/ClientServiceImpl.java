@@ -2,10 +2,14 @@ package com.booking.ISAbackend.client;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
 import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.ClientCategory;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.RoleRepository;
+import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,4 +75,21 @@ public class ClientServiceImpl implements ClientService {
     public Client findByEmail(String email) {
         return clientRepository.findByEmail(email);
     }
+
+    @Override
+    public void updateInfo(String email, ClientDTO dto) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+        Client c = clientRepository.findByEmail(email);
+        Address address = c.getAddress();
+        if(c != null){
+            c.setFirstName(dto.getFirstName());
+            c.setLastName(dto.getLastName());
+            c.setPhoneNumber(dto.getPhoneNumber());
+            address.setStreet(dto.getStreet());
+            address.setCity(dto.getCity());
+            address.setState(dto.getState());
+
+            clientRepository.save(c);
+    }
+    }
+
 }

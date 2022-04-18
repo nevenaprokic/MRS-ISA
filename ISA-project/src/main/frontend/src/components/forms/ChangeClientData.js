@@ -15,8 +15,10 @@ import { useRef, useState, useEffect } from "react";
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
+import { getUsernameFromToken } from '../../app/jwtTokenUtils';
+import api from '../../app/api';
 
-export default function ChangeClientData({currentClientData, close}) {
+export default function ChangeClientData({currentClientData, close, childToParent}) {
 
   const theme = createTheme({
     palette: {
@@ -32,8 +34,13 @@ export default function ChangeClientData({currentClientData, close}) {
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
   const onSubmit = (data) => {
+    childToParent(data);
+    api
+      .post("updateProfileInfo?email=" + getUsernameFromToken(), data)
+      .catch((err) => {
+          console.log("Nije promena licnih podataka.");
+      });
 
-    //changeOwnerData(data);
     close();
   }
 

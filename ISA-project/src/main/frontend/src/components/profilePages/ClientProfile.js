@@ -46,6 +46,19 @@ function ClientProfile(){
     const handleOpenPass = () => setPasswordManager(true);
     const handleClosePass = () => setPasswordManager(false);
 
+    const childToParent = (childData) => {
+        setClientData(prevState => ({
+            ...prevState,
+            ["firstName"]: childData.firstName,
+            ["lastName"]: childData.lastName,
+            ["phoneNumber"]: childData.phoneNumber,
+            ["city"]: childData.city,
+            ["street"]: childData.street,
+            ["state"]: childData.state,
+
+        }));
+      }
+    
     useEffect(() => {
         async function setData() {
             const request = await api.get(
@@ -95,7 +108,7 @@ function ClientProfile(){
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
                 >
                     
-                        <ChangeClientData currentClientData={clientData} close={handleClose} />
+                        <ChangeClientData currentClientData={clientData} close={handleClose} childToParent={childToParent} />
                     
                 </Modal>
 
