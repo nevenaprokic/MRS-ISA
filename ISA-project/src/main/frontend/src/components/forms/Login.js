@@ -44,7 +44,7 @@ export default function LogIn() {
       if(jwt(token).role.name == "COTTAGE_OWNER")
         window.location = "/user-profile/cottage-owner";
       else
-        window.location = "/user-profile/client";
+        window.location = "/home-page/client";
     }
       
   return (<Card>

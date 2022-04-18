@@ -1,11 +1,13 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.client.ClientDTO;
 import com.booking.ISAbackend.dto.CottageOwnerProfileInfo;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.dto.OwnerRegistrationRequest;
 import com.booking.ISAbackend.dto.UserProfileData;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
@@ -39,18 +41,6 @@ public class UserController {
 
 	@Autowired
 	private RegistrationRequestService registrationRequestService;
-	
-	@PostMapping("/user")
-	public void doNothing() {
-		return;
-	}
-
-	@GetMapping("/foo")
-	public Map<String, String> getFoo() {
-		Map<String, String> fooObj = new HashMap<>();
-		fooObj.put("foo", "bar");
-		return fooObj;
-	}
 
 	@GetMapping("instructorProfileInfo")
 	@Transactional
@@ -115,6 +105,16 @@ public class UserController {
 			e.printStackTrace();
 			return ResponseEntity.status(400).body(e.getMessage());
 
+		}
+	}
+
+	@PostMapping("updatePassword")
+	public ResponseEntity<String> updatePassword(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+		try{
+			userService.isOldPasswordCorrect(email, data);
+			return ResponseEntity.ok("Successfully changed password.");
+		} catch (InvalidPasswordException e) {
+			return ResponseEntity.status(400).body("Old password is not correct.");
 		}
 	}
 }

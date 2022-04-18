@@ -2,10 +2,14 @@ package com.booking.ISAbackend.client;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
 import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.ClientCategory;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.RoleRepository;
+import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,4 +75,45 @@ public class ClientServiceImpl implements ClientService {
     public Client findByEmail(String email) {
         return clientRepository.findByEmail(email);
     }
+
+    @Override
+    public void updateInfo(String email, ClientDTO dto) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+        Client c = clientRepository.findByEmail(email);
+        Address address = c.getAddress();
+        if(c != null){
+            if(!dto.getFirstName().equals("")){
+                if(Validator.onlyLetterAndSpacesValidation(dto.getFirstName())) {
+                    c.setFirstName(dto.getFirstName());
+                }
+            }
+            if(!dto.getLastName().equals("")){
+                if(Validator.onlyLetterAndSpacesValidation(dto.getLastName())){
+                    c.setLastName(dto.getLastName());
+                }
+            }
+            if(!dto.getPhoneNumber().equals("")){
+                if(Validator.phoneNumberValidation(dto.getPhoneNumber())){
+                    c.setPhoneNumber(dto.getPhoneNumber());
+                }
+            }
+            if(!dto.getStreet().equals("")){
+                if(Validator.isValidAdress(dto.getStreet(), address.getCity(), address.getState()))
+                {
+                    address.setStreet(dto.getStreet());
+                }
+            }
+            if(!dto.getCity().equals("")){
+                if(Validator.isValidAdress(address.getStreet(), dto.getCity(), address.getState()))
+                {
+                    address.setCity(dto.getCity());
+                }
+            }
+            if(!dto.getState().equals("")){
+                if(Validator.isValidAdress(address.getStreet(), address.getCity(), dto.getState())) {
+                    address.setState(dto.getState());
+                }
+            }
+    }
+    }
+
 }
