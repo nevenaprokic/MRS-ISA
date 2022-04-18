@@ -3,6 +3,17 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import OwnerProfile from "../components/profilePages/OwnerProfile";
 
+
+export const userType = {
+    CLIENT: "CLIENT",
+    INSTRUCTOR: "INSTRUCTOR",
+    COTTAGE_OWNER:"COTTAGE_OWNER" ,
+    SHIP_OWNER: "SHIP_OWNER"
+}
+
+Object.freeze(userType);
+
+
 export function getInstructorByUsername(username){
     return api
        .get("/instructorProfileInfo",{
@@ -34,11 +45,11 @@ export function getCottageOwnerByUsername(username){
 
 export function addAdventure(adventureData){
     let email = getUsernameFromToken();
-    adventureData["ownerEmail"] = email
+    adventureData["ownerEmail"] = email;
     api
     .post("/adventure/addAdventure", adventureData)
-    .then((responseData) => alert(responseData))
-    .catch((err) => alert(err.response));
+    .then((responseData) => alert(responseData.data))
+    .catch((err) => alert(err.data));
 }
 
 export function changeOwnerData(newOwnerData){
@@ -51,3 +62,4 @@ export function changeOwnerData(newOwnerData){
                 window.location = "/user-profile/instructor"})
     .catch((err) => alert(err.data));
 }
+

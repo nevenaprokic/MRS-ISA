@@ -14,11 +14,17 @@ import { alignProperty } from '@mui/material/styles/cssUtils';
 import api from '../../app/api';
 import jwt from 'jwt-decode';
 import MainNavigation from '../layout/MainNavigationHome';
+import { ElevatorSharp } from '@mui/icons-material';
+import { userType } from '../../services/userService';
 
 
 const theme = createTheme();
 
 export default function LogIn() {
+
+    let homePages = { [userType.CLIENT]:  "/user-profile/client",
+                    [userType.INSTRUCTOR]: "/user-home-page/instructor",
+                    [userType.COTTAGE_OWNER]: "/user-profile/cottage-owner"}
 
     const { register, handleSubmit, formState: { errors } } = useForm({});
 
@@ -41,10 +47,16 @@ export default function LogIn() {
   function openUserHomePage(token){
       //prepraviti da se otvara home page za svaku rolu posebno
       //window.location = "/user-home-page/instructor";
-      if(jwt(token).role.name == "COTTAGE_OWNER")
-        window.location = "/user-profile/cottage-owner";
-      else
-        window.location = "/home-page/client";
+      console.log(jwt(token).role.name);
+      let homePageLocation = homePages[jwt(token).role.name];
+      
+      if(!!homePageLocation){
+        window.location = homePageLocation;
+      }
+      else{
+        alert("Undefined user role");
+      }
+
     }
       
   return (<Card>

@@ -65,7 +65,7 @@ function OwnerProfile(){
         return(
             <div className="ownerprofileContainer">
 
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: '100vh' }}> 
                 <CssBaseline />
                 <Grid item xs={12} sm={5}>
                     <img src={profileIcon} width="40%"></img>

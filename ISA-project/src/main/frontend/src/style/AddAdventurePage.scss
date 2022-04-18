@@ -1,18 +1,20 @@
 @use "@material/button/styles";
 
-$content_width: 120%;
+$content_width: 80%;
 $light: #FEF5ED;
 $middleGreen: #ADC2A9;
+$darkGreen: #99A799;
+$orange :#CC7351;
+$darkGrrenGray: #5f6d5f;
 
 .formContainer{
     width: $content_width;
-    margin-top: 7%;
     margin-left: 50%;
-    border: solid thin $middleGreen;
+    border: solid medium $darkGreen;
     padding: 5%;
     border-radius: 5%;
     transform: translateX(-50%);
-    color: #007F73;
+    color: $orange;
     margin-bottom: 7%;
     // background-color: #FDFFFA;
     background-color: #fcfcfc;
@@ -50,6 +52,11 @@ $middleGreen: #ADC2A9;
 
 .requiredLabel{
     color: #990000;
+    font-size: small;
+}
+
+.headerText{
+    color: $darkGrrenGray;
     font-size: small;
 }
 

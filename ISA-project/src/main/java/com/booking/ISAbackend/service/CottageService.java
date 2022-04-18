@@ -10,4 +10,6 @@ public interface CottageService {
     List<Cottage> findCottageByCottageOwnerEmail(String email);
     Cottage findCottageById(Integer id);
     Address findAddressByCottageId(Integer id);
+
+
 }

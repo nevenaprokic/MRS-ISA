@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import '../../style/MediaCard.scss';
 
 const secondaryTheme = createTheme({
   palette: {
@@ -15,26 +16,32 @@ const secondaryTheme = createTheme({
   },
 });
 
-export default function MediaCard({ cottage }) {
+export default function MediaCard({ offer }) {
   let navigate = useNavigate();
   const routeChange = () => {
-    let path = `/cottage-owner/cottage-profile/`+cottage.id;
+    let path = `/cottage-owner/cottage-profile/`+offer.id;
     navigate(path, {
-      params: { cottageObj: cottage }
+      params: { cottageObj: offer }
     });
   };
 
-  const imag = require("/src/components/images/" + cottage.photos[0]);
+  const imag = require("../images/no-image.png");
+  console.log(offer.photos);
+  if(offer.photos.length != 0){
+    imag = require("../images/" + offer.photos[0]);
+  }
+
+  
   return (
     <ThemeProvider theme={secondaryTheme}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
         <CardMedia component="img" height="140" image={imag} alt="slike" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" color="primary">
-            Name : {cottage.name}
+            {offer.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Description : {cottage.description}
+            <p className="descriptionContainer"> {offer.description} </p>     
           </Typography>
         </CardContent>
         <CardActions>
