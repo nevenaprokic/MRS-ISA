@@ -8,6 +8,10 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import '../../style/MediaCard.scss';
+import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
+import { getAdventureById } from "../../services/AdventureService";
+import { userType } from "../../services/userService";
+import { getRoleFromToken } from "../../app/jwtTokenUtils";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -16,21 +20,43 @@ const secondaryTheme = createTheme({
   },
 });
 
+
+
 export default function MediaCard({ offer }) {
   let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/cottage-owner/cottage-profile/`+offer.id;
+  
+  const handleVIew = function(){
+    openAdventurePage("aa");
+ 
+
+  }
+
+
+  function routeChange(nesto){
+    let path = `/cottage-owner/cottage-profile/`+ offer.id;
     navigate(path, {
       params: { cottageObj: offer }
     });
   };
 
-  const imag = require("../images/no-image.png");
-  console.log(offer.photos);
-  if(offer.photos.length != 0){
-    imag = require("../images/" + offer.photos[0]);
+  function openAdventurePage(nesto){
+   let path = `/instructor/adventure-profile/`+ offer.id;
+    navigate(path, {
+      params: { adventureObj: offer }
+    });
   }
 
+  let offersOptions = {
+    [userType.CLIENT]:  "", //funkcija za klijenta
+    [userType.INSTRUCTOR]: openAdventurePage,
+    [userType.COTTAGE_OWNER]: routeChange
+  }
+
+  let imag = require("../images/no-image.png");
+  console.log(offer.photos);
+  if(offer.photos.length != 0){
+    imag = require("/src/components/images/" + offer.photos[0]);
+  }
   
   return (
     <ThemeProvider theme={secondaryTheme}>
@@ -50,7 +76,7 @@ export default function MediaCard({ offer }) {
             variant="contained"
             bgcolor="secondary"
             color="primary"
-            onClick={routeChange}
+            onClick={handleVIew}
           >
             View
           </Button>

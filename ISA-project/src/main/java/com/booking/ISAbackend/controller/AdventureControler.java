@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.AdventureDTO;
+import com.booking.ISAbackend.dto.AdventureDetailsDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.AdventureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,22 @@ public class AdventureControler {
     }
 
     @GetMapping("instructor-adventures")
-    public ResponseEntity<List<AdventureDTO>> getInstructorAdventures(@RequestParam String email){
+    public ResponseEntity<List<AdventureDetailsDTO>> getInstructorAdventures(@RequestParam String email){
         try{
-            List<AdventureDTO> adventures = adventureService.getInstructorAdventures(email);
+            List<AdventureDetailsDTO> adventures = adventureService.getInstructorAdventures(email);
             return ResponseEntity.ok(adventures);
+        }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("details")
+    public ResponseEntity<AdventureDetailsDTO> getAdventureDetail(@RequestParam String id){
+        try{
+            AdventureDetailsDTO adventure = adventureService.findAdventureById(Integer.parseInt(id));
+            return ResponseEntity.ok(adventure);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-
     }
 }

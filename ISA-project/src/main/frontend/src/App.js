@@ -13,6 +13,7 @@ import ClientProfile from './components/profilePages/ClientProfile';
 import CottageOwnerHomePage from './components/homePages/CottageOwnerHomePage';
 import MainNavigation from './components/layout/MainNavigation';
 import CottageProfilePage from './components/profilePages/cottageProfile/CottageProfilePage';
+import AdventureProfilePage from './components/profilePages/adventureProfile/AdvetureProfilePage';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
           <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
           <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
+          <Route path="/instructor/adventure-profile/:id" element={<AdventureProfilePage />}/>
+
         </Routes>
     </div>
   );

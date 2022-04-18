@@ -3,6 +3,7 @@ package com.booking.ISAbackend.service.impl;
 import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.AdventureDTO;
+import com.booking.ISAbackend.dto.AdventureDetailsDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AdditionalServiceRepository;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdventureServiceImpl implements AdventureService {
@@ -57,14 +59,14 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Override
     @Transactional
-    public List<AdventureDTO> getInstructorAdventures(String email) { //ubaciti ocenu
+    public List<AdventureDetailsDTO> getInstructorAdventures(String email) { //ubaciti ocenu
         List<Adventure> adventures = adventureReporitory.findCottageByInstructorEmail(email);
-        List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
+        List<AdventureDetailsDTO>  adventureDTOList = new ArrayList<AdventureDetailsDTO>();
         if(adventures != null){
             for (Adventure a: adventures
                  ) {
                 //String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String additionalEquipment
-                AdventureDTO dto = new AdventureDTO(email,
+                AdventureDetailsDTO dto = new AdventureDetailsDTO(email,
                         a.getName(),
                         a.getDescription(),
                         String.valueOf(a.getPrice()),
@@ -76,13 +78,42 @@ public class AdventureServiceImpl implements AdventureService {
                         a.getAddress().getStreet(),
                         a.getAddress().getCity(),
                         a.getAddress().getState(),
-                        a.getAdditionalEquipment());
+                        a.getAdditionalEquipment(), a.getId());
+
                 adventureDTOList.add(dto);
 
             }
 
         }
         return adventureDTOList;
+    }
+
+    @Override
+    @Transactional
+    public AdventureDetailsDTO findAdventureById(int id) throws AdventureNotFoundException {
+        Optional<Adventure> adventure = adventureReporitory.findById(id);
+        if(adventure.isPresent()){
+            Adventure a = adventure.get();
+            AdventureDetailsDTO dto = new AdventureDetailsDTO(
+                    a.getInstructor().getEmail(),
+                    a.getName(),
+                    a.getDescription(),
+                    String.valueOf(a.getPrice()),
+                    getPhoto(a),
+                    String.valueOf(a.getNumberOfPerson()),
+                    a.getRulesOfConduct(),
+                    getAdditionalServices(a),
+                    a.getCancellationConditions(),
+                    a.getAddress().getStreet(),
+                    a.getAddress().getCity(),
+                    a.getAddress().getState(),
+                    a.getAdditionalEquipment(),a.getId());
+
+            return dto;
+        }
+        else{
+            throw new AdventureNotFoundException("Adventure not found");
+        }
     }
 
     private List<AdditionalServiceDTO> getAdditionalServices(Adventure a) {

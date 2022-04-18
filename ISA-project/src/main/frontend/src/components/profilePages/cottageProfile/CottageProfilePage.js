@@ -13,6 +13,9 @@ import PriceList from "./Pricelist";
 import image1 from "../../images/img1.jpg";
 import image2 from "../../images/img2.jpg";
 import ImagesBox from "./ImagesBox";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
+import { getAdventureById } from "../../../services/AdventureService";
+import { userType } from "../../../services/userService";
 
 const theme = createTheme({
   palette: {
@@ -28,22 +31,26 @@ const theme = createTheme({
 function CottageProfilePage() {
   let id = useParams();
 
-  const [cottageData, setCottageData] = useState();
+  let offersOptions = {
+    [userType.CLIENT]:  "", //funkcija za klijenta
+    [userType.INSTRUCTOR]: getAdventureById,
+    [userType.COTTAGE_OWNER]: getCottageById
+  }
+
+  const [offerData, setCottageData] = useState();
 
   useEffect(() => {
     async function setcottageData() {
-      let cottage = await getCottageById(id.id);
-      setCottageData(!!cottage ? cottage.data : {});
+      let offer = await offersOptions[getRoleFromToken()](id.id);
+      setCottageData(!!offer ? offer.data : {});
 
-      return cottage;
+      return offer;
     }
     setcottageData();
   }, []);
   let images = [];
-  if (cottageData) {
-    console.log("la");
-    console.log(cottageData.price);
-    cottageData.photos.forEach((photo) => {
+  if (offerData) {
+    offerData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);
     });
@@ -51,23 +58,23 @@ function CottageProfilePage() {
       <ThemeProvider theme={theme}>
         <div className="profileContainer">
           <div className="headerContainer">
-            <h2 className="adventureTittle">{cottageData.name}</h2>
+            <h2 className="adventureTittle">{offerData.name}</h2>
             <div className="changeBtn">
               <Button variant="contained">Change info</Button>
             </div>
           </div>
 
           <ImagesBox images={images} />
-          <QuickActionBox id={cottageData.id} />
+          <QuickActionBox id={offerData.id} />
           <Grid container xs={12}>
             <Grid item xs={12} sm={6}>
-              <BasicCottageInfoBox basicInfo={cottageData} />
+              <BasicCottageInfoBox basicInfo={offerData} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <AdditionalDescriptionBox additionData={cottageData} />
+              <AdditionalDescriptionBox additionData={offerData} />
             </Grid>
           </Grid>
-          <PriceList basicPrice={cottageData.price} />
+          <PriceList basicPrice={offerData.price} />
         </div>
       </ThemeProvider>
     );
