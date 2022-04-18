@@ -35,7 +35,7 @@ export default function Album(){
         {albumData.map((offer) => (
           console.log(offer),
           <Grid item key={offer} xs={12} sm={6} md={4}>
-            <MediaCard cottage={offer}></MediaCard>
+            <MediaCard offer={offer}></MediaCard>
           </Grid>
         ))}
       </Grid>

@@ -12,16 +12,12 @@ import com.booking.ISAbackend.repository.PhotoRepository;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.UserService;
 import com.booking.ISAbackend.validation.Validator;
-import org.hibernate.boot.cfgxml.internal.JaxbCfgProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class AdventureServiceImpl implements AdventureService {
@@ -40,6 +36,9 @@ public class AdventureServiceImpl implements AdventureService {
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 
+    @Autowired
+    private PhotoRepository photoRepository;
+
 
     @Override
     @Transactional
@@ -57,8 +56,51 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
     @Override
-    public List<AdventureDTO> getInstructorAdventures(String email) {
-        return null;
+    @Transactional
+    public List<AdventureDTO> getInstructorAdventures(String email) { //ubaciti ocenu
+        List<Adventure> adventures = adventureReporitory.findCottageByInstructorEmail(email);
+        List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
+        if(adventures != null){
+            for (Adventure a: adventures
+                 ) {
+                //String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String additionalEquipment
+                AdventureDTO dto = new AdventureDTO(email,
+                        a.getName(),
+                        a.getDescription(),
+                        String.valueOf(a.getPrice()),
+                        getPhoto(a),
+                        String.valueOf(a.getNumberOfPerson()),
+                        a.getRulesOfConduct(),
+                        getAdditionalServices(a),
+                        a.getCancellationConditions(),
+                        a.getAddress().getStreet(),
+                        a.getAddress().getCity(),
+                        a.getAddress().getState(),
+                        a.getAdditionalEquipment());
+                adventureDTOList.add(dto);
+
+            }
+
+        }
+        return adventureDTOList;
+    }
+
+    private List<AdditionalServiceDTO> getAdditionalServices(Adventure a) {
+        List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
+        for (AdditionalService service: a.getAdditionalServices()
+             ) {
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getName(), String.valueOf(service.getPrice()));
+            additionalServiceDTOList.add(dto);
+        }
+        return  additionalServiceDTOList;
+    }
+
+    private List<String> getPhoto(Adventure a){
+        List<String> photos = new ArrayList<>();
+        for(Photo p: a.getPhotos()){
+            photos.add(p.getPath());
+        }
+        return photos;
     }
 
     private boolean validateAdventure(AdventureDTO adventure) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException {
@@ -86,7 +128,7 @@ public class AdventureServiceImpl implements AdventureService {
         Adventure newAdventure = new Adventure(adventure.getOfferName(),
                 adventure.getDescription(),
                 Double.valueOf(adventure.getPrice()),
-                convertPhotosFromDTO(adventure.getPictures()),
+                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
                 Integer.valueOf(adventure.getPeopleNum()),
                         adventure.getRulesOfConduct(),
                         convertServicesFromDTO(adventure.getAdditionalServices()),
@@ -126,10 +168,11 @@ public class AdventureServiceImpl implements AdventureService {
         return additionalServices;
     }
 
-    private List<Photo> convertPhotosFromDTO(List<String> photos){
+    private List<Photo> convertPhotosFromDTO(List<String> photos, String email){
         List<Photo> adventurePhotos = new ArrayList<Photo>();
         for (String url: photos
         ) {
+
            Photo p = new Photo(url);
            adventurePhotos.add(p);
             photoRepositorys.save(p);

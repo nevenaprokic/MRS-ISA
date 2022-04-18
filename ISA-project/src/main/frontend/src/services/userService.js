@@ -45,11 +45,11 @@ export function getCottageOwnerByUsername(username){
 
 export function addAdventure(adventureData){
     let email = getUsernameFromToken();
-    adventureData["ownerEmail"] = email
+    adventureData["ownerEmail"] = email;
     api
     .post("/adventure/addAdventure", adventureData)
-    .then((responseData) => alert(responseData))
-    .catch((err) => alert(err.response));
+    .then((responseData) => alert(responseData.data))
+    .catch((err) => alert(err.data));
 }
 
 export function changeOwnerData(newOwnerData){

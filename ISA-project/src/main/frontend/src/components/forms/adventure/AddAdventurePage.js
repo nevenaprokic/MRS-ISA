@@ -26,7 +26,7 @@ function AddAdventurePage(){
   }
 
   const onSubmit = (data) => {
-    data["pictures"] = pictureInputList;
+    data["photos"] = pictureInputList;
     data["additionalServices"] = additionalServicesInputList;
     console.log(data);
     addAdventure(data);

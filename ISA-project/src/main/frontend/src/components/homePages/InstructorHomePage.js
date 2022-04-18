@@ -93,7 +93,7 @@ function a11yProps(index) {
                 >
                     <Tab label="Home page" {...a11yProps(0)} />
                     <Divider />
-                    <Tab label="Profile page" {...a11yProps(1)} />
+                   Profile pa <Tab label="My profile" {...a11yProps(1)} />
                     <Divider />
                     <Tab label="Availability of adventures" {...a11yProps(2)} />
                     <Tab label="Add new adventure" {...a11yProps(3)} />
@@ -108,7 +108,7 @@ function a11yProps(index) {
                     <Tab label="Business report" {...a11yProps(9)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    {/* <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
@@ -117,25 +117,34 @@ function a11yProps(index) {
                           </Grid>
                         </Box>
                       <Album/> {//komponenta sa karticama;
-                      }  */}
+                      }   
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <OwnerProfile/>
                 </TabPanel>
-                <TabPanel value={value} index={3}>
-                  <AddAdventurePage/>
-                </TabPanel>
                 <TabPanel value={value} index={4}>
-                  <AddAdventurePage/>
+                  4
                 </TabPanel>
                 <TabPanel value={value} index={5}>
-                    Item Six
-                </TabPanel>
-                <TabPanel value={value} index={6}>
-                    Item Seven
+                  <AddAdventurePage/>
                 </TabPanel>
                 <TabPanel value={value} index={7}>
-                    Item Seven
+                    Item 7
+                </TabPanel>
+                <TabPanel value={value} index={8}>
+                    Item 8
+                </TabPanel>
+                <TabPanel value={value} index={9}>
+                    Item 9
+                </TabPanel>
+                <TabPanel value={value} index={10}>
+                    Item 10
+                </TabPanel>
+                <TabPanel value={value} index={12}>
+                    Item 12
+                </TabPanel>
+                <TabPanel value={value} index={14}>
+                    Item 14
                 </TabPanel>
                 </Box>
             </Container>

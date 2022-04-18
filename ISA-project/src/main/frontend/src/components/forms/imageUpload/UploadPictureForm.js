@@ -11,13 +11,23 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
       });
 
     const handlePictureUpload = function(e) {
-        console.log(e.target.files);
+        let files = e.target.files;
+        console.log(e.target.files[0]);
         const selectedPictures = [...pictureInputList];
         const targetPicture = e.target.files;
         const targetPicturesObj = [...targetPicture];
-        targetPicturesObj.map((file) =>{
-            return selectedPictures.push(URL.createObjectURL(file))
-        })
+        var FR= new FileReader();
+        FR.readAsDataURL(files[0]);
+      
+        FR.onload = (event) => {
+            console.log(event.target.result);
+            selectedPictures.push(event.target.result);
+        }
+        
+
+        // targetPicturesObj.map((file) =>{
+        //     return (URL.createObjectURL(file))
+        // })
         pictureSetInputList(selectedPictures);
     }
 

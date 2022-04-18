@@ -4,11 +4,11 @@ import React from 'react';
 import logo from '../../logo.png';
 
 
-function MainNavigation(){
+function MainNavigationHome(){
     return <header className={classes.header}>
         <div><img src={logo} /></div>
         <div className={classes.logo}></div>
     </header>
 }
 
-export default MainNavigation;
+export default MainNavigationHome;
