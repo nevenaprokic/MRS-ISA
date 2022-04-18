@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,5 +32,10 @@ public class AdventureControler {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
 
+    }
+
+    @GetMapping("instructor")
+    public ResponseEntity<List<AdventureDTO>> getInstructorAdventures(@RequestParam String email){
+        return ResponseEntity.ok(new ArrayList<AdventureDTO>());
     }
 }

@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import '../../style/MediaCard.scss';
 
 const secondaryTheme = createTheme({
   palette: {
@@ -27,14 +28,14 @@ export default function MediaCard({ cottage }) {
   const imag = require("/src/components/images/" + cottage.photos[0]);
   return (
     <ThemeProvider theme={secondaryTheme}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
         <CardMedia component="img" height="140" image={imag} alt="slike" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" color="primary">
-            Name : {cottage.name}
+            {cottage.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Description : {cottage.description}
+            <p className="descriptionContainer"> {cottage.description} </p>     
           </Typography>
         </CardContent>
         <CardActions>

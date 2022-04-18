@@ -56,6 +56,11 @@ public class AdventureServiceImpl implements AdventureService {
 
     }
 
+    @Override
+    public List<AdventureDTO> getInstructorAdventures(String email) {
+        return null;
+    }
+
     private boolean validateAdventure(AdventureDTO adventure) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException {
         boolean validationResult = Validator.isValidPrice(adventure.getPrice()) &&
                                     Validator.isValidAdress(adventure.getStreet(), adventure.getCity(), adventure.getState()) &&

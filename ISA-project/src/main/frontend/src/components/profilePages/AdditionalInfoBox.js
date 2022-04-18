@@ -24,14 +24,7 @@ function AdditionalinfoBox({additionalDate}){
               <label className="boxItemTitle">User kategory: </label>
               <label className="boxItemText">{additionalDate.userCategory}</label>
           </div>
-          <div>
-              <div className="boxItem">
-              <ErrorIcon color="action"/>
-              </div>
-              <label className="boxItemTitle">Penalties: </label>
-              <label className="boxItemText">1</label>
-          </div>
-          
+        
           </div>
         </Box>
       </Grid>

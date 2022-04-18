@@ -10,6 +10,8 @@ import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
 import { addAdventure } from "../../../services/userService";
+import { CssBaseline } from "@mui/material";
+import MainNavigationHome from "../../layout/MainNavigationHome";
 
 
 function AddAdventurePage(){
@@ -36,14 +38,14 @@ function AddAdventurePage(){
     return (
     
      <div className="formContainer">
-           
+
       <Typography variant="h6" gutterBottom>
         Adding new advanture
       </Typography>
       <Typography gutterBottom>
-        <label className="requiredLabel">Fields marked with an asterisk (*) are required.</label>
+        <label className="headerText">Fields marked with an asterisk (*) are required.</label>
         <br/>
-        <label className="requiredLabel">Prices are entered in euros with a maximum of two decimal places.</label>
+        <label className="headerText">Prices are entered in euros with a maximum of two decimal places.</label>
       </Typography>
       <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{marginTop:"2%"}}>
             <Grid item xs={12}>            

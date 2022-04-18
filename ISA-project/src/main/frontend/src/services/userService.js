@@ -3,6 +3,17 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import OwnerProfile from "../components/profilePages/OwnerProfile";
 
+
+export const userType = {
+    CLIENT: "CLIENT",
+    INSTRUCTOR: "INSTRUCTOR",
+    COTTAGE_OWNER:"COTTAGE_OWNER" ,
+    SHIP_OWNER: "SHIP_OWNER"
+}
+
+Object.freeze(userType);
+
+
 export function getInstructorByUsername(username){
     return api
        .get("/instructorProfileInfo",{
@@ -51,3 +62,4 @@ export function changeOwnerData(newOwnerData){
                 window.location = "/user-profile/instructor"})
     .catch((err) => alert(err.data));
 }
+
