@@ -17,8 +17,8 @@
 -- insert into role(name) values ('COTTAGE_OWNER');
 -- insert into role(name) values ('SHIP_OWNER');
 -- insert into role(name) values ('INSTRUCTOR');
--- -- -- /*CLIENTS*/
--- --
+-- -- -- -- /*CLIENTS*/
+-- -- --
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'pera@gmail.com', 'Petar', 'Peric', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '124890', 1, false);/*sifra*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'marko@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '124891', 2, false);/*klijent2*/
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'sara@gmail.com', 'Sara', 'Mirkovic', '$2a$10$GLP6wpgzOsuq316wup3UlOX7HzPTT5F/86R5PcC/MHw.NYim3vD5a', '124892', 3, false);/*klijent3*/
@@ -71,8 +71,13 @@
 -- insert into additional_service(name,price) values ('vecera', 300);
 -- insert into additional_service(name,price) values ('fen', 80);
 --
---
--- -- -- /*COTTAGE*/
+
+-- -- -- /*PHOTO*/
+-- insert into photo(path) values('pecanje an dunavu1.jpg');
+-- insert into photo(path) values('bela ladja1.jpg');
+-- insert into photo(path) values('brvnara1.jpg');
+-- insert into photo(path) values('brvnara2.jpg');
+-- -- -- -- /*COTTAGE*/
 -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
 -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,4000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2);
 -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u miru i tisini u prirodi.','Jela',3,2500,'Nije dozvoljeno bilo kakvo unistavanje imovine.',3);
@@ -89,7 +94,7 @@
 -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
 -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
 -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
---
+
 -- -- -- /*ADVENTURE*/
 -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje u Kikindi',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
 -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na jezeru',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
@@ -116,10 +121,10 @@
 -- -- -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 -- -- --
 -- -- -- /*PHOTO*/
--- -- -- insert into photo(path) values('pecanje an dunavu1.jpg');
--- -- -- insert into photo(path) values('bela ladja1.jpg');
--- -- -- insert into photo(path) values('brvnara1.jpg');
--- -- -- insert into photo(path) values('brvnara2.jpg');
+-- insert into photo(path) values('pecanje an dunavu1.jpg');
+-- insert into photo(path) values('bela ladja1.jpg');
+-- insert into photo(path) values('brvnara1.jpg');
+-- insert into photo(path) values('brvnara2.jpg');
 -- -- --
 -- -- -- /*QUICK RESERVATION*/
 -- -- -- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);

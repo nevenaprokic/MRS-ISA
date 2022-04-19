@@ -22,4 +22,36 @@ public class Ship extends Offer{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ship_owner_id")
 	private ShipOwner shipOwner;
+
+	public String getType() {
+		return type;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public Integer getMotorNumber() {
+		return motorNumber;
+	}
+
+	public Integer getMotorPower() {
+		return motorPower;
+	}
+
+	public Integer getMaxSpeed() {
+		return maxSpeed;
+	}
+
+	public String getNavigationEquipment() {
+		return navigationEquipment;
+	}
+
+	public String getAdditionalEquipment() {
+		return additionalEquipment;
+	}
+
+	public ShipOwner getShipOwner() {
+		return shipOwner;
+	}
 }

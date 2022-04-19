@@ -10,7 +10,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from "@emotion/react";
 import ReadMoreReact from 'read-more-react';
 import ShowMoreText from "react-show-more-text";
-import getAddressByCottageId from '../../../services/AddressService';
+import {getAddressByCottageId} from '../../../services/AddressService';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 

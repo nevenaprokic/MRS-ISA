@@ -1,21 +1,18 @@
-import "./CottageProfilePage.scss";
+import "../cottageProfile/CottageProfilePage.scss";
 import { Grid, Box, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import * as React from "react";
-import { useParams } from "react-router-dom";
-import { getCottageById } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
-import QuickActionBox from "./QuickActionBox";
-import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
+import QuickActionBox from "../cottageProfile/QuickActionBox";
+import BasicShipInfoBox from "./BasicShipInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
-import PriceList from "./Pricelist";
-import image1 from "../../images/img1.jpg";
-import image2 from "../../images/img2.jpg";
-import ImagesBox from "./ImagesBox";
+import PriceList from "../cottageProfile/Pricelist";
+import ImagesBox from "../cottageProfile/ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
+import { getShipById } from "../../../services/ShipService";
 
 const theme = createTheme({
   palette: {
@@ -28,26 +25,21 @@ const theme = createTheme({
   },
 });
 
-function CottageProfilePage({ id, close }) {
-  //let id = useParams();
-  console.log("da");
-
-  const [cottageData, setCottageData] = useState();
+function ShipProfilePage({ id, close }) {
+  const [shipData, setShipData] = useState();
 
   useEffect(() => {
-    async function setcottageData() {
-      let cottage = await getCottageById(id);
-      setCottageData(!!cottage ? cottage.data : {});
+    async function setData() {
+      let ship = await getShipById(id);
+      setShipData(!!ship ? ship.data : {});
 
-      return cottage;
+      return ship;
     }
-    setcottageData();
+    setData();
   }, []);
   let images = [];
-  if (cottageData) {
-    console.log("la");
-    console.log(cottageData.price);
-    cottageData.photos.forEach((photo) => {
+  if (shipData) {
+    shipData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);
     });
@@ -85,23 +77,23 @@ function CottageProfilePage({ id, close }) {
             <Grid container spacing={2}>
               <div className="profileContainer">
                 <div className="headerContainer">
-                  <h2 className="adventureTittle">{cottageData.name}</h2>
+                  <h2 className="adventureTittle">{shipData.name}</h2>
                   <div className="changeBtn">
                     <Button variant="contained">Change info</Button>
                   </div>
                 </div>
 
                 <ImagesBox images={images} />
-                <QuickActionBox id={cottageData.id} />
+                <QuickActionBox id={shipData.id} />
                 <Grid container xs={12}>
                   <Grid item xs={12} sm={6}>
-                    <BasicCottageInfoBox basicInfo={cottageData} />
+                    <BasicShipInfoBox basicInfo={shipData} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <AdditionalDescriptionBox additionData={cottageData} />
+                    <AdditionalDescriptionBox additionData={shipData} />
                   </Grid>
                 </Grid>
-                <PriceList basicPrice={cottageData.price} />
+                <PriceList basicPrice={shipData.price} />
               </div>
               </Grid>
             </Box>
@@ -113,4 +105,4 @@ function CottageProfilePage({ id, close }) {
   }
 }
 
-export default CottageProfilePage;
+export default ShipProfilePage;

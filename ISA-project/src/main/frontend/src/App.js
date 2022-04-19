@@ -34,7 +34,6 @@ function App() {
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
           <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
           <Route path='/change-password' element={<ChangePassword/>}/>
-          <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
           <Route path='/user-profile/ship-owner' element={<ShipOwnerHomePage/>}/>
         </Routes>
     </div>

@@ -108,7 +108,15 @@ export default function ShipOwnerHomePage() {
                     <Tab label="Business report" {...a11yProps(8)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                  Prikaz svih brodova
+                <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <Search/>
+                          </Grid>
+                        </Box>
+                      <Album/>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <OwnerProfile/>
