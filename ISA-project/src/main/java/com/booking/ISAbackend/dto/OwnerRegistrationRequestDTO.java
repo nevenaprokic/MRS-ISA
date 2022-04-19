@@ -1,7 +1,7 @@
 package com.booking.ISAbackend.dto;
 
 
-public class OwnerRegistrationRequest {
+public class OwnerRegistrationRequestDTO {
 
     private String explanation;
 
@@ -25,9 +25,9 @@ public class OwnerRegistrationRequest {
 
     private String state;
 
-    public OwnerRegistrationRequest(){}
+    public OwnerRegistrationRequestDTO(){}
 
-    public OwnerRegistrationRequest(String explanation, String type, String firstName, String lastName, String password, String confirmPassword, String phoneNumber, String email, String street, String city, String state) {
+    public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String password, String confirmPassword, String phoneNumber, String email, String street, String city, String state) {
         this.explanation = explanation;
         this.type = type;
         this.firstName = firstName;

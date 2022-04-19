@@ -10,22 +10,15 @@ import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
-import com.booking.ISAbackend.model.Address;
+import com.booking.ISAbackend.model.*;
 
-import com.booking.ISAbackend.model.CottageOwner;
-import com.booking.ISAbackend.model.Instructor;
-import com.booking.ISAbackend.repository.CottageOwnerRepository;
-import com.booking.ISAbackend.repository.InstructorRepository;
-import com.booking.ISAbackend.repository.OwnerRepository;
+import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.booking.ISAbackend.model.MyUser;
-
 import com.booking.ISAbackend.dto.UserRequest;
-import com.booking.ISAbackend.repository.UserRepository;
 import com.booking.ISAbackend.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +33,8 @@ public class UserServiceImpl implements UserService{
 	private OwnerRepository ownerRepository;
 	@Autowired
 	private CottageOwnerRepository cottageOwnerRepository;
+	@Autowired
+	private ShipOwnerRepository shipOwnerRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -76,6 +71,12 @@ public class UserServiceImpl implements UserService{
 		MyUser user = userRepository.findByEmail(email);
 		Optional<CottageOwner> cottageOwner = cottageOwnerRepository.findById(user.getId());
 		return cottageOwner.orElse(null);
+	}
+	@Override
+	public ShipOwner findShipOwnerByEmail(String email){
+		MyUser user = userRepository.findByEmail(email);
+		Optional<ShipOwner> shipOwner = shipOwnerRepository.findById(user.getId());
+		return shipOwner.orElse(null);
 	}
 
 	@Override
