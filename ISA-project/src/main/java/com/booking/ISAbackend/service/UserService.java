@@ -14,6 +14,7 @@ import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.MyUser;
 
 import com.booking.ISAbackend.dto.UserRequest;
+import com.booking.ISAbackend.model.ShipOwner;
 
 public interface UserService {
 	
@@ -26,4 +27,5 @@ public interface UserService {
     CottageOwner findCottageOwnerByEmail(String email);
 
     Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException;
+    ShipOwner findShipOwnerByEmail(String email);
 }

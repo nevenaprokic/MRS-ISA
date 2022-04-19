@@ -43,7 +43,18 @@ export function getCottageOwnerByUsername(username){
     });
 }
 export function getShipOwnerByUsername(username){
-    console.log("SHIP OWNER");
+    return api
+       .get("/shipOwnerProfileInfo",{
+        params: {
+            email: username
+          }
+       } 
+     )
+       .then((responseData) => responseData)
+    .catch((err) => {
+        console.log("Nije uspesna prijava");
+        return err.message;
+    });
 }
 
 export function addAdventure(adventureData){

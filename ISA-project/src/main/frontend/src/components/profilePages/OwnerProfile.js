@@ -53,7 +53,6 @@ function OwnerProfile(){
         let role = getRoleFromToken();
         let requestData = await getOfferByOwnerEmail[role](username);
         setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
-        console.log(ownerData);
 
         return requestData;    
     }
@@ -63,7 +62,7 @@ function OwnerProfile(){
 
 
 
-    if(!! ownerData){
+    if(ownerData){
         return(
             <div className="ownerprofileContainer">
 
