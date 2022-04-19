@@ -42,6 +42,9 @@ export function getCottageOwnerByUsername(username){
         return err.message;
     });
 }
+export function getShipOwnerByUsername(username){
+    console.log("SHIP OWNER");
+}
 
 export function addAdventure(adventureData){
     let email = getUsernameFromToken();

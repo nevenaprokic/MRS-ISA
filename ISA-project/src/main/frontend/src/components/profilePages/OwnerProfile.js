@@ -11,12 +11,13 @@ import BasicInfoBox from "./BasicInfoBox";
 import AddressInfoBox from "./AddressInfoBox";
 import AdditionalinfoBox from "./AdditionalInfoBox";
 import SettingsIcon from '@mui/icons-material/Settings';
-import { getRoleFromToken, getUsernameFromToken } from '../../app/jwtTokenUtils';
-import { getInstructorByUsername, getCottageOwnerByUsername } from "../../services/userService";
+import { getUsernameFromToken, getRoleFromToken } from '../../app/jwtTokenUtils';
+import { getInstructorByUsername, getCottageOwnerByUsername, getShipOwnerByUsername } from "../../services/userService";
 import { useState, useEffect } from 'react';
 import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { userType } from "../../services/userService";
 
 
 function OwnerProfile(){
@@ -37,25 +38,26 @@ function OwnerProfile(){
     const [ownerData, setOwnerData] = useState();
     const [open, setOpen] = useState(false);
 
+    let getOfferByOwnerEmail = {
+        [userType.COTTAGE_OWNER] :  getCottageOwnerByUsername,
+        [userType.INSTRUCTOR] :  getInstructorByUsername,
+        [userType.SHIP_OWNER]: getShipOwnerByUsername
+      }
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        async function setownerData() {
+        async function setData() {
         let username = getUsernameFromToken();
         let role = getRoleFromToken();
-        let requestData = null;
-        if(role == "COTTAGE_OWNER"){
-            requestData = await getCottageOwnerByUsername(username);
-        }else if(role == "INSTRUCTOR"){
-            requestData = await getInstructorByUsername(username);
-        }
+        let requestData = await getOfferByOwnerEmail[role](username);
         setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
         console.log(ownerData);
 
         return requestData;    
     }
-       setownerData();
+       setData();
        
     }, [])
 
@@ -79,6 +81,8 @@ function OwnerProfile(){
                     <LockIcon/>
                     <br/><br/>
                     <SettingsIcon/>
+                    <br/><br/>
+                    <DeleteIcon/>
                 </Grid>
                       
                 <Grid item xs={12} sm={4}>
@@ -87,7 +91,9 @@ function OwnerProfile(){
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Change private data</Button>
+                            <br/><br/>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
                             
                     </Typography>         
                 </Grid>

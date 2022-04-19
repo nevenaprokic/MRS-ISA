@@ -24,7 +24,8 @@ export default function LogIn() {
 
     let homePages = { [userType.CLIENT]:  "/user-profile/client",
                     [userType.INSTRUCTOR]: "/user-home-page/instructor",
-                    [userType.COTTAGE_OWNER]: "/user-profile/cottage-owner"}
+                    [userType.COTTAGE_OWNER]: "/user-profile/cottage-owner",
+                    [userType.SHIP_OWNER]: "/user-profile/ship-owner"}
 
     const { register, handleSubmit, formState: { errors } } = useForm({});
 

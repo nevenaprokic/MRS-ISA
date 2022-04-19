@@ -15,6 +15,7 @@ import MainNavigation from './components/layout/MainNavigation';
 import CottageProfilePage from './components/profilePages/cottageProfile/CottageProfilePage';
 import ClientHomePage from './components/homePages/ClientHomePage';
 import ChangePassword from './components/forms/ChangePassword';
+import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
           <Route path='/change-password' element={<ChangePassword/>}/>
           <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
+          <Route path='/user-profile/ship-owner' element={<ShipOwnerHomePage/>}/>
         </Routes>
     </div>
   );

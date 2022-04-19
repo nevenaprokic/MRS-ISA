@@ -40,14 +40,14 @@
 -- insert into cottage_owner(id) values (6);
 --
 -- /*SHIP OWNERS*/
--- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'nikola@gmail.com', 'Nikola', 'Nikic', '$2a$10$WVmXrwpduGmr0uLbVQ27zekrOvcpn9c6G3yEuTjbqkTBbD5xevs0i', '124896', 7, false);/*vlasnik3*/
--- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '124897', 8, false);/*vlasnik4*/
---
--- insert  into owner(owner_category, id) values ('REGULAR', 7);
--- insert  into owner(owner_category, id) values ('GOLD', 8);
---
--- insert into ship_owner(id) values (7);
--- insert into ship_owner(id) values (8);
+insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'nikola@gmail.com', 'Nikola', 'Nikic', '$2a$10$WVmXrwpduGmr0uLbVQ27zekrOvcpn9c6G3yEuTjbqkTBbD5xevs0i', '124896', 7, false);/*vlasnik3*/
+insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '124897', 8, false);/*vlasnik4*/
+
+insert  into owner(owner_category, id) values ('REGULAR', 7);
+insert  into owner(owner_category, id) values ('GOLD', 8);
+
+insert into ship_owner(id) values (7);
+insert into ship_owner(id) values (8);
 --
 --  /*INSTRUCTORS*/
 --
@@ -153,14 +153,14 @@
 -- -- insert into cottage(bed_number, room_number, id, my_user_id) values (3,2,3,6);
 -- --
 -- -- /*SHIP*/
--- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4);
--- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5);
--- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6);
--- --
--- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
--- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
--- -- insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
--- --
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6);
+
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
+
 -- -- /*ADVENTURE*/
 -- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje u Kikindi',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
 -- -- insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na jezeru',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
