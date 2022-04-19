@@ -13,7 +13,7 @@ import {getRoleFromToken} from '../../app/jwtTokenUtils';
 import { useState } from "react";
 import Modal from '@mui/material/Modal';
 import { userType } from "../../services/userService";
-
+import ShipProfilePage from '../profilePages/shipProfile/ShipProfilePage';
 
 const secondaryTheme = createTheme({
   palette: {
@@ -24,7 +24,6 @@ const secondaryTheme = createTheme({
 
 export default function MediaCard({ offer }) {
 
-
   const [clientData, setClientData] = useState();
   const [open, setOpen] = useState(false);
 
@@ -32,10 +31,38 @@ export default function MediaCard({ offer }) {
   const handleClose = () => setOpen(false);
   const [openPasswordManager, setPasswordManager] = useState(false);
 
-  const handleOpenPass = () => setPasswordManager(true);
+  const handleOpenPass = () => {setPasswordManager(true); routeChange();};
   const handleClosePass = () => setPasswordManager(false);
 
-
+  function routeChange() {
+   
+    let role = getRoleFromToken();
+    console.log(role);
+    if(role === userType.COTTAGE_OWNER){
+      <Modal
+          open={openPasswordManager}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+      >
+              <CottageProfilePage id={offer.id} close={handleClosePass}/>
+          
+      </Modal>
+    }else if(role === userType.SHIP_OWNER){
+      <Modal
+          open={openPasswordManager}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+      >
+              <ShipProfilePage id={offer.id} close={handleClosePass}/>
+          
+      </Modal>
+    }
+    
+  };
 
   let imag = require("../images/no-image.png");
   console.log(offer.photos[0]);
@@ -68,15 +95,15 @@ export default function MediaCard({ offer }) {
             View
           </Button>
           <Modal
-              open={openPasswordManager}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
-          >
-                  <CottageProfilePage id={offer.id} close={handleClosePass}/>
-              
-          </Modal>
+                open={openPasswordManager}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+            >
+                    <ShipProfilePage id={offer.id} close={handleClosePass}/>
+                
+            </Modal>
         </CardActions>
       </Card>
     </ThemeProvider>

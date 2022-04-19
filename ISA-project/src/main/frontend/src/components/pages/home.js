@@ -8,10 +8,12 @@ import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils"
 import { userType } from "../../services/userService";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
 import {getShipByShipOwnerEmail} from '../../services/ShipService';
+import MediaCardShip from '../layout/MediaCardShip';
 
 
 export default function Album(){
   const [albumData, setCottageData] = useState();
+  let role = getRoleFromToken();
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER] :  getCottageByCottageOwnerEmail,
     [userType.INSTRUCTOR] :  getAdventureByInstructorEmail,
@@ -20,7 +22,6 @@ export default function Album(){
   
     useEffect(() => {
         async function setcottageData() {
-          let role = getRoleFromToken();
           let username = getUsernameFromToken();
           const offersData = await getOfferByOwnerEmail[role](username);
           console.log(offersData);
@@ -32,16 +33,30 @@ export default function Album(){
        
     }, [])
     if(albumData){
-      return(<Container sx={{ py: 8 }} maxWidth="md">
-      <Grid container spacing={4}>
-        {albumData.map((offer) => (
-          console.log(offer),
-          <Grid item key={offer} xs={12} sm={6} md={4}>
-            <MediaCard offer={offer}></MediaCard>
+      if(role === userType.COTTAGE_OWNER){
+        return(<Container sx={{ py: 8 }} maxWidth="md">
+          <Grid container spacing={4}>
+            {albumData.map((offer) => (
+              console.log(offer),
+              <Grid item key={offer} xs={12} sm={6} md={4}>
+                <MediaCard offer={offer}></MediaCard>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-    </Container>);
+        </Container>);
+      }else if(role === userType.SHIP_OWNER){
+        return(<Container sx={{ py: 8 }} maxWidth="md">
+          <Grid container spacing={4}>
+            {albumData.map((offer) => (
+              console.log(offer),
+              <Grid item key={offer} xs={12} sm={6} md={4}>
+                <MediaCardShip offer={offer}></MediaCardShip>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>);
+      }
+      
     }
     
 }

@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.model.Address;
+import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Ship;
 import com.booking.ISAbackend.repository.ShipRepository;
 import com.booking.ISAbackend.service.ShipService;
@@ -21,5 +23,17 @@ public class ShipServiceImpl implements ShipService {
     @Override
     public List<Ship> findShipByShipOwnerEmail(String email) {
         return shipRepository.findShipByShipOwnerEmail(email);
+    }
+
+    @Override
+    public Ship findShipById(Integer id) {
+        return shipRepository.findShipById(id);
+    }
+
+    @Override
+    public Address findAddressByShipId(Integer id) {
+        Ship ship = shipRepository.findShipById(id);
+        Address address = ship.getAddress();
+        return address;
     }
 }

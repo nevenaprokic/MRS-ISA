@@ -5,8 +5,8 @@ import { createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import QuickActionBox from "../cottageProfile/QuickActionBox";
-import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
-import AdditionalDescriptionBox from "../cottageProfile/AdditionalDescriptionBox";
+import BasicShipInfoBox from "./BasicShipInfoBox";
+import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "../cottageProfile/Pricelist";
 import ImagesBox from "../cottageProfile/ImagesBox";
 import Typography from "@mui/material/Typography";
@@ -87,7 +87,7 @@ function ShipProfilePage({ id, close }) {
                 <QuickActionBox id={shipData.id} />
                 <Grid container xs={12}>
                   <Grid item xs={12} sm={6}>
-                    <BasicCottageInfoBox basicInfo={shipData} />
+                    <BasicShipInfoBox basicInfo={shipData} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <AdditionalDescriptionBox additionData={shipData} />

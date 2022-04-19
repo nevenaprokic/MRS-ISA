@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
@@ -42,6 +43,27 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    //getShipInfo
+    @GetMapping("getShipInfo")
+    @Transactional
+    public ResponseEntity<ShipDTO> getShipInfo(@RequestParam String idShip){
+        try{
+            Ship ship = shipService.findShipById(Integer.parseInt(idShip));
+
+            if(ship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+            ShipDTO shipDTO = new ShipDTO(ship.getId(),ship.getName(), ship.getDescription(),
+                    ship.getPrice(), getPhoto(ship), ship.getNumberOfPerson(), ship.getRulesOfConduct(),
+                    ship.getCancellationConditions(), ship.getType(), ship.getSize(), ship.getMotorNumber(),
+                    ship.getMotorPower(), ship.getMaxSpeed(), ship.getNavigationEquipment(),
+                    ship.getAdditionalEquipment());
+            return  ResponseEntity.ok(shipDTO);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     private List<String> getPhoto(Ship ship){
         List<String> photos = new ArrayList<>();
         for(Photo p: ship.getPhotos()){

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { getCottageById } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
-import BasicCottageInfoBox from "./BasicCottageInfoBox";
+import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
 import image1 from "../../images/img1.jpg";
