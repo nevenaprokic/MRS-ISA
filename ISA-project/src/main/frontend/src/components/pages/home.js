@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils";
 import { userType } from "../../services/userService";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
-import getShipByShipOwnerEmail from '../../services/ShipService';
+import {getShipByShipOwnerEmail} from '../../services/ShipService';
 
 
 export default function Album(){

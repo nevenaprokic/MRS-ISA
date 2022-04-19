@@ -1,5 +1,5 @@
 
-$content_width: 50%;
+$content_width: 100%;
 $light: #FEF5ED;
 $middleGreen: hsl(110, 17%, 71%);
 $darkGrrenGray: #5f6d5f;
@@ -35,12 +35,10 @@ $paleGreen: #dae0d2;
 }
 
 .profileContainer{
-    width: $content_width;
-    margin-top: 2%;
-    margin-left: 50%;
+    margin-left: 5%;
     padding: 1%;
     border-radius: 5%;
-    transform: translateX(-50%);
+    transform: translateX(-25%);
     margin-bottom: 7%;
     
 }

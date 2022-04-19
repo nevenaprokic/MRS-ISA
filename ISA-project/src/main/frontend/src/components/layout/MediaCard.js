@@ -8,6 +8,12 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import '../../style/MediaCard.scss';
+import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePage";
+import {getRoleFromToken} from '../../app/jwtTokenUtils';
+import { useRef, useState, useEffect } from "react";
+import Modal from '@mui/material/Modal';
+import { userType } from "../../services/userService";
+import ShipProfilePage from '../profilePages/shipProfile/ShipProfilePage';
 
 const secondaryTheme = createTheme({
   palette: {
@@ -17,18 +23,62 @@ const secondaryTheme = createTheme({
 });
 
 export default function MediaCard({ offer }) {
+
+  // let getOfferComponent = {
+  //   [userType.COTTAGE_OWNER] :  CottageProfilePage
+  // }
   let navigate = useNavigate();
+
+  const [clientData, setClientData] = useState();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [openPasswordManager, setPasswordManager] = useState(false);
+
+  const handleOpenPass = () => setPasswordManager(true);
+  const handleClosePass = () => setPasswordManager(false);
+
   const routeChange = () => {
-    let path = `/cottage-owner/cottage-profile/`+offer.id;
-    navigate(path, {
-      params: { cottageObj: offer }
-    });
+   
+    let role = getRoleFromToken();
+    if(role === userType.COTTAGE_OWNER){
+      <Modal
+          open={openPasswordManager}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+      >
+              <CottageProfilePage id={offer.id} close={handleClosePass}/>
+          
+      </Modal>
+    }else if(role === userType.SHIP_OWNER){
+      <Modal
+          open={openPasswordManager}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+      >
+              <ShipProfilePage id={offer.id} close={handleClosePass}/>
+          
+      </Modal>
+    }
+    
+      
+    
+    // let path = `/cottage-owner/cottage-profile/`+offer.id;
+    // navigate(path, {
+    //   params: { cottageObj: offer }
+    // });
   };
 
-  const imag = require("../images/no-image.png");
-  console.log(offer.photos);
+  let imag = require("../images/no-image.png");
+  console.log(offer.photos[0]);
   if(offer.photos.length != 0){
-    imag = require("../images/" + offer.photos[0]);
+    console.log(require("/src/components/images/" + offer.photos[0]));
+    imag = require("/src/components/images/" + offer.photos[0]);
   }
 
   
@@ -50,10 +100,20 @@ export default function MediaCard({ offer }) {
             variant="contained"
             bgcolor="secondary"
             color="primary"
-            onClick={routeChange}
+            onClick={handleOpenPass}
           >
             View
           </Button>
+          <Modal
+            open={openPasswordManager}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+        >
+                <CottageProfilePage id={offer.id} close={handleClosePass}/>
+            
+        </Modal>
         </CardActions>
       </Card>
     </ThemeProvider>
