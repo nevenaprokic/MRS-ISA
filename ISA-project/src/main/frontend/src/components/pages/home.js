@@ -7,20 +7,22 @@ import { useState, useEffect } from 'react';
 import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils";
 import { userType } from "../../services/userService";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
+import getShipByShipOwnerEmail from '../../services/ShipService';
 
 
 export default function Album(){
   const [albumData, setCottageData] = useState();
-  let nesto = {
+  let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER] :  getCottageByCottageOwnerEmail,
-    [userType.INSTRUCTOR] :  getAdventureByInstructorEmail
+    [userType.INSTRUCTOR] :  getAdventureByInstructorEmail,
+    [userType.SHIP_OWNER]: getShipByShipOwnerEmail
   }
   
     useEffect(() => {
         async function setcottageData() {
           let role = getRoleFromToken();
           let username = getUsernameFromToken();
-          const offersData = await nesto[role](username);
+          const offersData = await getOfferByOwnerEmail[role](username);
           console.log(offersData);
           setCottageData(!!offersData ? offersData.data : {});     
 
