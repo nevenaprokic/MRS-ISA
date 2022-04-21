@@ -14,6 +14,8 @@ import CottageOwnerHomePage from './components/homePages/CottageOwnerHomePage';
 import MainNavigation from './components/layout/MainNavigation';
 import CottageProfilePage from './components/profilePages/cottageProfile/CottageProfilePage';
 import AdventureProfilePage from './components/profilePages/adventureProfile/AdvetureProfilePage';
+import ClientHomePage from './components/homePages/ClientHomePage';
+import ChangePassword from './components/forms/ChangePassword';
 
 function App() {
   return (
@@ -27,9 +29,11 @@ function App() {
           <Route path='/user-profile/instructor' element={<OwnerProfile/>}/>
           <Route path='/user-profile/client' element={<ClientProfile/>}/>
           <Route path='/user-profile/cottage-owner' element={<CottageOwnerHomePage/>}/>
+          <Route path='/home-page/client' element={<ClientHomePage/>}/>
           <Route path='/instructor/add-adventure' element={<AddAdventurePage/>}/>
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
           <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
+          <Route path='/change-password' element={<ChangePassword/>}/>
           <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
           <Route path="/instructor/adventure-profile/:id" element={<AdventureProfilePage />}/>
 
