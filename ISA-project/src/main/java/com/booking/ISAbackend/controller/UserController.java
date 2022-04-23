@@ -126,4 +126,15 @@ public class UserController {
 			return ResponseEntity.status(400).body("Old password is not correct.");
 		}
 	}
+
+	@GetMapping("admin-profile")
+	public ResponseEntity<UserProfileData> getAdminProfileInfo(@RequestParam String email){
+		try{
+				UserProfileData adminData = userService.findAdminByEmail(email);
+				return ResponseEntity.ok(adminData);
+		}
+		catch (Exception e){
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
 }
