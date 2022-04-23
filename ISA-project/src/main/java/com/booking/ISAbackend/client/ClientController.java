@@ -65,7 +65,6 @@ public class ClientController {
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
 
             return ResponseEntity.status(400).body("Data is invalid.");
-
         }
     }
 
