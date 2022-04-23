@@ -17,6 +17,7 @@ import ClientProfile from '../profilePages/ClientProfile';
 import Grid from '@mui/material/Grid';
 import Album from '../pages/home';
 import OfferList from '../pages/OfferList';
+import PriceList from '../profilePages/cottageProfile/Pricelist';
 
 
 function TabPanel(props) {
@@ -56,12 +57,14 @@ export default function UnauthenticatedUserHomePage() {
    
 
     const [value, setValue] = useState(0);
+    const [offers, setOffers] = useState();
+
     const [params, setParams] = useState({
         name: "",
-        address: ""
+        address: "",
+        maxPeople: -1,
+        price: -1
     });
-
-
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -112,10 +115,10 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search params={params} setParams={setParams} />
+                              <Search params={params} setParams={setParams} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
-                      <OfferList type="cottage" params={params} />
+                      <OfferList type="cottage" offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>

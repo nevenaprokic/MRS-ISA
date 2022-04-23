@@ -7,9 +7,7 @@ import MediaCard from "../layout/MediaCard";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
-export default function OfferList({type, params}) {
-
-    const [offers, setOffers] = useState();
+export default function OfferList({type, offers, setOffers}) {
 
     let getOffers = {
       "cottage" : getCottages,
@@ -20,6 +18,7 @@ export default function OfferList({type, params}) {
     useEffect(() => {
         async function setData() {
           const offersData = await getOffers[type]();
+          console.log("Offers:data")
           console.log(offersData);
           setOffers(offersData ? offersData.data : {});     
 

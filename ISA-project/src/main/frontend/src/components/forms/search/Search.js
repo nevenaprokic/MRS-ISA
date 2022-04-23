@@ -4,9 +4,11 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+import { searchCottages } from '../../../services/CottageService';
 
 
-export default function Search({params, setParams}){
+export default function Search({params, setParams, offers, setOffers}){
     return(
         <Grid container spacing={5}>
            
@@ -53,6 +55,9 @@ export default function Search({params, setParams}){
                   startAdornment: <InputAdornment position="end">€</InputAdornment>,
                 }}
                 />
+            </Grid>
+            <Grid item xs>
+                <Button size="large" sx={{}} onClick={ () => searchCottages(params, setOffers) } >Search</Button>
             </Grid>
         </Grid>
     );
