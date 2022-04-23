@@ -15,4 +15,10 @@ public class DeleteRequest {
 	
 	@OneToOne
 	private MyUser myUser;
+
+	public DeleteRequest(){}
+
+	public DeleteRequest(MyUser myUser) {
+		this.myUser = myUser;
+	}
 }
