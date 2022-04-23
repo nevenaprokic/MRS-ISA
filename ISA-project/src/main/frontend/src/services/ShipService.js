@@ -27,3 +27,13 @@ export function getShipById(id){
             return err.message;
         });
 }
+
+export function getShips(){
+    return api
+        .get("/getAllShips")
+        .then((data) => data)
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}

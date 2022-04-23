@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 
-export default function Search(){
+export default function Search({params, setParams}){
     return(
         <Grid container spacing={5}>
            
@@ -14,15 +14,18 @@ export default function Search(){
                 <TextField
                 id="cottage name"
                 label="Cottage name"
-                defaultValue=" "/>
+                defaultValue=""
+                onChange = { event => { setParams({...params, "name": event.target.value}); }}
+                />
                 
             </Grid>
             <Grid item xs>
             <TextField
                 
                 id="peopleNum"
-                label="Maximum nuber of people"
+                label="Maximum number of people"
                 type="number"
+                onChange = { event => { setParams({...params, "maxPeople": event.target.value}); }}
                 InputLabelProps={{
                 shrink: true,
                 }}
@@ -34,7 +37,9 @@ export default function Search(){
                 <TextField
                 id="address"
                 label="Address"
-                defaultValue=" "/>
+                defaultValue=""
+                onChange = { event => { setParams({...params, "address": event.target.value}); }}
+                />
                 
             </Grid>
             <Grid item xs>
@@ -43,6 +48,7 @@ export default function Search(){
                 label="Price"
                 id="price"
                 type="number"
+                onChange = { event => { setParams({...params, "price": event.target.value}); }}
                 InputProps={{
                   startAdornment: <InputAdornment position="end">€</InputAdornment>,
                 }}

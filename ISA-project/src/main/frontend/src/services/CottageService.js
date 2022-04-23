@@ -27,3 +27,13 @@ export function getCottageById(id){
             return err.message;
         });
 }
+
+export function getCottages(){
+    return api
+        .get("/getAllCottages")
+        .then((data) => data)
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}

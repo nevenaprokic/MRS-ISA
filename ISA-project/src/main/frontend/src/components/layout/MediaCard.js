@@ -26,14 +26,13 @@ export default function MediaCard({ offer }) {
 
 
   const [clientData, setClientData] = useState();
-  const [open, setOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [openPasswordManager, setPasswordManager] = useState(false);
 
-  const handleOpenPass = () => setPasswordManager(true);
-  const handleClosePass = () => setPasswordManager(false);
+  const handleOpenPass = () => setOpen(true);
+  const handleClosePass = () => setOpen(false);
 
 
 
@@ -68,7 +67,7 @@ export default function MediaCard({ offer }) {
             View
           </Button>
           <Modal
-              open={openPasswordManager}
+              open={open}
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"

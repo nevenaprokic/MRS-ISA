@@ -77,3 +77,13 @@ export function changeOwnerData(newOwnerData){
     .catch((err) => alert(err.data));
 }
 
+export function getInstructors(){
+    return api
+        .get("/getAllInstructors")
+        .then((data) => data)
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}
+

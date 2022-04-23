@@ -2,11 +2,13 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Cottage;
+import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.repository.CottageRepository;
 import com.booking.ISAbackend.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +36,14 @@ public class CottageServiceImpl implements CottageService {
         Cottage cottage = cottageRepository.findCottageById(id);
         Address address = cottage.getAddress();
         return address;
+    }
+
+    private List<String> getPhoto(Cottage c){
+        List<String> photos = new ArrayList<>();
+        for(Photo p: c.getPhotos()){
+            photos.add(p.getPath());
+        }
+        return photos;
     }
 
 }
