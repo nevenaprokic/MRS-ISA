@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
-    @Query("SELECT r FROM Reservation r JOIN FETCH r.client WHERE r.client.id = ?1")
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.client WHERE r.client.id = ?1 AND r.endDate > CURRENT_DATE")
     List<Reservation> findClientsUpcomingReservations(Integer id);
 }
