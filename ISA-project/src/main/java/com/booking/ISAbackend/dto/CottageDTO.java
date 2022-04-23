@@ -11,7 +11,6 @@ public class CottageDTO {
     private Integer numberOfPerson;
     private String rulesOfConduct;
     private String cancellationConditions;
-
     private Integer roomNumber;
     private Integer bedNumber;
 

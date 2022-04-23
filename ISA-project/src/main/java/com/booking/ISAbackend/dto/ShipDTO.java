@@ -40,7 +40,7 @@ public class ShipDTO {
         this.motorPower = motorPower;
         this.maxSpeed = maxSpeed;
         this.navigationEquipment = navigationEquipment;
-        this. additionalEquipment = additionalEquipment;
+        this.additionalEquipment = additionalEquipment;
 
     }
 

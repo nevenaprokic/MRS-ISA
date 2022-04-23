@@ -13,6 +13,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
 import { getShipById } from "../../../services/ShipService";
+import {getMarkByOfferId, images} from '../../../services/MarkService';
+import Image from "../../layout/Image";
+import Divider from '@mui/material/Divider';
 
 const theme = createTheme({
   palette: {
@@ -37,11 +40,21 @@ function ShipProfilePage({ id, close }) {
     }
     setData();
   }, []);
-  let images = [];
-  if (shipData) {
+  const [markData, setMarkData] = useState();
+  useEffect(() => {
+    async function setData() {
+      const markData = await getMarkByOfferId(id);
+      setMarkData(markData.data ? markData.data : "0");
+      return markData.data;
+    }
+    setData();
+  }, []);
+
+  let photos = [];
+  if (shipData && markData) {
     shipData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
-      images.push(imag);
+      photos.push(imag);
     });
     return (
       <div className="changeDataContainer" id="changeDataContainer">
@@ -81,9 +94,13 @@ function ShipProfilePage({ id, close }) {
                   <div className="changeBtn">
                     <Button variant="contained">Change info</Button>
                   </div>
+                  <Divider/>
+                  <div className="mark">
+                  <Image src={images[markData]} alt="mark" />
+                  </div>
                 </div>
 
-                <ImagesBox images={images} />
+                <ImagesBox images={photos} />
                 <QuickActionBox id={shipData.id} />
                 <Grid container xs={12}>
                   <Grid item xs={12} sm={6}>
