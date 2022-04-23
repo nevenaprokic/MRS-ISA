@@ -10,11 +10,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '../layout/Card';
 import { useForm } from "react-hook-form";
-import { alignProperty } from '@mui/material/styles/cssUtils';
 import api from '../../app/api';
 import jwt from 'jwt-decode';
-import MainNavigation from '../layout/MainNavigationHome';
-import { ElevatorSharp } from '@mui/icons-material';
+import MainNavigation from '../layout/MainNavigation';
 import { userType } from '../../services/userService';
 
 
@@ -22,7 +20,7 @@ const theme = createTheme();
 
 export default function LogIn() {
 
-    let homePages = { [userType.CLIENT]:  "/user-profile/client",
+    let homePages = { [userType.CLIENT]:  "/home-page/client",
                     [userType.INSTRUCTOR]: "/user-home-page/instructor",
                     [userType.COTTAGE_OWNER]: "/user-profile/cottage-owner",
                     [userType.SHIP_OWNER]: "/user-profile/ship-owner",

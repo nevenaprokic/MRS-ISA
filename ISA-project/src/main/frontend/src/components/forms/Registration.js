@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useNavigate } from "react-router-dom";
-import MainNavigation from '../layout/MainNavigationHome';
+import MainNavigation from '../layout/MainNavigation';
 
 
 const theme = createTheme();

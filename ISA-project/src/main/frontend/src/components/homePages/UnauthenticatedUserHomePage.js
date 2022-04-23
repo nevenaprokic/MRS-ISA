@@ -9,13 +9,15 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import MainNavigationHome from '../layout/MainNavigationHome';
+import MainNavigation from '../layout/MainNavigation';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import ClientProfile from '../profilePages/ClientProfile';
 import Grid from '@mui/material/Grid';
 import Album from '../pages/home';
+import OfferList from '../pages/OfferList';
+import PriceList from '../profilePages/cottageProfile/Pricelist';
 
 
 function TabPanel(props) {
@@ -51,10 +53,18 @@ function TabPanel(props) {
     };
   }
 
-export default function ClientHomePage() {
+export default function UnauthenticatedUserHomePage() {
    
 
     const [value, setValue] = useState(0);
+    const [offers, setOffers] = useState();
+
+    const [params, setParams] = useState({
+        name: "",
+        address: "",
+        maxPeople: -1,
+        price: -1
+    });
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -76,7 +86,7 @@ export default function ClientHomePage() {
   });
   return (
         <ThemeProvider theme={outerTheme}>
-          <MainNavigationHome/>
+          <MainNavigation/>
             <Container maxWidth="100%">
               
                 <Box
@@ -90,50 +100,29 @@ export default function ClientHomePage() {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     textColor='primary'  indicatorColor="primary"
-                    sx={{ borderRight: 1, borderColor: 'divider', minWidth:"20%" }}
+                    sx={{ borderRight: 1, borderColor: 'divider' }}
                 >
-                    <Tab label="Home page" {...a11yProps(0)} />
+                    <Tab label="Cottages" {...a11yProps(0)} />
                     <Divider />
-                    <Tab label="Profile page" {...a11yProps(1)} />
+                    <Tab label="Ships" {...a11yProps(1)} />
                     <Divider />
-                    <Tab label="Availability of cottages" {...a11yProps(2)} />
+                    <Tab label="Instructors" {...a11yProps(2)} />
                     <Divider />
-                    <Tab label="Reservation history" {...a11yProps(3)} />
-                    <Tab label="Reservation report" {...a11yProps(4)} />
-                    <Tab label="New reservation" {...a11yProps(5)} />
-                    <Tab label="New action" {...a11yProps(6)} />
-                    <Divider />
-                    <Tab label="Calendar" {...a11yProps(7)} />
-                    <Divider />
-                    <Tab label="Business report" {...a11yProps(8)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                  <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                              <Search params={params} setParams={setParams} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
+                      <OfferList type="cottage" offers={offers} setOffers={setOffers} />
                 </TabPanel>
-                <TabPanel value={value} index={1}>
-                    Item Two
-                </TabPanel>
+
                 <TabPanel value={value} index={2}>
-                    <ClientProfile></ClientProfile>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                    Item Five
-                </TabPanel>
-                <TabPanel value={value} index={5}>
-                    Item Six
-                </TabPanel>
-                <TabPanel value={value} index={6}>
-                  {/* <ReservationHistory></ReservationHistory> */}
-                  <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
@@ -143,6 +132,19 @@ export default function ClientHomePage() {
                         </Box>
                       <Album/>
                 </TabPanel>
+
+                <TabPanel value={value} index={4}>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <Search/>
+                          </Grid>
+                        </Box>
+                      <Album/>
+                </TabPanel>
+
                 </Box>
             </Container>
             </ThemeProvider>

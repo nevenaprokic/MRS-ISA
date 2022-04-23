@@ -1,5 +1,9 @@
 package com.booking.ISAbackend.dto;;
 
+import com.booking.ISAbackend.model.Cottage;
+import com.booking.ISAbackend.model.Photo;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class CottageDTO {
@@ -32,6 +36,27 @@ public class CottageDTO {
 
     public CottageDTO() {
 
+    }
+
+    public CottageDTO(Cottage c) {
+        this.id = c.getId();
+        this.name = c.getName();
+        this.description = c.getDescription();
+        this.price = c.getPrice();
+        this.photos = getPhoto(c);
+        this.numberOfPerson = c.getNumberOfPerson();
+        this.rulesOfConduct = c.getRulesOfConduct();
+        this.cancellationConditions = c.getCancellationConditions();
+        this.roomNumber = c.getRoomNumber();
+        this.bedNumber = c.getBedNumber();
+    }
+
+    private List<String> getPhoto(Cottage c){
+        List<String> photos = new ArrayList<>();
+        for(Photo p: c.getPhotos()){
+            photos.add(p.getPath());
+        }
+        return photos;
     }
 
     public Integer getId() {return  id;}

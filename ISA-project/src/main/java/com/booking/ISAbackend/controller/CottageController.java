@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -64,5 +62,38 @@ public class CottageController {
             photos.add(p.getPath());
         }
         return photos;
+    }
+
+    @GetMapping("getAllCottages")
+    @Transactional
+    public ResponseEntity<List<CottageDTO>> getCottages(){
+        try{
+            List<Cottage> cottages = cottageService.findAll();
+            List<CottageDTO> dto = new ArrayList<>();
+            for(Cottage c: cottages){
+                CottageDTO cottageDTO = new CottageDTO(c);
+                dto.add(cottageDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("searchCottages")
+    @Transactional
+    public ResponseEntity<List<CottageDTO>> searchCottages(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
+
+        try{
+            List<Cottage> cottages = cottageService.searchCottages(name, maxPeople, address, price);
+            List<CottageDTO> dto = new ArrayList<>();
+            for(Cottage c: cottages){
+                CottageDTO cottageDTO = new CottageDTO(c);
+                dto.add(cottageDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -18,6 +18,8 @@ import ChangePassword from './components/forms/ChangePassword';
 import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
 import AdminHomePage from './components/homePages/AdminHomePage';
 import AdminProfile from './components/profilePages/AdminProfile';
+import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
+
 
 function App() {
   return (
@@ -39,6 +41,7 @@ function App() {
           <Route path='/user-profile/ship-owner' element={<ShipOwnerHomePage/>}/>
           <Route path='/user-home-page/admin' element={<AdminHomePage />}/>
           <Route path='/user-profile/admin' element={<AdminProfile />}/>
+          <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
         </Routes>
     </div>
   );
