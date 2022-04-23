@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import profileIcon from '../images/user-profile.png'
+import profileIcon from '../images/profile.png'
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import BasicInfoBox from "./BasicInfoBox";
@@ -18,6 +18,7 @@ import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userType } from "../../services/userService";
+import Biography from "./Biography";
 
 
 function OwnerProfile(){
@@ -66,10 +67,10 @@ function OwnerProfile(){
         return(
             <div className="ownerprofileContainer">
 
-            <Grid container component="main" sx={{ height: '100vh' }}> 
+            <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%' }}> 
                 <CssBaseline />
                 <Grid item xs={12} sm={5}>
-                    <img src={profileIcon} width="40%"></img>
+                    <img src={profileIcon} width="60%"></img>
                 </Grid>
 
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
@@ -111,8 +112,8 @@ function OwnerProfile(){
                 <AddressInfoBox addressData={ownerData}/>
                 
                 <Grid xs={12} sm={5}/>
-                <AdditionalinfoBox additionalDate={ownerData}/>
-                
+
+                 <AdditionalinfoBox additionalDate={ownerData}/>
 
             </Grid>
         </div>
