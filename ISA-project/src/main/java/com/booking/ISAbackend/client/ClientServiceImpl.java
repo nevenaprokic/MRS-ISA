@@ -121,8 +121,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void requestAccountDeletion(String email) throws AccountDeletionException {
         MyUser user = clientRepository.findByEmail(email);
-//        List<Reservation> reservations = clientRepository.findClientsUpcomingReservations(email);
-        List<Reservation> reservations = reservationRepository.findAll();
+        List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(user.getId());
+//        List<Reservation> reservations = reservationRepository.findAll();
         if(reservations.isEmpty()){
             deleteRequestRepository.save(new DeleteRequest(user));
         }else{
