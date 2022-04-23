@@ -6,6 +6,7 @@ import java.util.Optional;
 
 
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
+import com.booking.ISAbackend.dto.UserProfileData;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
@@ -77,6 +78,15 @@ public class UserServiceImpl implements UserService{
 		MyUser user = userRepository.findByEmail(email);
 		Optional<ShipOwner> shipOwner = shipOwnerRepository.findById(user.getId());
 		return shipOwner.orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public UserProfileData findAdminByEmail(String email) {
+		MyUser user = userRepository.findByEmail(email);
+		UserProfileData adminData = new UserProfileData(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(),
+							user.getAddress().getStreet(), user.getAddress().getCity(), user.getAddress().getState());
+		return adminData;
 	}
 
 	@Override

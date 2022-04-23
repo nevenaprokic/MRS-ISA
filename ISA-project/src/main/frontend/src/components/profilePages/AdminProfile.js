@@ -12,7 +12,7 @@ import AddressInfoBox from "./AddressInfoBox";
 import AdditionalinfoBox from "./AdditionalInfoBox";
 import SettingsIcon from '@mui/icons-material/Settings';
 import { getUsernameFromToken, getRoleFromToken } from '../../app/jwtTokenUtils';
-import { getInstructorByUsername, getCottageOwnerByUsername, getShipOwnerByUsername } from "../../services/userService";
+import { getInstructorByUsername, getCottageOwnerByUsername, getShipOwnerByUsername, getAdminByEmail } from "../../services/userService";
 import { useState, useEffect } from 'react';
 import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
@@ -21,56 +21,64 @@ import { userType } from "../../services/userService";
 
 function AdminProfile(){
 
-    let adminData = {firstName: "pera",
-                    lastName: "peric",
-                    phoneNumber: "12121",
-                    street: "neka ulica br",
-                    city: "neki grad",
-                    state: "neka drzava",
-                    email: "pera@gmail.com"};
-    //dobavljanje podataka o adminu
+    const [adminData, setAdminData]  = useState();
 
-    return(
-        <div className="adminProfileContainer">
+    useEffect(() => {
+        async function setData() {
+            let requestData = await getAdminByEmail();
+            setAdminData(!!requestData ? requestData.data : {});        //  requestData.data.email;
 
-        <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%'}}> 
-            <CssBaseline />
-            <Grid item xs={12} sm={5}>
-                <img src={profileIcon} width="60%"></img>
-            </Grid>
+        return requestData;    
+    }
+       setData();
+       
+    }, [])
 
-            <BasicInfoBox basicData={adminData}></BasicInfoBox>
-   
-            <Grid item xs={12} sm={1}>
-                <EmailIcon/>
-                <br/><br/>
-                <LockIcon/>
-                <br/><br/>
-                <SettingsIcon/>
-                <br/><br/>
-                <DeleteIcon/>
-            </Grid>
-                  
-            <Grid item xs={12} sm={4}>
-                <Typography>
-                        <label className="email">{adminData.email}</label>
-                        <br/><br/>
-                        <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
-                        <br/><br/>
-                        <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Change private data</Button>
-                        <br/><br/>
-                        <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
-                        
-                </Typography>         
-            </Grid>    
-            <AddressInfoBox addressData={adminData}/>
-            
-            <Grid xs={12} sm={5}/>
+    if(!!adminData){
+        return(
+            //adminData  && 
+            <div className="adminProfileContainer">
+                <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%'}}> 
+                    <CssBaseline />
+                    <Grid item xs={12} sm={5}>
+                        <img src={profileIcon} width="60%"></img>
+                    </Grid>
         
-
-        </Grid>
-    </div>
-    );
+                    <BasicInfoBox basicData={adminData}></BasicInfoBox>
+           
+                    <Grid item xs={12} sm={1}>
+                        <EmailIcon/>
+                        <br/><br/>
+                        <LockIcon/>
+                        <br/><br/>
+                        <SettingsIcon/>
+                        <br/><br/>
+                        <DeleteIcon/>
+                    </Grid>
+                          
+                    <Grid item xs={12} sm={4}>
+                        <Typography>
+                                <label className="email">{adminData.email}</label>
+                                <br/><br/>
+                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
+                                <br/><br/>
+                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Change private data</Button>
+                                <br/><br/>
+                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
+                                
+                        </Typography>         
+                    </Grid>    
+                    <AddressInfoBox addressData={adminData}/>
+                    
+                    <Grid xs={12} sm={5}/>
+                
+        
+                </Grid>
+            </div>
+            
+        );
+    }
+   
 
 }
 

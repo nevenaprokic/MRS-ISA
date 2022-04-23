@@ -78,3 +78,17 @@ export function changeOwnerData(newOwnerData){
     .catch((err) => alert(err.data));
 }
 
+export function getAdminByEmail(){
+    let email = getUsernameFromToken();
+    console.log(email);
+    return api
+    .get("/admin-profile", 
+        {
+            params:{
+            email: email
+        }
+    })
+    .then((responseData) => responseData)
+    .catch((err) => alert(err.data));
+
+}
