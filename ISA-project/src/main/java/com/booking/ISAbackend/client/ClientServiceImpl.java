@@ -2,12 +2,14 @@ package com.booking.ISAbackend.client;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
 import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
-import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.ClientCategory;
+import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AddressRepository;
+import com.booking.ISAbackend.repository.DeleteRequestRepository;
+import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.repository.RoleRepository;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +25,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private DeleteRequestRepository deleteRequestRepository;
 
     @Autowired
     private AddressRepository adressRepository;
@@ -55,17 +64,10 @@ public class ClientServiceImpl implements ClientService {
         c.setEmailVerified(false);
         c.setPenal(0);
         c.setRole(roleRepository.findByName("CLIENT").get(0));
-
-        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-//        List<Role> role = roleService.findByName("CLIENT");
-//        u.setRoles(roles);
         clientRepository.save(c);
 
         String token = UUID.randomUUID().toString();
-
         confirmationTokenService.createVerificationToken(c, token);
-        // TODO: send email
-
         emailSender.sendConfirmationAsync(cr.getEmail(), token);
 
         return token;
@@ -114,6 +116,18 @@ public class ClientServiceImpl implements ClientService {
                 }
             }
     }
+    }
+
+    @Override
+    public void requestAccountDeletion(String email) throws AccountDeletionException {
+        MyUser user = clientRepository.findByEmail(email);
+//        List<Reservation> reservations = clientRepository.findClientsUpcomingReservations(email);
+        List<Reservation> reservations = reservationRepository.findAll();
+        if(reservations.isEmpty()){
+            deleteRequestRepository.save(new DeleteRequest(user));
+        }else{
+            throw new AccountDeletionException("Account cannot be deleted.");
+        }
     }
 
 }
