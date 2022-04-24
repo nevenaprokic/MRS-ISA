@@ -1,30 +1,49 @@
 package com.booking.ISAbackend.dto;
 
-public class UserProfileData {
-    private String email;
-
+public class InstructorNewDataDTO {
+    private String email; //samo za promalazenje user-a, nije promenjen
     private String firstName;
-
     private String lastName;
-
     private String phoneNumber;
-
-
     private String street;
-    private String city;
     private String state;
+    private String city;
+    private String biography;
 
-    public UserProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state) {
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setStreet(String street) {
         this.street = street;
-        this.city = city;
+    }
+
+    public void setState(String state) {
         this.state = state;
     }
-    public UserProfileData(){
 
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getEmail() {
@@ -47,12 +66,11 @@ public class UserProfileData {
         return street;
     }
 
-    public String getCity() {
-        return city;
-    }
-
     public String getState() {
         return state;
     }
-}
 
+    public String getCity() {
+        return city;
+    }
+}

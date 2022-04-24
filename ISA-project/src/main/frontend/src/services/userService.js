@@ -74,7 +74,7 @@ export function changeOwnerData(newOwnerData){
     .post("/changeOwnerData", newOwnerData)
     .then((responseData) => {
                 alert(responseData.data); 
-                window.location = "/user-profile/instructor"})
+                })
     .catch((err) => alert(err.data));
 }
 
@@ -102,4 +102,17 @@ export function getInstructors(){
             return err.message;
         });
 }
+
+export function changeAdminData(newAdminData){
+    let email = getUsernameFromToken();
+    newAdminData["email"] = email;
+    api
+    .post("/change-admin-data", newAdminData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
+    .catch((err) => alert(err.data));
+}
+
+
 
