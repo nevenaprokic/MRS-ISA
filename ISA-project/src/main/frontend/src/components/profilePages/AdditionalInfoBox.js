@@ -15,7 +15,7 @@ function AdditionalinfoBox({additionalDate}){
     return(
         <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
         <Box className="infoBoxContainer">
-         
+         {console.log(additionalDate, "ADD")}
         <div className="infoBox">
             <label className="boxTitle">Additional information</label><br/><br/>
         
@@ -28,7 +28,7 @@ function AdditionalinfoBox({additionalDate}){
             </div>
 
             {getRoleFromToken() === userType.INSTRUCTOR && 
-                   
+                
                 <Biography bigraphy={additionalDate.biography} />
                    
             }
