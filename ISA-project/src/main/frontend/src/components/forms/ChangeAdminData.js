@@ -36,6 +36,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
 
   const onSubmit = (data) => {
     console.log(data);
+    childToParent(data);
 
     close();
   }
@@ -76,55 +77,66 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   name="firstName"
                   id="firstName"
                   defaultValue={currentAdminData.firstName}
-                   
+                  {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
                    />
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
-               
+                {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="lastName"
                   id="lastName"
                   defaultValue={currentAdminData.lastName}
+                  {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
                    />
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
-                
+                {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
                   defaultValue={currentAdminData.phoneNumber}
+                  {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}
                   />
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
-                
+                {errors.phoneNumber && <p className="errorLabel">Allowed phone number formats:<br/> '###-###-*####'  <br/>
+                                                                                                    '(###) ###-####'   <br/>
+                                                                                                    '### ### ####'  <br/>
+                                                                                                    '###.###.####'  <br/> 
+                                                                                                    '+## (###) ###-####' <br/> 
+                                                                                                    '##########' <br/>
+                                                                                                  </p>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="street"
                   id="street"
                   defaultValue={currentAdminData.street}
+                  {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}
                   />
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
-                
+                {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="city"
                   id="city"
                   defaultValue={currentAdminData.city}
+                  {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
                    />
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
-                
+                {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="state"
                   id="state"
                   defaultValue={currentAdminData.state}
+                  {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
                   />
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
-                
+                {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>                 
               
               </Grid>
