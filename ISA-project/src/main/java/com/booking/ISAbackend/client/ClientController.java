@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.client;
 
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
@@ -65,8 +66,19 @@ public class ClientController {
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
 
             return ResponseEntity.status(400).body("Data is invalid.");
-
         }
     }
+
+    @GetMapping("deleteAccount")
+    public ResponseEntity<String> deleteAccount(@RequestParam String email){
+        try{
+            clientService.requestAccountDeletion(email);
+            return ResponseEntity.ok("Successfully created request for deleting account.");
+        } catch (AccountDeletionException e) {
+
+            return ResponseEntity.status(400).body("Account cannot be deleted.");
+        }
+    }
+
 
 }

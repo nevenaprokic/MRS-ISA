@@ -8,7 +8,8 @@ export const userType = {
     CLIENT: "CLIENT",
     INSTRUCTOR: "INSTRUCTOR",
     COTTAGE_OWNER:"COTTAGE_OWNER" ,
-    SHIP_OWNER: "SHIP_OWNER"
+    SHIP_OWNER: "SHIP_OWNER",
+    ADMIN : "ADMIN"
 }
 
 Object.freeze(userType);
@@ -75,6 +76,21 @@ export function changeOwnerData(newOwnerData){
                 alert(responseData.data); 
                 window.location = "/user-profile/instructor"})
     .catch((err) => alert(err.data));
+}
+
+
+export function getAdminByEmail(){
+    let email = getUsernameFromToken();
+    return api
+    .get("/admin-profile", 
+        {
+            params:{
+            email: email
+        }
+    })
+    .then((responseData) => responseData)
+    .catch((err) => alert(err.data));
+
 }
 
 export function getInstructors(){

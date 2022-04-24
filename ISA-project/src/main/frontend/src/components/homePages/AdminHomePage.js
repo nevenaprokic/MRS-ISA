@@ -13,9 +13,9 @@ import MainNavigationHome from '../layout/MainNavigationHome';
 import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
-import Album from '../pages/home';
-import OwnerProfile from '../profilePages/OwnerProfile';
-
+import { useState } from "react";
+import ClientProfile from '../profilePages/ClientProfile';
+import AdminProfile from '../profilePages/AdminProfile';
 
 
 function TabPanel(props) {
@@ -51,10 +51,10 @@ function TabPanel(props) {
     };
   }
 
-export default function CottageOwnerHomePage() {
+export default function AdminHomePage() {
    
 
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -90,49 +90,37 @@ export default function CottageOwnerHomePage() {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     textColor='primary'  indicatorColor="primary"
-                    sx={{ borderRight: 1, borderColor: 'divider',minWidth:"20%" }}
+                    sx={{ borderRight: 1, borderColor: 'divider', minWidth:"20%" }}
                 >
                     <Tab label="Home page" {...a11yProps(0)} />
                     <Divider />
                     <Tab label="Profile page" {...a11yProps(1)} />
                     <Divider />
-                    <Tab label="Availability of cottages" {...a11yProps(2)} />
+                    <Tab label="Users" {...a11yProps(2)} />
+                    <Tab label="Registration requests" {...a11yProps(3)} />
                     <Divider />
-                    <Tab label="Reservation history" {...a11yProps(3)} />
-                    <Tab label="Reservation report" {...a11yProps(4)} />
-                    <Tab label="New reservation" {...a11yProps(5)} />
-                    <Tab label="New action" {...a11yProps(6)} />
-                    <Divider />
-                    <Tab label="Calendar" {...a11yProps(7)} />
-                    <Divider />
-                    <Tab label="Business report" {...a11yProps(8)} />
+                    <Tab label="Business reports" {...a11yProps(4)} />
+                    
                 </Tabs>
                 <TabPanel value={value} index={0}>
                   <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
-                      <Box sx={{ flexGrow: 1 }}>
-                          <Grid  item xs={12}>
-                              <Search/>
-                          </Grid>
-                        </Box>
-                      <Album/>
+                     
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <OwnerProfile/>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                    Item Four
+                    <AdminProfile />
                 </TabPanel>
                 <TabPanel value={value} index={4}>
-                    Item Five
+
                 </TabPanel>
                 <TabPanel value={value} index={5}>
-                    Item Six
+
                 </TabPanel>
-                <TabPanel value={value} index={6}>
-                    Item Seven
+                <TabPanel value={value} index={7}>
+                  
                 </TabPanel>
+             
                 </Box>
             </Container>
             </ThemeProvider>

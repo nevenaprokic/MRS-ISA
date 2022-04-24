@@ -16,6 +16,7 @@ import { getUsernameFromToken } from '../../app/jwtTokenUtils';
 import api from "../../app/api";
 import Modal from '@mui/material/Modal';
 import ChangeClientData from "../forms/ChangeClientData";
+import DeleteIcon from '@mui/icons-material/Delete';
 import ChangePassword from "../forms/ChangePassword";
 
 
@@ -69,6 +70,17 @@ function ClientProfile(){
           setData();
     }, [])
 
+    const deleteAccount = () => {
+        api
+          .get("deleteAccount?email=" + getUsernameFromToken())
+          .then((res) => {
+              console.log(res);
+          })
+          .catch((err) => {
+              console.log("Nije uspesna prijava");
+          });
+    }
+
     if(clientData){
         return(
             <div className="ownerprofileContainer">
@@ -87,6 +99,8 @@ function ClientProfile(){
                     <LockIcon/>
                     <br/><br/>
                     <SettingsIcon/>
+                    <br/><br/>
+                    <DeleteIcon/>
                 </Grid>
                       
                 <Grid item xs={12} sm={4} lg={4}>
@@ -96,6 +110,8 @@ function ClientProfile(){
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpenPass} > Change password</Button>
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
+                            <br/><br/>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={deleteAccount} > Delete profile</Button>
                             
                     </Typography>         
                 </Grid>
