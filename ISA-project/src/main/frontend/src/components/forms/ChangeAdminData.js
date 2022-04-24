@@ -11,16 +11,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '../layout/Card';
 import { NativeSelect, InputLabel, FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
-import { useRef } from "react";
-import sendOwnerRegistration from '../../services/ownerRegistration';
-import "../../style/ChangeOwnerData.scss" 
+import { useRef, useState, useEffect } from "react";
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeOwnerData } from "../../services/userService";
+import { getUsernameFromToken } from '../../app/jwtTokenUtils';
+import api from '../../app/api';
+import "../../style/ChangeOwnerData.scss"
 
-
-export default function ChangeOwnerData({currentOwnerData}) {
+export default function ChangeAdminData({currentAdminData, close, childToParent}) {
 
   const theme = createTheme({
     palette: {
@@ -35,17 +34,11 @@ export default function ChangeOwnerData({currentOwnerData}) {
 
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
-
-
   const onSubmit = (data) => {
+    console.log(data);
 
-      console.log(data);
-      changeOwnerData(data);
-    }
-
-    const closeDataChangeContainer = function(){
-      window.location = "/user-profile/instructor";
-    }
+    close();
+  }
 
   return (
     <div className="changeDataContainer" id="changeDataContainer">
@@ -71,7 +64,7 @@ export default function ChangeOwnerData({currentOwnerData}) {
                       </Typography>
                   </div>
                   <div className="closeBtn" >
-                    <Button size="large" onClick={closeDataChangeContainer} sx={{}}>x</Button>
+                    <Button size="large" sx={{}} onClick={ () => close() } >x</Button>
                   </div>
                  
                 </div>
@@ -82,67 +75,57 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="firstName"
                   id="firstName"
-                  defaultValue={currentOwnerData.firstName}
-                   {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
+                 
+                   
+                   />
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
-                {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
+               
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="lastName"
                   id="lastName"
-                  defaultValue={currentOwnerData.lastName}
-                   {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
+                  
+                   />
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
-                {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
+                
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  defaultValue={currentOwnerData.phoneNumber}
-                   {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
+                  
+                  />
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
-                {errors.phoneNumber && <label className="errorLabel">Only numbers are allowed!</label>}
+                
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="street"
                   id="street"
-                  defaultValue={currentOwnerData.street}
-                   {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
+                  
+                  />
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
-                {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
+                
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="city"
                   id="city"
-                  defaultValue={currentOwnerData.city}
-                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                  
+                   />
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
-                {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
+                
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="state"
                   id="state"
-                  defaultValue={currentOwnerData.state}
-                   {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                  
+                  />
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
-                {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
-              </FormControl>  
-              <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "95%"}}>
-                <TextField
-                  id="biography"
-                  multiline
-                  defaultValue={currentOwnerData.biography}
-                  variant="standard"
-                  {...register("biography")}
-                />
                 
-              </FormControl>     
-                
+              </FormControl>                 
               
               </Grid>
               <Button
