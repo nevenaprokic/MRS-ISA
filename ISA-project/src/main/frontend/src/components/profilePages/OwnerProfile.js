@@ -49,17 +49,36 @@ function OwnerProfile(){
     const handleClose = () => setOpen(false);
 
     const childToParent = (childData) => {
-        setOwnerData(prevState => ({
-            ...prevState,
-            ["firstName"]: childData.firstName,
-            ["lastName"]: childData.lastName,
-            ["phoneNumber"]: childData.phoneNumber,
-            ["city"]: childData.city,
-            ["street"]: childData.street,
-            ["state"]: childData.state,
+        if(getRoleFromToken() === userType.INSTRUCTOR){
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+                ["biography"]: childData.biography,
 
-        }));
+            })
+            );
+        }
+        else{
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+
+            })
+            );
+        }
+        
       }
+      
 
     useEffect(() => {
         async function setData() {

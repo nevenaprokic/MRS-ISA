@@ -106,7 +106,7 @@ public class UserController {
 	}
 
 	@PostMapping("change-instructor-data")
-	public ResponseEntity<String> changeOwnerData(@RequestBody InstructorNewDataDTO newData){
+	public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
 		try{
 			userService.changeInstrctorData(newData);
 			return ResponseEntity.ok("Successfully changed you data");

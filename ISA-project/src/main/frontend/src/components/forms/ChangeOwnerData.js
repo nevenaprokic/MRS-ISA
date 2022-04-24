@@ -17,7 +17,7 @@ import "../../style/ChangeOwnerData.scss"
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeOwnerData, userType } from "../../services/userService";
+import { changeOwnerData, userType, changeInstructorData } from "../../services/userService";
 import { getRoleFromToken } from '../../app/jwtTokenUtils';
 
 
@@ -39,9 +39,12 @@ export default function ChangeOwnerData({currentOwnerData, close, childToParent}
 
 
   const onSubmit = (data) => {
-
+      
+      if (getRoleFromToken() === userType.INSTRUCTOR){
+        changeInstructorData(data);
+      }
+      console.log("OVDE", data);
       childToParent(data);
-      changeOwnerData(data);
       close();
     }
 
