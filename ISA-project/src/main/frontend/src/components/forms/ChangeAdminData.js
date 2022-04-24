@@ -1,24 +1,19 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Card from '../layout/Card';
-import { NativeSelect, InputLabel, FormControl } from '@mui/material';
+import { FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
-import { useRef, useState, useEffect } from "react";
 import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { getUsernameFromToken } from '../../app/jwtTokenUtils';
-import api from '../../app/api';
+import { changeAdminData } from '../../services/userService';
+import "../../style/ChangeOwnerData.scss"
 
-export default function ChangeClientData({currentClientData, close, childToParent}) {
+export default function ChangeAdminData({currentAdminData, close, childToParent}) {
 
   const theme = createTheme({
     palette: {
@@ -34,13 +29,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
   const onSubmit = (data) => {
+    console.log(data);
     childToParent(data);
-    api
-      .post("updateProfileInfo?email=" + getUsernameFromToken(), data)
-      .catch((err) => {
-          console.log("Nije promena licnih podataka.");
-      });
-
+    changeAdminData(data);
     close();
   }
 
@@ -79,8 +70,8 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="firstName"
                   id="firstName"
-                  defaultValue={currentClientData.firstName}
-                   {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
+                  defaultValue={currentAdminData.firstName}
+                  {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
                    />
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
                 {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
@@ -89,8 +80,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="lastName"
                   id="lastName"
-                  defaultValue={currentClientData.lastName}
-                   {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
+                  defaultValue={currentAdminData.lastName}
+                  {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
+                   />
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
                 {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
@@ -98,8 +90,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  defaultValue={currentClientData.phoneNumber}
-                   {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
+                  defaultValue={currentAdminData.phoneNumber}
+                  {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}
+                  />
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
                 {errors.phoneNumber && <p className="errorLabel">Allowed phone number formats:<br/> '###-###-*####'  <br/>
                                                                                                     '(###) ###-####'   <br/>
@@ -113,8 +106,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="street"
                   id="street"
-                  defaultValue={currentClientData.street}
-                   {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
+                  defaultValue={currentAdminData.street}
+                  {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}
+                  />
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
                 {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
               </FormControl>   
@@ -122,8 +116,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="city"
                   id="city"
-                  defaultValue={currentClientData.city}
-                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                  defaultValue={currentAdminData.city}
+                  {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
+                   />
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
                 {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>   
@@ -131,8 +126,9 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   <Input 
                   name="state"
                   id="state"
-                  defaultValue={currentClientData.state}
-                   {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                  defaultValue={currentAdminData.state}
+                  {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
+                  />
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>                 

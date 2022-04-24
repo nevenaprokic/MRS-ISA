@@ -16,6 +16,8 @@ import ImagesBox from "./ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
+import { userType } from "../../../services/userService";
 
 const theme = createTheme({
   palette: {
@@ -86,9 +88,9 @@ function CottageProfilePage({ id, close }) {
               <div className="profileContainer">
                 <div className="headerContainer">
                   <h2 className="adventureTittle">{cottageData.name}</h2>
-                  <div className="changeBtn">
+                    <div className="changeBtn">
                     <Button variant="contained">Change info</Button>
-                  </div>
+                    </div>
                 </div>
 
                 <ImagesBox images={images} />

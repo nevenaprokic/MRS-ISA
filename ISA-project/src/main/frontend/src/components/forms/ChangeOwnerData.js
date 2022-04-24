@@ -17,10 +17,11 @@ import "../../style/ChangeOwnerData.scss"
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeOwnerData } from "../../services/userService";
+import { changeOwnerData, userType } from "../../services/userService";
+import { getRoleFromToken } from '../../app/jwtTokenUtils';
 
 
-export default function ChangeOwnerData({currentOwnerData}) {
+export default function ChangeOwnerData({currentOwnerData, close, childToParent}) {
 
   const theme = createTheme({
     palette: {
@@ -39,13 +40,11 @@ export default function ChangeOwnerData({currentOwnerData}) {
 
   const onSubmit = (data) => {
 
-      console.log(data);
+      childToParent(data);
       changeOwnerData(data);
+      close();
     }
 
-    const closeDataChangeContainer = function(){
-      window.location = "/user-profile/instructor";
-    }
 
   return (
     <div className="changeDataContainer" id="changeDataContainer">
@@ -71,7 +70,7 @@ export default function ChangeOwnerData({currentOwnerData}) {
                       </Typography>
                   </div>
                   <div className="closeBtn" >
-                    <Button size="large" onClick={closeDataChangeContainer} sx={{}}>x</Button>
+                    <Button size="large" onClick={() => close()} sx={{}}>x</Button>
                   </div>
                  
                 </div>
@@ -82,7 +81,7 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="firstName"
                   id="firstName"
-                  placeholder={currentOwnerData.firstName}
+                  defaultValue={currentOwnerData.firstName}
                    {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
                 {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
@@ -91,7 +90,7 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="lastName"
                   id="lastName"
-                  placeholder={currentOwnerData.lastName}
+                  defaultValue={currentOwnerData.lastName}
                    {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
                 {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
@@ -100,16 +99,22 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  placeholder={currentOwnerData.phoneNumber}
+                  defaultValue={currentOwnerData.phoneNumber}
                    {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
-                {errors.phoneNumber && <label className="errorLabel">Only numbers are allowed!</label>}
+                {errors.phoneNumber && <p className="errorLabel">Allowed phone number formats:<br/> '###-###-*####'  <br/>
+                                                                                                    '(###) ###-####'   <br/>
+                                                                                                    '### ### ####'  <br/>
+                                                                                                    '###.###.####'  <br/> 
+                                                                                                    '+## (###) ###-####' <br/> 
+                                                                                                    '##########' <br/>
+                                                                                                  </p>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 
                   name="street"
                   id="street"
-                  placeholder={currentOwnerData.street}
+                  defaultValue={currentOwnerData.street}
                    {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
                 {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
@@ -118,7 +123,7 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="city"
                   id="city"
-                  placeholder={currentOwnerData.city}
+                  defaultValue={currentOwnerData.city}
                    {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
                 {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
@@ -127,21 +132,24 @@ export default function ChangeOwnerData({currentOwnerData}) {
                   <Input 
                   name="state"
                   id="state"
-                  placeholder={currentOwnerData.state}
+                  defaultValue={currentOwnerData.state}
                    {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>  
-              <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "95%"}}>
-                <TextField
-                  id="biography"
-                  multiline
-                  placeholder={currentOwnerData.biography}
-                  variant="standard"
-                  {...register("biography")}
-                />
-                
-              </FormControl>     
+              {getRoleFromToken() === userType.INSTRUCTOR && 
+                <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "95%"}}>
+                  <TextField
+                    id="biography"
+                    multiline
+                    defaultValue={currentOwnerData.biography}
+                    variant="standard"
+                    {...register("biography")}
+                  />
+                  
+                </FormControl>     
+                }
+              
                 
               
               </Grid>

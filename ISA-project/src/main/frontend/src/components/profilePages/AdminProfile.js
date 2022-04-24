@@ -18,10 +18,28 @@ import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userType } from "../../services/userService";
+import ChangeAdminData from "../forms/ChangeAdminData";
 
 function AdminProfile(){
 
     const [adminData, setAdminData]  = useState();
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const childToParent = (childData) => {
+        setAdminData(prevState => ({
+            ...prevState,
+            ["firstName"]: childData.firstName,
+            ["lastName"]: childData.lastName,
+            ["phoneNumber"]: childData.phoneNumber,
+            ["city"]: childData.city,
+            ["street"]: childData.street,
+            ["state"]: childData.state,
+
+        }));
+      }
 
     useEffect(() => {
         async function setData() {
@@ -36,7 +54,7 @@ function AdminProfile(){
 
     if(!!adminData){
         return(
-            //adminData  && 
+             
             <div className="adminProfileContainer">
                 <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%'}}> 
                     <CssBaseline />
@@ -62,16 +80,29 @@ function AdminProfile(){
                                 <br/><br/>
                                 <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
                                 <br/><br/>
-                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Change private data</Button>
+                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"} } onClick={handleOpen}> Change private data</Button>
                                 <br/><br/>
                                 <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
                                 
                         </Typography>         
-                    </Grid>    
+                    </Grid> 
+
+                     <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                    >
+                        
+                            <ChangeAdminData currentAdminData={adminData} close={handleClose} childToParent={childToParent} />
+                    
+                    </Modal>
+
                     <AddressInfoBox addressData={adminData}/>
                     
                     <Grid xs={12} sm={5}/>
-                
+
         
                 </Grid>
             </div>

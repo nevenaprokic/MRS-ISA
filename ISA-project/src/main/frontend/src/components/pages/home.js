@@ -20,6 +20,23 @@ export default function Album(){
     [userType.SHIP_OWNER]: getShipByShipOwnerEmail
   }
   
+  let getOfferProfileByRole = {
+    [userType.COTTAGE_OWNER] :  getCottageProfile,
+    [userType.INSTRUCTOR] :  getShipProfile,
+    [userType.SHIP_OWNER]: getShipProfile
+  }
+
+  function getCottageProfile(offer){
+      return (
+        <MediaCard offer={offer}></MediaCard>
+      );
+  }
+
+  function getShipProfile(offer){
+    return (
+      <MediaCardShip offer={offer}></MediaCardShip>
+    );
+}
     useEffect(() => {
         async function setcottageData() {
           let username = getUsernameFromToken();
@@ -33,29 +50,30 @@ export default function Album(){
        
     }, [])
     if(albumData){
-      if(role === userType.COTTAGE_OWNER){
+      
         return(<Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {albumData.map((offer) => (
               console.log(offer),
               <Grid item key={offer} xs={12} sm={6} md={4}>
-                <MediaCard offer={offer}></MediaCard>
+                {getOfferProfileByRole[getRoleFromToken()](offer)}
+                
               </Grid>
             ))}
           </Grid>
         </Container>);
-      }else if(role === userType.SHIP_OWNER){
-        return(<Container sx={{ py: 8 }} maxWidth="md">
-          <Grid container spacing={4}>
-            {albumData.map((offer) => (
-              console.log(offer),
-              <Grid item key={offer} xs={12} sm={6} md={4}>
-                <MediaCardShip offer={offer}></MediaCardShip>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>);
-      }
+      // }else if(role === userType.SHIP_OWNER){
+      //   return(<Container sx={{ py: 8 }} maxWidth="md">
+      //     <Grid container spacing={4}>
+      //       {albumData.map((offer) => (
+      //         console.log(offer),
+      //         <Grid item key={offer} xs={12} sm={6} md={4}>
+      //           <MediaCardShip offer={offer}></MediaCardShip>
+      //         </Grid>
+      //       ))}
+      //     </Grid>
+      //   </Container>);
+      // }
       
     }
     

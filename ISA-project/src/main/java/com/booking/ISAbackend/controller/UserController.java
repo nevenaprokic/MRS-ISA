@@ -105,15 +105,14 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("changeOwnerData")
-	public ResponseEntity<String> changeOwnerData(@RequestBody NewOwnerDataDTO newData){
+	@PostMapping("change-instructor-data")
+	public ResponseEntity<String> changeOwnerData(@RequestBody InstructorNewDataDTO newData){
 		try{
-			userService.changeOwnerData(newData);
+			userService.changeInstrctorData(newData);
 			return ResponseEntity.ok("Successfully changed you data");
 		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
 			e.printStackTrace();
 			return ResponseEntity.status(400).body(e.getMessage());
-
 		}
 	}
 
@@ -137,4 +136,17 @@ public class UserController {
 				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 	}
+
+	@PostMapping("change-admin-data")
+	public ResponseEntity<String> changeAdminData(@RequestBody UserProfileData newData){
+		try{
+			userService.changeAdminData(newData);
+			return ResponseEntity.ok("Successfully changed you data");
+		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
+			e.printStackTrace();
+			return ResponseEntity.status(400).body(e.getMessage());
+		}
+	}
+
+
 }
