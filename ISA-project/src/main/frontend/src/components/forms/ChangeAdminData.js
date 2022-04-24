@@ -75,7 +75,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="firstName"
                   id="firstName"
-                 
+                  defaultValue={currentAdminData.firstName}
                    
                    />
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
@@ -85,7 +85,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="lastName"
                   id="lastName"
-                  
+                  defaultValue={currentAdminData.lastName}
                    />
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
                 
@@ -94,7 +94,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  
+                  defaultValue={currentAdminData.phoneNumber}
                   />
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
                 
@@ -103,7 +103,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="street"
                   id="street"
-                  
+                  defaultValue={currentAdminData.street}
                   />
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
                 
@@ -112,7 +112,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="city"
                   id="city"
-                  
+                  defaultValue={currentAdminData.city}
                    />
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
                 
@@ -121,7 +121,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="state"
                   id="state"
-                  
+                  defaultValue={currentAdminData.state}
                   />
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 
