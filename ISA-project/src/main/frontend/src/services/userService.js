@@ -14,6 +14,22 @@ export const userType = {
 
 Object.freeze(userType);
 
+export const offerType = {
+    ADVENTURE: 1,
+    COTTAGE: 2 ,
+    SHIP: 3
+}
+
+Object.freeze(offerType);
+
+export const offerTypeByUserType = {
+    INSTRUCTOR: offerType.ADVENTURE,
+    COTTAGE_OWNER: offerType.COTTAGE ,
+    SHIP_OWNER: offerType.SHIP
+}
+
+Object.freeze(offerTypeByUserType);
+
 
 export function getInstructorByUsername(username){
     return api

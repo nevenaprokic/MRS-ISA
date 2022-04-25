@@ -1,5 +1,6 @@
 
-$content_width: 50%;
+$content_width: 100%;
+$profile_page_width: 50%;
 $light: #FEF5ED;
 $middleGreen: hsl(110, 17%, 71%);
 $darkGrrenGray: #5f6d5f;
@@ -7,12 +8,28 @@ $darkGreen: #99A799;
 $orange :#CC7351;
 $paleGreen: #dae0d2;
 
+.adventureProfile{
+    width: $profile_page_width;
+    margin-top: 2%;
+    margin-left: 50%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
+    border-radius: 20px;
+    transform: translateX(-50%);
+    margin-bottom: 7%;
+    border: solid medium $middleGreen;
+    background-color: white;
+
+}
 
 .specialOffersContainer{
     border: solid medium $darkGreen;
     border-radius: 25px;
     max-width: 90%;
     margin-left: 5%;
+    background-color: white;
 }
 
 .headerContainer{
@@ -23,8 +40,9 @@ $paleGreen: #dae0d2;
     margin-left: 5%;
     display: inline-block;
     vertical-align: middle;
-    width: 70%;
+    width: 65%;
     font-size: 30px;
+    color: $orange;
 }
 
 .changeBtn{
@@ -36,13 +54,11 @@ $paleGreen: #dae0d2;
 
 .profileContainer{
     width: $content_width;
-    margin-top: 2%;
     margin-left: 50%;
-    padding: 1%;
     border-radius: 5%;
     transform: translateX(-50%);
     margin-bottom: 7%;
-    
+
 }
 
 .rightImageBox{
@@ -63,8 +79,6 @@ $paleGreen: #dae0d2;
     padding: 1%;
     max-height: 160px;
     overflow: auto;
-
-
 }
 
 .scolledItemsContainer{
@@ -148,7 +162,7 @@ $paleGreen: #dae0d2;
 .basicInfoContainer{
     border-radius: 25px;
     border: solid medium #99A799;
-    max-width: 80%;
+    max-width: 87%;
     margin-left: 10%;
     margin-top: 5%;
     padding: 20px;
@@ -156,13 +170,14 @@ $paleGreen: #dae0d2;
     max-height: 500px;
     overflow: auto;
     min-height: 300px;
+    background-color: white;
 }
 
 .aditioanlInfoContainer{
 
     border-radius: 25px;
     border: solid medium #99A799;
-    max-width: 80%;
+    max-width: 87%;
     margin-left: 3%;
     margin-top: 5%;
     padding: 20px;
@@ -170,6 +185,7 @@ $paleGreen: #dae0d2;
     max-height: 500px;
     overflow: auto;
     min-height: 300px;
+    background-color: white;
 }
 
 .basicBoxItemText{
@@ -236,7 +252,7 @@ $paleGreen: #dae0d2;
     max-width: 90%;
     margin-left: 5%;
     padding: 3%;
-    max-width: 85%;
+    background-color: white;
 }
 
 .basePrice{
@@ -247,4 +263,10 @@ $paleGreen: #dae0d2;
     margin-left: 2%;
 }
 
+.closeProfileBtn{
+    font-size: 30px;
+    color: #CC7351;
+    width: 5%;
+    float: right;
+}
  

@@ -12,7 +12,9 @@ import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePag
 import {getRoleFromToken} from '../../app/jwtTokenUtils';
 import { useState } from "react";
 import Modal from '@mui/material/Modal';
-import { userType } from "../../services/userService";
+import { userType, offerTypeByUserType, offerType} from "../../services/userService";
+import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
+import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
 
 
 const secondaryTheme = createTheme({
@@ -37,10 +39,23 @@ export default function MediaCard({ offer }) {
 
 
   let imag = require("../images/no-image.png");
-  console.log(offer.photos[0]);
+  console.log("SSS", offer);
   if(offer.photos.length != 0){
     console.log(require("/src/components/images/" + offer.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
+  }
+
+  const modalOfferComponent = (offerStr, offerId) =>{
+    switch (offerStr){
+      case offerType.ADVENTURE:
+        return ( <AdventureProfilePage id={offerId} close={handleClose}/>);
+      case offerType.COTTAGE: 
+        return ( <CottageProfilePage id={offerId} close={handleClose}/>);
+      case offerType.SHIP:
+        return ( <ShipProfilePage id={offerId} close={handleClose}/>);
+      default:
+        return (<div>Undefined offer type</div>);
+    }
   }
 
   
@@ -50,7 +65,7 @@ export default function MediaCard({ offer }) {
         <CardMedia component="img" height="140" image={imag} alt="slike" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" color="primary">
-            {offer.name}
+            {!!offer.name ? offer.name : offer.offerName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <p className="descriptionContainer"> {offer.description} </p>     
@@ -62,7 +77,7 @@ export default function MediaCard({ offer }) {
             variant="contained"
             bgcolor="secondary"
             color="primary"
-            onClick={handleOpenPass}
+            onClick={handleOpen}
           >
             View
           </Button>
@@ -71,9 +86,9 @@ export default function MediaCard({ offer }) {
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
-              sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+              sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
           >
-                  <CottageProfilePage id={offer.id} close={handleClosePass}/>
+                  {modalOfferComponent(offerTypeByUserType[getRoleFromToken()], offer.id)}
               
           </Modal>
         </CardActions>
