@@ -71,13 +71,14 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                         id="offerName"
                         label="Offer name" 
                         fullWidth 
-                        defaultValue={currentAdventureData.offerName}            
+                        defaultValue={currentAdventureData.offerName}
+                        {...register("offerName", {required:true})}            
                     />
+                    {errors.offerName && <label className="requiredLabel">Name can't be empty!</label>}
                 </Grid>
 
                 <Grid item xs={12} sm={6} >
                 <TextField
-                    
                     id="peopleNum"
                     label="Maximum nuber of people"
                     type="number"
@@ -86,7 +87,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     }}
                     fullWidth
                     defaultValue={currentAdventureData.peopleNum} 
+                    {...register("peopleNum", {required:true, pattern:/^[1-9]+[0-9]*$/})}
                 />
+                {errors.peopleNum && <label className="requiredLabel">Only positive numbers are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                 <TextField 
@@ -98,8 +101,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     startAdornment: <InputAdornment position="end">€</InputAdornment>,
                     }}
                     defaultValue={currentAdventureData.price}
-                    
+                    {...register("price", {required:true, pattern:/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/})}
                 />
+                {errors.price && <label className="requiredLabel">Only numbers with a maximum of two decimal places are allowed</label>}
                 </Grid>
                 
 
@@ -110,7 +114,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     label="Street"
                     fullWidth  
                     defaultValue={currentAdventureData.street}
+                    {...register("street", {required:true, pattern:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/})}
                     />
+                    {errors.street && <label className="requiredLabel">Only letters, numbers and spaces are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <TextField
@@ -119,7 +125,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     label="City"
                     fullWidth
                     defaultValue={currentAdventureData.city}
+                    {...register("city", {required:true,pattern:/^[a-zA-Z\s]*$/})}
                     />
+                     {errors.city && <label className="requiredLabel">Only letters and spaces are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <TextField
@@ -128,7 +136,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     label="State"
                     fullWidth
                     defaultValue={currentAdventureData.state}
+                    {...register("state", {required:true, pattern:/^[a-zA-Z\s]*$/})}
                     />
+                    {errors.state && <label className="requiredLabel">Only letters and spaces are allowed</label>}
                 </Grid>    
                 <Grid item xs={12}>
                     <TextField
@@ -138,7 +148,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     rows={4}
                     fullWidth
                     defaultValue={currentAdventureData.description}
+                    {...register("description", {required:true})}
                     />
+                    {errors.description && <label className="requiredLabel">Description can't be empty</label>}
                     </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -148,6 +160,7 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     rows={4}
                     fullWidth
                     defaultValue={currentAdventureData.rulesOfConduct}
+                    {...register("rulesOfConduct")}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -158,6 +171,7 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     rows={4}
                     fullWidth
                     defaultValue={currentAdventureData.additionalEquipment}
+                    {...register("additionalEquipment")}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -174,7 +188,9 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     rows={3}
                     fullWidth
                     defaultValue={currentAdventureData.cancelationConditions}
+                    {...register("cancelationConditions", {required:true})}
                     />
+                    {errors.cancelationConditions && <label className="requiredLabel">Cancellation conditions can't be empty</label>}
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{marginLeft:"35%"}}>
                     <Button 

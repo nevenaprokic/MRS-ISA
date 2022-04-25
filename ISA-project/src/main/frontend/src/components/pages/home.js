@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import {getCottageByCottageOwnerEmail} from '../../services/CottageService';
 import { useState, useEffect } from 'react';
 import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils";
-import { userType } from "../../services/userService";
+import { userType, offerTypeByUserType} from "../../services/userService";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
 import {getShipByShipOwnerEmail} from '../../services/ShipService';
 import MediaCardShip from '../layout/MediaCardShip';
@@ -49,12 +49,13 @@ export default function Album(){
        
     }, [])
 
+   
     if(albumData){     
         return(<Container sx={{ py: 8}} maxWidth="md" >
           <Grid container spacing={4}>
             {albumData.map((offer) => (
               <Grid item key={offer} xs={12} sm={6} md={4}>
-                <MediaCard offer={offer}/>           
+                <MediaCard offer={offer} offerT={offerTypeByUserType[getRoleFromToken()]}/>           
               </Grid>
             ))}
           </Grid>

@@ -24,7 +24,7 @@ const secondaryTheme = createTheme({
   },
 });
 
-export default function MediaCard({ offer }) {
+export default function MediaCard({ offer, offerT }) {
 
 
   const [clientData, setClientData] = useState();
@@ -58,7 +58,6 @@ export default function MediaCard({ offer }) {
     }
   }
 
-  
   return (
     <ThemeProvider theme={secondaryTheme}>
       <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
@@ -88,7 +87,7 @@ export default function MediaCard({ offer }) {
               aria-describedby="modal-modal-description"
               sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
           >
-                  {modalOfferComponent(offerTypeByUserType[getRoleFromToken()], offer.id)}
+                  {modalOfferComponent(offerT, offer.id)}
               
           </Modal>
         </CardActions>
