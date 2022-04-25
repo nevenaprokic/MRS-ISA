@@ -13,4 +13,5 @@ public interface ShipService {
     List<Ship> findShipByShipOwnerEmail(String email);
     Ship findShipById(Integer id);
     Address findAddressByShipId(Integer id);
+    public List<Ship> searchShips(String name, Integer maxPeople, String address, Double price);
 }
