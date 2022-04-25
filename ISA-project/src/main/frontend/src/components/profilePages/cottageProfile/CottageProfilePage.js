@@ -55,8 +55,8 @@ function CottageProfilePage({ id, close }) {
     });
     return (
       <div className="changeDataContainer" id="changeDataContainer">
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+      <ThemeProvider theme={theme} minWidth="700px">
+        <Container component="main" sx={{width:"100%"}}>
           <Box
             sx={{
               marginTop: 0,

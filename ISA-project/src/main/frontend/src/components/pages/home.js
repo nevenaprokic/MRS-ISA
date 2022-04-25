@@ -49,31 +49,17 @@ export default function Album(){
       setcottageData();
        
     }, [])
-    if(albumData){
-      
+    if(albumData){     
         return(<Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {albumData.map((offer) => (
               console.log(offer),
               <Grid item key={offer} xs={12} sm={6} md={4}>
-                {getOfferProfileByRole[getRoleFromToken()](offer)}
-                
+                {getOfferProfileByRole[getRoleFromToken()](offer)}               
               </Grid>
             ))}
           </Grid>
         </Container>);
-      // }else if(role === userType.SHIP_OWNER){
-      //   return(<Container sx={{ py: 8 }} maxWidth="md">
-      //     <Grid container spacing={4}>
-      //       {albumData.map((offer) => (
-      //         console.log(offer),
-      //         <Grid item key={offer} xs={12} sm={6} md={4}>
-      //           <MediaCardShip offer={offer}></MediaCardShip>
-      //         </Grid>
-      //       ))}
-      //     </Grid>
-      //   </Container>);
-      // }
       
     }
     

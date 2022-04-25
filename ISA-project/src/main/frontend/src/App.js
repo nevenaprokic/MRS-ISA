@@ -13,6 +13,7 @@ import ClientProfile from './components/profilePages/ClientProfile';
 import CottageOwnerHomePage from './components/homePages/CottageOwnerHomePage';
 import MainNavigation from './components/layout/MainNavigation';
 import CottageProfilePage from './components/profilePages/cottageProfile/CottageProfilePage';
+import AdventureProfilePage from './components/profilePages/adventureProfile/AdvetureProfilePage';
 import ClientHomePage from './components/homePages/ClientHomePage';
 import ChangePassword from './components/forms/ChangePassword';
 import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
@@ -38,6 +39,8 @@ function App() {
           <Route path='/registration/registration-client' element={<RegistrationClient/>}/>
           <Route path='/owner/change-data' element={<ChangeOwnerData/>}/>
           <Route path='/change-password' element={<ChangePassword/>}/>
+          <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
+          <Route path="/instructor/adventure-profile/:id" element={<AdventureProfilePage />}/>
           <Route path='/user-profile/ship-owner' element={<ShipOwnerHomePage/>}/>
           <Route path='/user-home-page/admin' element={<AdminHomePage />}/>
           <Route path='/user-profile/admin' element={<AdminProfile />}/>
