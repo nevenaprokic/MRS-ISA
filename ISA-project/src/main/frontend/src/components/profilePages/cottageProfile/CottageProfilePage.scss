@@ -1,12 +1,28 @@
 
 $content_width: 100%;
+$profile_page_width: 50%;
 $light: #FEF5ED;
 $middleGreen: hsl(110, 17%, 71%);
 $darkGrrenGray: #5f6d5f;
 $darkGreen: #99A799;
 $orange :#CC7351;
 $paleGreen: #dae0d2;
+$pale:#F8FBF7;
 
+.cottageProfile{
+    width: $profile_page_width;
+    margin-top: 2%;
+    margin-left: 50%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
+    border-radius: 20px;
+    transform: translateX(-50%);
+    margin-bottom: 7%;
+    border: solid medium $middleGreen;
+    background-color: white;
+}
 
 .specialOffersContainer{
     border: solid medium $darkGreen;

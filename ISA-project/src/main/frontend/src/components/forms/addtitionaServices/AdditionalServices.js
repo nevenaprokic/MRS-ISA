@@ -66,8 +66,8 @@ function AdditionalServices({inputList, setInputList, errors, registerForm}){
             </Grid>
             <Grid item xs={12} sm={2}>
               {inputList.length !== 1 && <IconButton aria-label="delete" size="large" onClick={() => handleRemoveClick(i)}><DeleteIcon sx={{ fontSize: 30 }}/></IconButton>}
-              
-              {inputList.length - 1 === i && <IconButton aria-label="delete" size="large" onClick={() => handleAddClick(i)}><AddCircleIcon sx={{ color: green[500], fontSize: 35 }}/></IconButton>}
+
+              {inputList.length - 1 === i && <IconButton aria-label="delete" size="large" onClick={() => handleAddClick(i)}><AddCircleIcon sx={{ color: "#CC7351", fontSize: 35 }}/></IconButton>}
               
             </Grid>
             </>

@@ -32,7 +32,6 @@ const theme = createTheme({
 
 function CottageProfilePage({ id, close }) {
   //let id = useParams();
-  console.log("da");
 
   const [cottageData, setCottageData] = useState();
 
@@ -54,45 +53,22 @@ function CottageProfilePage({ id, close }) {
       images.push(imag);
     });
     return (
-      <div className="changeDataContainer" id="changeDataContainer">
+      <div className="cottageProfile" id="changeDataContainer">
       <ThemeProvider theme={theme} minWidth="700px">
-        <Container component="main" sx={{width:"100%"}}>
-          <Box
-            sx={{
-              marginTop: 0,
-              display: "inline",
-              flexDirection: "column",
-              alignItems: "center",
-              marginLeft: -5,
-              width: "120%",
-            }}
-          >
-            <div className="header">
-              <div className="tittle">
-                <Typography
-                  component="h1"
-                  variant="h5"
-                  sx={{ color: "#CC7351" }}
-                >
-                  
-                </Typography>
-              </div>
-              <div className="closeBtn">
-                <Button size="large" sx={{}} onClick={() => close()}>
-                  x
-                </Button>
-              </div>
-            </div>
-            <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <div className="profileContainer">
+      <div className="profileContainer">
+                <div className="closeProfileBtn">
+                    <Button size="large" sx={{}} onClick={() => close()}>
+                    x
+                    </Button>
+                </div>
                 <div className="headerContainer">
-                  <h2 className="adventureTittle">{cottageData.name}</h2>
-                    <div className="changeBtn">
-                    <Button variant="contained">Change info</Button>
+                    <h2 className="adventureTittle">{cottageData.name}</h2>
+                    <div className="changeBtn" >
+                        <Button variant="contained">Change info</Button>
                     </div>
                 </div>
-
+                
+           
                 <ImagesBox images={images} />
                 <QuickActionBox id={cottageData.id} />
                 <Grid container xs={12}>
@@ -104,12 +80,9 @@ function CottageProfilePage({ id, close }) {
                   </Grid>
                 </Grid>
                 <PriceList basicPrice={cottageData.price} />
-              </div>
-              </Grid>
-            </Box>
-          </Box>
-        </Container>
+            </div>
       </ThemeProvider>
+      
       </div>
     );
   }
