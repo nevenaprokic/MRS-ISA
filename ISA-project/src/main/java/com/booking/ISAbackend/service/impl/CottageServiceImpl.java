@@ -33,6 +33,7 @@ public class CottageServiceImpl implements CottageService {
     public Cottage findCottageById(Integer id) {
         return  cottageRepository.findCottageById(id);
     }
+
     @Override
     public Address findAddressByCottageId(Integer id){
         Cottage cottage = cottageRepository.findCottageById(id);

@@ -4,6 +4,7 @@ import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.model.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShipDTO {
@@ -40,13 +41,14 @@ public class ShipDTO {
         this.motorPower = motorPower;
         this.maxSpeed = maxSpeed;
         this.navigationEquipment = navigationEquipment;
-        this. additionalEquipment = additionalEquipment;
+        this.additionalEquipment = additionalEquipment;
 
     }
 
     public ShipDTO() {
 
     }
+
     public Integer getId() {return id;}
 
     public String getName() {

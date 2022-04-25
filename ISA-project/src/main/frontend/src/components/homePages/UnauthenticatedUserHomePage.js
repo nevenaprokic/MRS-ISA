@@ -13,6 +13,7 @@ import MainNavigation from '../layout/MainNavigation';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
+import { offerType } from "../../services/userService";
 import ClientProfile from '../profilePages/ClientProfile';
 import Grid from '@mui/material/Grid';
 import Album from '../pages/home';
@@ -118,7 +119,7 @@ export default function UnauthenticatedUserHomePage() {
                               <Search params={params} setParams={setParams} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
-                      <OfferList type="cottage" offers={offers} setOffers={setOffers} />
+                      <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
@@ -130,7 +131,7 @@ export default function UnauthenticatedUserHomePage() {
                               <Search/>
                           </Grid>
                         </Box>
-                      <Album/>
+                        <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 <TabPanel value={value} index={4}>
@@ -142,7 +143,6 @@ export default function UnauthenticatedUserHomePage() {
                               <Search/>
                           </Grid>
                         </Box>
-                      <Album/>
                 </TabPanel>
 
                 </Box>
