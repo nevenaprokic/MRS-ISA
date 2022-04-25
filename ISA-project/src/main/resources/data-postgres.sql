@@ -144,12 +144,12 @@ insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pe
 -- insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (2, true, 'sava@gmail.com', 'Sava', 'Urosevic', '$2a$10$/6BuFPptMiQChPXx4GbDX.iVVpwXH9EMSVrAcbF3ZSjdt/JDMX826', '124899', 1, false);/*admin1*/
 -- insert  into admin(id) values (11);
 --
--- /*ADDITIONAL SERVICES*/
--- insert into additional_service(name,price) values ('dorucak', 200);
--- insert into additional_service(name,price) values ('rucak', 500);
--- insert into additional_service(name,price) values ('klima', 500);
--- insert into additional_service(name,price) values ('vecera', 300);
--- insert into additional_service(name,price) values ('fen', 80);
+/*ADDITIONAL SERVICES*/
+insert into additional_service(name,price) values ('dorucak', 200);
+insert into additional_service(name,price) values ('rucak', 500);
+insert into additional_service(name,price) values ('klima', 500);
+insert into additional_service(name,price) values ('vecera', 300);
+insert into additional_service(name,price) values ('fen', 80);
 --
 --
 -- /*COTTAGE*/
@@ -202,9 +202,9 @@ insert into photo(path) values('brvnara1.jpg');
 insert into photo(path) values('brvnara2.jpg');
 insert into photo(path) values('original.jpg');
 
--- /*QUICK RESERVATION*/
--- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
--- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
+/*QUICK RESERVATION*/
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',7);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',7);
 --
 -- /*REGISTRATION REQUEST*/sz
 --
@@ -221,9 +221,9 @@ insert into photo(path) values('original.jpg');
 --
 --
 -- /*OFFER ADDITIONAL SERVICES*/
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,1);
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,2);
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,3);
+insert into offer_additional_services(offer_id,additional_services_id) values (7,1);
+insert into offer_additional_services(offer_id,additional_services_id) values (7,2);
+insert into offer_additional_services(offer_id,additional_services_id) values (7,3);
 -- insert into offer_additional_services(offer_id,additional_services_id) values (2,3);
 -- insert into offer_additional_services(offer_id,additional_services_id) values (3,1);
 -- insert into offer_additional_services(offer_id,additional_services_id) values (3,4);
@@ -235,8 +235,8 @@ insert into photo(path) values('original.jpg');
 -- insert into offer_additional_services(offer_id,additional_services_id) values (9,2);
 --
 /*OFFER PHOTO*/
-insert into offer_photos(offer_id,photos_id) values (9,1);
-insert into offer_photos(offer_id,photos_id) values (5,2);
+insert into offer_photos(offer_id,photos_id) values (7,1);
+insert into offer_photos(offer_id,photos_id) values (7,2);
 insert into offer_photos(offer_id,photos_id) values (2,3);
 insert into offer_photos(offer_id,photos_id) values (2,4);
 insert into offer_photos(offer_id,photos_id) values (1,5);

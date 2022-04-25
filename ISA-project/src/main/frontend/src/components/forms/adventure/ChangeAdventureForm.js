@@ -9,14 +9,12 @@ import AdditionalServices from '../addtitionaServices/AdditionalServices';
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
-import { addAdventure } from "../../../services/userService";
-import { CssBaseline } from "@mui/material";
-import MainNavigationHome from "../../layout/MainNavigationHome";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect } from "react";
 
 //NAPRAVITI PRAZNE FORME ZA IZMENU SLIKA I ADITIONAL SERVICA ILI PROBATI POVEZATI SA POSTOJECIM
 
-function ChangeAdventureForm({currrentAdventureData, closeForm}){
+function ChangeAdventureForm({currentAdventureData, closeForm}){
 
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
     const [additionalServicesInputList, setInputList] = useState([{ serviceName: "", servicePrice: "" }]);
@@ -33,13 +31,25 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
     const onSubmit = (data) => {
         data["photos"] = pictureInputList;
         data["additionalServices"] = additionalServicesInputList;
-        console.log(data);
+        console.log("SUBMIT", data);
         // addAdventure(data);
         // setSubmitForm(true);
         //alert("Successfully added new adventure!"); //ovde kasnije zameniti sa lepsim popup-om
       }
 
-    
+    useEffect(() => {
+        async function setCurrentData(){
+            let images = [];
+            currentAdventureData.photos.forEach(photo => {
+                let path = require("/src/components/images/" + photo);
+                images.push(path);
+            });
+            pictureSetInputList(images);
+            setInputList(currentAdventureData.additionalServices);
+        }
+        setCurrentData();
+
+    }, []);
   
     return (
         <ThemeProvider theme={theme}>
@@ -61,8 +71,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                         id="offerName"
                         label="Offer name" 
                         fullWidth 
-                        defaultValue=""
-                                    
+                        defaultValue={currentAdventureData.offerName}            
                     />
                 </Grid>
 
@@ -76,6 +85,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     shrink: true,
                     }}
                     fullWidth
+                    defaultValue={currentAdventureData.peopleNum} 
                 />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -87,6 +97,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     InputProps={{
                     startAdornment: <InputAdornment position="end">€</InputAdornment>,
                     }}
+                    defaultValue={currentAdventureData.price}
                     
                 />
                 </Grid>
@@ -98,6 +109,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="street"
                     label="Street"
                     fullWidth  
+                    defaultValue={currentAdventureData.street}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -106,6 +118,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="city"
                     label="City"
                     fullWidth
+                    defaultValue={currentAdventureData.city}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -114,6 +127,7 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="state"
                     label="State"
                     fullWidth
+                    defaultValue={currentAdventureData.state}
                     />
                 </Grid>    
                 <Grid item xs={12}>
@@ -122,8 +136,8 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Description"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.description}
                     />
                     </Grid>
                 <Grid item xs={12}>
@@ -132,8 +146,8 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Rules of conduct"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.rulesOfConduct}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -142,8 +156,8 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Additional Equipment"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.additionalEquipment}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -158,8 +172,8 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Cancellation conditions"
                     multiline
                     rows={3}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.cancelationConditions}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{marginLeft:"35%"}}>

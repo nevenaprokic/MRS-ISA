@@ -40,18 +40,26 @@ function AdventureProfilePage({id, close}){
     useEffect(() => {
         async function getAdventureData(){
             let adventure = await getAdventureById(id);
-            console.log("OVDE", adventure);
             setAdventureData(!!adventure ? adventure.data : {});
             
             return adventure;
         } 
         getAdventureData();
     }, []);
+
+    let images = [];
+
+    function setImages(){
+        adventureData.photos.forEach(photo => {
+            let img = {image: require("/src/components/images/" + photo)};
+            images.push(img);
+        });
+    }
  
     return( 
         !!adventureData && 
         <div className="adventureProfile">
-           
+           { setImages()}
         <ThemeProvider theme={theme}>
             <div className="profileContainer">
                 <div className="closeProfileBtn">
@@ -72,11 +80,11 @@ function AdventureProfilePage({id, close}){
                     aria-describedby="modal-modal-description"
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
                 >
-                        <ChangeAdventureForm currrentAdventureData={adventureData} closeForm={handleCloseForm}/>
+                        <ChangeAdventureForm currentAdventureData={adventureData} closeForm={handleCloseForm}/>
                     
                 </Modal>
                 
-                <ImagesBox images={adventureData.photos}/>
+                <ImagesBox images={images}/>
                 <QuickActionBox inputList={adventureData.photos}/> {/*ovde proslediti listu akcija kad se dobavi*/}
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >
