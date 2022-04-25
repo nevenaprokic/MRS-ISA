@@ -12,7 +12,8 @@ import Modal from "@mui/material/Modal";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
 import Image from "./Image";
 import { useEffect } from 'react';
-import {getMarkByOfferId, images} from '../../services/MarkService';
+import {getMarkByOfferId} from '../../services/MarkService';
+import Rating from '@mui/material/Rating';
 
 
 const secondaryTheme = createTheme({
@@ -62,8 +63,7 @@ export default function MediaCard({ offer }) {
             </Typography>
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offer.description} </p>
-              <p>
-                Mark: <Image src={images[markData]} alt="mark" />
+              <p> <Rating name="read-only" value={markData} readOnly />
               </p>
             </Typography>
           </CardContent>

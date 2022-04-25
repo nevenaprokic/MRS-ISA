@@ -11,8 +11,8 @@ import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePag
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
 import { useEffect } from 'react';
-import {getMarkByOfferId, images} from '../../services/MarkService';
-import Image from "./Image";
+import {getMarkByOfferId} from '../../services/MarkService';
+import Rating from '@mui/material/Rating';
 
 const secondaryTheme = createTheme({
   palette: {
@@ -66,7 +66,7 @@ export default function MediaCard({ offer }) {
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offer.description} </p>
               <p>
-                Mark: <Image src={images[markData]} alt="mark" />
+              <Rating name="read-only" value={markData} readOnly />
               </p>
             </Typography>
           </CardContent>

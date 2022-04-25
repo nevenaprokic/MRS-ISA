@@ -13,9 +13,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
 import { getShipById } from "../../../services/ShipService";
-import {getMarkByOfferId, images} from '../../../services/MarkService';
-import Image from "../../layout/Image";
+import {getMarkByOfferId} from '../../../services/MarkService';
 import Divider from '@mui/material/Divider';
+import Rating from '@mui/material/Rating';
 
 const theme = createTheme({
   palette: {
@@ -96,7 +96,7 @@ function ShipProfilePage({ id, close }) {
                   </div>
                   <Divider/>
                   <div className="mark">
-                  <Image src={images[markData]} alt="mark" />
+                  <Rating name="read-only" value={markData} readOnly />
                   </div>
                 </div>
 

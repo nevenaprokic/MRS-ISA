@@ -3,19 +3,19 @@ import { Grid, Box, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import * as React from "react";
-import { useParams } from "react-router-dom";
 import { getCottageById } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
 import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
-import image1 from "../../images/img1.jpg";
-import image2 from "../../images/img2.jpg";
 import ImagesBox from "./ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
+import {getMarkByOfferId} from '../../../services/MarkService';
+import Rating from '@mui/material/Rating';
+import Divider from '@mui/material/Divider';
 
 const theme = createTheme({
   palette: {
@@ -43,8 +43,19 @@ function CottageProfilePage({ id, close }) {
     }
     setcottageData();
   }, []);
+
+  const [markData, setMarkData] = useState();
+  useEffect(() => {
+    async function setData() {
+      const markData = await getMarkByOfferId(id);
+      setMarkData(markData.data ? markData.data : "0");
+      return markData.data;
+    }
+    setData();
+  }, []);
+
   let images = [];
-  if (cottageData) {
+  if (cottageData && markData) {
     console.log("la");
     console.log(cottageData.price);
     cottageData.photos.forEach((photo) => {
@@ -88,6 +99,10 @@ function CottageProfilePage({ id, close }) {
                   <h2 className="adventureTittle">{cottageData.name}</h2>
                   <div className="changeBtn">
                     <Button variant="contained">Change info</Button>
+                  </div>
+                  <Divider/>
+                  <div className="mark">
+                  <Rating name="read-only" value={markData} readOnly />
                   </div>
                 </div>
 
