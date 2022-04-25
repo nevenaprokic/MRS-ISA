@@ -61,14 +61,30 @@ export default function UnauthenticatedUserHomePage() {
     const [offers, setOffers] = useState();
 
     const [params, setParams] = useState({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
         name: "",
         address: "",
         maxPeople: -1,
-        price: -1
+        price: -1,
     });
+
+    const resetParams = () => {
+      setParams({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        name: "",
+        address: "",
+        maxPeople: -1,
+        price: -1,
+    });
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
+      resetParams();
     };
   
     const outerTheme = createTheme({
@@ -116,7 +132,7 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search params={params} setParams={setParams} offers={offers} setOffers={setOffers} />
+                              <Search params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
@@ -128,7 +144,7 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                              <Search params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers}/>
                           </Grid>
                         </Box>
                         <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} />
@@ -140,7 +156,7 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                          <Search params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers}/>
                           </Grid>
                         </Box>
                 </TabPanel>

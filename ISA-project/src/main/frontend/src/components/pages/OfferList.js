@@ -12,7 +12,7 @@ export default function OfferList({type, offers, setOffers}) {
     let getOffers = {
       [offerType.COTTAGE] : getCottages,
       [offerType.SHIP] : getShips,
-      [offerType.INSTRUCTOR] : getInstructors
+      [offerType.ADVENTURE] : getInstructors
     };
 
     useEffect(() => {

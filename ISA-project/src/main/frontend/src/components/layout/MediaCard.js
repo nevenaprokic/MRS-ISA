@@ -39,7 +39,6 @@ export default function MediaCard({ offer, offerT }) {
 
 
   let imag = require("../images/no-image.png");
-  console.log("SSS", offer);
   if(offer.photos.length != 0){
     console.log(require("/src/components/images/" + offer.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
