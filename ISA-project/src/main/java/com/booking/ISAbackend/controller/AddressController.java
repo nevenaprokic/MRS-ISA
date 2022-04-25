@@ -5,6 +5,7 @@ package com.booking.ISAbackend.controller;
 import com.booking.ISAbackend.dto.AddressDTO;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.service.CottageService;
+import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddressController {
 
     @Autowired
-    private CottageService cottageService;
+    private OfferService offerService;
 
     @GetMapping("getAddressInfo")
     @Transactional
-    public ResponseEntity<AddressDTO> getAddressInfo(@RequestParam String idCottage){
+    public ResponseEntity<AddressDTO> getAddressInfo(@RequestParam String id){
         try{
-            Address address = cottageService.findAddressByCottageId(Integer.parseInt(idCottage));
+            Address address = offerService.findAddressByOfferId(Integer.parseInt(id));
 
             if(address == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 

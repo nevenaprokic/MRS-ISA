@@ -8,10 +8,12 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import '../../style/MediaCard.scss';
-import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
-import { getAdventureById } from "../../services/AdventureService";
+import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePage";
+import {getRoleFromToken} from '../../app/jwtTokenUtils';
+import { useState } from "react";
+import Modal from '@mui/material/Modal';
 import { userType } from "../../services/userService";
-import { getRoleFromToken } from "../../app/jwtTokenUtils";
+
 
 const secondaryTheme = createTheme({
   palette: {
@@ -20,43 +22,27 @@ const secondaryTheme = createTheme({
   },
 });
 
-
-
 export default function MediaCard({ offer }) {
-  let navigate = useNavigate();
-  
-  const handleVIew = function(){
-    openAdventurePage("aa");
- 
-
-  }
 
 
-  function routeChange(nesto){
-    let path = `/cottage-owner/cottage-profile/`+ offer.id;
-    navigate(path, {
-      params: { cottageObj: offer }
-    });
-  };
+  const [clientData, setClientData] = useState();
 
-  function openAdventurePage(nesto){
-   let path = `/instructor/adventure-profile/`+ offer.id;
-    navigate(path, {
-      params: { adventureObj: offer }
-    });
-  }
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  let offersOptions = {
-    [userType.CLIENT]:  "", //funkcija za klijenta
-    [userType.INSTRUCTOR]: openAdventurePage,
-    [userType.COTTAGE_OWNER]: routeChange
-  }
+  const handleOpenPass = () => setOpen(true);
+  const handleClosePass = () => setOpen(false);
+
+
 
   let imag = require("../images/no-image.png");
-  console.log(offer.photos);
+  console.log(offer.photos[0]);
   if(offer.photos.length != 0){
+    console.log(require("/src/components/images/" + offer.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
   }
+
   
   return (
     <ThemeProvider theme={secondaryTheme}>
@@ -76,10 +62,20 @@ export default function MediaCard({ offer }) {
             variant="contained"
             bgcolor="secondary"
             color="primary"
-            onClick={handleVIew}
+            onClick={handleOpenPass}
           >
             View
           </Button>
+          <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+          >
+                  <CottageProfilePage id={offer.id} close={handleClosePass}/>
+              
+          </Modal>
         </CardActions>
       </Card>
     </ThemeProvider>

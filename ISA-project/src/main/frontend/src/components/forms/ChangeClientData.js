@@ -101,7 +101,13 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   defaultValue={currentClientData.phoneNumber}
                    {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
-                {errors.phoneNumber && <label className="errorLabel">Only numbers are allowed!</label>}
+                {errors.phoneNumber && <p className="errorLabel">Allowed phone number formats:<br/> '###-###-*####'  <br/>
+                                                                                                    '(###) ###-####'   <br/>
+                                                                                                    '### ### ####'  <br/>
+                                                                                                    '###.###.####'  <br/> 
+                                                                                                    '+## (###) ###-####' <br/> 
+                                                                                                    '##########' <br/>
+                                                                                                  </p>}
               </FormControl>   
               <FormControl variant="standard" sx={{ m: 1, mt: 3, width: '25ch' }}>
                   <Input 

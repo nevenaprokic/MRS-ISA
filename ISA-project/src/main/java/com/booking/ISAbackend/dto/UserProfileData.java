@@ -23,6 +23,9 @@ public class UserProfileData {
         this.city = city;
         this.state = state;
     }
+    public UserProfileData(){
+
+    }
 
     public String getEmail() {
         return email;

@@ -10,11 +10,12 @@ import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MainNavigationHome from '../layout/MainNavigationHome';
-import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import ClientProfile from '../profilePages/ClientProfile';
+import Grid from '@mui/material/Grid';
+import Album from '../pages/home';
 
 
 function TabPanel(props) {
@@ -89,7 +90,7 @@ export default function ClientHomePage() {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     textColor='primary'  indicatorColor="primary"
-                    sx={{ borderRight: 1, borderColor: 'divider' }}
+                    sx={{ borderRight: 1, borderColor: 'divider', minWidth:"20%" }}
                 >
                     <Tab label="Home page" {...a11yProps(0)} />
                     <Divider />
@@ -132,6 +133,15 @@ export default function ClientHomePage() {
                 </TabPanel>
                 <TabPanel value={value} index={6}>
                   {/* <ReservationHistory></ReservationHistory> */}
+                  <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <Search/>
+                          </Grid>
+                        </Box>
+                      <Album/>
                 </TabPanel>
                 </Box>
             </Container>

@@ -7,14 +7,16 @@ import { useParams } from "react-router-dom";
 import { getCottageById } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
-import BasicCottageInfoBox from "./BasicCottageInfoBox";
+import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
 import image1 from "../../images/img1.jpg";
 import image2 from "../../images/img2.jpg";
 import ImagesBox from "./ImagesBox";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import '../../../style/OfferData.scss';
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
-import { getAdventureById } from "../../../services/AdventureService";
 import { userType } from "../../../services/userService";
 
 const theme = createTheme({
@@ -28,55 +30,87 @@ const theme = createTheme({
   },
 });
 
-function CottageProfilePage() {
-  let id = useParams();
+function CottageProfilePage({ id, close }) {
+  //let id = useParams();
+  console.log("da");
 
-  let offersOptions = {
-    [userType.CLIENT]:  "", //funkcija za klijenta
-    [userType.INSTRUCTOR]: getAdventureById,
-    [userType.COTTAGE_OWNER]: getCottageById
-  }
-
-  const [offerData, setCottageData] = useState();
+  const [cottageData, setCottageData] = useState();
 
   useEffect(() => {
     async function setcottageData() {
-      let offer = await offersOptions[getRoleFromToken()](id.id);
-      setCottageData(!!offer ? offer.data : {});
+      let cottage = await getCottageById(id);
+      setCottageData(!!cottage ? cottage.data : {});
 
-      return offer;
+      return cottage;
     }
     setcottageData();
   }, []);
   let images = [];
-  if (offerData) {
-    offerData.photos.forEach((photo) => {
+  if (cottageData) {
+    console.log("la");
+    console.log(cottageData.price);
+    cottageData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);
     });
     return (
-      <ThemeProvider theme={theme}>
-        <div className="profileContainer">
-          <div className="headerContainer">
-            <h2 className="adventureTittle">{offerData.name}</h2>
-            <div className="changeBtn">
-              <Button variant="contained">Change info</Button>
+      <div className="changeDataContainer" id="changeDataContainer">
+      <ThemeProvider theme={theme} minWidth="700px">
+        <Container component="main" sx={{width:"100%"}}>
+          <Box
+            sx={{
+              marginTop: 0,
+              display: "inline",
+              flexDirection: "column",
+              alignItems: "center",
+              marginLeft: -5,
+              width: "120%",
+            }}
+          >
+            <div className="header">
+              <div className="tittle">
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  sx={{ color: "#CC7351" }}
+                >
+                  
+                </Typography>
+              </div>
+              <div className="closeBtn">
+                <Button size="large" sx={{}} onClick={() => close()}>
+                  x
+                </Button>
+              </div>
             </div>
-          </div>
+            <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <div className="profileContainer">
+                <div className="headerContainer">
+                  <h2 className="adventureTittle">{cottageData.name}</h2>
+                    <div className="changeBtn">
+                    <Button variant="contained">Change info</Button>
+                    </div>
+                </div>
 
-          <ImagesBox images={images} />
-          <QuickActionBox id={offerData.id} />
-          <Grid container xs={12}>
-            <Grid item xs={12} sm={6}>
-              <BasicCottageInfoBox basicInfo={offerData} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <AdditionalDescriptionBox additionData={offerData} />
-            </Grid>
-          </Grid>
-          <PriceList basicPrice={offerData.price} />
-        </div>
+                <ImagesBox images={images} />
+                <QuickActionBox id={cottageData.id} />
+                <Grid container xs={12}>
+                  <Grid item xs={12} sm={6}>
+                    <BasicCottageInfoBox basicInfo={cottageData} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <AdditionalDescriptionBox additionData={cottageData} />
+                  </Grid>
+                </Grid>
+                <PriceList basicPrice={cottageData.price} />
+              </div>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
       </ThemeProvider>
+      </div>
     );
   }
 }

@@ -4,19 +4,21 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import profileIcon from '../images/user-profile.png'
+import profileIcon from '../images/profile.png'
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import BasicInfoBox from "./BasicInfoBox";
 import AddressInfoBox from "./AddressInfoBox";
 import AdditionalinfoBox from "./AdditionalInfoBox";
 import SettingsIcon from '@mui/icons-material/Settings';
-import { getRoleFromToken, getUsernameFromToken } from '../../app/jwtTokenUtils';
-import { getInstructorByUsername, getCottageOwnerByUsername } from "../../services/userService";
+import { getUsernameFromToken, getRoleFromToken } from '../../app/jwtTokenUtils';
+import { getInstructorByUsername, getCottageOwnerByUsername, getShipOwnerByUsername } from "../../services/userService";
 import { useState, useEffect } from 'react';
 import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { userType } from "../../services/userService";
+import Biography from "./Biography";
 
 
 function OwnerProfile(){
@@ -37,38 +39,70 @@ function OwnerProfile(){
     const [ownerData, setOwnerData] = useState();
     const [open, setOpen] = useState(false);
 
+    let getOfferByOwnerEmail = {
+        [userType.COTTAGE_OWNER] :  getCottageOwnerByUsername,
+        [userType.INSTRUCTOR] :  getInstructorByUsername,
+        [userType.SHIP_OWNER]: getShipOwnerByUsername
+      }
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    useEffect(() => {
-        async function setownerData() {
-        let username = getUsernameFromToken();
-        let role = getRoleFromToken();
-        let requestData = null;
-        if(role == "COTTAGE_OWNER"){
-            requestData = await getCottageOwnerByUsername(username);
-        }else if(role == "INSTRUCTOR"){
-            requestData = await getInstructorByUsername(username);
+    const childToParent = (childData) => {
+        if(getRoleFromToken() === userType.INSTRUCTOR){
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+                ["biography"]: childData.biography,
+
+            })
+            );
         }
-        setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
-        console.log(ownerData);
+        else{
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+
+            })
+            );
+        }
+        
+      }
+      
+
+    useEffect(() => {
+        async function setData() {
+            let username = getUsernameFromToken();
+            let role = getRoleFromToken();
+            let requestData = await getOfferByOwnerEmail[role](username);
+            setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
 
         return requestData;    
     }
-       setownerData();
+       setData();
        
     }, [])
 
 
 
-    if(!! ownerData){
+    if(ownerData){
         return(
             <div className="ownerprofileContainer">
 
-            <Grid container component="main" sx={{ height: '100vh' }}> 
+            <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%' }}> 
                 <CssBaseline />
                 <Grid item xs={12} sm={5}>
-                    <img src={profileIcon} width="40%"></img>
+                    <img src={profileIcon} width="60%"></img>
                 </Grid>
 
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
@@ -79,6 +113,8 @@ function OwnerProfile(){
                     <LockIcon/>
                     <br/><br/>
                     <SettingsIcon/>
+                    <br/><br/>
+                    <DeleteIcon/>
                 </Grid>
                       
                 <Grid item xs={12} sm={4}>
@@ -88,6 +124,8 @@ function OwnerProfile(){
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
+                            <br/><br/>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
                             
                     </Typography>         
                 </Grid>
@@ -99,15 +137,15 @@ function OwnerProfile(){
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
                 >
                     
-                        <ChangeOwnerData currentOwnerData={ownerData}/>
+                        <ChangeOwnerData currentOwnerData={ownerData} close={handleClose} childToParent={childToParent}/>
                     
                 </Modal>
         
                 <AddressInfoBox addressData={ownerData}/>
                 
                 <Grid xs={12} sm={5}/>
-                <AdditionalinfoBox additionalDate={ownerData}/>
-                
+
+                 <AdditionalinfoBox additionalDate={ownerData}/>
 
             </Grid>
         </div>

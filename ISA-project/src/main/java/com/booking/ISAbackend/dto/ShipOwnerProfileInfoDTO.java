@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.dto;
 
-public class CottageOwnerProfileInfo {
+public class ShipOwnerProfileInfoDTO {
     private String email;
     private String firstName;
     private String lastName;
@@ -10,7 +10,7 @@ public class CottageOwnerProfileInfo {
     private String state;
     private String userCategory;
 
-    public CottageOwnerProfileInfo(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory) {
+    public ShipOwnerProfileInfoDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,7 +20,7 @@ public class CottageOwnerProfileInfo {
         this.state = state;
         this.userCategory = userCategory;
     }
-    public CottageOwnerProfileInfo(){}
+    public ShipOwnerProfileInfoDTO(){}
 
     public String getEmail() {
         return email;

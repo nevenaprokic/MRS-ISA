@@ -16,6 +16,11 @@ import CottageProfilePage from './components/profilePages/cottageProfile/Cottage
 import AdventureProfilePage from './components/profilePages/adventureProfile/AdvetureProfilePage';
 import ClientHomePage from './components/homePages/ClientHomePage';
 import ChangePassword from './components/forms/ChangePassword';
+import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
+import AdminHomePage from './components/homePages/AdminHomePage';
+import AdminProfile from './components/profilePages/AdminProfile';
+import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
+
 
 function App() {
   return (
@@ -36,7 +41,10 @@ function App() {
           <Route path='/change-password' element={<ChangePassword/>}/>
           <Route path="/cottage-owner/cottage-profile/:id" element={<CottageProfilePage />}/>
           <Route path="/instructor/adventure-profile/:id" element={<AdventureProfilePage />}/>
-
+          <Route path='/user-profile/ship-owner' element={<ShipOwnerHomePage/>}/>
+          <Route path='/user-home-page/admin' element={<AdminHomePage />}/>
+          <Route path='/user-profile/admin' element={<AdminProfile />}/>
+          <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
         </Routes>
     </div>
   );

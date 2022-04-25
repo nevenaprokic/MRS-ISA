@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.dto.OwnerRegistrationRequest;
+import com.booking.ISAbackend.dto.OwnerRegistrationRequestDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.MyUser;
@@ -23,7 +23,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
     UserServiceImpl userService;
 
     @Override
-    public boolean save(OwnerRegistrationRequest request) throws InvalidAddressException, InvalidEmail, InvalidCredential, InvalidPhoneNumber, InvalidPasswordException {
+    public boolean save(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidEmail, InvalidCredential, InvalidPhoneNumber, InvalidPasswordException {
         MyUser myUser =  userService.findByEmail(request.getEmail());
         if(validateRequest(request)) {
             if(myUser == null) {
@@ -37,7 +37,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         return false;
 
     }
-    private boolean validateRequest(OwnerRegistrationRequest request) throws InvalidAddressException, InvalidPasswordException, InvalidEmail, InvalidCredential, InvalidPhoneNumber {
+    private boolean validateRequest(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidPasswordException, InvalidEmail, InvalidCredential, InvalidPhoneNumber {
         boolean validationResult = Validator.isValidAdress(request.getStreet(), request.getCity(), request.getState())
                 && Validator.isMachPassword(request.getPassword(), request.getConfirmPassword())
                 && Validator.isValidEmail(request.getEmail())

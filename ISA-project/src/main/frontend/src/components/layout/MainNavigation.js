@@ -10,8 +10,9 @@ function MainNavigation(){
         <div className={classes.logo}></div>
         <nav>
             <ul>
+                <li><Link to='/home-page/unauth-user'>Search entities</Link></li> 
                 <li><Link to='/registration'>Sign up</Link></li>
-                <li><Link to='/log-in'>Log in</Link></li> 
+                <li><Link to='/log-in'>Log in</Link></li>
             </ul>
         </nav>
     </header>
