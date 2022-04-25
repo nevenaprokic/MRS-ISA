@@ -14,6 +14,22 @@ export const userType = {
 
 Object.freeze(userType);
 
+export const offerType = {
+    ADVENTURE: 1,
+    COTTAGE: 2 ,
+    SHIP: 3
+}
+
+Object.freeze(offerType);
+
+export const offerTypeByUserType = {
+    INSTRUCTOR: offerType.ADVENTURE,
+    COTTAGE_OWNER: offerType.COTTAGE ,
+    SHIP_OWNER: offerType.SHIP
+}
+
+Object.freeze(offerTypeByUserType);
+
 
 export function getInstructorByUsername(username){
     return api
@@ -74,7 +90,18 @@ export function changeOwnerData(newOwnerData){
     .post("/changeOwnerData", newOwnerData)
     .then((responseData) => {
                 alert(responseData.data); 
-                window.location = "/user-profile/instructor"})
+                })
+    .catch((err) => alert(err.data));
+}
+
+export function changeInstructorData(newOwnerData){
+    let email = getUsernameFromToken();
+    newOwnerData["email"] = email;
+    api
+    .post("/change-instructor-data", newOwnerData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
     .catch((err) => alert(err.data));
 }
 
@@ -102,4 +129,17 @@ export function getInstructors(){
             return err.message;
         });
 }
+
+export function changeAdminData(newAdminData){
+    let email = getUsernameFromToken();
+    newAdminData["email"] = email;
+    api
+    .post("/change-admin-data", newAdminData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
+    .catch((err) => alert(err.data));
+}
+
+
 

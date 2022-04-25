@@ -12,7 +12,7 @@ import MediaCardShip from '../layout/MediaCardShip';
 
 
 export default function Album(){
-  const [albumData, setCottageData] = useState();
+  const [albumData, setAlbumeData] = useState();
   let role = getRoleFromToken();
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER] :  getCottageByCottageOwnerEmail,
@@ -20,42 +20,45 @@ export default function Album(){
     [userType.SHIP_OWNER]: getShipByShipOwnerEmail
   }
   
+//   let getOfferProfileByRole = {
+//     [userType.COTTAGE_OWNER] :  getCottageProfile,
+//     [userType.INSTRUCTOR] :  getShipProfile,
+//     [userType.SHIP_OWNER]: getShipProfile
+//   }
+
+//   function getCottageProfile(offer){
+//       return (
+//         <MediaCard offer={offer}></MediaCard>
+//       );
+//   }
+
+//   function getShipProfile(offer){
+//     return (
+//       <MediaCardShip offer={offer}></MediaCardShip>
+//     );
+// }
     useEffect(() => {
-        async function setcottageData() {
+        async function getOfferData() {
           let username = getUsernameFromToken();
           const offersData = await getOfferByOwnerEmail[role](username);
-          console.log(offersData);
-          setCottageData(!!offersData ? offersData.data : {});     
+          setAlbumeData(!!offersData ? offersData.data : {});     
 
         return offersData;    
     }
-      setcottageData();
+    getOfferData();
        
     }, [])
-    if(albumData){
-      if(role === userType.COTTAGE_OWNER){
-        return(<Container sx={{ py: 8 }} maxWidth="md">
+
+    if(albumData){     
+        return(<Container sx={{ py: 8}} maxWidth="md" >
           <Grid container spacing={4}>
             {albumData.map((offer) => (
-              console.log(offer),
               <Grid item key={offer} xs={12} sm={6} md={4}>
-                <MediaCard offer={offer}></MediaCard>
+                <MediaCard offer={offer}/>           
               </Grid>
             ))}
           </Grid>
         </Container>);
-      }else if(role === userType.SHIP_OWNER){
-        return(<Container sx={{ py: 8 }} maxWidth="md">
-          <Grid container spacing={4}>
-            {albumData.map((offer) => (
-              console.log(offer),
-              <Grid item key={offer} xs={12} sm={6} md={4}>
-                <MediaCardShip offer={offer}></MediaCardShip>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>);
-      }
       
     }
     

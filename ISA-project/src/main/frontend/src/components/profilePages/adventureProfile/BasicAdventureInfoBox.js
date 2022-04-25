@@ -1,5 +1,5 @@
 import { Grid, Box, Button} from "@mui/material";
-import "./CottageProfilePage.scss";
+import "./AdventureProfilePage.scss" ;
 import HomeIcon from '@mui/icons-material/Home';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import HotelIcon from '@mui/icons-material/Hotel';
@@ -8,11 +8,9 @@ import ArticleIcon from '@mui/icons-material/Article';
 import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from "@emotion/react";
+import { useState } from "react";
 import ReadMoreReact from 'read-more-react';
 import ShowMoreText from "react-show-more-text";
-import {getAddressByCottageId} from '../../../services/AddressService';
-import * as React from 'react';
-import { useState, useEffect } from 'react';
 
 const theme = createTheme({
     palette: {
@@ -25,32 +23,14 @@ const theme = createTheme({
     },
   });
 
-  let shownTextlength = 250; //maksimalna velicina stringa za prvi prikaz
+  
   
   function executeOnClick(isExpanded) {
         console.log(isExpanded);
     }
 
-
-
-
-
 function BasicAdventureInfiBox({basicInfo}){
-
-    const [addressData, setAddressData] = useState();
-  
-    useEffect(() => {
-        async function setData() {
-        let address = await getAddressByCottageId(basicInfo.id);
-        setAddressData(!!address ? address.data : {});   
-
-        return address;    
-    }
-      setData();
-       
-    }, [])
-    if(addressData){
-        return (
+    return (
         
             <div className="basicInfoContainer">
                  <div>
@@ -59,35 +39,43 @@ function BasicAdventureInfiBox({basicInfo}){
                         <HomeIcon color="action"/>
                     </div>
                     <label className="basicBoxItemTitle">Address: </label>
-                    <label className="basicBoxItemText">{addressData.street}, {addressData.city}, {addressData.state}</label>
-                </div>
-                <div>
-        
-                    <div className="basicBoxItem">
-                        <MeetingRoom color="action"/>
-                    </div>
-                    <label className="basicBoxItemTitle">Rooms number: </label>
-                    <label className="basicBoxItemText">{basicInfo.roomNumber}</label>
-                </div>
-                <div>
-        
-                    <div className="basicBoxItem">
-                        <HotelIcon color="action"/>
-                    </div>
-                    <label className="basicBoxItemTitle">Beds number: </label>
-                    <label className="basicBoxItemText">{basicInfo.bedNumber}</label>
+                    <label className="basicBoxItemText">{basicInfo.street}, {basicInfo.city}, {basicInfo.state}</label>
                 </div>
                 <div>
         
                     <div className="basicBoxItem">
                         <ArticleIcon color="action"/>
                     </div>
-                    <label className="basicBoxItemTitle">Description: </label>
+                    <label className="basicBoxItemTitle">Additional Equipment: </label>
 
                     <div className="descriptionText">
                         <ShowMoreText
                         
-                            lines={7}
+                            lines={3}
+                            more="Show more"
+                            less="Show less"
+                            className="content-css"
+                            anchorClass="my-anchor-css-class"
+                            onClick={executeOnClick}
+                            expanded={false}
+                            width={280}
+                            truncatedEndingComponent={"... "}
+                        >
+                            {basicInfo.additionalEquipment}
+                        </ShowMoreText>
+                    </div>
+                </div>
+
+                <div>
+        
+                    <div className="basicBoxItem">
+                        <ArticleIcon color="action"/>
+                    </div>
+                    <label className="basicBoxItemTitle">Description: </label>
+                    <div className="descriptionText">
+                        <ShowMoreText
+                        
+                            lines={4}
                             more="Show more"
                             less="Show less"
                             className="content-css"
@@ -111,8 +99,6 @@ function BasicAdventureInfiBox({basicInfo}){
 
     );
 
-    }
-    
 }
 
 export default BasicAdventureInfiBox;

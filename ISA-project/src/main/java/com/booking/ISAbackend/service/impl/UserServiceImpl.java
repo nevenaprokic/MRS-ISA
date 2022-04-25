@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import com.booking.ISAbackend.dto.InstructorNewDataDTO;
 import com.booking.ISAbackend.dto.NewOwnerDataDTO;
 import com.booking.ISAbackend.dto.UserProfileData;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
@@ -39,6 +40,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AddressRepository addressRepository;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -90,6 +94,31 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional
+	public void changeAdminData(UserProfileData newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		boolean validation = validateUserNewData(newData);
+		if (validation){
+			Admin admin = (Admin) userRepository.findByEmail(newData.getEmail());
+			admin.setFirstName(newData.getFirstName());
+			admin.setLastName(newData.getLastName());
+			admin.setPhoneNumber(newData.getPhoneNumber());
+			Address newAddress = new Address(newData.getStreet(), newData.getCity(), newData.getState());
+			addressRepository.save(newAddress);
+			admin.setAddress(newAddress);
+			userRepository.save(admin);
+		}
+
+	}
+
+	private boolean validateUserNewData(UserProfileData newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		return  Validator.onlyLetterAndSpacesValidation(newData.getFirstName()) &&
+				Validator.onlyLetterAndSpacesValidation(newData.getLastName()) &&
+				Validator.phoneNumberValidation(newData.getPhoneNumber()) &&
+				Validator.isValidAdress(newData.getStreet(), newData.getCity(),newData.getState());
+
+	}
+
+	@Override
 	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		MyUser currentUser = userRepository.findByEmail(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
@@ -106,61 +135,76 @@ public class UserServiceImpl implements UserService{
 	public void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		Instructor instructor = findInstructorByEmail(newData.getEmail());
 		Address address = instructor.getAddress();
-		if(instructor != null){
-			if(!newData.getFirstName().equals("")){
-				if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
-					instructor.setFirstName(newData.getFirstName());
-				}
+		if(!newData.getFirstName().equals("")){
+			if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
+				instructor.setFirstName(newData.getFirstName());
 			}
-			if(!newData.getLastName().equals("")){
-				if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){
-					instructor.setLastName(newData.getLastName());
-				}
-
-			}
-			if(!newData.getPhoneNumber().equals("")){
-				if(Validator.phoneNumberValidation(newData.getPhoneNumber())){
-					instructor.setPhoneNumber(newData.getPhoneNumber());
-				}
-
-
-			}
-			if(!newData.getStreet().equals("")){
-				if(Validator.isValidAdress(newData.getStreet(), address.getCity(), address.getState()))
-				{
-					address.setStreet(newData.getStreet());
-				}
-
-			}
-			if(!newData.getCity().equals("")){
-				if(Validator.isValidAdress(address.getStreet(), newData.getCity(), address.getState()))
-				{
-					address.setCity(newData.getCity());
-				}
-
-
-			}
-			if(!newData.getState().equals("")){
-				if(Validator.isValidAdress(address.getStreet(), address.getCity(), newData.getState())) {
-					address.setState(newData.getState());
-				}
-
-			}
-			if(!newData.getBiography().equals("")){
-				instructor.setBiography(newData.getBiography());
-
-			}
-		instructorRepository.save(instructor);
 		}
+		if(!newData.getLastName().equals("")){
+			if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){
+				instructor.setLastName(newData.getLastName());
+			}
+
+		}
+		if(!newData.getPhoneNumber().equals("")){
+			if(Validator.phoneNumberValidation(newData.getPhoneNumber())){
+				instructor.setPhoneNumber(newData.getPhoneNumber());
+			}
+
+
+		}
+		if(!newData.getStreet().equals("")){
+			if(Validator.isValidAdress(newData.getStreet(), address.getCity(), address.getState()))
+			{
+				address.setStreet(newData.getStreet());
+			}
+
+		}
+		if(!newData.getCity().equals("")){
+			if(Validator.isValidAdress(address.getStreet(), newData.getCity(), address.getState()))
+			{
+				address.setCity(newData.getCity());
+			}
+
+
+		}
+		if(!newData.getState().equals("")){
+			if(Validator.isValidAdress(address.getStreet(), address.getCity(), newData.getState())) {
+				address.setState(newData.getState());
+			}
+
+		}
+		if(!newData.getBiography().equals("")){
+			instructor.setBiography(newData.getBiography());
+
+		}
+		instructorRepository.save(instructor);
 
 	}
 
-	private boolean newOwnerDatValidation(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
-		boolean validation = Validator.phoneNumberValidation(newData.getPhoneNumber()) &&
+	@Override
+	public void changeInstrctorData(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		UserProfileData data = new UserProfileData(newData.getEmail(), newData.getFirstName(), newData.getLastName(), newData.getPhoneNumber(),
+				newData.getStreet(), newData.getCity(), newData.getState());
+		boolean validation = validateUserNewData(data);
+		if(validation){
+			Instructor instructor = findInstructorByEmail(newData.getEmail());
+			instructor.setFirstName(newData.getFirstName());
+			instructor.setLastName(newData.getLastName());
+			instructor.setPhoneNumber(newData.getPhoneNumber());
+			Address newAddress = new Address(newData.getStreet(), newData.getCity(), newData.getState());
+			addressRepository.save(newAddress);
+			instructor.setAddress(newAddress);
+			userRepository.save(instructor);
+		}
+	}
+
+	private boolean instructorDataValidation(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		return  Validator.phoneNumberValidation(newData.getPhoneNumber()) &&
 				Validator.onlyLetterAndSpacesValidation(newData.getFirstName()) &&
 				Validator.onlyLetterAndSpacesValidation(newData.getLastName()) &&
 				Validator.isValidAdress(newData.getStreet(), newData.getCity(), newData.getStreet());
-		return validation;
+
 
 	}
 

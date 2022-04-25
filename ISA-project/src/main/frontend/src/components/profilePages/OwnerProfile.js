@@ -48,12 +48,44 @@ function OwnerProfile(){
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const childToParent = (childData) => {
+        if(getRoleFromToken() === userType.INSTRUCTOR){
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+                ["biography"]: childData.biography,
+
+            })
+            );
+        }
+        else{
+            setOwnerData(prevState => ({
+                ...prevState,
+                ["firstName"]: childData.firstName,
+                ["lastName"]: childData.lastName,
+                ["phoneNumber"]: childData.phoneNumber,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+
+            })
+            );
+        }
+        
+      }
+      
+
     useEffect(() => {
         async function setData() {
-        let username = getUsernameFromToken();
-        let role = getRoleFromToken();
-        let requestData = await getOfferByOwnerEmail[role](username);
-        setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
+            let username = getUsernameFromToken();
+            let role = getRoleFromToken();
+            let requestData = await getOfferByOwnerEmail[role](username);
+            setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
 
         return requestData;    
     }
@@ -91,7 +123,7 @@ function OwnerProfile(){
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Change private data</Button>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
                             
@@ -105,7 +137,7 @@ function OwnerProfile(){
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
                 >
                     
-                        <ChangeOwnerData currentOwnerData={ownerData}/>
+                        <ChangeOwnerData currentOwnerData={ownerData} close={handleClose} childToParent={childToParent}/>
                     
                 </Modal>
         
