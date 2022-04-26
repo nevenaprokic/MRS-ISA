@@ -1,11 +1,7 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
-import com.booking.ISAbackend.model.Cottage;
-import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.model.Ship;
-import com.booking.ISAbackend.service.MarkService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,11 +29,7 @@ public class ShipController {
             List<Ship> ships = shipService.findShipByShipOwnerEmail(email);
             List<ShipDTO> dto = new ArrayList<>();
             for (Ship ship : ships) {
-                ShipDTO shipDTO = new ShipDTO(ship.getId(), ship.getName(), ship.getDescription(),
-                        ship.getPrice(), getPhoto(ship), ship.getNumberOfPerson(), ship.getRulesOfConduct(),
-                        ship.getCancellationConditions(), ship.getType(), ship.getSize(), ship.getMotorNumber(),
-                        ship.getMotorPower(), ship.getMaxSpeed(), ship.getNavigationEquipment(),
-                        ship.getAdditionalEquipment());
+                ShipDTO shipDTO = new ShipDTO(ship);
                 dto.add(shipDTO);
             }
             return ResponseEntity.ok(dto);
@@ -53,24 +45,29 @@ public class ShipController {
 
             if(ship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            ShipDTO shipDTO = new ShipDTO(ship.getId(),ship.getName(), ship.getDescription(),
-                    ship.getPrice(), getPhoto(ship), ship.getNumberOfPerson(), ship.getRulesOfConduct(),
-                    ship.getCancellationConditions(), ship.getType(), ship.getSize(), ship.getMotorNumber(),
-                    ship.getMotorPower(), ship.getMaxSpeed(), ship.getNavigationEquipment(),
-                    ship.getAdditionalEquipment());
+            ShipDTO shipDTO = new ShipDTO(ship);
             return  ResponseEntity.ok(shipDTO);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
-
-
-    private List<String> getPhoto(Ship ship){
-        List<String> photos = new ArrayList<>();
-        for(Photo p: ship.getPhotos()){
-            photos.add(p.getPath());
+    @GetMapping("searchShipByShipOwner")
+    @Transactional
+    public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
+        try{
+            List<Ship> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
+            List<ShipDTO> dto = new ArrayList<>();
+            for(Ship s: ships){
+                ShipDTO shipDTO = new ShipDTO(s);
+                dto.add(shipDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return photos;
     }
+
+
+
 }

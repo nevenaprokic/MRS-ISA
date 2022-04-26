@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import { searchCottages, searchCottagesByCottageOwner } from '../../../services/CottageService';
-import { searchShips } from '../../../services/ShipService';
+import { searchShips, searchShipByShipOwner } from '../../../services/ShipService';
 import { offerType, searchInstructors } from '../../../services/userService';
 
 
@@ -16,7 +16,8 @@ export default function Search({params, setParams, type, setOffers}){
         [offerType.COTTAGE] :  searchCottages,
         [offerType.SHIP]: searchShips,
         [offerType.ADVENTURE] :  searchInstructors,
-        [offerType.COTTAGE_OWNER] : searchCottagesByCottageOwner
+        [offerType.COTTAGE_OWNER] : searchCottagesByCottageOwner,
+        [offerType.SHIP_OWNER] : searchShipByShipOwner
   }
 
     return(

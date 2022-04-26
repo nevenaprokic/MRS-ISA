@@ -77,7 +77,6 @@ export default function CottageOwnerHomePage() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log("da")
     resetParams();
   };
 
