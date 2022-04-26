@@ -6,15 +6,20 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import '../../style/MediaCard.scss';
+import "../../style/MediaCard.scss";
 import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePage";
-import {getRoleFromToken} from '../../app/jwtTokenUtils';
 import { useState } from "react";
+
+import Modal from "@mui/material/Modal";
+import { useEffect } from 'react';
+import {getMarkByOfferId} from '../../services/MarkService';
+import Rating from '@mui/material/Rating';
+
 import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../services/userService";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
+
 
 
 const secondaryTheme = createTheme({
@@ -25,8 +30,7 @@ const secondaryTheme = createTheme({
 });
 
 export default function MediaCard({ offer }) {
-
-
+  const [open, setOpen] = useState(false);
   const [clientData, setClientData] = useState();
 
   const [open, setOpen] = useState(false);
@@ -36,16 +40,13 @@ export default function MediaCard({ offer }) {
   const handleOpenPass = () => setOpen(true);
   const handleClosePass = () => setOpen(false);
 
-
+ 
 
   let imag = require("../images/no-image.png");
-  console.log("SSS", offer);
   if(offer.photos.length != 0){
-    console.log(require("/src/components/images/" + offer.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
   }
-
-  const modalOfferComponent = (offerStr, offerId) =>{
+const modalOfferComponent = (offerStr, offerId) =>{
     switch (offerStr){
       case offerType.ADVENTURE:
         return ( <AdventureProfilePage id={offerId} close={handleClose}/>);
@@ -58,8 +59,17 @@ export default function MediaCard({ offer }) {
     }
   }
 
-  
-  return (
+  const [markData, setMarkData] = useState();
+  useEffect(() => {
+    async function setData() {
+      const markData = await getMarkByOfferId(offer.id);
+      setMarkData(markData.data ? markData.data : "0");
+      return markData.data;
+    }
+    setData();
+  }, []);
+  if (markData) {
+   return (
     <ThemeProvider theme={secondaryTheme}>
       <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
         <CardMedia component="img" height="140" image={imag} alt="slike" />
@@ -95,4 +105,5 @@ export default function MediaCard({ offer }) {
       </Card>
     </ThemeProvider>
   );
+  
 }

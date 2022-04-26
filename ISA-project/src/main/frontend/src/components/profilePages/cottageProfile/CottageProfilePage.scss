@@ -36,18 +36,28 @@ $pale:#F8FBF7;
 }
 
 .adventureTittle{
-    margin-left: 5%;
+    margin-left: 2%;
     display: inline-block;
     vertical-align: middle;
-    width: 70%;
+    width: 60%;
     font-size: 30px;
+    margin: 1%;
 }
 
 .changeBtn{
     display: inline-block;
     vertical-align: middle;
-    width: 20%;
-    margin-left: 5%;
+    width: 21%;
+    margin-left: 17%;
+    margin-right: 0%;
+}
+.mark{
+    display: inline-block;
+    vertical-align: middle;
+    width: 40%;
+    height: 40%;
+    margin-left: 2%;
+    margin-top: 2%;
 }
 
 .profileContainer{
@@ -105,10 +115,7 @@ $pale:#F8FBF7;
 .tittle{
     margin-left: 0%;
     font-size: 25px;
-   font-weight: bold;
- 
-
-    
+   font-weight: bold; 
 }
 
 .priceItem{

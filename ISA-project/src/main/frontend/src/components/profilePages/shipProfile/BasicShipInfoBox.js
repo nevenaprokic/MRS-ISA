@@ -55,7 +55,7 @@ function BasicShipInfoBox({basicInfo}){
                     <div className="basicBoxItem">
                         <PersonIcon color="action"/>
                     </div>
-                    <label className="basicBoxItemTitle">Number of person: </label>
+                    <label className="basicBoxItemTitle">Number of passengers: </label>
                     <label className="basicBoxItemText">{basicInfo.numberOfPerson}</label>
                 </div>
                 <div>

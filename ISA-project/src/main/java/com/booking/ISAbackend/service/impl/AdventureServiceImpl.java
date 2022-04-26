@@ -120,7 +120,7 @@ public class AdventureServiceImpl implements AdventureService {
         List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
         for (AdditionalService service: a.getAdditionalServices()
              ) {
-            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getName(), String.valueOf(service.getPrice()));
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getName(), service.getPrice());
             additionalServiceDTOList.add(dto);
         }
         return  additionalServiceDTOList;

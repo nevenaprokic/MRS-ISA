@@ -5,6 +5,7 @@ import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.model.Ship;
+import com.booking.ISAbackend.service.MarkService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +25,15 @@ public class ShipController {
     @Autowired
     private ShipService shipService;
 
+
     @GetMapping("getShips")
     @Transactional
-    public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email){
-        try{
+    public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
+        try {
             List<Ship> ships = shipService.findShipByShipOwnerEmail(email);
             List<ShipDTO> dto = new ArrayList<>();
-            for(Ship ship: ships){
-                ShipDTO shipDTO = new ShipDTO(ship.getId(),ship.getName(), ship.getDescription(),
+            for (Ship ship : ships) {
+                ShipDTO shipDTO = new ShipDTO(ship.getId(), ship.getName(), ship.getDescription(),
                         ship.getPrice(), getPhoto(ship), ship.getNumberOfPerson(), ship.getRulesOfConduct(),
                         ship.getCancellationConditions(), ship.getType(), ship.getSize(), ship.getMotorNumber(),
                         ship.getMotorPower(), ship.getMaxSpeed(), ship.getNavigationEquipment(),
@@ -39,11 +41,10 @@ public class ShipController {
                 dto.add(shipDTO);
             }
             return ResponseEntity.ok(dto);
-        }catch  (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    //getShipInfo
     @GetMapping("getShipInfo")
     @Transactional
     public ResponseEntity<ShipDTO> getShipInfo(@RequestParam String idShip){
@@ -63,6 +64,7 @@ public class ShipController {
         }
 
     }
+
 
     private List<String> getPhoto(Ship ship){
         List<String> photos = new ArrayList<>();

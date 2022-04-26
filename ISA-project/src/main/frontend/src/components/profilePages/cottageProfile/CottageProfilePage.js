@@ -3,21 +3,22 @@ import { Grid, Box, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import * as React from "react";
-import { useParams } from "react-router-dom";
 import { getCottageById } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
 import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
-import image1 from "../../images/img1.jpg";
-import image2 from "../../images/img2.jpg";
 import ImagesBox from "./ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
+import {getMarkByOfferId} from '../../../services/MarkService';
+import Rating from '@mui/material/Rating';
+import Divider from '@mui/material/Divider';
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../services/userService";
+
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,6 @@ const theme = createTheme({
 });
 
 function CottageProfilePage({ id, close }) {
-  //let id = useParams();
 
   const [cottageData, setCottageData] = useState();
 
@@ -44,10 +44,19 @@ function CottageProfilePage({ id, close }) {
     }
     setcottageData();
   }, []);
+
+  const [markData, setMarkData] = useState();
+  useEffect(() => {
+    async function setData() {
+      const markData = await getMarkByOfferId(id);
+      setMarkData(markData.data ? markData.data : "0");
+      return markData.data;
+    }
+    setData();
+  }, []);
+
   let images = [];
-  if (cottageData) {
-    console.log("la");
-    console.log(cottageData.price);
+  if (cottageData && markData) {
     cottageData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);
@@ -62,10 +71,14 @@ function CottageProfilePage({ id, close }) {
                     </Button>
                 </div>
                 <div className="headerContainer">
-                    <h2 className="adventureTittle">{cottageData.name}</h2>
-                    <div className="changeBtn" >
-                        <Button variant="contained">Change info</Button>
-                    </div>
+                  <h2 className="adventureTittle">{cottageData.name}</h2>
+                  <div className="changeBtn">
+                    <Button variant="contained">Change info</Button>
+                  </div>
+                  <Divider/>
+                  <div className="mark">
+                  <Rating name="read-only" value={markData} readOnly />
+                  </div>
                 </div>
                 
            
@@ -79,8 +92,12 @@ function CottageProfilePage({ id, close }) {
                     <AdditionalDescriptionBox additionData={cottageData} />
                   </Grid>
                 </Grid>
-                <PriceList basicPrice={cottageData.price} />
-            </div>
+                <PriceList offer={cottageData} />
+              </div>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
       </ThemeProvider>
       
       </div>
