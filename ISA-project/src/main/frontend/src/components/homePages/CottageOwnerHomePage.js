@@ -16,6 +16,7 @@ import Album from "../pages/home";
 import OwnerProfile from "../profilePages/OwnerProfile";
 import { offerType } from "../../services/userService";
 import { useState } from "react";
+import AddCottagePage from "../forms/cottage/AddCottagePage";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -120,15 +121,16 @@ export default function CottageOwnerHomePage() {
             <Tab label="Profile page" {...a11yProps(1)} />
             <Divider />
             <Tab label="Availability of cottages" {...a11yProps(2)} />
+            <Tab label="Add new adventure" {...a11yProps(3)} />
             <Divider />
-            <Tab label="Reservation history" {...a11yProps(3)} />
-            <Tab label="Reservation report" {...a11yProps(4)} />
-            <Tab label="New reservation" {...a11yProps(5)} />
-            <Tab label="New action" {...a11yProps(6)} />
+            <Tab label="Reservation history" {...a11yProps(4)} />
+            <Tab label="Reservation report" {...a11yProps(5)} />
+            <Tab label="New reservation" {...a11yProps(6)} />
+            <Tab label="New action" {...a11yProps(7)} />
             <Divider />
-            <Tab label="Calendar" {...a11yProps(7)} />
+            <Tab label="Calendar" {...a11yProps(8)} />
             <Divider />
-            <Tab label="Business report" {...a11yProps(8)} />
+            <Tab label="Business report" {...a11yProps(9)} />
           </Tabs>
           <TabPanel value={value} index={0}>
             <p
@@ -167,7 +169,7 @@ export default function CottageOwnerHomePage() {
             Item Five
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Item Six
+            <AddCottagePage />
           </TabPanel>
           <TabPanel value={value} index={6}>
             Item Seven

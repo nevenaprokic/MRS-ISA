@@ -46,7 +46,7 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
             
             </Grid>
             <Grid>
-                <label className="uploadPhotoLabel">You can add photos from previous adventures</label>
+                <label className="uploadPhotoLabel">You can add photos from previous offers</label>
             </Grid>
             <Grid item xs={12}>
                 
