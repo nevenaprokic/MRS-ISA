@@ -28,9 +28,7 @@ public class CottageController {
             List<Cottage> cottages = cottageService.findCottageByCottageOwnerEmail(email);
             List<CottageDTO> dto = new ArrayList<>();
             for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c.getId(),c.getName(), c.getDescription(),
-                        c.getPrice(), getPhoto(c), c.getNumberOfPerson(), c.getRulesOfConduct(), c.getCancellationConditions(),
-                        c.getRoomNumber(), c.getBedNumber());
+                CottageDTO cottageDTO = new CottageDTO(c);
                 dto.add(cottageDTO);
             }
             return ResponseEntity.ok(dto);
@@ -47,22 +45,14 @@ public class CottageController {
 
             if(cottage == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            CottageDTO cottageDTO = new CottageDTO(cottage.getId(),cottage.getName(), cottage.getDescription(),
-                    cottage.getPrice(), getPhoto(cottage), cottage.getNumberOfPerson(), cottage.getRulesOfConduct(),
-                    cottage.getCancellationConditions(), cottage.getRoomNumber(), cottage.getBedNumber());
+            CottageDTO cottageDTO = new CottageDTO(cottage);
             return  ResponseEntity.ok(cottageDTO);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
-    private List<String> getPhoto(Cottage c){
-        List<String> photos = new ArrayList<>();
-        for(Photo p: c.getPhotos()){
-            photos.add(p.getPath());
-        }
-        return photos;
-    }
+
 
     @GetMapping("getAllCottages")
     @Transactional
@@ -86,6 +76,21 @@ public class CottageController {
 
         try{
             List<Cottage> cottages = cottageService.searchCottages(name, maxPeople, address, price);
+            List<CottageDTO> dto = new ArrayList<>();
+            for(Cottage c: cottages){
+                CottageDTO cottageDTO = new CottageDTO(c);
+                dto.add(cottageDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("searchCottagesByCottageOwner")
+    @Transactional
+    public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
+        try{
+            List<Cottage> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
             List<CottageDTO> dto = new ArrayList<>();
             for(Cottage c: cottages){
                 CottageDTO cottageDTO = new CottageDTO(c);

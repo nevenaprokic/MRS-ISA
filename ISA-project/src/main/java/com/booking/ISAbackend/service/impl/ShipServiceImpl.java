@@ -36,4 +36,9 @@ public class ShipServiceImpl implements ShipService {
         Address address = ship.getAddress();
         return address;
     }
+
+    @Override
+    public List<Ship> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) {
+        return shipRepository.searchShipsByShipOwnerEmail(name, maxPeople, address, price, email);
+    }
 }

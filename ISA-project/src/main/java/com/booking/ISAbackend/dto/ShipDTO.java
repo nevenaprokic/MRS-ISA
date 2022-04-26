@@ -4,6 +4,7 @@ import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.model.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShipDTO {
@@ -42,6 +43,31 @@ public class ShipDTO {
         this.navigationEquipment = navigationEquipment;
         this.additionalEquipment = additionalEquipment;
 
+    }
+    public ShipDTO(Ship s) {
+        this.id = s.getId();
+        this.name = s.getName();
+        this.description = s.getDescription();
+        this.price = s.getPrice();
+        this.photos = getPhoto(s);
+        this.numberOfPerson = s.getNumberOfPerson();
+        this.rulesOfConduct = s.getRulesOfConduct();
+        this.cancellationConditions = s.getCancellationConditions();
+        this.type = s.getType();
+        this.size = s.getSize();
+        this.motorNumber = s.getMotorNumber();
+        this.motorPower = s.getMotorPower();
+        this.maxSpeed = s.getMaxSpeed();
+        this.navigationEquipment = s.getNavigationEquipment();
+        this.additionalEquipment = s.getAdditionalEquipment();
+
+    }
+    private List<String> getPhoto(Ship ship){
+        List<String> photos = new ArrayList<>();
+        for(Photo p: ship.getPhotos()){
+            photos.add(p.getPath());
+        }
+        return photos;
     }
 
     public ShipDTO() {

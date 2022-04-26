@@ -45,6 +45,11 @@ public class CottageServiceImpl implements CottageService {
         return cottageRepository.searchCottages(name, maxPeople, address, price);
     }
 
+    @Override
+    public List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email) {
+        return cottageRepository.searchCottagesByCottageOwnerEmail(name, maxPeople, address, price, email);
+    }
+
     private List<String> getPhoto(Cottage c){
         List<String> photos = new ArrayList<>();
         for(Photo p: c.getPhotos()){
