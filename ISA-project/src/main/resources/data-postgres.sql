@@ -66,6 +66,11 @@ insert into additional_service(name,price) values ('rucak', 500);
 insert into additional_service(name,price) values ('klima', 500);
 insert into additional_service(name,price) values ('vecera', 300);
 insert into additional_service(name,price) values ('fen', 80);
+insert into additional_service(name,price) values ('dorucak', 200);
+insert into additional_service(name,price) values ('rucak', 500);
+insert into additional_service(name,price) values ('klima', 500);
+insert into additional_service(name,price) values ('vecera', 300);
+insert into additional_service(name,price) values ('fen', 80);
 
 
 /*PHOTO*/
@@ -195,18 +200,14 @@ insert into transaction (date,price,reservation_id) values ('2022-03-27',3000,2)
 insert into transaction (date,price,reservation_id) values ('2022-03-29',2500,3);
 
 /*OFFER ADDITIONAL SERVICES*/
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,1);
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,2);
--- insert into offer_additional_services(offer_id,additional_services_id) values (1,3);
--- insert into offer_additional_services(offer_id,additional_services_id) values (2,3);
--- insert into offer_additional_services(offer_id,additional_services_id) values (3,1);
--- insert into offer_additional_services(offer_id,additional_services_id) values (3,4);
--- insert into offer_additional_services(offer_id,additional_services_id) values (4,4);
--- insert into offer_additional_services(offer_id,additional_services_id) values (4,2);
--- insert into offer_additional_services(offer_id,additional_services_id) values (5,4);
--- insert into offer_additional_services(offer_id,additional_services_id) values (6,4);
--- insert into offer_additional_services(offer_id,additional_services_id) values (7,2);
--- insert into offer_additional_services(offer_id,additional_services_id) values (9,2);
+insert into offer_additional_services(offer_id,additional_services_id) values (1,1);
+insert into offer_additional_services(offer_id,additional_services_id) values (1,2);
+insert into offer_additional_services(offer_id,additional_services_id) values (1,3);
+insert into offer_additional_services(offer_id,additional_services_id) values (5,5);
+insert into offer_additional_services(offer_id,additional_services_id) values (5,6);
+insert into offer_additional_services(offer_id,additional_services_id) values (6,4);
+insert into offer_additional_services(offer_id,additional_services_id) values (6,7);
+insert into offer_additional_services(offer_id,additional_services_id) values (7,8);
 --
 -- /*OFFER PHOTO*/
 -- insert into offer_photos(offer_id,photos_id) values (9,1);

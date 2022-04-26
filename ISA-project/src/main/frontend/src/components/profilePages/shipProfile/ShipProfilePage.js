@@ -110,7 +110,7 @@ function ShipProfilePage({ id, close }) {
                     <AdditionalDescriptionBox additionData={shipData} />
                   </Grid>
                 </Grid>
-                <PriceList basicPrice={shipData.price} />
+                <PriceList offer={shipData} />
               </div>
               </Grid>
             </Box>

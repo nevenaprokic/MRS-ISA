@@ -29,8 +29,6 @@ const theme = createTheme({
 });
 
 function CottageProfilePage({ id, close }) {
-  //let id = useParams();
-  console.log("da");
 
   const [cottageData, setCottageData] = useState();
 
@@ -56,8 +54,6 @@ function CottageProfilePage({ id, close }) {
 
   let images = [];
   if (cottageData && markData) {
-    console.log("la");
-    console.log(cottageData.price);
     cottageData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);
@@ -116,7 +112,7 @@ function CottageProfilePage({ id, close }) {
                     <AdditionalDescriptionBox additionData={cottageData} />
                   </Grid>
                 </Grid>
-                <PriceList basicPrice={cottageData.price} />
+                <PriceList offer={cottageData} />
               </div>
               </Grid>
             </Box>
