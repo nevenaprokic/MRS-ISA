@@ -37,3 +37,4 @@ export function getShips(){
             return err.message;
         });
 }
+export function searchShips(params, setOffers){} 

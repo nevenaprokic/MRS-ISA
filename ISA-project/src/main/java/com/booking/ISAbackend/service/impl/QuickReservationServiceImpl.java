@@ -15,7 +15,7 @@ public class QuickReservationServiceImpl implements QuickReservationService {
     private QuickReservationRepository quickReservationRepository;
 
     @Override
-    public List<QuickReservation> findQuickReservationByCottageId(Integer id){
+    public List<QuickReservation> findQuickReservationByOfferId(Integer id){
         return quickReservationRepository.findQuickReservationByOfferId(id);
 
     }

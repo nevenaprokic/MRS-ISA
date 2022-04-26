@@ -13,4 +13,5 @@ public interface CottageService {
     Cottage findCottageById(Integer id);
     Address findAddressByCottageId(Integer id);
     List<Cottage> searchCottages(String name, Integer maxPeople, String address, Double price);
+    List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email);
 }

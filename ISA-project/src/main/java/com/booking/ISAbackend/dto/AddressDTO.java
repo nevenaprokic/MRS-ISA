@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.Address;
+
 public class AddressDTO {
 
     private String city;
@@ -10,6 +12,11 @@ public class AddressDTO {
         this.street = street;
         this.city = city;
         this.state = state;
+    }
+    public AddressDTO(Address ad) {
+        this.street = ad.getStreet();
+        this.city = ad.getCity();
+        this.state = ad.getState();
     }
 
 
