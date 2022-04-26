@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
     List<Reservation> findAllByOfferId(Integer id);
+  
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.client WHERE r.client.id = ?1 AND r.endDate > CURRENT_DATE")
+    List<Reservation> findClientsUpcomingReservations(Integer id);
 }

@@ -90,7 +90,7 @@ export default function CottageOwnerHomePage() {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     textColor='primary'  indicatorColor="primary"
-                    sx={{ borderRight: 1, borderColor: 'divider' }}
+                    sx={{ borderRight: 1, borderColor: 'divider',minWidth:"20%" }}
                 >
                     <Tab label="Home page" {...a11yProps(0)} />
                     <Divider />

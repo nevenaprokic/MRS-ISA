@@ -4,9 +4,11 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+import { searchCottages } from '../../../services/CottageService';
 
 
-export default function Search(){
+export default function Search({params, setParams, offers, setOffers}){
     return(
         <Grid container spacing={5}>
            
@@ -14,15 +16,18 @@ export default function Search(){
                 <TextField
                 id="cottage name"
                 label="Cottage name"
-                defaultValue=" "/>
+                defaultValue=""
+                onChange = { event => { setParams({...params, "name": event.target.value}); }}
+                />
                 
             </Grid>
             <Grid item xs>
             <TextField
                 
                 id="peopleNum"
-                label="Maximum nuber of people"
+                label="Maximum number of people"
                 type="number"
+                onChange = { event => { setParams({...params, "maxPeople": event.target.value}); }}
                 InputLabelProps={{
                 shrink: true,
                 }}
@@ -34,7 +39,9 @@ export default function Search(){
                 <TextField
                 id="address"
                 label="Address"
-                defaultValue=" "/>
+                defaultValue=""
+                onChange = { event => { setParams({...params, "address": event.target.value}); }}
+                />
                 
             </Grid>
             <Grid item xs>
@@ -43,10 +50,14 @@ export default function Search(){
                 label="Price"
                 id="price"
                 type="number"
+                onChange = { event => { setParams({...params, "price": event.target.value}); }}
                 InputProps={{
                   startAdornment: <InputAdornment position="end">€</InputAdornment>,
                 }}
                 />
+            </Grid>
+            <Grid item xs>
+                <Button size="large" sx={{}} onClick={ () => searchCottages(params, setOffers) } >Search</Button>
             </Grid>
         </Grid>
     );

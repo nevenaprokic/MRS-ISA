@@ -59,7 +59,7 @@ function ShipProfilePage({ id, close }) {
     return (
       <div className="changeDataContainer" id="changeDataContainer">
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
           <Box
             sx={{
               marginTop: 0,

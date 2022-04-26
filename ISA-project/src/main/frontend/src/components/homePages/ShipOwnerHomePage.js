@@ -90,7 +90,7 @@ export default function ShipOwnerHomePage() {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     textColor='primary'  indicatorColor="primary"
-                    sx={{ borderRight: 1, borderColor: 'divider' }}
+                    sx={{ borderRight: 1, borderColor: 'divider', minWidth:300 }}
                 >
                     <Tab label="Home page" {...a11yProps(0)} />
                     <Divider />
