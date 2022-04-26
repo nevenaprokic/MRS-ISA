@@ -9,12 +9,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../../style/MediaCard.scss";
 import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePage";
 import { useState } from "react";
-
-import Modal from "@mui/material/Modal";
 import { useEffect } from 'react';
 import {getMarkByOfferId} from '../../services/MarkService';
 import Rating from '@mui/material/Rating';
-
+import { getRoleFromToken} from "../../app/jwtTokenUtils";
 import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../services/userService";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
@@ -33,7 +31,6 @@ export default function MediaCard({ offer }) {
   const [open, setOpen] = useState(false);
   const [clientData, setClientData] = useState();
 
-  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -71,14 +68,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
   if (markData) {
    return (
     <ThemeProvider theme={secondaryTheme}>
-      <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
+      <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
         <CardMedia component="img" height="140" image={imag} alt="slike" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" color="primary">
             {!!offer.name ? offer.name : offer.offerName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <p className="descriptionContainer"> {offer.description} </p>     
+            <p className="descriptionContainer"> {offer.description} </p> 
+            <p>
+              <Rating name="read-only" value={markData} readOnly />
+              </p>    
           </Typography>
         </CardContent>
         <CardActions>
@@ -106,4 +106,5 @@ const modalOfferComponent = (offerStr, offerId) =>{
     </ThemeProvider>
   );
   
+}
 }

@@ -62,14 +62,38 @@ function CottageProfilePage({ id, close }) {
       images.push(imag);
     });
     return (
-      <div className="cottageProfile" id="changeDataContainer">
-      <ThemeProvider theme={theme} minWidth="700px">
-      <div className="profileContainer">
-                <div className="closeProfileBtn">
-                    <Button size="large" sx={{}} onClick={() => close()}>
-                    x
-                    </Button>
-                </div>
+      <div className="changeDataContainer" id="changeDataContainer">
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <Box
+            sx={{
+              marginTop: 0,
+              display: "inline",
+              flexDirection: "column",
+              alignItems: "center",
+              marginLeft: -5,
+              width: "120%",
+            }}
+          >
+            <div className="header">
+              <div className="tittle">
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  sx={{ color: "#CC7351" }}
+                >
+                  
+                </Typography>
+              </div>
+              <div className="closeBtn">
+                <Button size="large" sx={{}} onClick={() => close()}>
+                  x
+                </Button>
+              </div>
+            </div>
+            <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <div className="profileContainer">
                 <div className="headerContainer">
                   <h2 className="adventureTittle">{cottageData.name}</h2>
                   <div className="changeBtn">
@@ -80,8 +104,7 @@ function CottageProfilePage({ id, close }) {
                   <Rating name="read-only" value={markData} readOnly />
                   </div>
                 </div>
-                
-           
+
                 <ImagesBox images={images} />
                 <QuickActionBox id={cottageData.id} />
                 <Grid container xs={12}>
@@ -92,14 +115,13 @@ function CottageProfilePage({ id, close }) {
                     <AdditionalDescriptionBox additionData={cottageData} />
                   </Grid>
                 </Grid>
-                <PriceList offer={cottageData} />
+                <PriceList basicPrice={cottageData.price} />
               </div>
               </Grid>
             </Box>
           </Box>
         </Container>
       </ThemeProvider>
-      
       </div>
     );
   }

@@ -36,9 +36,11 @@ $pale:#F8FBF7;
 }
 
 .adventureTittle{
+    margin-left: 5%;
     margin-left: 2%;
     display: inline-block;
     vertical-align: middle;
+    width: 70%;
     width: 60%;
     font-size: 30px;
     margin: 1%;
@@ -47,6 +49,8 @@ $pale:#F8FBF7;
 .changeBtn{
     display: inline-block;
     vertical-align: middle;
+    width: 20%;
+    margin-left: 5%;
     width: 21%;
     margin-left: 17%;
     margin-right: 0%;

@@ -90,11 +90,40 @@ insert into photo(path) values('brvnara1.jpg');
 insert into photo(path) values('brvnara2.jpg');
 insert into photo(path) values('original.jpg');
 
+/*COTTAGE*/
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,4000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u miru i tisini u prirodi.','Jela',3,2500,'Nije dozvoljeno bilo kakvo unistavanje imovine.',3);
+
+insert into cottage(bed_number, room_number, id, my_user_id) values (2,2,1,5);
+insert into cottage(bed_number, room_number, id, my_user_id) values (4,3,2,5);
+insert into cottage(bed_number, room_number, id, my_user_id) values (3,2,3,6);
+
+/*SHIP*/
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6);
+
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
+insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
+
+/*ADVENTURE*/
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje u Kikindi',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na jezeru',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Dunavu',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',9);
+
+insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',7,9);
+insert into adventure(additional_equipment, id, my_user_id) values ('Ne poseduje pecarosku opremu',8,9);
+insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',9,10);
+
+
+
 
 -- /*RESERVATION*/
--- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,7);
--- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
--- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,7);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
 
 /*COMPLAINT*/
 -- insert into complaint(text,reservation_id) values('Sve pohvale!',2);
@@ -106,8 +135,8 @@ insert into delete_request(description, my_user_id) values('Ne zelim vise da pos
 -- -- -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 
 /*QUICK RESERVATION*/
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
+-- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',1);
+-- insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
 
 /*REGISTRATION REQUEST*/
 
@@ -115,21 +144,15 @@ insert into quick_reservation(end_date,end_date_action,number_of_person,price,st
 /*RESERVATION REPORT*/
 -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
 
-/*OFFER PHOTO*/
-insert into offer_photos(offer_id,photos_id) values (9,1);
-insert into offer_photos(offer_id,photos_id) values (5,2);
-insert into offer_photos(offer_id,photos_id) values (2,3);
-insert into offer_photos(offer_id,photos_id) values (2,4);
-insert into offer_photos(offer_id,photos_id) values (1,5);
 
 
 /*RESERVATION*/
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,6);
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-03-11',2,3000,'2022-03-10',2,6);
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
+-- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,6);
+-- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-03-11',2,3000,'2022-03-10',2,6);
+-- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
 
 -- -- /*RESERVATION*/
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,1);
+-- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,1);
 -- -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
 -- -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
 
@@ -153,11 +176,11 @@ insert into offer_additional_services(offer_id,additional_services_id) values (6
 insert into offer_additional_services(offer_id,additional_services_id) values (7,8);
 --
 -- /*OFFER PHOTO*/
--- insert into offer_photos(offer_id,photos_id) values (9,1);
--- insert into offer_photos(offer_id,photos_id) values (5,2);
--- insert into offer_photos(offer_id,photos_id) values (2,3);
--- insert into offer_photos(offer_id,photos_id) values (2,4);
--- insert into offer_photos(offer_id,photos_id) values (1,5);
+insert into offer_photos(offer_id,photos_id) values (9,1);
+insert into offer_photos(offer_id,photos_id) values (5,2);
+insert into offer_photos(offer_id,photos_id) values (2,3);
+insert into offer_photos(offer_id,photos_id) values (2,4);
+insert into offer_photos(offer_id,photos_id) values (1,5);
 --
 -- /*OWNER TRANSACTION*/
 -- insert into owner_transaction(owner_id,transaction_id) values (9,1);
@@ -184,11 +207,6 @@ insert into offer_additional_services(offer_id,additional_services_id) values (7
 -- -- insert into offer_additional_services(offer_id,additional_services_id) values (7,2);
 -- -- insert into offer_additional_services(offer_id,additional_services_id) values (9,2);
 -- --
--- -- /*OFFER PHOTO*/
--- -- insert into offer_photos(offer_id,photos_id) values (9,1);
--- -- insert into offer_photos(offer_id,photos_id) values (5,2);
--- -- insert into offer_photos(offer_id,photos_id) values (2,3);
--- -- insert into offer_photos(offer_id,photos_id) values (2,4);
 -- --
 -- -- /*OWNER TRANSACTION*/
 -- -- insert into owner_transaction(owner_id,transaction_id) values (9,1);
