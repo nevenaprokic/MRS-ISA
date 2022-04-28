@@ -17,7 +17,9 @@ Object.freeze(userType);
 export const offerType = {
     ADVENTURE: 1,
     COTTAGE: 2 ,
-    SHIP: 3
+    SHIP: 3,
+    COTTAGE_OWNER: 4,
+    SHIP_OWNER: 5
 }
 
 Object.freeze(offerType);
@@ -159,6 +161,7 @@ export function changeAdminData(newAdminData){
                 })
     .catch((err) => alert(err.data));
 }
+export function searchInstructors(params, setOffers){} 
 
 
 

@@ -67,7 +67,7 @@ public class Validator {
                     throw new RequiredFiledException("Price is required for additional service" + serviceMap.get("serviceName") + "!It isn't enough to write only the name");
                 }
                 else{
-                    return isValidPrice(serviceMap.get("servicePrice"));
+                    return isValidPrice(String.valueOf(serviceMap.get("servicePrice")));
                 }
             }
         }

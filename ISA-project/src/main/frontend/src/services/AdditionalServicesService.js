@@ -1,9 +1,9 @@
 import axios from "axios";
 import api from "../app/api";
 
-export default function getQuickActionByOfferId(id){
+export function getAdditionalServiceByOffer(id){
     return api
-        .get("/getQuickActions", {
+        .get("/getAdditionalServiceInfo", {
             params:{
                 id:id
             }

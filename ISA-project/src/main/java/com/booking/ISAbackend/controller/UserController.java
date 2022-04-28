@@ -47,38 +47,27 @@ public class UserController {
     public ResponseEntity<CottageOwnerProfileInfoDTO> getCottageOwnerProfileInfo(@RequestParam String email){
         //odraditi autentifikaciju i autorizaciju
 
-
-        CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
-
-        Address address = cottageOwner.getAddress();
-        CottageOwnerProfileInfoDTO data = new CottageOwnerProfileInfoDTO(cottageOwner.getEmail(),
-                cottageOwner.getFirstName(),
-                cottageOwner.getLastName(),
-                cottageOwner.getPhoneNumber(),
-                cottageOwner.getAddress().getStreet(),
-                cottageOwner.getAddress().getCity(),
-                cottageOwner.getAddress().getState(),
-                cottageOwner.getOwnerCategory().toString());
-        return ResponseEntity.ok(data);
-
+		try{
+			CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
+			CottageOwnerProfileInfoDTO data = new CottageOwnerProfileInfoDTO(cottageOwner);
+			return ResponseEntity.ok(data);
+		}catch  (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
     }
 	@GetMapping("shipOwnerProfileInfo")
 	@Transactional
 	public ResponseEntity<ShipOwnerProfileInfoDTO> getShipOwnerProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
 
+		try{
+			ShipOwner shipOwner =  userService.findShipOwnerByEmail(email);
+			ShipOwnerProfileInfoDTO data = new ShipOwnerProfileInfoDTO(shipOwner);
+			return ResponseEntity.ok(data);
+		}catch  (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 
-		ShipOwner shipOwner =  userService.findShipOwnerByEmail(email);
-
-		ShipOwnerProfileInfoDTO data = new ShipOwnerProfileInfoDTO(shipOwner.getEmail(),
-				shipOwner.getFirstName(),
-				shipOwner.getLastName(),
-				shipOwner.getPhoneNumber(),
-				shipOwner.getAddress().getStreet(),
-				shipOwner.getAddress().getCity(),
-				shipOwner.getAddress().getState(),
-				shipOwner.getOwnerCategory().toString());
-		return ResponseEntity.ok(data);
 
 	}
 

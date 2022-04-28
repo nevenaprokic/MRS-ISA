@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.ShipOwner;
+
 public class ShipOwnerProfileInfoDTO {
     private String email;
     private String firstName;
@@ -19,6 +21,16 @@ public class ShipOwnerProfileInfoDTO {
         this.city = city;
         this.state = state;
         this.userCategory = userCategory;
+    }
+    public ShipOwnerProfileInfoDTO(ShipOwner shipOwner) {
+        this.email = shipOwner.getEmail();
+        this.firstName = shipOwner.getFirstName();
+        this.lastName = shipOwner.getLastName();
+        this.phoneNumber = shipOwner.getPhoneNumber();
+        this.street = shipOwner.getAddress().getStreet();
+        this.city = shipOwner.getAddress().getCity();
+        this.state = shipOwner.getAddress().getState();
+        this.userCategory = shipOwner.getOwnerCategory().toString();
     }
     public ShipOwnerProfileInfoDTO(){}
 

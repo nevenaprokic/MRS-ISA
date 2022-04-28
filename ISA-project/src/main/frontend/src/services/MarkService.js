@@ -1,9 +1,9 @@
 import axios from "axios";
 import api from "../app/api";
 
-export default function getQuickActionByOfferId(id){
+export function getMarkByOfferId(id){
     return api
-        .get("/getQuickActions", {
+        .get("/getMark", {
             params:{
                 id:id
             }
