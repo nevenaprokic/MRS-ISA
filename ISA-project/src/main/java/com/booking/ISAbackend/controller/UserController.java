@@ -6,7 +6,6 @@ import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.service.RegistrationRequestService;
 import org.apache.commons.logging.Log;
@@ -35,21 +34,12 @@ public class UserController {
 	@Transactional
 	public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
+		InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
+		if(instructor != null){
+			return ResponseEntity.ok(instructor);
+		}
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-
-		Instructor instructor =  userService.findInstructorByEmail(email);
-
-		Address address = instructor.getAddress();
-		InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
-				instructor.getFirstName(),
-				instructor.getLastName(),
-				instructor.getPhoneNumber(),
-				instructor.getAddress().getStreet(),
-				instructor.getAddress().getCity(),
-				instructor.getAddress().getState(),
-				instructor.getOwnerCategory().toString(),
-				instructor.getBiography());
-		return ResponseEntity.ok(data);
 
 	}
     @GetMapping("cottageOwnerProfileInfo")
@@ -111,7 +101,6 @@ public class UserController {
 			userService.changeInstrctorData(newData);
 			return ResponseEntity.ok("Successfully changed you data");
 		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
-			e.printStackTrace();
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}

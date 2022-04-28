@@ -7,7 +7,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import ShowMoreText from "react-show-more-text";
 
 function AdditionalDescriptionBox({additionalDate}){
-    console.log(additionalDate.rulesOfConduct);
+
     function executeOnClick(isExpanded) {
         console.log(isExpanded);
     }

@@ -1,9 +1,12 @@
 package com.booking.ISAbackend.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class AdventureDTO {
 
+    private int id;
     private String ownerEmail;
     private String offerName;
     private String description;
@@ -17,6 +20,11 @@ public class AdventureDTO {
     private String city;
     private String state;
     private String additionalEquipment;
+
+
+    public int getId() {
+        return id;
+    }
 
     public String getOfferName() {
         return offerName;
@@ -70,6 +78,8 @@ public class AdventureDTO {
         return additionalEquipment;
     }
 
+
+
     public AdventureDTO(String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String additionalEquipment) {
         this.ownerEmail = ownerEmail;
         this.offerName = offerName;
@@ -79,6 +89,39 @@ public class AdventureDTO {
         this.peopleNum = peopleNum;
         this.rulesOfConduct = rulesOfConduct;
         this.additionalServices = additionalServices;
+        this.cancelationConditions = cancelationConditions;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.additionalEquipment = additionalEquipment;
+    }
+
+    public AdventureDTO(int id, String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String additionalEquipment) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.offerName = offerName;
+        this.description = description;
+        this.price = price;
+        this.photos = pictures;
+        this.peopleNum = peopleNum;
+        this.rulesOfConduct = rulesOfConduct;
+        this.additionalServices = additionalServices;
+        this.cancelationConditions = cancelationConditions;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.additionalEquipment = additionalEquipment;
+    }
+
+    public AdventureDTO(int id, String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, String cancelationConditions, String street, String city, String state, String additionalEquipment) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.offerName = offerName;
+        this.description = description;
+        this.price = price;
+        this.photos = pictures;
+        this.peopleNum = peopleNum;
+        this.rulesOfConduct = rulesOfConduct;
         this.cancelationConditions = cancelationConditions;
         this.street = street;
         this.city = city;

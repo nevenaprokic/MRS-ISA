@@ -76,11 +76,11 @@ insert into additional_service(name,price) values ('vecera', 300);
 insert into additional_service(name,price) values ('fen', 80);
 
 
--- -- /*PHOTO*/
-insert into photo(path) values('pecanje an dunavu1.jpg');
-insert into photo(path) values('bela ladja1.jpg');
-insert into photo(path) values('brvnara1.jpg');
-insert into photo(path) values('brvnara2.jpg');
+-- -- -- /*PHOTO*/
+-- insert into photo(path) values('pecanje an dunavu1.jpg');
+-- insert into photo(path) values('bela ladja1.jpg');
+-- insert into photo(path) values('brvnara1.jpg');
+-- insert into photo(path) values('brvnara2.jpg');
 -- -- -- /*COTTAGE*/
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,4000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2);
@@ -195,12 +195,12 @@ insert into additional_service(name,price) values ('fen', 80);
 -- /*MARK*/
 -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 --
-/*PHOTO*/
-insert into photo(path) values('pecanje an dunavu1.jpg');
-insert into photo(path) values('bela ladja1.jpg');
-insert into photo(path) values('brvnara1.jpg');
-insert into photo(path) values('brvnara2.jpg');
-insert into photo(path) values('original.jpg');
+-- /*PHOTO*/
+-- insert into photo(path) values('pecanje an dunavu1.jpg');
+-- insert into photo(path) values('bela ladja1.jpg');
+-- insert into photo(path) values('brvnara1.jpg');
+-- insert into photo(path) values('brvnara2.jpg');
+-- insert into photo(path) values('original.jpg');
 
 /*QUICK RESERVATION*/
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',7);
@@ -234,12 +234,12 @@ insert into offer_additional_services(offer_id,additional_services_id) values (7
 -- insert into offer_additional_services(offer_id,additional_services_id) values (7,2);
 -- insert into offer_additional_services(offer_id,additional_services_id) values (9,2);
 --
-/*OFFER PHOTO*/
-insert into offer_photos(offer_id,photos_id) values (7,1);
-insert into offer_photos(offer_id,photos_id) values (7,2);
-insert into offer_photos(offer_id,photos_id) values (2,3);
-insert into offer_photos(offer_id,photos_id) values (2,4);
-insert into offer_photos(offer_id,photos_id) values (1,5);
+-- /*OFFER PHOTO*/
+-- insert into offer_photos(offer_id,photos_id) values (7,1);
+-- insert into offer_photos(offer_id,photos_id) values (7,2);
+-- insert into offer_photos(offer_id,photos_id) values (2,3);
+-- insert into offer_photos(offer_id,photos_id) values (2,4);
+-- insert into offer_photos(offer_id,photos_id) values (1,5);
 --
 -- /*OWNER TRANSACTION*/
 -- insert into owner_transaction(owner_id,transaction_id) values (9,1);

@@ -21,4 +21,9 @@ public class Photo {
     public String getPath(){
         return path;
     }
+
+    public Integer getId() {
+        return id;
+    }
 }
+

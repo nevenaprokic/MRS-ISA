@@ -9,7 +9,7 @@ import AdditionalServices from '../addtitionaServices/AdditionalServices';
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
-import { addAdventure } from "../../../services/userService";
+import { addAdventure, test } from "../../../services/userService";
 import { CssBaseline } from "@mui/material";
 import MainNavigationHome from "../../layout/MainNavigationHome";
 
@@ -26,12 +26,25 @@ function AddAdventurePage(){
   }
 
   const onSubmit = (data) => {
-    data["photos"] = pictureInputList;
-    data["additionalServices"] = additionalServicesInputList;
-    console.log(data);
-    addAdventure(data);
+    let formData = new FormData();
+    pictureInputList.forEach(element => {
+      formData.append("photos", element, element.name);
+    });
+        
+    console.log(formData.get("photos"));
+    formData.append('description', data.description);
+    formData.append('price', data.price);
+    formData.append('street', data.street);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('rulesOfConduct', data.rulesOfConduct);
+    formData.append('additionalEquipment', data.additionalEquipment);
+    formData.append('peopleNum', data.peopleNum);
+    formData.append('cancelationConditions', data.cancelationConditions);
+    formData.append('offerName', data.offerName);
+
+    addAdventure(formData, additionalServicesInputList);
     setSubmitForm(true);
-    //alert("Successfully added new adventure!"); //ovde kasnije zameniti sa lepsim popup-om
   }
 
 

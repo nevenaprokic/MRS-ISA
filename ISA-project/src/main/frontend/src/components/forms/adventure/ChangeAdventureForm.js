@@ -7,19 +7,35 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from "@mui/material";
 import AdditionalServices from '../addtitionaServices/AdditionalServices';
 import { useState } from "react";
-import UploadPictureForm from "../imageUpload/UploadPictureForm";
+import ChangeImageForm from "../imageUpload/ChangeImageForm";
 import { useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
+import { updateAdventure } from "../../../services/AdventureService";
 
 //NAPRAVITI PRAZNE FORME ZA IZMENU SLIKA I ADITIONAL SERVICA ILI PROBATI POVEZATI SA POSTOJECIM
 
-function ChangeAdventureForm({currentAdventureData, closeForm}){
+function ChangeAdventureForm({currentAdventureData, closeForm, childToParent}){
 
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
     const [additionalServicesInputList, setInputList] = useState([{ serviceName: "", servicePrice: "" }]);
-    const [pictureInputList, pictureSetInputList] = useState([]);
+    const [images, setImages] = useState([]);
     const [submitForm, setSubmitForm] = useState(false);
+
+    useEffect(() => {
+        async function setCurrentData(){
+            let images = [];
+            currentAdventureData.photos.forEach(photo => {
+                let path = photo;
+                images.push(path);
+            });
+            setImages(images);
+            setCurrentAdditionalServices();
+        }
+        setCurrentData();
+
+    }, []);
+  
 
     const theme = createTheme({
         palette: {
@@ -29,28 +45,27 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
       });
 
     const onSubmit = (data) => {
-        data["photos"] = pictureInputList;
+        data["id"] = currentAdventureData.id
+        data["photos"] = images;
         data["additionalServices"] = additionalServicesInputList;
-        console.log("SUBMIT", data);
-        // addAdventure(data);
-        // setSubmitForm(true);
-        //alert("Successfully added new adventure!"); //ovde kasnije zameniti sa lepsim popup-om
-      }
+        updateAdventure(data, additionalServicesInputList);
+       
+        childToParent(data);
+        setSubmitForm(true);
+        closeForm();
 
-    useEffect(() => {
-        async function setCurrentData(){
-            let images = [];
-            currentAdventureData.photos.forEach(photo => {
-                let path = require("/src/components/images/" + photo);
-                images.push(path);
-            });
-            pictureSetInputList(images);
+    }
+
+    function setCurrentAdditionalServices(){
+        if(currentAdventureData.additionalServices.length === 0){
+            setInputList([{ serviceName: "", servicePrice: "" }])
+        }
+        else{
             setInputList(currentAdventureData.additionalServices);
         }
-        setCurrentData();
-
-    }, []);
-  
+    }
+    
+    
     return (
         <ThemeProvider theme={theme}>
         <div className="changeAdventureForm">
@@ -175,7 +190,7 @@ function ChangeAdventureForm({currentAdventureData, closeForm}){
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <UploadPictureForm pictureSetInputList={pictureSetInputList} pictureInputList={pictureInputList}/>
+                    <ChangeImageForm images={images} setImages={setImages} childToParent={childToParent}/>
                 </Grid>
                 <Grid  item xs={12}>
                     <AdditionalServices errors={errors} registerForm={register} inputList={additionalServicesInputList} setInputList={setInputList} />

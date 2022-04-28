@@ -10,8 +10,6 @@ import QuickActionBox from "./QuickActionBox";
 import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
-import image1 from "../../images/img1.jpg";
-import image2 from "../../images/img2.jpg";
 import ImagesBox from "./ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -46,8 +44,7 @@ function CottageProfilePage({ id, close }) {
   }, []);
   let images = [];
   if (cottageData) {
-    console.log("la");
-    console.log(cottageData.price);
+
     cottageData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);

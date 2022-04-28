@@ -5,7 +5,7 @@ import { ThemeProvider } from "@emotion/react";
 import "./CottageProfilePage.scss";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import getQuickActionByCottageId from "../../../services/QuickActionService";
+import getQuickActionByOfferId from "../../../services/QuickActionService";
 
 const theme = createTheme({
   palette: {
@@ -21,15 +21,17 @@ const theme = createTheme({
 function QuickActionBox({ id }) {
   const [quickActionData, setQuickActionsData] = useState();
 
+
   useEffect(() => {
     async function setData() {
-      let quickActions = await getQuickActionByCottageId(id);
+      let quickActions = await getQuickActionByOfferId(id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       console.log(quickActions);
       return quickActions;
     }
     setData();
   }, []);
+
   if (quickActionData) {
     return (
       <div className="specialOffersContainer">

@@ -24,9 +24,9 @@ public class QuickReservationController {
 
     @GetMapping("getQuickActions")
     @Transactional
-    public ResponseEntity<List<QuickActionDTO>> getQuickActionsByCottageId(@RequestParam String idCottage){
+    public ResponseEntity<List<QuickActionDTO>> getQuickActionsByOfferId(@RequestParam String idCottage){
         try {
-            List<QuickReservation> quickReservations = quickReservationService.findQuickReservationByCottageId(Integer.parseInt(idCottage));
+            List<QuickReservation> quickReservations = quickReservationService.findQuickReservationByOfferId(Integer.parseInt(idCottage));
             List<QuickActionDTO> dto = new ArrayList<>();
             for(QuickReservation res: quickReservations){
                 List<String> additionalServices = new ArrayList<>();

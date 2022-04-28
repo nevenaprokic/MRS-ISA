@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../services/userService";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
+import { useEffect } from "react";
 
 
 const secondaryTheme = createTheme({
@@ -26,6 +27,7 @@ const secondaryTheme = createTheme({
 
 export default function MediaCard({ offer, offerT }) {
 
+  const [offerData, setOfferData] = useState();
 
   const [clientData, setClientData] = useState();
 
@@ -45,10 +47,37 @@ export default function MediaCard({ offer, offerT }) {
     imag = require("/src/components/images/" + offer.photos[0]);
   }
 
+  const childToParent = (childData) => {
+    console.log("TUU");
+    
+    if(offerT === offerType.ADVENTURE){
+      imag = require("../images/no-image.png");
+      if(offer.photos.length != 0){
+        imag = "data:image/jpg;base64," + offer.photos[0];
+      }
+      setOfferData(prevState => ({
+        ...prevState,
+        ["offerName"]: childData.offerName,
+        ["description"]: childData.description,
+        ["photos"]:childData.photos,
+
+    }) ); 
+    } 
+    else{
+      setOfferData(prevState => ({
+        ...prevState,
+        ["name"]: childData.offerName,
+        ["description"]: childData.description,
+        ["photos"]:childData.photos,
+
+    }) ); 
+    }
+  }
+
   const modalOfferComponent = (offerStr, offerId) =>{
     switch (offerStr){
       case offerType.ADVENTURE:
-        return ( <AdventureProfilePage id={offerId} close={handleClose}/>);
+        return ( <AdventureProfilePage id={offerId} close={handleClose} childToParenMediaCard={childToParent}/>);
       case offerType.COTTAGE: 
         return ( <CottageProfilePage id={offerId} close={handleClose}/>);
       case offerType.SHIP:
@@ -57,6 +86,10 @@ export default function MediaCard({ offer, offerT }) {
         return (<div>Undefined offer type</div>);
     }
   }
+
+  useEffect(() => {
+      setOfferData(offer);
+  }, []);
 
   return (
     <ThemeProvider theme={secondaryTheme}>
