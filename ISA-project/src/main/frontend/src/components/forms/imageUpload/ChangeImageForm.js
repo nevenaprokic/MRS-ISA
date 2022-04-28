@@ -1,26 +1,33 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
-import UploadImageGallery from "./UploadImageGallery";
+import ChangeImageGallery from "./ChangeImageGallery";
 import { styled } from '@mui/material/styles';
 
-function UploadPictureForm({pictureInputList, pictureSetInputList}){
+function ChangeImageForm({images, setImages, childToParent}){
 
     const Input = styled('input')({
         display: 'none',
       });
 
-
-    
+    const getBase64StringFromDataURL = (dataURL) =>
+      dataURL.replace('data:', '').replace(/^.+,/, '');
 
     const handlePictureUpload = function(e) {
-        const selectedPictures = [...pictureInputList];
-        selectedPictures.push(e.target.files[0]);
-        pictureSetInputList(selectedPictures);
+        
+            const selectedPictures = [...images];
+            let file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64 = getBase64StringFromDataURL(reader.result);
+                selectedPictures.push(base64);
+                setImages(selectedPictures);
+                console.log(base64);
+            };
+            reader.readAsDataURL(file);
+            
     }
 
-    
-    //UVEZIVANJE 2 KOMPNENTE
     return(
 
        <Grid continer spacing={10}>
@@ -38,7 +45,7 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
             </Grid>
             <Grid item xs={12}>
                 
-                    <UploadImageGallery images={pictureInputList} pictureSetInputList={pictureSetInputList} />
+                    <ChangeImageGallery images={images} setImages={setImages} />
                 
                 
             </Grid>
@@ -46,4 +53,4 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
     );
 }
 
-export default UploadPictureForm;
+export default ChangeImageForm;

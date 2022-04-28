@@ -43,6 +43,7 @@ function AdditionalServices({inputList, setInputList, errors, registerForm}){
                   label="Service Description" 
                   fullWidth
                   value={x.serviceName} 
+                  defaultValue={x.serviceName}
                   onChange={handleInputChange.bind('serviceName', i)} 
                   placeholder="Name"
               />
@@ -51,6 +52,8 @@ function AdditionalServices({inputList, setInputList, errors, registerForm}){
               <TextField
                 fullWidth
                 label="Price"
+                value={x.servicePrice}
+                defaultValue={x.servicePrice}
                 type="number"
                 InputProps={{
                   startAdornment: <InputAdornment position="end">€</InputAdornment>,

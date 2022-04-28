@@ -24,6 +24,7 @@ public class QuickReservationController {
 
     @GetMapping("getQuickActions")
     @Transactional
+
     public ResponseEntity<List<QuickActionDTO>> getQuickActionsByOfferId(@RequestParam String id){
         try {
             List<QuickReservation> quickReservations = quickReservationService.findQuickReservationByOfferId(Integer.parseInt(id));

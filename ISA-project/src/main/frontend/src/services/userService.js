@@ -76,13 +76,32 @@ export function getShipOwnerByUsername(username){
     });
 }
 
-export function addAdventure(adventureData){
+export function addAdventure(adventureData, additionalServices){
     let email = getUsernameFromToken();
-    adventureData["ownerEmail"] = email;
+    adventureData.append('email', email);
+    console.log(adventureData.get("offerName"));
     api
     .post("/adventure/addAdventure", adventureData)
+    .then((responseData) => {
+        let adventureId = responseData.data;
+        addAddtionalServices(adventureId, additionalServices);
+    })
+    .catch((err) => {
+        console.log(err);
+        alert(err.data)});
+}
+
+function addAddtionalServices(offerId, additionalServiceDTOS){
+    console.log(additionalServiceDTOS);
+    api
+    .post("/adventure/add-additional-services",  {
+        params:{
+            offerId : offerId,
+            additionalServiceDTOS : additionalServiceDTOS
+        }
+    })
     .then((responseData) => alert(responseData.data))
-    .catch((err) => alert(err.data));
+    .catch((errMessage) => alert(errMessage.data));
 }
 
 export function changeOwnerData(newOwnerData){

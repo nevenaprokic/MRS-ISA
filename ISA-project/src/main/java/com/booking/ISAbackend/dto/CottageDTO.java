@@ -19,7 +19,6 @@ public class CottageDTO {
     private Integer bedNumber;
 
 
-
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
         this.id = id;
         this.name = name;

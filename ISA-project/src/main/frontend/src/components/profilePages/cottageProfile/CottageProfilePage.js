@@ -56,7 +56,9 @@ function CottageProfilePage({ id, close }) {
   }, []);
 
   let images = [];
+
   if (cottageData && markData) {
+
     cottageData.photos.forEach((photo) => {
       let imag = { image: require("/src/components/images/" + photo) };
       images.push(imag);

@@ -1,9 +1,7 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.client.Client;
-import com.booking.ISAbackend.dto.AdditionalServiceDTO;
-import com.booking.ISAbackend.dto.AdventureDTO;
-import com.booking.ISAbackend.dto.AdventureDetailsDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AdditionalServiceRepository;
@@ -11,15 +9,24 @@ import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.AdventureReporitory;
 import com.booking.ISAbackend.repository.PhotoRepository;
 import com.booking.ISAbackend.service.AdventureService;
+import com.booking.ISAbackend.service.PhotoService;
 import com.booking.ISAbackend.service.UserService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class AdventureServiceImpl implements AdventureService {
@@ -39,34 +46,36 @@ public class AdventureServiceImpl implements AdventureService {
     private AdditionalServiceRepository additionalServiceRepository;
 
     @Autowired
-    private PhotoRepository photoRepository;
+    private PhotoService photoService;
+
 
 
     @Override
     @Transactional
-    public void addAdventure(AdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException {
+    public int addAdventure(NewAdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException {
         Instructor instructor = userService.findInstructorByEmail(adventure.getOwnerEmail());
         if(!isAdventureAlreadyExists(adventure.getOfferName(), instructor.getAdventures())){
             if(validateAdventure(adventure)){
-                saveAdventure(adventure, instructor);
+                return saveAdventure(adventure, instructor).getId();
             }
         }
         else{
             throw new AdventureAlreadyExistsException("You already have adventure with same name. Name has to be unique!");
         }
 
+        return -1;
     }
 
     @Override
     @Transactional
-    public List<AdventureDetailsDTO> getInstructorAdventures(String email) { //ubaciti ocenu
+    public List<AdventureDTO> getInstructorAdventures(String email) { //ubaciti ocenu
         List<Adventure> adventures = adventureReporitory.findCottageByInstructorEmail(email);
-        List<AdventureDetailsDTO>  adventureDTOList = new ArrayList<AdventureDetailsDTO>();
+        List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
         if(adventures != null){
             for (Adventure a: adventures
                  ) {
                 //String ownerEmail, String offerName, String description, String price, List<String> pictures, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String additionalEquipment
-                AdventureDetailsDTO dto = new AdventureDetailsDTO(email,
+                AdventureDTO dto = new AdventureDTO(a.getId(), email,
                         a.getName(),
                         a.getDescription(),
                         String.valueOf(a.getPrice()),
@@ -78,7 +87,7 @@ public class AdventureServiceImpl implements AdventureService {
                         a.getAddress().getStreet(),
                         a.getAddress().getCity(),
                         a.getAddress().getState(),
-                        a.getAdditionalEquipment(), a.getId());
+                        a.getAdditionalEquipment());
 
                 adventureDTOList.add(dto);
 
@@ -89,17 +98,29 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
     @Override
+        public void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, int offerId) throws InvalidPriceException, RequiredFiledException {
+        Optional<Adventure> adventure = adventureReporitory.findById(offerId);
+        if(adventure.isPresent() && Validator.isValidAdditionalServices(additionalServiceDTOs)){
+            Adventure a = adventure.get();
+            List<AdditionalService> additionalServices = convertServicesFromDTO(additionalServiceDTOs);
+            a.setAdditionalServices(additionalServices);
+            adventureReporitory.save(a);
+        }
+
+    }
+
+    @Override
     @Transactional
-    public AdventureDetailsDTO findAdventureById(int id) throws AdventureNotFoundException {
+    public AdventureDetailsDTO findAdventureById(int id) throws AdventureNotFoundException, IOException {
         Optional<Adventure> adventure = adventureReporitory.findById(id);
         if(adventure.isPresent()){
             Adventure a = adventure.get();
-            AdventureDetailsDTO dto = new AdventureDetailsDTO(
+            AdventureDetailsDTO dto = new AdventureDetailsDTO(a.getId(),
                     a.getInstructor().getEmail(),
                     a.getName(),
                     a.getDescription(),
                     String.valueOf(a.getPrice()),
-                    getPhoto(a),
+                    convertPhotosToBytes(a.getPhotos()),
                     String.valueOf(a.getNumberOfPerson()),
                     a.getRulesOfConduct(),
                     getAdditionalServices(a),
@@ -107,13 +128,109 @@ public class AdventureServiceImpl implements AdventureService {
                     a.getAddress().getStreet(),
                     a.getAddress().getCity(),
                     a.getAddress().getState(),
-                    a.getAdditionalEquipment(),a.getId());
+                    a.getAdditionalEquipment());
 
             return dto;
         }
         else{
             throw new AdventureNotFoundException("Adventure not found");
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateAdventure(AdventureDTO adventureInfo, int adventureId) throws InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException {
+            Adventure adventure = findAdventureByI(adventureId);
+            String instructorEmail = adventure.getInstructor().getEmail();
+            if (adventure != null && validateUpdateAdventure(adventureInfo)){
+                adventure.setName(adventureInfo.getOfferName());
+                adventure.setPrice(Double.valueOf(adventureInfo.getPrice()));
+                adventure.setNumberOfPerson(Integer.valueOf(adventureInfo.getPeopleNum()));
+                adventure.setDescription(adventureInfo.getDescription());
+                adventure.setAdditionalEquipment(adventureInfo.getAdditionalEquipment());
+                adventure.setRulesOfConduct(adventureInfo.getRulesOfConduct());
+                adventure.setCancellationConditions(adventureInfo.getCancelationConditions());
+                adventure.setPhotos(updateAdventurePhotos(adventureInfo.getPhotos(), adventure.getPhotos(), instructorEmail));
+
+                updateAdventuerAddress(adventure.getAddress(), new AddressDTO(adventureInfo.getStreet(), adventureInfo.getCity(), adventureInfo.getState()));
+                adventureReporitory.save(adventure);
+            }
+    }
+
+    @Override
+    public Adventure findAdventureByI(int id) {
+        Optional<Adventure> adventure = adventureReporitory.findById(id);
+        return adventure.orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void updateAdventureAdditionalServices(List<HashMap<String, String>> newServices, int offerID) throws InvalidPriceException, RequiredFiledException {
+        Adventure adventure = findAdventureByI(offerID);
+        List<AdditionalService> serviceToRemove = new ArrayList<AdditionalService>();
+        List<AdditionalService> currentAdditionalServices = adventure.getAdditionalServices();
+        if(adventure != null && Validator.isValidAdditionalServices(newServices)){
+            for(HashMap<String, String> newService:  newServices){
+                if(isAditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
+
+                }
+                else if(!newService.get("serviceName").equals("")){
+                    AdditionalService service = new AdditionalService(newService.get("serviceName"), Double.valueOf(newService.get("servicePrice")));
+                    currentAdditionalServices.add(service);
+                    additionalServiceRepository.save(service);
+                }
+            }
+            removeAdventureServices(currentAdditionalServices, newServices);
+            adventure.setAdditionalServices(currentAdditionalServices);
+            adventureReporitory.save(adventure);
+
+        }
+    }
+    private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {
+        List<byte[]> photosInBytes = new ArrayList<byte[]>();
+        for (Photo p : photos) {
+            String folder = "./src/main/frontend/src/components/images/";
+            Path path = Paths.get(folder + p.getPath());
+            BufferedImage image = ImageIO.read(new FileInputStream(path.toString()));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", out);
+            byte[] imageByte = out.toByteArray();
+
+            photosInBytes.add(imageByte);
+        }
+        return photosInBytes;
+    }
+
+    private boolean isAditionalServiceExists(List<AdditionalService> currentAdditionalServices, String newServcename){
+        for(AdditionalService oldService : currentAdditionalServices){
+            if(oldService.getName().equals(newServcename)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAdditionalServiceRemoved(List<HashMap<String, String>> newServices, String oldServiceName){
+        for(HashMap<String, String> service: newServices){
+            if(service.get("serviceName").equals(oldServiceName)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void removeAdventureServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
+        Iterator<AdditionalService> iterator = oldServices.iterator();
+        //ArrayList<AdditionalService> toRemove = new ArrayList<AdditionalService>();
+        while(iterator.hasNext()){
+            AdditionalService service = iterator.next();
+            if(isAdditionalServiceRemoved(newServices, service.getName())){
+                iterator.remove();
+                additionalServiceRepository.delete(service);
+            }
+        }
+
     }
 
     private List<AdditionalServiceDTO> getAdditionalServices(Adventure a) {
@@ -134,17 +251,25 @@ public class AdventureServiceImpl implements AdventureService {
         return photos;
     }
 
-    private boolean validateAdventure(AdventureDTO adventure) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException {
+    private boolean validateAdventure(NewAdventureDTO adventure) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException {
         boolean validationResult = Validator.isValidPrice(adventure.getPrice()) &&
                                     Validator.isValidAdress(adventure.getStreet(), adventure.getCity(), adventure.getState()) &&
-                                    Validator.isValidAdditionalServices(adventure.getAdditionalServices()) &&
                                     Validator. isValidPeopleNumber(adventure.getPeopleNum()) &&
                                     (!adventure.getCancelationConditions().isEmpty()) &&
                                     (!adventure.getDescription().isEmpty());
         return validationResult;
     }
 
-    private void saveAdventure(AdventureDTO adventure, Instructor instructor) {
+    private boolean validateUpdateAdventure(AdventureDTO adventure) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException {
+        boolean validationResult = Validator.isValidPrice(adventure.getPrice()) &&
+                Validator.isValidAdress(adventure.getStreet(), adventure.getCity(), adventure.getState()) &&
+                Validator. isValidPeopleNumber(adventure.getPeopleNum()) &&
+                (!adventure.getCancelationConditions().isEmpty()) &&
+                (!adventure.getDescription().isEmpty());
+        return validationResult;
+    }
+
+    private Adventure saveAdventure(NewAdventureDTO adventure, Instructor instructor) throws IOException {
         //name, description, price, photos, numberOfPerson, rulesOfConduct, additionalServices, cancellationConditions, deleted, address, quickReservations, reservations, subscribedClients, equipment, intructor
 
         List<QuickReservation> quickReservations = new ArrayList<QuickReservation>();
@@ -153,26 +278,27 @@ public class AdventureServiceImpl implements AdventureService {
         String additionalEquipment = adventure.getAdditionalEquipment();
         Boolean deleted = false;
         Address address = new Address(adventure.getStreet(), adventure.getCity(), adventure.getState());
+        List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
 
         addressRepository.save(address);
 
         Adventure newAdventure = new Adventure(adventure.getOfferName(),
-                adventure.getDescription(),
-                Double.valueOf(adventure.getPrice()),
-                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
-                Integer.valueOf(adventure.getPeopleNum()),
-                        adventure.getRulesOfConduct(),
-                        convertServicesFromDTO(adventure.getAdditionalServices()),
-                        adventure.getCancelationConditions(),
-                        deleted,
-                        address,
-                        quickReservations,
-                        reservations,
-                        subscribedClients,
-                        additionalEquipment,
-                        instructor);
+                                                adventure.getDescription(),
+                                                Double.valueOf(adventure.getPrice()),
+                                                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
+                                                Integer.valueOf(adventure.getPeopleNum()),
+                                                adventure.getRulesOfConduct(),
+                                                additionalServices,
+                                                adventure.getCancelationConditions(),
+                                                deleted,
+                                                address,
+                                                quickReservations,
+                                                reservations,
+                                                subscribedClients,
+                                                additionalEquipment,
+                                                instructor);
 
-        adventureReporitory.save(newAdventure);
+        return adventureReporitory.save(newAdventure);
 
     }
 
@@ -186,34 +312,93 @@ public class AdventureServiceImpl implements AdventureService {
         return  false;
     }
 
-
-
-    private List<AdditionalService> convertServicesFromDTO(List<AdditionalServiceDTO> servicesDTO){
+    private List<AdditionalService> convertServicesFromDTO(List<HashMap<String, String>> servicesDTO) {
         List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
-        for (AdditionalServiceDTO serviceDTO: servicesDTO
-             ) {
-            AdditionalService additionalService = new AdditionalService(serviceDTO.getServiceName(), Double.valueOf(serviceDTO.getServicePrice()));
-            additionalServices.add(additionalService);
-            additionalServiceRepository.save(additionalService);
+        for (HashMap<String, String> serviceMap : servicesDTO)
+        {
+            if(!serviceMap.get("serviceName").equals("")){
+                AdditionalService additionalService = new AdditionalService(serviceMap.get("serviceName"), Double.valueOf(serviceMap.get("servicePrice")));
+                additionalServices.add(additionalService);
+                additionalServiceRepository.save(additionalService);
+            }
+
         }
         return additionalServices;
     }
 
-    private List<Photo> convertPhotosFromDTO(List<String> photos, String email){
+    private List<Photo> convertPhotosFromDTO(List<MultipartFile> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
-        for (String url: photos
+        int counter = 0;
+        for (MultipartFile photoData: photos
         ) {
-
-           Photo p = new Photo(url);
-           adventurePhotos.add(p);
-            photoRepositorys.save(p);
+               String photoName = savePhotoInFileSystem(photoData.getBytes(), email, counter);
+               Photo p = new Photo(photoName);
+               adventurePhotos.add(p);
+               photoRepositorys.save(p);
+               counter++;
 
         }
         return adventurePhotos;
     }
 
+    private List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
+        List<Photo> adventurePhotos = new ArrayList<Photo>();
+        int counter = 0;
+        for (String photoData: photos
+        ) {
+            byte[] bytes = DatatypeConverter.parseBase64Binary(photoData);
+            String photoName = savePhotoInFileSystem(bytes, email, counter);
+            Photo p = new Photo(photoName);
+            adventurePhotos.add(p);
+            photoRepositorys.save(p);
+            counter++;
 
+        }
+        return adventurePhotos;
+    }
 
+    private String savePhotoInFileSystem(byte[] bytes, String ownerEmail, int counter) throws IOException {
+        String folder = "./src/main/frontend/src/components/images/";
+        LocalDateTime uniqueTime = LocalDateTime.now();
+        DateTimeFormatter formater = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+        String photoName = ownerEmail + "_" + uniqueTime.format(formater) + counter + ".jpg";
+        Path path = Paths.get(folder + photoName);
+        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
+            fos.write(bytes);
+        }
+        return photoName;
+    }
 
+    private List<Photo> updateAdventurePhotos(List<String> newPhotos, List<Photo> oldPhotos, String ownerEmail) throws IOException {
+        //dobaviti stare slike, obrisati i postaviti nove
+        removeOldPhotos(oldPhotos);
+        return ConvertBase64Photo(newPhotos, ownerEmail);
+
+    }
+
+    private void removeOldPhotos(List<Photo> oldPhotos){
+        Iterator<Photo> iterator = oldPhotos.iterator();
+        while (iterator.hasNext()) {
+            Photo photo = iterator.next();
+            String folder = "./src/main/frontend/src/components/images/";
+            Path path = Paths.get(folder + photo.getPath());
+            File file = new File(path.toString());
+            iterator.remove();
+            photoRepositorys.delete(photo);
+            file.delete();
+        }
+    }
+
+    private Address updateAdventuerAddress(Address oldAddres, AddressDTO newAddress){
+        if(!oldAddres.getStreet().equals(newAddress.getStreet()) |
+            !oldAddres.getCity().equals(newAddress.getCity()) |
+            !oldAddres.getState().equals(newAddress.getState())){
+            Address address = new Address(newAddress.getStreet(), newAddress.getCity(), newAddress.getState());
+            addressRepository.save(address);
+            return address;
+        }
+        return oldAddres;
+
+    }
 
 }

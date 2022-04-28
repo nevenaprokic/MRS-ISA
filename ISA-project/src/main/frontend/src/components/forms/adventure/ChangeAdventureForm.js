@@ -7,21 +7,35 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from "@mui/material";
 import AdditionalServices from '../addtitionaServices/AdditionalServices';
 import { useState } from "react";
-import UploadPictureForm from "../imageUpload/UploadPictureForm";
+import ChangeImageForm from "../imageUpload/ChangeImageForm";
 import { useForm } from "react-hook-form";
-import { addAdventure } from "../../../services/userService";
-import { CssBaseline } from "@mui/material";
-import MainNavigationHome from "../../layout/MainNavigationHome";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect } from "react";
+import { updateAdventure } from "../../../services/AdventureService";
 
 //NAPRAVITI PRAZNE FORME ZA IZMENU SLIKA I ADITIONAL SERVICA ILI PROBATI POVEZATI SA POSTOJECIM
 
-function ChangeAdventureForm({currrentAdventureData, closeForm}){
+function ChangeAdventureForm({currentAdventureData, closeForm, childToParent}){
 
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
     const [additionalServicesInputList, setInputList] = useState([{ serviceName: "", servicePrice: "" }]);
-    const [pictureInputList, pictureSetInputList] = useState([]);
+    const [images, setImages] = useState([]);
     const [submitForm, setSubmitForm] = useState(false);
+
+    useEffect(() => {
+        async function setCurrentData(){
+            let images = [];
+            currentAdventureData.photos.forEach(photo => {
+                let path = photo;
+                images.push(path);
+            });
+            setImages(images);
+            setCurrentAdditionalServices();
+        }
+        setCurrentData();
+
+    }, []);
+  
 
     const theme = createTheme({
         palette: {
@@ -31,16 +45,27 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
       });
 
     const onSubmit = (data) => {
-        data["photos"] = pictureInputList;
+        data["id"] = currentAdventureData.id
+        data["photos"] = images;
         data["additionalServices"] = additionalServicesInputList;
-        console.log(data);
-        // addAdventure(data);
-        // setSubmitForm(true);
-        //alert("Successfully added new adventure!"); //ovde kasnije zameniti sa lepsim popup-om
-      }
+        updateAdventure(data, additionalServicesInputList);
+       
+        childToParent(data);
+        setSubmitForm(true);
+        closeForm();
 
+    }
+
+    function setCurrentAdditionalServices(){
+        if(currentAdventureData.additionalServices.length === 0){
+            setInputList([{ serviceName: "", servicePrice: "" }])
+        }
+        else{
+            setInputList(currentAdventureData.additionalServices);
+        }
+    }
     
-  
+    
     return (
         <ThemeProvider theme={theme}>
         <div className="changeAdventureForm">
@@ -61,14 +86,14 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                         id="offerName"
                         label="Offer name" 
                         fullWidth 
-                        defaultValue=""
-                                    
+                        defaultValue={currentAdventureData.offerName}
+                        {...register("offerName", {required:true})}            
                     />
+                    {errors.offerName && <label className="requiredLabel">Name can't be empty!</label>}
                 </Grid>
 
                 <Grid item xs={12} sm={6} >
                 <TextField
-                    
                     id="peopleNum"
                     label="Maximum nuber of people"
                     type="number"
@@ -76,7 +101,10 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     shrink: true,
                     }}
                     fullWidth
+                    defaultValue={currentAdventureData.peopleNum} 
+                    {...register("peopleNum", {required:true, pattern:/^[1-9]+[0-9]*$/})}
                 />
+                {errors.peopleNum && <label className="requiredLabel">Only positive numbers are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                 <TextField 
@@ -87,8 +115,10 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     InputProps={{
                     startAdornment: <InputAdornment position="end">€</InputAdornment>,
                     }}
-                    
+                    defaultValue={currentAdventureData.price}
+                    {...register("price", {required:true, pattern:/^(\d+(\.\d{0,2})?|\.?\d{1,2})$/})}
                 />
+                {errors.price && <label className="requiredLabel">Only numbers with a maximum of two decimal places are allowed</label>}
                 </Grid>
                 
 
@@ -98,7 +128,10 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="street"
                     label="Street"
                     fullWidth  
+                    defaultValue={currentAdventureData.street}
+                    {...register("street", {required:true, pattern:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/})}
                     />
+                    {errors.street && <label className="requiredLabel">Only letters, numbers and spaces are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <TextField
@@ -106,7 +139,10 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="city"
                     label="City"
                     fullWidth
+                    defaultValue={currentAdventureData.city}
+                    {...register("city", {required:true,pattern:/^[a-zA-Z\s]*$/})}
                     />
+                     {errors.city && <label className="requiredLabel">Only letters and spaces are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <TextField
@@ -114,7 +150,10 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     name="state"
                     label="State"
                     fullWidth
+                    defaultValue={currentAdventureData.state}
+                    {...register("state", {required:true, pattern:/^[a-zA-Z\s]*$/})}
                     />
+                    {errors.state && <label className="requiredLabel">Only letters and spaces are allowed</label>}
                 </Grid>    
                 <Grid item xs={12}>
                     <TextField
@@ -122,9 +161,11 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Description"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.description}
+                    {...register("description", {required:true})}
                     />
+                    {errors.description && <label className="requiredLabel">Description can't be empty</label>}
                     </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -132,8 +173,9 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Rules of conduct"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.rulesOfConduct}
+                    {...register("rulesOfConduct")}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -142,12 +184,13 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Additional Equipment"
                     multiline
                     rows={4}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.additionalEquipment}
+                    {...register("additionalEquipment")}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <UploadPictureForm pictureSetInputList={pictureSetInputList} pictureInputList={pictureInputList}/>
+                    <ChangeImageForm images={images} setImages={setImages} childToParent={childToParent}/>
                 </Grid>
                 <Grid  item xs={12}>
                     <AdditionalServices errors={errors} registerForm={register} inputList={additionalServicesInputList} setInputList={setInputList} />
@@ -158,9 +201,11 @@ function ChangeAdventureForm({currrentAdventureData, closeForm}){
                     label="Cancellation conditions"
                     multiline
                     rows={3}
-                    defaultValue=""
                     fullWidth
+                    defaultValue={currentAdventureData.cancelationConditions}
+                    {...register("cancelationConditions", {required:true})}
                     />
+                    {errors.cancelationConditions && <label className="requiredLabel">Cancellation conditions can't be empty</label>}
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{marginLeft:"35%"}}>
                     <Button 
