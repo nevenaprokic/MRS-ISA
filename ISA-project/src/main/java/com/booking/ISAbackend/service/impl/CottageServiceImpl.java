@@ -86,10 +86,9 @@ public class CottageServiceImpl implements CottageService {
         }
         return  false;
     }
-    private boolean validateCottage(NewCottageDTO cottage) throws InvalidPriceException, InvalidAddressException, RequiredFiledException, InvalidPeopleNumberException, InvalidRoomNumberException, InvalidBedNumberException {
+    private boolean validateCottage(NewCottageDTO cottage) throws InvalidPriceException, InvalidAddressException, InvalidPeopleNumberException, InvalidRoomNumberException, InvalidBedNumberException {
         boolean validationResult = Validator.isValidPrice(cottage.getPrice()) &&
                 Validator.isValidAdress(cottage.getStreet(), cottage.getCity(), cottage.getState()) &&
-                Validator.isValidAdditionalServices(cottage.getAdditionalServices()) &&
                 Validator.isValidPeopleNumber(cottage.getPeopleNum()) &&
                 Validator.isValidRoomNumber(cottage.getRoomNumber()) &&
                 Validator.isValidBedNumber(cottage.getBedNumber()) &&
@@ -103,6 +102,7 @@ public class CottageServiceImpl implements CottageService {
         List<Client> subscribedClients = new ArrayList<Client>();
         List<Photo> photos = new ArrayList<Photo>();
         Boolean deleted = false;
+        List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
         Address address = new Address(cottage.getStreet(), cottage.getCity(), cottage.getState());
 
         addressRepository.save(address);
@@ -113,7 +113,7 @@ public class CottageServiceImpl implements CottageService {
                 photos,
                 Integer.valueOf(cottage.getPeopleNum()),
                 cottage.getRulesOfConduct(),
-                additionalServiceService.convertServicesFromDTO(cottage.getAdditionalServices()),
+                additionalServices,
                 cottage.getCancelationConditions(),
                 deleted,
                 address,

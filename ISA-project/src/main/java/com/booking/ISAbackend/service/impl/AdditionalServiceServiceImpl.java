@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,13 +17,16 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     private AdditionalServiceRepository additionalServiceRepository;
 
     @Override
-    public List<AdditionalService> convertServicesFromDTO(List<AdditionalServiceDTO> servicesDTO){
+    public List<AdditionalService> convertServicesFromDTO(List<HashMap<String, String>> servicesDTO) {
         List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
-        for (AdditionalServiceDTO serviceDTO: servicesDTO
-        ) {
-            AdditionalService additionalService = new AdditionalService(serviceDTO.getServiceName(), Double.valueOf(serviceDTO.getServicePrice()));
-            additionalServices.add(additionalService);
-            additionalServiceRepository.save(additionalService);
+        for (HashMap<String, String> serviceMap : servicesDTO)
+        {
+            if(!serviceMap.get("serviceName").equals("")){
+                AdditionalService additionalService = new AdditionalService(serviceMap.get("serviceName"), Double.valueOf(serviceMap.get("servicePrice")));
+                additionalServices.add(additionalService);
+                additionalServiceRepository.save(additionalService);
+            }
+
         }
         return additionalServices;
     }

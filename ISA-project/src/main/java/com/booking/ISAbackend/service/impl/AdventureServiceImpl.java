@@ -104,7 +104,7 @@ public class AdventureServiceImpl implements AdventureService {
         Optional<Adventure> adventure = adventureReporitory.findById(offerId);
         if(adventure.isPresent() && Validator.isValidAdditionalServices(additionalServiceDTOs)){
             Adventure a = adventure.get();
-            List<AdditionalService> additionalServices = convertServicesFromDTO(additionalServiceDTOs);
+            List<AdditionalService> additionalServices = additionalServiceService.convertServicesFromDTO(additionalServiceDTOs);
             a.setAdditionalServices(additionalServices);
             adventureReporitory.save(a);
         }
@@ -289,16 +289,16 @@ public class AdventureServiceImpl implements AdventureService {
                 Double.valueOf(adventure.getPrice()),
                 convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
                 Integer.valueOf(adventure.getPeopleNum()),
-                        adventure.getRulesOfConduct(),
-                        additionalServiceService.convertServicesFromDTO(adventure.getAdditionalServices()),
-                        adventure.getCancelationConditions(),
-                        deleted,
-                        address,
-                        quickReservations,
-                        reservations,
-                        subscribedClients,
-                        additionalEquipment,
-                        instructor);
+                adventure.getRulesOfConduct(),
+                additionalServices,
+                adventure.getCancelationConditions(),
+                deleted,
+                address,
+                quickReservations,
+                reservations,
+                subscribedClients,
+                additionalEquipment,
+                instructor);
 
         adventureReporitory.save(newAdventure);
 

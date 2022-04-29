@@ -17,7 +17,6 @@ import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../services/userService";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
-import { useEffect } from "react";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -90,19 +89,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
     }
   }
 
-
-  return (
-    const [markData, setMarkData] = useState();
-    useEffect(() => {
-      setOfferData(offer);
-      async function setData() {
-        const markData = await getMarkByOfferId(offer.id);
-        setMarkData(markData.data ? markData.data : "0");
-        return markData.data;
-      }
-      setData();
-    }, []);
-    if (markData) {
+  const [markData, setMarkData] = useState();
+  useEffect(() => {
+    setOfferData(offer);
+    async function setData() {
+      const markData = await getMarkByOfferId(offer.id);
+      setMarkData(markData.data ? markData.data : "0");
+      return markData.data;
+    }
+    setData();
+  }, []);
+  if(markData) {
      return (
       <ThemeProvider theme={secondaryTheme}>
         <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
@@ -141,7 +138,6 @@ const modalOfferComponent = (offerStr, offerId) =>{
           </CardActions>
         </Card>
       </ThemeProvider>
-    );
-
-  }
+     );
+    }
 }
