@@ -1,7 +1,10 @@
 package com.booking.ISAbackend.controller;
 
 
+import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.CottageDTO;
+import com.booking.ISAbackend.dto.NewCottageDTO;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.service.CottageService;
@@ -16,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/cottage")
 public class CottageController {
     @Autowired
     private CottageService cottageService;
@@ -100,5 +103,19 @@ public class CottageController {
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("addCottage")
+    public ResponseEntity<String> addCottage(@RequestBody NewCottageDTO cottage){
+        //provera da li je ulogovan i autorizacija
+        try{
+            cottageService.addCottage(cottage);
+            return ResponseEntity.ok("Successfully added new cottage");
+        } catch (InvalidPriceException | CottageAlreadyExistsException | InvalidPeopleNumberException | InvalidRoomNumberException | InvalidBedNumberException | RequiredFiledException | InvalidAddressException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+
     }
 }

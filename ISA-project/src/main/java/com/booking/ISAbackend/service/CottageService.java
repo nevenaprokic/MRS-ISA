@@ -1,10 +1,10 @@
 package com.booking.ISAbackend.service;
 
+import com.booking.ISAbackend.dto.NewCottageDTO;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Cottage;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface CottageService {
@@ -14,4 +14,5 @@ public interface CottageService {
     Address findAddressByCottageId(Integer id);
     List<Cottage> searchCottages(String name, Integer maxPeople, String address, Double price);
     List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email);
+    void addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException;
 }

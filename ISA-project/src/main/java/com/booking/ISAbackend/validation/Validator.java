@@ -34,6 +34,26 @@ public class Validator {
 
         }
     }
+    public static boolean isValidRoomNumber(String roomNumber) throws InvalidRoomNumberException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(roomNumber);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidRoomNumberException("Room number mast be positive whole number! ");
+
+        }
+    }
+    public static boolean isValidBedNumber(String bedNumber) throws InvalidBedNumberException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(bedNumber);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidBedNumberException("Bed number mast be positive whole number! ");
+
+        }
+    }
 
     public static boolean isValidAdress(String street, String city, String state) throws InvalidAddressException {
         String cityRegex = "^[a-zA-Z\\s]*$";

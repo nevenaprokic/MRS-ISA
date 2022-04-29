@@ -8,6 +8,7 @@ import com.booking.ISAbackend.repository.AdditionalServiceRepository;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.AdventureReporitory;
 import com.booking.ISAbackend.repository.PhotoRepository;
+import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.PhotoService;
 import com.booking.ISAbackend.service.UserService;
@@ -45,10 +46,11 @@ public class AdventureServiceImpl implements AdventureService {
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 
+    
+    @Autowired
+    private AdditionalServiceService additionalServiceService;
     @Autowired
     private PhotoService photoService;
-
-
 
     @Override
     @Transactional
@@ -283,20 +285,22 @@ public class AdventureServiceImpl implements AdventureService {
         addressRepository.save(address);
 
         Adventure newAdventure = new Adventure(adventure.getOfferName(),
-                                                adventure.getDescription(),
-                                                Double.valueOf(adventure.getPrice()),
-                                                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
-                                                Integer.valueOf(adventure.getPeopleNum()),
-                                                adventure.getRulesOfConduct(),
-                                                additionalServices,
-                                                adventure.getCancelationConditions(),
-                                                deleted,
-                                                address,
-                                                quickReservations,
-                                                reservations,
-                                                subscribedClients,
-                                                additionalEquipment,
-                                                instructor);
+                adventure.getDescription(),
+                Double.valueOf(adventure.getPrice()),
+                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
+                Integer.valueOf(adventure.getPeopleNum()),
+                        adventure.getRulesOfConduct(),
+                        additionalServiceService.convertServicesFromDTO(adventure.getAdditionalServices()),
+                        adventure.getCancelationConditions(),
+                        deleted,
+                        address,
+                        quickReservations,
+                        reservations,
+                        subscribedClients,
+                        additionalEquipment,
+                        instructor);
+
+        adventureReporitory.save(newAdventure);
 
         return adventureReporitory.save(newAdventure);
 
@@ -312,19 +316,6 @@ public class AdventureServiceImpl implements AdventureService {
         return  false;
     }
 
-    private List<AdditionalService> convertServicesFromDTO(List<HashMap<String, String>> servicesDTO) {
-        List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
-        for (HashMap<String, String> serviceMap : servicesDTO)
-        {
-            if(!serviceMap.get("serviceName").equals("")){
-                AdditionalService additionalService = new AdditionalService(serviceMap.get("serviceName"), Double.valueOf(serviceMap.get("servicePrice")));
-                additionalServices.add(additionalService);
-                additionalServiceRepository.save(additionalService);
-            }
-
-        }
-        return additionalServices;
-    }
 
     private List<Photo> convertPhotosFromDTO(List<MultipartFile> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
