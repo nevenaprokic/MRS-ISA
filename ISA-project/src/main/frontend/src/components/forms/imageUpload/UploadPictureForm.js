@@ -10,24 +10,12 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
         display: 'none',
       });
 
-    const handlePictureUpload = function(e) {
-        let files = e.target.files;
-        console.log(e.target.files[0]);
-        const selectedPictures = [...pictureInputList];
-        const targetPicture = e.target.files;
-        const targetPicturesObj = [...targetPicture];
-        var FR= new FileReader();
-        FR.readAsDataURL(files[0]);
-      
-        FR.onload = (event) => {
-            console.log(event.target.result);
-            selectedPictures.push(event.target.result);
-        }
-        
 
-        // targetPicturesObj.map((file) =>{
-        //     return (URL.createObjectURL(file))
-        // })
+    
+
+    const handlePictureUpload = function(e) {
+        const selectedPictures = [...pictureInputList];
+        selectedPictures.push(e.target.files[0]);
         pictureSetInputList(selectedPictures);
     }
 
@@ -46,11 +34,11 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
             
             </Grid>
             <Grid>
-                <label className="uploadPhotoLabel">You can add photos from previous offers</label>
+                <label className="uploadPhotoLabel">You can add photos from previous adventures</label>
             </Grid>
             <Grid item xs={12}>
                 
-                    <UploadImageGallery images={pictureInputList} pictureSetInputList={pictureSetInputList}/>
+                    <UploadImageGallery images={pictureInputList} pictureSetInputList={pictureSetInputList} />
                 
                 
             </Grid>
