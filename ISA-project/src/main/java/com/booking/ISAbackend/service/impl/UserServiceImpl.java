@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-import com.booking.ISAbackend.dto.InstructorNewDataDTO;
-import com.booking.ISAbackend.dto.NewOwnerDataDTO;
-import com.booking.ISAbackend.dto.UserProfileData;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.booking.ISAbackend.dto.UserRequest;
 import com.booking.ISAbackend.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,10 +63,23 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Instructor findInstructorByEmail(String email) {
-		MyUser user = userRepository.findByEmail(email);
-		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
-		return instructor.orElse(null);
+	public InstructorProfileData getInstructorDataByEmail(String email) {
+		Instructor instructor = findInstructorByEmail(email);
+		if(instructor != null){
+			InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
+					instructor.getFirstName(),
+					instructor.getLastName(),
+					instructor.getPhoneNumber(),
+					instructor.getAddress().getStreet(),
+					instructor.getAddress().getCity(),
+					instructor.getAddress().getState(),
+					instructor.getOwnerCategory().toString(),
+					instructor.getBiography());
+			return data;
+		}
+		return null;
+
+
 	}
 	@Override
 	public CottageOwner findCottageOwnerByEmail(String email){
@@ -134,51 +144,54 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		Instructor instructor = findInstructorByEmail(newData.getEmail());
-		Address address = instructor.getAddress();
-		if(!newData.getFirstName().equals("")){
-			if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
-				instructor.setFirstName(newData.getFirstName());
+		if(instructor != null){
+			Address address = instructor.getAddress();
+			if(!newData.getFirstName().equals("")){
+				if(Validator.onlyLetterAndSpacesValidation(newData.getFirstName())){
+					instructor.setFirstName(newData.getFirstName());
+				}
 			}
-		}
-		if(!newData.getLastName().equals("")){
-			if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){
-				instructor.setLastName(newData.getLastName());
+			if(!newData.getLastName().equals("")){
+				if(Validator.onlyLetterAndSpacesValidation(newData.getLastName())){
+					instructor.setLastName(newData.getLastName());
+				}
+
 			}
+			if(!newData.getPhoneNumber().equals("")){
+				if(Validator.phoneNumberValidation(newData.getPhoneNumber())){
+					instructor.setPhoneNumber(newData.getPhoneNumber());
+				}
 
-		}
-		if(!newData.getPhoneNumber().equals("")){
-			if(Validator.phoneNumberValidation(newData.getPhoneNumber())){
-				instructor.setPhoneNumber(newData.getPhoneNumber());
+
 			}
+			if(!newData.getStreet().equals("")){
+				if(Validator.isValidAdress(newData.getStreet(), address.getCity(), address.getState()))
+				{
+					address.setStreet(newData.getStreet());
+				}
 
-
-		}
-		if(!newData.getStreet().equals("")){
-			if(Validator.isValidAdress(newData.getStreet(), address.getCity(), address.getState()))
-			{
-				address.setStreet(newData.getStreet());
 			}
+			if(!newData.getCity().equals("")){
+				if(Validator.isValidAdress(address.getStreet(), newData.getCity(), address.getState()))
+				{
+					address.setCity(newData.getCity());
+				}
 
-		}
-		if(!newData.getCity().equals("")){
-			if(Validator.isValidAdress(address.getStreet(), newData.getCity(), address.getState()))
-			{
-				address.setCity(newData.getCity());
+
 			}
+			if(!newData.getState().equals("")){
+				if(Validator.isValidAdress(address.getStreet(), address.getCity(), newData.getState())) {
+					address.setState(newData.getState());
+				}
 
-
-		}
-		if(!newData.getState().equals("")){
-			if(Validator.isValidAdress(address.getStreet(), address.getCity(), newData.getState())) {
-				address.setState(newData.getState());
 			}
+			if(!newData.getBiography().equals("")){
+				instructor.setBiography(newData.getBiography());
 
+			}
+			instructorRepository.save(instructor);
 		}
-		if(!newData.getBiography().equals("")){
-			instructor.setBiography(newData.getBiography());
 
-		}
-		instructorRepository.save(instructor);
 
 	}
 
@@ -188,14 +201,19 @@ public class UserServiceImpl implements UserService{
 				newData.getStreet(), newData.getCity(), newData.getState());
 		boolean validation = validateUserNewData(data);
 		if(validation){
-			Instructor instructor = findInstructorByEmail(newData.getEmail());
-			instructor.setFirstName(newData.getFirstName());
-			instructor.setLastName(newData.getLastName());
-			instructor.setPhoneNumber(newData.getPhoneNumber());
-			Address newAddress = new Address(newData.getStreet(), newData.getCity(), newData.getState());
-			addressRepository.save(newAddress);
-			instructor.setAddress(newAddress);
-			userRepository.save(instructor);
+			MyUser user = userRepository.findByEmail(newData.getEmail());
+			Optional<Instructor> instr = instructorRepository.findById(user.getId());
+			if(instr.isPresent()){
+				Instructor instructor = instr.get();
+				instructor.setFirstName(newData.getFirstName());
+				instructor.setLastName(newData.getLastName());
+				instructor.setPhoneNumber(newData.getPhoneNumber());
+				Address newAddress = new Address(newData.getStreet(), newData.getCity(), newData.getState());
+				addressRepository.save(newAddress);
+				instructor.setAddress(newAddress);
+				userRepository.save(instructor);
+			}
+
 		}
 	}
 
@@ -208,5 +226,11 @@ public class UserServiceImpl implements UserService{
 
 	}
 
+	@Override
+	public Instructor findInstructorByEmail(String email){
+		MyUser user = userRepository.findByEmail(email);
+		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
+		return instructor.orElse(null);
+	}
 
 }

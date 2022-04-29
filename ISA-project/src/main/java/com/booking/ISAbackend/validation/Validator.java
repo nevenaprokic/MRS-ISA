@@ -3,6 +3,7 @@ package com.booking.ISAbackend.validation;
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.exceptions.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,15 +79,15 @@ public class Validator {
         }
     }
 
-    public static boolean isValidAdditionalServices(List<AdditionalServiceDTO> additionalServices) throws RequiredFiledException, InvalidPriceException {
-        for (AdditionalServiceDTO service: additionalServices
+    public static boolean isValidAdditionalServices(List<HashMap<String, String>> additionalServices) throws RequiredFiledException, InvalidPriceException {
+        for (HashMap<String, String> serviceMap: additionalServices
         ) {
-            if(!(service.getServiceName()).equals("")){
-                if(service.getServicePrice().equals("")){
-                    throw new RequiredFiledException("Price is required for additional service" + service.getServiceName() + "!It isn't enough to write only the name");
+            if(!(serviceMap.get("serviceName")).equals("")){
+                if(serviceMap.get("servicePrice").equals("")){
+                    throw new RequiredFiledException("Price is required for additional service" + serviceMap.get("serviceName") + "!It isn't enough to write only the name");
                 }
                 else{
-                    return isValidPrice(String.valueOf(service.getServicePrice()));
+                    return isValidPrice(String.valueOf(serviceMap.get("servicePrice")));
                 }
             }
         }

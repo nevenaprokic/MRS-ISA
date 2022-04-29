@@ -5,28 +5,28 @@ import IconButton from '@mui/material/IconButton';
 import { Grid } from "@mui/material";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 
-function UploadImageGallery({images, pictureSetInputList}){
+function ChangeImageGallery({images, setImages}){
 
-    const handleRemoveClick = index => {
+
+      const handleRemoveClick = index => {
         const list = [...images];
         list.splice(index, 1);
-        pictureSetInputList(list);
-
+        setImages(list);
       };
+
+    
 
     return(
         <div className="uploadGalleryContainer">
             {images.map((url, i)=>{
-                let src;
-                try{
-                    src = URL.createObjectURL(url);
-                }catch{
-                    src = url;
-                }
+                // try{
+                //     src = URL.createObjectURL(url);
+                // }catch{
+                //     src = url;
+                // }
                 return(
-                   
                     <div className="uploadedImg" >     
-                        <img src={src} width="150px" height="150px" className="img" /> 
+                        <img src={"data:image/jpg;base64," + url} width="150px" height="150px" className="img" /> 
                         <Grid>
                             <IconButton aria-label="delete" size="large" sx={{ marginLeft: "35%" }}  onClick={() => handleRemoveClick(i)}><DeleteIcon/></IconButton>  
                         </Grid>                     
@@ -40,4 +40,4 @@ function UploadImageGallery({images, pictureSetInputList}){
     )
 }
 
-export default UploadImageGallery;
+export default ChangeImageGallery;

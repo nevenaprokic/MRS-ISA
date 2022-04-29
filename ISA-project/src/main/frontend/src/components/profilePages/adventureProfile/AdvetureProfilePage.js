@@ -1,7 +1,7 @@
 import "./AdventureProfilePage.scss" ;
 import ImagesBox from "./ImagesBox";
 
-import QuickActionBox from "./QuickActionsBox";
+import QuickActionBox from "../cottageProfile/QuickActionBox";
 import BasicAdventureInfiBox from "./BasicAdventureInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
+import { test } from "../../../services/AdventureService";
 
 
 const theme = createTheme({
@@ -28,30 +29,66 @@ const theme = createTheme({
 
  
 
-function AdventureProfilePage({id, close}){
-    //const { id } = useParams();
+function AdventureProfilePage({id, close, childToParenMediaCard}){
+
+
+    const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
     const handleOpenForm = () => setOpenForm(true);
-    const handleCloseForm = () => setOpenForm(false);
+    
+    const handleCloseForm = () => {
+        childToParenMediaCard(adventureData);
+        setOpenForm(false);
+    }
 
-    const [adventureData, setAdventureData] = useState();
+    
+    const childToParent = (childData) => {
+            console.log("CHILD",childData);
+            setAdventureData(prevState => ({
+                ...prevState,
+                ["offerName"]: childData.offerName,
+                ["price"]: childData.price,
+                ["id"]: childData.id,
+                ["city"]: childData.city,
+                ["street"]: childData.street,
+                ["state"]: childData.state,
+                ["description"]: childData.description,
+                ["rulesOfConduct"]: childData.rulesOfConduct,
+                ["additionalEquipment"]: childData.additionalEquipment,
+                ["cancelationConditions"]: childData.cancelationConditions,
+                ["peopleNum"]: childData.peopleNum,
+                ["additionalServices"]: childData.additionalServices,
+                ["photos"]:childData.photos,
+
+            })
+            ); 
+      }
+      
 
     useEffect(() => {
         async function getAdventureData(){
             let adventure = await getAdventureById(id);
-            console.log("OVDE", adventure);
             setAdventureData(!!adventure ? adventure.data : {});
             
             return adventure;
         } 
         getAdventureData();
     }, []);
+
+    let images = [];
+
+    function setImages(){
+        adventureData.photos.forEach(photo_byte => {
+            let img_src = "data:image/png;base64," + photo_byte
+            images.push({image: img_src});
+        });
+    }
  
     return( 
         !!adventureData && 
         <div className="adventureProfile">
-           
+           { setImages()}
         <ThemeProvider theme={theme}>
             <div className="profileContainer">
                 <div className="closeProfileBtn">
@@ -72,12 +109,12 @@ function AdventureProfilePage({id, close}){
                     aria-describedby="modal-modal-description"
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
                 >
-                        <ChangeAdventureForm currrentAdventureData={adventureData} closeForm={handleCloseForm}/>
+                        <ChangeAdventureForm currentAdventureData={adventureData} closeForm={handleCloseForm} childToParent={childToParent}/>
                     
                 </Modal>
                 
-                <ImagesBox images={adventureData.photos}/>
-                <QuickActionBox inputList={adventureData.photos}/> {/*ovde proslediti listu akcija kad se dobavi*/}
+                <ImagesBox images={images}/>
+                <QuickActionBox id={adventureData.id}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >
                         <BasicAdventureInfiBox basicInfo={adventureData}/>
