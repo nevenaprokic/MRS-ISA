@@ -1,6 +1,9 @@
 package com.booking.ISAbackend.model;
 
+import com.booking.ISAbackend.client.Client;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Cottage extends Offer{
@@ -15,6 +18,17 @@ public class Cottage extends Offer{
 	@JoinColumn(name = "my_user_id")
 	private CottageOwner cottageOwner;
 
+	public Cottage() {
+
+	}
+
 	public Integer getRoomNumber() {return roomNumber;}
 	public  Integer getBedNumber() {return  bedNumber;}
+
+	public Cottage(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients, Integer roomNumber, Integer bedNumber, CottageOwner cottageOwner) {
+		super(name, description, price, photos, numberOfPerson, rulesOfConduct, additionalServices, cancellationConditions, deleted, address, quickReservations, reservations, subscribedClients);
+		this.roomNumber = roomNumber;
+		this.bedNumber = bedNumber;
+		this.cottageOwner = cottageOwner;
+	}
 }

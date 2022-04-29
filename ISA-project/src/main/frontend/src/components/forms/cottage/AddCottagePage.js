@@ -9,6 +9,7 @@ import AdditionalServices from "../addtitionaServices/AdditionalServices";
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
+import { addCottage } from "../../../services/CottageService";
 
 function AddCottagePage() {
   const {
@@ -26,6 +27,7 @@ function AddCottagePage() {
   const onSubmit = (data) => {
     data["photos"] = pictureInputList;
     data["additionalServices"] = additionalServicesInputList;
+    addCottage(data);
     setSubmitForm(true);
   };
 
@@ -225,17 +227,6 @@ function AddCottagePage() {
             defaultValue=""
             fullWidth
             {...register("rulesOfConduct")}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="additionalEquipment"
-            label="Additional Equipment"
-            multiline
-            rows={4}
-            defaultValue=""
-            fullWidth
-            {...register("additionalEquipment")}
           />
         </Grid>
         <Grid item xs={12}>

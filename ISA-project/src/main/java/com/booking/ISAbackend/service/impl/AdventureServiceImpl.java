@@ -10,6 +10,7 @@ import com.booking.ISAbackend.repository.AdditionalServiceRepository;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.AdventureReporitory;
 import com.booking.ISAbackend.repository.PhotoRepository;
+import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.UserService;
 import com.booking.ISAbackend.validation.Validator;
@@ -40,6 +41,8 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private AdditionalServiceService additionalServiceService;
 
 
     @Override
@@ -162,7 +165,7 @@ public class AdventureServiceImpl implements AdventureService {
                 convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
                 Integer.valueOf(adventure.getPeopleNum()),
                         adventure.getRulesOfConduct(),
-                        convertServicesFromDTO(adventure.getAdditionalServices()),
+                        additionalServiceService.convertServicesFromDTO(adventure.getAdditionalServices()),
                         adventure.getCancelationConditions(),
                         deleted,
                         address,
@@ -184,19 +187,6 @@ public class AdventureServiceImpl implements AdventureService {
             }
         }
         return  false;
-    }
-
-
-
-    private List<AdditionalService> convertServicesFromDTO(List<AdditionalServiceDTO> servicesDTO){
-        List<AdditionalService> additionalServices = new ArrayList<AdditionalService>();
-        for (AdditionalServiceDTO serviceDTO: servicesDTO
-             ) {
-            AdditionalService additionalService = new AdditionalService(serviceDTO.getServiceName(), Double.valueOf(serviceDTO.getServicePrice()));
-            additionalServices.add(additionalService);
-            additionalServiceRepository.save(additionalService);
-        }
-        return additionalServices;
     }
 
     private List<Photo> convertPhotosFromDTO(List<String> photos, String email){
