@@ -1,22 +1,21 @@
 package com.booking.ISAbackend.controller;
 
-
-import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Cottage;
-import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cottage")
@@ -106,16 +105,48 @@ public class CottageController {
     }
 
     @PostMapping("addCottage")
-    public ResponseEntity<String> addCottage(@RequestBody NewCottageDTO cottage){
-        //provera da li je ulogovan i autorizacija
-        try{
-            cottageService.addCottage(cottage);
-            return ResponseEntity.ok("Successfully added new cottage");
+    public ResponseEntity<String> addCottage(@RequestParam("email") String ownerEmail,
+                                             @RequestParam("photos") List<MultipartFile> photos,
+                                             @RequestParam("offerName") String offerName,
+                                             @RequestParam("price") String price,
+                                             @RequestParam("description") String description,
+                                             @RequestParam("street") String street,
+                                             @RequestParam("city") String city,
+                                             @RequestParam("state") String state,
+                                             @RequestParam("rulesOfConduct") String rulesOfConduct,
+                                             @RequestParam("cancelationConditions") String cancelationConditions,
+                                             @RequestParam("peopleNum") String peopleNum,
+                                             @RequestParam("roomNumber") String roomNumber,
+                                             @RequestParam("bedNumber") String bedNumber){
+
+        try {
+            NewCottageDTO cottageDTO = new NewCottageDTO(ownerEmail, offerName, description, price, photos,
+                    peopleNum, rulesOfConduct, cancelationConditions,
+                    street, city, state, roomNumber, bedNumber);
+
+            int cottageId = cottageService.addCottage(cottageDTO);
+            return ResponseEntity.ok(String.valueOf(cottageId));
         } catch (InvalidPriceException | CottageAlreadyExistsException | InvalidPeopleNumberException | InvalidRoomNumberException | InvalidBedNumberException | RequiredFiledException | InvalidAddressException e) {
+            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch(Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
 
+    }
+    @PostMapping("add-additional-services")
+    public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
+        try{
+            HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
+            int id = Integer.parseInt(paramsMap.get("offerId").toString());
+            List<HashMap<String, String>> additionalServiceDTO = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTO");
+
+            cottageService.addAdditionalServices(additionalServiceDTO, id);
+            return ResponseEntity.ok().body("Successfully added new cottage");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

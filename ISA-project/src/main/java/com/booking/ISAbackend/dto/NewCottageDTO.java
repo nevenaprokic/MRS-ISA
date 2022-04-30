@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class NewCottageDTO {
@@ -7,10 +9,9 @@ public class NewCottageDTO {
     private String offerName;
     private String description;
     private String price;
-    private List<String> photos;
+    private List<MultipartFile> photos;
     private String peopleNum;
     private String rulesOfConduct;
-    private List<AdditionalServiceDTO> additionalServices;
     private String cancelationConditions;
     private String street;
     private String city;
@@ -18,7 +19,7 @@ public class NewCottageDTO {
     private String roomNumber;
     private String bedNumber;
 
-    public NewCottageDTO(String ownerEmail, String offerName, String description, String price, List<String> photos, String peopleNum, String rulesOfConduct, List<AdditionalServiceDTO> additionalServices, String cancelationConditions, String street, String city, String state, String roomNumber, String bedNumber) {
+    public NewCottageDTO(String ownerEmail, String offerName, String description, String price, List<MultipartFile> photos, String peopleNum, String rulesOfConduct, String cancelationConditions, String street, String city, String state, String roomNumber, String bedNumber) {
         this.ownerEmail = ownerEmail;
         this.offerName = offerName;
         this.description = description;
@@ -26,7 +27,6 @@ public class NewCottageDTO {
         this.photos = photos;
         this.peopleNum = peopleNum;
         this.rulesOfConduct = rulesOfConduct;
-        this.additionalServices = additionalServices;
         this.cancelationConditions = cancelationConditions;
         this.street = street;
         this.city = city;
@@ -52,7 +52,7 @@ public class NewCottageDTO {
         return price;
     }
 
-    public List<String> getPhotos() {
+    public List<MultipartFile> getPhotos() {
         return photos;
     }
 
@@ -62,10 +62,6 @@ public class NewCottageDTO {
 
     public String getRulesOfConduct() {
         return rulesOfConduct;
-    }
-
-    public List<AdditionalServiceDTO> getAdditionalServices() {
-        return additionalServices;
     }
 
     public String getCancelationConditions() {
