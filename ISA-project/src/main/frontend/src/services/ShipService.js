@@ -38,7 +38,14 @@ export function getShips(){
             return err.message;
         });
 }
-export function searchShips(params, setOffers){} 
+
+export function searchShips(params, setOffers){
+    params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 
+    params.price = params.price == "" ? -1 : params.price; 
+    console.log(params);
+    return api
+        .get("/searchShips",  {params})
+
 export function searchShipByShipOwner(params, setOffers){
     params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 
     params.price = params.price == "" ? -1 : params.price; 
@@ -50,5 +57,5 @@ export function searchShipByShipOwner(params, setOffers){
             console.log("Nije uspesno dobavljeno");
             return err.message;
         });
+}
 
-} 

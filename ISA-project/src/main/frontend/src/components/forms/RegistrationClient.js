@@ -139,11 +139,11 @@ export default function RegistrationClient() {
                     type="tel"
                     id="phoneNumber"
                     autoComplete="phone-number"
-                    //pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                    pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                     variant="standard"
                     {...register("phoneNumber",
                             {
-                                //pattern: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
+                                pattern: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
                             })} 
                   />
                   {errors.phoneNumber && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}

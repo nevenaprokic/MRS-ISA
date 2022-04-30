@@ -38,6 +38,10 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
+    public List<Ship> searchShips(String name, Integer maxPeople, String address, Double price) {
+        return shipRepository.searchShips(name, maxPeople, address, price);
+
+    @Override
     public List<Ship> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) {
         return shipRepository.searchShipsByShipOwnerEmail(name, maxPeople, address, price, email);
     }

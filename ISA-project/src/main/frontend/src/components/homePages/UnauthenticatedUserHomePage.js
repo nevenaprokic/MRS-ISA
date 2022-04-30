@@ -13,6 +13,7 @@ import MainNavigation from '../layout/MainNavigation';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
+import { offerType, userType } from "../../services/userService";
 import ClientProfile from '../profilePages/ClientProfile';
 import Grid from '@mui/material/Grid';
 import Album from '../pages/home';
@@ -60,14 +61,30 @@ export default function UnauthenticatedUserHomePage() {
     const [offers, setOffers] = useState();
 
     const [params, setParams] = useState({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
         name: "",
         address: "",
         maxPeople: -1,
-        price: -1
+        price: -1,
     });
+
+    const resetParams = () => {
+      setParams({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        name: "",
+        address: "",
+        maxPeople: -1,
+        price: -1,
+    });
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
+      resetParams();
     };
   
     const outerTheme = createTheme({
@@ -115,10 +132,10 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search params={params} setParams={setParams} offers={offers} setOffers={setOffers} />
+                              <Search params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
                           </Grid>
                         </Box>
-                      <OfferList type="cottage" offers={offers} setOffers={setOffers} />
+                      <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
@@ -127,10 +144,10 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                              <Search params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers}/>
                           </Grid>
                         </Box>
-                      <Album/>
+                        <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 <TabPanel value={value} index={4}>
@@ -139,10 +156,10 @@ export default function UnauthenticatedUserHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                          <Search params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers}/>
                           </Grid>
                         </Box>
-                      <Album/>
+                        <OfferList type={userType.INSTRUCTOR} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 </Box>

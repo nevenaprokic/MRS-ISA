@@ -97,15 +97,17 @@ function CottageProfilePage({ id, close }) {
             <Grid container spacing={2}>
               <div className="profileContainer">
                 <div className="headerContainer">
-                  <h2 className="adventureTittle">{cottageData.name}</h2>
-                  <div className="changeBtn">
-                    <Button variant="contained">Change info</Button>
-                  </div>
+                    <h2 className="adventureTittle">{cottageData.name}</h2>
+                    {(getRoleFromToken() == null) ? 
+                    (<div className="changeBtn">
+                      <Button variant="contained">Change info</Button>
+                      </div>) : 
+                    (<></>)}
+
                   <Divider/>
                   <div className="mark">
                   <Rating name="read-only" value={markData} readOnly />
                   </div>
-                </div>
 
                 <ImagesBox images={images} />
                 <QuickActionBox id={cottageData.id} />

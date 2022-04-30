@@ -67,7 +67,37 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("getAllShips")
+    @Transactional
+    public ResponseEntity<List<ShipDTO>> getShips(){
+        try{
+            List<Ship> ships = shipService.findAll();
+            List<ShipDTO> dto = new ArrayList<>();
+            for(Ship s: ships){
+                ShipDTO shipDTO = new ShipDTO(s);
+                dto.add(shipDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    @GetMapping("searchShips")
+    @Transactional
+    public ResponseEntity<List<ShipDTO>> searchShips(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
+        try{
+            List<Ship> ships = shipService.searchShips(name, maxPeople, address, price);
+            List<ShipDTO> dto = new ArrayList<>();
+            for(Ship s: ships){
+                ShipDTO shipDTO = new ShipDTO(s);
+                dto.add(shipDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
