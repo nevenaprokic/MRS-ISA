@@ -8,15 +8,32 @@ import Button from '@mui/material/Button';
 import { searchCottages } from '../../../services/CottageService';
 import { searchShips } from '../../../services/ShipService';
 import { offerType, searchInstructors } from '../../../services/userService';
+import { useState } from 'react';
 
 
 export default function Search({params, setParams, type, setOffers}){
 
+    const [error, setError] = useState('');
+
     let searchOffer = {
-        [offerType.COTTAGE] :  searchCottages,
-        [offerType.SHIP]: searchShips,
-        [offerType.ADVENTURE] :  searchInstructors,
-  }
+            [offerType.COTTAGE] :  searchCottages,
+            [offerType.SHIP]: searchShips,
+            [offerType.ADVENTURE] :  searchInstructors,
+    }
+
+    const handleChange = (event) => {
+        let {target: {value}} = event;
+        console.log(value);
+        let reg = new RegExp(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).test(value);
+        console.log(reg);
+        if(!reg){
+            console.log("set err")
+            setError('Wrong format for phone number');
+        }else{
+            setError('');
+            setParams({...params, "price": event.target.value});
+        }
+    }
 
     return(
         <Grid container spacing={5}>
@@ -65,7 +82,7 @@ export default function Search({params, setParams, type, setOffers}){
                         label="Price"
                         id="price"
                         type="number"
-                        onChange = { event => { setParams({...params, "price": event.target.value}); }}
+                        onChange = { event => {  }}
                         InputProps={{
                         startAdornment: <InputAdornment position="end">€</InputAdornment>,
                         }}
@@ -78,16 +95,18 @@ export default function Search({params, setParams, type, setOffers}){
             <Grid item xs>
             {
                 (type == offerType.ADVENTURE) ? (
-                    <TextField
+                    <>
+                        <TextField
                         id="phone"
                         label="Phone number"
-                        onChange = { event => { setParams({...params, "phone": event.target.value}); }}
+                        onChange = { event => handleChange(event) }
                         InputLabelProps={{
                         shrink: true,
                         }}
-                        inputProps={{  pattern: "[0-9]{3}-[0-9]{4}-[0-9]{3}" }}
                         fullWidth
-                    />
+                        />
+                        {error != '' && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}
+                    </>
                 ):(
                     <TextField
                         id="peopleNum"

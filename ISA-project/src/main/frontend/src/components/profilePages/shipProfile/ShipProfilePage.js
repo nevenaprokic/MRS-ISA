@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import '../../../style/OfferData.scss';
 import { getShipById } from "../../../services/ShipService";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 
 const theme = createTheme({
   palette: {
@@ -78,9 +79,11 @@ function ShipProfilePage({ id, close }) {
               <div className="profileContainer">
                 <div className="headerContainer">
                   <h2 className="adventureTittle">{shipData.name}</h2>
-                  <div className="changeBtn">
-                    <Button variant="contained">Change info</Button>
-                  </div>
+                  {(getRoleFromToken() == null) ? 
+                  (<div className="changeBtn">
+                  <Button variant="contained">Change info</Button>
+                </div>) : 
+                (<></>)}
                 </div>
 
                 <ImagesBox images={images} />

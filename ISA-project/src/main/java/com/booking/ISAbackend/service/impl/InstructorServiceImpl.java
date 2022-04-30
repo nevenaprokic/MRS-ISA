@@ -1,9 +1,11 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.repository.InstructorRepository;
 import com.booking.ISAbackend.service.InstructorService;
+import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,16 @@ public class InstructorServiceImpl implements InstructorService {
     private InstructorRepository instructorRepository;
 
     @Override
-    public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) {
+    public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException {
         List<InstructorProfileData> retList = new ArrayList<>();
-        List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
-        for(Instructor i : instructors){
-            retList.add(new InstructorProfileData(i));
+        if(!phoneNumber.equals("")){
+            if(Validator.phoneNumberValidation(phoneNumber)){
+                List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
+                for(Instructor i : instructors){
+                    retList.add(new InstructorProfileData(i));
+                }
+                return retList;
+            }
         }
         return retList;
     }
