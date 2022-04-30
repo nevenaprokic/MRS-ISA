@@ -63,9 +63,12 @@ function CottageProfilePage({ id, close }) {
                 </div>
                 <div className="headerContainer">
                     <h2 className="adventureTittle">{cottageData.name}</h2>
-                    <div className="changeBtn" >
-                        <Button variant="contained">Change info</Button>
-                    </div>
+                    {(getRoleFromToken() == null) ? 
+                    (<div className="changeBtn">
+                      <Button variant="contained">Change info</Button>
+                      </div>) : 
+                    (<></>)}
+              
                 </div>
                 
            
