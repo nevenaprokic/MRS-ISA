@@ -4,7 +4,7 @@ import {getUsernameFromToken} from "../app/jwtTokenUtils";
 
 export function getShipByShipOwnerEmail(username){
     return api
-    .get("/getShips", {
+    .get("/ship/getShips", {
         params:{
             email:username
         }
@@ -17,7 +17,7 @@ export function getShipByShipOwnerEmail(username){
 }
 export function getShipById(id){
     return api
-        .get("/getShipInfo", {
+        .get("/ship/getShipInfo", {
             params:{
                 idShip:id
             }
@@ -31,7 +31,7 @@ export function getShipById(id){
 
 export function getShips(){
     return api
-        .get("/getAllShips")
+        .get("/ship/getAllShips")
         .then((data) => data)
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
@@ -44,7 +44,7 @@ export function searchShips(params, setOffers){
     params.price = params.price == "" ? -1 : params.price; 
     console.log(params);
     return api
-        .get("/searchShips",  {params})
+        .get("/ship/searchShips",  {params})
 }
 
 export function searchShipByShipOwner(params, setOffers){
@@ -52,7 +52,7 @@ export function searchShipByShipOwner(params, setOffers){
     params.price = params.price == "" ? -1 : params.price; 
     params.shipOwnerUsername = getUsernameFromToken();
     return api
-        .get("/searchShipByShipOwner",  {params})
+        .get("/ship/searchShipByShipOwner",  {params})
         .then((data) => setOffers(data.data))
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
@@ -60,3 +60,13 @@ export function searchShipByShipOwner(params, setOffers){
         });
 }
 
+} 
+export function addShip(shipData){
+    let email = getUsernameFromToken();
+    shipData["ownerEmail"] = email;
+    console.log(shipData);
+    api
+    .post("/ship/addShip", shipData)
+    .then((responseData) => alert(responseData.data))
+    .catch((err) => alert(err.data));
+}
