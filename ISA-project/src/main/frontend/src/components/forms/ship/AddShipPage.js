@@ -53,7 +53,11 @@ function AddShipPage() {
             label="Offer name"
             fullWidth
             defaultValue=""
+            {...register("offerName", { required: true })}
           />
+          {errors.offerName && (
+            <label className="requiredLabel">Required! </label>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -66,7 +70,16 @@ function AddShipPage() {
             }}
             fullWidth
             required
+            {...register("peopleNum", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
           />
+          {errors.peopleNum && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -79,7 +92,17 @@ function AddShipPage() {
             InputProps={{
               startAdornment: <InputAdornment position="end">€</InputAdornment>,
             }}
+            {...register("price", {
+              required: true,
+              pattern: /^(\d+(\.\d{0,2})?|\.?\d{1,2})$/,
+            })}
           />
+          {errors.price && (
+            <label className="requiredLabel">
+              Required! Only numbers with a maximum of two decimal places are
+              allowed
+            </label>
+          )}
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -91,7 +114,9 @@ function AddShipPage() {
             }}
             fullWidth
             required
+            {...register("type", { required: true })}
           />
+          {errors.type && <label className="requiredLabel">Required! </label>}
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -103,7 +128,16 @@ function AddShipPage() {
             }}
             fullWidth
             required
+            {...register("size", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
           />
+          {errors.size && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={4}>
@@ -116,7 +150,16 @@ function AddShipPage() {
             InputLabelProps={{
               shrink: true,
             }}
+            {...register("motorNumber", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
           />
+          {errors.motorNumber && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextField
@@ -128,7 +171,16 @@ function AddShipPage() {
             }}
             fullWidth
             required
+            {...register("motorPower", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
           />
+          {errors.motorPower && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={4}>
@@ -141,7 +193,16 @@ function AddShipPage() {
             InputLabelProps={{
               shrink: true,
             }}
+            {...register("maxSpeed", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
           />
+          {errors.maxSpeed && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={4}>
@@ -151,13 +212,46 @@ function AddShipPage() {
             name="street"
             label="Street"
             fullWidth
+            {...register("street", {
+              required: true,
+              pattern: /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/,
+            })}
           />
+          {errors.street && (
+            <label className="requiredLabel">
+              Required! Only letters, numbers and spaces are allowed
+            </label>
+          )}
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField required id="city" name="city" label="City" fullWidth />
+          <TextField
+            required
+            id="city"
+            name="city"
+            label="City"
+            fullWidth
+            {...register("city", { required: true, pattern: /^[a-zA-Z\s]*$/ })}
+          />
+          {errors.city && (
+            <label className="requiredLabel">
+              Required! Only letters and spaces are allowed
+            </label>
+          )}
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField required id="state" name="state" label="State" fullWidth />
+          <TextField
+            required
+            id="state"
+            name="state"
+            label="State"
+            fullWidth
+            {...register("state", { required: true, pattern: /^[a-zA-Z\s]*$/ })}
+          />
+          {errors.state && (
+            <label className="requiredLabel">
+              Required! Only letters and spaces are allowed
+            </label>
+          )}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -168,7 +262,11 @@ function AddShipPage() {
             rows={4}
             defaultValue=""
             fullWidth
+            {...register("description", { required: true })}
           />
+          {errors.description && (
+            <label className="requiredLabel">Required! </label>
+          )}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -178,6 +276,7 @@ function AddShipPage() {
             rows={4}
             defaultValue=""
             fullWidth
+            {...register("rulesOfConduct")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -188,6 +287,7 @@ function AddShipPage() {
             rows={4}
             defaultValue=""
             fullWidth
+            {...register("additionalEquipment")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -198,6 +298,7 @@ function AddShipPage() {
             rows={4}
             defaultValue=""
             fullWidth
+            {...register("navigationEqupment")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -223,7 +324,11 @@ function AddShipPage() {
             defaultValue=""
             fullWidth
             required
+            {...register("cancelationConditions", { required: true })}
           />
+          {errors.description && (
+            <label className="requiredLabel">Required! </label>
+          )}
         </Grid>
         <Grid item xs={12} sm={4} sx={{ marginLeft: "35%" }}>
           <Button
