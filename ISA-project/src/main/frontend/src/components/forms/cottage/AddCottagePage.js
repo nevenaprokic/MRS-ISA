@@ -37,7 +37,6 @@ function AddCottagePage() {
     formData.append('city', data.city);
     formData.append('state', data.state);
     formData.append('rulesOfConduct', data.rulesOfConduct);
-    formData.append('additionalEquipment', data.additionalEquipment);
     formData.append('peopleNum', data.peopleNum);
     formData.append('cancelationConditions', data.cancelationConditions);
     formData.append('offerName', data.offerName);

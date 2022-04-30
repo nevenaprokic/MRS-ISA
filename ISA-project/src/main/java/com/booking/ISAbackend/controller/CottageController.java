@@ -136,7 +136,7 @@ public class CottageController {
 
     }
     @PostMapping("add-additional-services")
-    public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
+    public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
             int id = Integer.parseInt(paramsMap.get("offerId").toString());
