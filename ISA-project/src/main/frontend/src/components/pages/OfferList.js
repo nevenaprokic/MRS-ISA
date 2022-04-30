@@ -1,7 +1,7 @@
 import React from 'react'
 import {getCottages} from '../../services/CottageService';
 import {getShips} from '../../services/ShipService';
-import {getInstructors, offerType} from '../../services/userService';
+import {getInstructors, offerType, userType} from '../../services/userService';
 import { useState, useEffect } from "react";
 import MediaCard from "../layout/MediaCard";
 import Grid from '@mui/material/Grid';
@@ -12,7 +12,7 @@ export default function OfferList({type, offers, setOffers}) {
     let getOffers = {
       [offerType.COTTAGE] : getCottages,
       [offerType.SHIP] : getShips,
-      [offerType.ADVENTURE] : getInstructors
+      [userType.INSTRUCTOR] : getInstructors
     };
 
     useEffect(() => {

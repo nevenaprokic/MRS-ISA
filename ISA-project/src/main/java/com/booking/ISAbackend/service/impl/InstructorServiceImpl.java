@@ -25,4 +25,14 @@ public class InstructorServiceImpl implements InstructorService {
         }
         return retList;
     }
+
+    @Override
+    public List<InstructorProfileData> findAll() {
+        List<InstructorProfileData> retList = new ArrayList<>();
+        List<Instructor> instructors = instructorRepository.findAll();
+        for(Instructor i : instructors){
+            retList.add(new InstructorProfileData(i));
+        }
+        return retList;
+    }
 }

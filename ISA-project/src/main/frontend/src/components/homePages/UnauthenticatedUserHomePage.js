@@ -13,7 +13,7 @@ import MainNavigation from '../layout/MainNavigation';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
-import { offerType } from "../../services/userService";
+import { offerType, userType } from "../../services/userService";
 import ClientProfile from '../profilePages/ClientProfile';
 import Grid from '@mui/material/Grid';
 import Album from '../pages/home';
@@ -159,6 +159,7 @@ export default function UnauthenticatedUserHomePage() {
                           <Search params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers}/>
                           </Grid>
                         </Box>
+                        <OfferList type={userType.INSTRUCTOR} offers={offers} setOffers={setOffers} />
                 </TabPanel>
 
                 </Box>

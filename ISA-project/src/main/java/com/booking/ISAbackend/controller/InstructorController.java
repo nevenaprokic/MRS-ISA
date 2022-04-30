@@ -36,4 +36,15 @@ public class InstructorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("getAllInstructors")
+    @Transactional
+    public ResponseEntity<List<InstructorProfileData>> getAll(){
+        try{
+            List<InstructorProfileData> instructors  = instructorService.findAll();
+            return ResponseEntity.ok(instructors);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

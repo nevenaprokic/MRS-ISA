@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface InstructorService {
     List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber);
+
+    List<InstructorProfileData> findAll();
 }

@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../services/userService";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
+import OwnerProfile from "../profilePages/OwnerProfile";
 
 
 const secondaryTheme = createTheme({
@@ -39,7 +40,7 @@ export default function MediaCard({ offer, offerT }) {
 
 
   let imag = require("../images/no-image.png");
-  if(offer.photos.length != 0){
+  if(offer.photos && offer.photos.length != 0){
     console.log(require("/src/components/images/" + offer.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
   }
@@ -52,6 +53,8 @@ export default function MediaCard({ offer, offerT }) {
         return ( <CottageProfilePage id={offerId} close={handleClose}/>);
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose}/>);
+      case userType.INSTRUCTOR:
+        return (<OwnerProfile instructorEmail={offer.email} close={handleClose} />);
       default:
         return (<div>Undefined offer type</div>);
     }
@@ -63,10 +66,10 @@ export default function MediaCard({ offer, offerT }) {
         <CardMedia component="img" height="140" image={imag} alt="slike" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" color="primary">
-            {!!offer.name ? offer.name : offer.offerName}
+            {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.firstName + " " + offer.lastName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <p className="descriptionContainer"> {offer.description} </p>     
+            <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offer.description : offer.biography} </p>     
           </Typography>
         </CardContent>
         <CardActions>
