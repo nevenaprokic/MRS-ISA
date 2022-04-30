@@ -17,7 +17,7 @@ import "../../style/ChangeOwnerData.scss"
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeCottageOwnerData, userType, changeInstructorData } from "../../services/userService";
+import { changeCottageOwnerData, userType, changeInstructorData, changeShipOwnerData } from "../../services/userService";
 import { getRoleFromToken } from '../../app/jwtTokenUtils';
 
 
@@ -38,7 +38,8 @@ export default function ChangeOwnerData({currentOwnerData, close, childToParent}
 
   let changeData = {
     [userType.COTTAGE_OWNER] :  changeCottageOwnerData,
-    [userType.INSTRUCTOR] :  changeInstructorData
+    [userType.INSTRUCTOR] :  changeInstructorData,
+    [userType.SHIP_OWNER] :  changeShipOwnerData
   }
 
   const onSubmit = (data) => {

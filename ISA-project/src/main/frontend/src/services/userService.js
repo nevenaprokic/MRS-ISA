@@ -124,6 +124,16 @@ export function changeCottageOwnerData(newCottageOwnerData){
                 })
     .catch((err) => alert(err.data));
 }
+export function changeShipOwnerData(newShipOwnerData){
+    let email = getUsernameFromToken();
+    newShipOwnerData["email"] = email;
+    api
+    .post("/changeShipOwnerData", newShipOwnerData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
+    .catch((err) => alert(err.data));
+}
 
 export function changeInstructorData(newOwnerData){
     let email = getUsernameFromToken();

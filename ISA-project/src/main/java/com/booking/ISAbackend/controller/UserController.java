@@ -134,4 +134,13 @@ public class UserController {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}
+	@PostMapping("changeShipOwnerData")
+	public ResponseEntity<String> changeShipOwnerData(@RequestBody ShipOwnerNewDataDTO newData){
+		try{
+			userService.changeShipOwnerData(newData);
+			return ResponseEntity.ok("Successfully changed your data");
+		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
+			return ResponseEntity.status(400).body(e.getMessage());
+		}
+	}
 }
