@@ -45,6 +45,7 @@ export function searchShips(params, setOffers){
     console.log(params);
     return api
         .get("/searchShips",  {params})
+}
 
 export function searchShipByShipOwner(params, setOffers){
     params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 

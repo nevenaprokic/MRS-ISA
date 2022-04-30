@@ -172,7 +172,6 @@ export function changeAdminData(newAdminData){
                 })
     .catch((err) => alert(err.data));
 }
-export function searchInstructors(params, setOffers){} 
 
 
 

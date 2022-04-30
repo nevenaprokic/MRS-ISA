@@ -74,32 +74,6 @@ public class ShipDTO {
 
     }
 
-    public ShipDTO(Ship s) {
-        this.id = s.getId();
-        this.name = s.getName();
-        this.description = s.getDescription();
-        this.price = s.getPrice();
-        this.photos = getPhoto(s);
-        this.numberOfPerson = s.getNumberOfPerson();
-        this.rulesOfConduct = s.getRulesOfConduct();
-        this.cancellationConditions = s.getCancellationConditions();
-        this.type = s.getType();
-        this.size = s.getSize();
-        this.motorNumber = s.getMotorNumber();
-        this.motorPower = s.getMotorPower();
-        this.maxSpeed = s.getMaxSpeed();
-        this.navigationEquipment = s.getNavigationEquipment();
-        this.additionalEquipment = s.getAdditionalEquipment();
-    }
-
-    private List<String> getPhoto(Ship s){
-        List<String> photos = new ArrayList<>();
-        for(Photo p: s.getPhotos()){
-            photos.add(p.getPath());
-        }
-        return photos;
-    }
-
     public Integer getId() {return id;}
 
     public String getName() {
