@@ -17,7 +17,7 @@ import "../../style/ChangeOwnerData.scss"
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeOwnerData, userType, changeInstructorData } from "../../services/userService";
+import { changeCottageOwnerData, userType, changeInstructorData } from "../../services/userService";
 import { getRoleFromToken } from '../../app/jwtTokenUtils';
 
 
@@ -36,18 +36,20 @@ export default function ChangeOwnerData({currentOwnerData, close, childToParent}
 
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
-
+  let changeData = {
+    [userType.COTTAGE_OWNER] :  changeCottageOwnerData,
+    [userType.INSTRUCTOR] :  changeInstructorData
+  }
 
   const onSubmit = (data) => {
-      
-      if (getRoleFromToken() === userType.INSTRUCTOR){
-        changeInstructorData(data);
-      }
-      console.log("OVDE", data);
+      let role = getRoleFromToken();
+      changeData[role](data);
+      // if (getRoleFromToken() === userType.INSTRUCTOR){
+      //   changeInstructorData(data);
+      // }
       childToParent(data);
       close();
     }
-
 
   return (
     <div className="changeDataContainer" id="changeDataContainer">

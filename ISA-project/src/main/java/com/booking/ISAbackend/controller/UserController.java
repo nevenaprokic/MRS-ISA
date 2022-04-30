@@ -125,6 +125,13 @@ public class UserController {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}
-
-
+	@PostMapping("changeCottageOwnerData")
+	public ResponseEntity<String> changeCottageOwnerData(@RequestBody CottageOwnerNewDataDTO newData){
+		try{
+			userService.changeCottageOwnerData(newData);
+			return ResponseEntity.ok("Successfully changed your data");
+		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
+			return ResponseEntity.status(400).body(e.getMessage());
+		}
+	}
 }
