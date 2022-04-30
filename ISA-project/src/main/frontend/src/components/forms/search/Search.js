@@ -5,21 +5,16 @@ import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import { searchCottages } from '../../../services/CottageService';
-import { searchShips } from '../../../services/ShipService';
-import { offerType, searchInstructors } from '../../../services/userService';
 import { useState } from 'react';
+import { searchCottages, searchCottagesByCottageOwner } from '../../../services/CottageService';
+import { searchShips, searchShipByShipOwner } from '../../../services/ShipService';
+import { offerType, searchInstructors } from '../../../services/userService';
+
 
 
 export default function Search({params, setParams, type, setOffers}){
 
     const [error, setError] = useState('');
-
-    let searchOffer = {
-            [offerType.COTTAGE] :  searchCottages,
-            [offerType.SHIP]: searchShips,
-            [offerType.ADVENTURE] :  searchInstructors,
-    }
 
     const handleChange = (event) => {
         let {target: {value}} = event;
@@ -34,6 +29,13 @@ export default function Search({params, setParams, type, setOffers}){
             setParams({...params, "price": event.target.value});
         }
     }
+    let searchOffer = {
+        [offerType.COTTAGE] :  searchCottages,
+        [offerType.SHIP]: searchShips,
+        [offerType.ADVENTURE] :  searchInstructors,
+        [offerType.COTTAGE_OWNER] : searchCottagesByCottageOwner,
+        [offerType.SHIP_OWNER] : searchShipByShipOwner
+  }
 
     return(
         <Grid container spacing={5}>
@@ -82,7 +84,7 @@ export default function Search({params, setParams, type, setOffers}){
                         label="Price"
                         id="price"
                         type="number"
-                        onChange = { event => {  }}
+                        onChange = { event => { setParams({...params, "price": event.target.value}); }}
                         InputProps={{
                         startAdornment: <InputAdornment position="end">€</InputAdornment>,
                         }}

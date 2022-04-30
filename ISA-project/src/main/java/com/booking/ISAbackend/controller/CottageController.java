@@ -1,7 +1,10 @@
 package com.booking.ISAbackend.controller;
 
 
+import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.CottageDTO;
+import com.booking.ISAbackend.dto.NewCottageDTO;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
 import com.booking.ISAbackend.service.CottageService;
@@ -16,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/cottage")
 public class CottageController {
     @Autowired
     private CottageService cottageService;
@@ -28,9 +31,7 @@ public class CottageController {
             List<Cottage> cottages = cottageService.findCottageByCottageOwnerEmail(email);
             List<CottageDTO> dto = new ArrayList<>();
             for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c.getId(),c.getName(), c.getDescription(),
-                        c.getPrice(), getPhoto(c), c.getNumberOfPerson(), c.getRulesOfConduct(), c.getCancellationConditions(),
-                        c.getRoomNumber(), c.getBedNumber());
+                CottageDTO cottageDTO = new CottageDTO(c);
                 dto.add(cottageDTO);
             }
             return ResponseEntity.ok(dto);
@@ -47,22 +48,14 @@ public class CottageController {
 
             if(cottage == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            CottageDTO cottageDTO = new CottageDTO(cottage.getId(),cottage.getName(), cottage.getDescription(),
-                    cottage.getPrice(), getPhoto(cottage), cottage.getNumberOfPerson(), cottage.getRulesOfConduct(),
-                    cottage.getCancellationConditions(), cottage.getRoomNumber(), cottage.getBedNumber());
+            CottageDTO cottageDTO = new CottageDTO(cottage);
             return  ResponseEntity.ok(cottageDTO);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
-    private List<String> getPhoto(Cottage c){
-        List<String> photos = new ArrayList<>();
-        for(Photo p: c.getPhotos()){
-            photos.add(p.getPath());
-        }
-        return photos;
-    }
+
 
     @GetMapping("getAllCottages")
     @Transactional
@@ -95,5 +88,34 @@ public class CottageController {
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("searchCottagesByCottageOwner")
+    @Transactional
+    public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
+        try{
+            List<Cottage> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
+            List<CottageDTO> dto = new ArrayList<>();
+            for(Cottage c: cottages){
+                CottageDTO cottageDTO = new CottageDTO(c);
+                dto.add(cottageDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("addCottage")
+    public ResponseEntity<String> addCottage(@RequestBody NewCottageDTO cottage){
+        //provera da li je ulogovan i autorizacija
+        try{
+            cottageService.addCottage(cottage);
+            return ResponseEntity.ok("Successfully added new cottage");
+        } catch (InvalidPriceException | CottageAlreadyExistsException | InvalidPeopleNumberException | InvalidRoomNumberException | InvalidBedNumberException | RequiredFiledException | InvalidAddressException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+
     }
 }

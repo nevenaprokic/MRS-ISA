@@ -11,15 +11,22 @@ function UploadImageGallery({images, pictureSetInputList}){
         const list = [...images];
         list.splice(index, 1);
         pictureSetInputList(list);
+
       };
 
     return(
         <div className="uploadGalleryContainer">
             {images.map((url, i)=>{
+                let src;
+                try{
+                    src = URL.createObjectURL(url);
+                }catch{
+                    src = url;
+                }
                 return(
-                    
+                   
                     <div className="uploadedImg" >     
-                        <img src={url} width="150px" height="150px" className="img" /> 
+                        <img src={src} width="150px" height="150px" className="img" /> 
                         <Grid>
                             <IconButton aria-label="delete" size="large" sx={{ marginLeft: "35%" }}  onClick={() => handleRemoveClick(i)}><DeleteIcon/></IconButton>  
                         </Grid>                     

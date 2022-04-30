@@ -15,4 +15,8 @@ public class CottageOwner extends Owner{
 	
 	@OneToMany(mappedBy = "cottageOwner", fetch = FetchType.LAZY)
 	private List<Cottage> cottages;
+
+	public List<Cottage> getCottages() {
+		return cottages;
+	}
 }

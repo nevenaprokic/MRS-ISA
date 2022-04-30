@@ -15,10 +15,8 @@ public class CottageDTO {
     private Integer numberOfPerson;
     private String rulesOfConduct;
     private String cancellationConditions;
-
     private Integer roomNumber;
     private Integer bedNumber;
-
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {

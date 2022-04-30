@@ -1,9 +1,10 @@
 import axios from "axios";
 import api from "../app/api";
+import {getUsernameFromToken} from "../app/jwtTokenUtils";
 
 export function getCottageByCottageOwnerEmail(username){
     return api
-        .get("/getCottages", {
+        .get("/cottage/getCottages", {
             params:{
                 email:username
             }
@@ -16,7 +17,7 @@ export function getCottageByCottageOwnerEmail(username){
 }
 export function getCottageById(id){
     return api
-        .get("/getCottageInfo", {
+        .get("/cottage/getCottageInfo", {
             params:{
                 idCottage:id
             }
@@ -30,7 +31,7 @@ export function getCottageById(id){
 
 export function getCottages(){
     return api
-        .get("/getAllCottages")
+        .get("/cottage/getAllCottages")
         .then((data) => data)
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
@@ -43,10 +44,30 @@ export function searchCottages(params, setOffers){
     params.price = params.price == "" ? -1 : params.price; 
     console.log(params);
     return api
-        .get("/searchCottages",  {params})
+        .get("/cottage/searchCottages",  {params})
         .then((data) => setOffers(data.data))
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
             return err.message;
         });
+}
+export function searchCottagesByCottageOwner(params, setOffers){
+    params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 
+    params.price = params.price == "" ? -1 : params.price; 
+    params.cottageOwnerUsername = getUsernameFromToken();
+    return api
+        .get("/cottage/searchCottagesByCottageOwner",  {params})
+        .then((data) => setOffers(data.data))
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}
+export function addCottage(cottageData){
+    let email = getUsernameFromToken();
+    cottageData["ownerEmail"] = email;
+    api
+    .post("/cottage/addCottage", cottageData)
+    .then((responseData) => alert(responseData.data))
+    .catch((err) => alert(err.data));
 }

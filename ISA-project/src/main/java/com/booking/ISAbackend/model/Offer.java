@@ -113,4 +113,56 @@ public class Offer {
 	public List<Client> getSubscribedClients() {
 		return subscribedClients;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos;
+	}
+
+	public void setNumberOfPerson(Integer numberOfPerson) {
+		this.numberOfPerson = numberOfPerson;
+	}
+
+	public void setRulesOfConduct(String rulesOfConduct) {
+		this.rulesOfConduct = rulesOfConduct;
+	}
+
+	public void setAdditionalServices(List<AdditionalService> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+
+	public void setCancellationConditions(String cancellationConditions) {
+		this.cancellationConditions = cancellationConditions;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public void setQuickReservations(List<QuickReservation> quickReservations) {
+		this.quickReservations = quickReservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public void setSubscribedClients(List<Client> subscribedClients) {
+		this.subscribedClients = subscribedClients;
+	}
 }

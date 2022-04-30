@@ -6,7 +6,6 @@ import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.service.RegistrationRequestService;
 import org.apache.commons.logging.Log;
@@ -35,21 +34,12 @@ public class UserController {
 	@Transactional
 	public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
+		InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
+		if(instructor != null){
+			return ResponseEntity.ok(instructor);
+		}
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-
-		Instructor instructor =  userService.findInstructorByEmail(email);
-
-		Address address = instructor.getAddress();
-		InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
-				instructor.getFirstName(),
-				instructor.getLastName(),
-				instructor.getPhoneNumber(),
-				instructor.getAddress().getStreet(),
-				instructor.getAddress().getCity(),
-				instructor.getAddress().getState(),
-				instructor.getOwnerCategory().toString(),
-				instructor.getBiography());
-		return ResponseEntity.ok(data);
 
 	}
     @GetMapping("cottageOwnerProfileInfo")
@@ -57,38 +47,27 @@ public class UserController {
     public ResponseEntity<CottageOwnerProfileInfoDTO> getCottageOwnerProfileInfo(@RequestParam String email){
         //odraditi autentifikaciju i autorizaciju
 
-
-        CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
-
-        Address address = cottageOwner.getAddress();
-        CottageOwnerProfileInfoDTO data = new CottageOwnerProfileInfoDTO(cottageOwner.getEmail(),
-                cottageOwner.getFirstName(),
-                cottageOwner.getLastName(),
-                cottageOwner.getPhoneNumber(),
-                cottageOwner.getAddress().getStreet(),
-                cottageOwner.getAddress().getCity(),
-                cottageOwner.getAddress().getState(),
-                cottageOwner.getOwnerCategory().toString());
-        return ResponseEntity.ok(data);
-
+		try{
+			CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
+			CottageOwnerProfileInfoDTO data = new CottageOwnerProfileInfoDTO(cottageOwner);
+			return ResponseEntity.ok(data);
+		}catch  (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
     }
 	@GetMapping("shipOwnerProfileInfo")
 	@Transactional
 	public ResponseEntity<ShipOwnerProfileInfoDTO> getShipOwnerProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
 
+		try{
+			ShipOwner shipOwner =  userService.findShipOwnerByEmail(email);
+			ShipOwnerProfileInfoDTO data = new ShipOwnerProfileInfoDTO(shipOwner);
+			return ResponseEntity.ok(data);
+		}catch  (Exception e){
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 
-		ShipOwner shipOwner =  userService.findShipOwnerByEmail(email);
-
-		ShipOwnerProfileInfoDTO data = new ShipOwnerProfileInfoDTO(shipOwner.getEmail(),
-				shipOwner.getFirstName(),
-				shipOwner.getLastName(),
-				shipOwner.getPhoneNumber(),
-				shipOwner.getAddress().getStreet(),
-				shipOwner.getAddress().getCity(),
-				shipOwner.getAddress().getState(),
-				shipOwner.getOwnerCategory().toString());
-		return ResponseEntity.ok(data);
 
 	}
 
@@ -111,7 +90,6 @@ public class UserController {
 			userService.changeInstrctorData(newData);
 			return ResponseEntity.ok("Successfully changed you data");
 		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
-			e.printStackTrace();
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}

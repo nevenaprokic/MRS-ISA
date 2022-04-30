@@ -3,6 +3,7 @@ package com.booking.ISAbackend.validation;
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.exceptions.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +34,26 @@ public class Validator {
 
         }
     }
+    public static boolean isValidRoomNumber(String roomNumber) throws InvalidRoomNumberException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(roomNumber);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidRoomNumberException("Room number mast be positive whole number! ");
+
+        }
+    }
+    public static boolean isValidBedNumber(String bedNumber) throws InvalidBedNumberException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(bedNumber);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidBedNumberException("Bed number mast be positive whole number! ");
+
+        }
+    }
 
     public static boolean isValidAdress(String street, String city, String state) throws InvalidAddressException {
         String cityRegex = "^[a-zA-Z\\s]*$";
@@ -58,15 +79,15 @@ public class Validator {
         }
     }
 
-    public static boolean isValidAdditionalServices(List<AdditionalServiceDTO> additionalServices) throws RequiredFiledException, InvalidPriceException {
-        for (AdditionalServiceDTO service: additionalServices
+    public static boolean isValidAdditionalServices(List<HashMap<String, String>> additionalServices) throws RequiredFiledException, InvalidPriceException {
+        for (HashMap<String, String> serviceMap: additionalServices
         ) {
-            if(!(service.getServiceName()).equals("")){
-                if(service.getServicePrice().equals("")){
-                    throw new RequiredFiledException("Price is required for additional service" + service.getServiceName() + "!It isn't enough to write only the name");
+            if(!(serviceMap.get("serviceName")).equals("")){
+                if(serviceMap.get("servicePrice").equals("")){
+                    throw new RequiredFiledException("Price is required for additional service" + serviceMap.get("serviceName") + "!It isn't enough to write only the name");
                 }
                 else{
-                    return isValidPrice(service.getServicePrice());
+                    return isValidPrice(String.valueOf(serviceMap.get("servicePrice")));
                 }
             }
         }

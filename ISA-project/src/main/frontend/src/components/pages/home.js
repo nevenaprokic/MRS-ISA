@@ -8,11 +8,11 @@ import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils"
 import { userType, offerTypeByUserType} from "../../services/userService";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
 import {getShipByShipOwnerEmail} from '../../services/ShipService';
-import MediaCardShip from '../layout/MediaCardShip';
 
 
-export default function Album(){
-  const [albumData, setAlbumeData] = useState();
+
+export default function Album( {albumData, setAlbumeData}){
+  //const [albumData, setAlbumeData] = useState();
   let role = getRoleFromToken();
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER] :  getCottageByCottageOwnerEmail,

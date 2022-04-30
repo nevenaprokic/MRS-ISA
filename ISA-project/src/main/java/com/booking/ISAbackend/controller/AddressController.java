@@ -30,7 +30,7 @@ public class AddressController {
 
             if(address == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            AddressDTO addressDTO = new AddressDTO(address.getStreet(), address.getCity(), address.getState());
+            AddressDTO addressDTO = new AddressDTO(address);
             return  ResponseEntity.ok(addressDTO);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

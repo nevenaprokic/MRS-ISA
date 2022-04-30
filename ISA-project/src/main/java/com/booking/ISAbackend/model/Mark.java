@@ -19,4 +19,24 @@ public class Mark {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public Integer getMark() {
+		return mark;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public Reservation getReservation() {
+		return reservation;
+	}
 }
