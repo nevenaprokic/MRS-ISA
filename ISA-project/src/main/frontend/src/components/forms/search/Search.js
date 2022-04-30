@@ -5,13 +5,30 @@ import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import { useState } from 'react';
 import { searchCottages, searchCottagesByCottageOwner } from '../../../services/CottageService';
 import { searchShips, searchShipByShipOwner } from '../../../services/ShipService';
 import { offerType, searchInstructors } from '../../../services/userService';
 
 
+
 export default function Search({params, setParams, type, setOffers}){
 
+    const [error, setError] = useState('');
+
+    const handleChange = (event) => {
+        let {target: {value}} = event;
+        console.log(value);
+        let reg = new RegExp(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).test(value);
+        console.log(reg);
+        if(!reg){
+            console.log("set err")
+            setError('Wrong format for phone number');
+        }else{
+            setError('');
+            setParams({...params, "price": event.target.value});
+        }
+    }
     let searchOffer = {
         [offerType.COTTAGE] :  searchCottages,
         [offerType.SHIP]: searchShips,
@@ -80,16 +97,18 @@ export default function Search({params, setParams, type, setOffers}){
             <Grid item xs>
             {
                 (type == offerType.ADVENTURE) ? (
-                    <TextField
+                    <>
+                        <TextField
                         id="phone"
                         label="Phone number"
-                        onChange = { event => { setParams({...params, "phone": event.target.value}); }}
+                        onChange = { event => handleChange(event) }
                         InputLabelProps={{
                         shrink: true,
                         }}
-                        inputProps={{  pattern: "[0-9]{3}-[0-9]{4}-[0-9]{3}" }}
                         fullWidth
-                    />
+                        />
+                        {error != '' && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}
+                    </>
                 ):(
                     <TextField
                         id="peopleNum"

@@ -151,6 +151,17 @@ export function getInstructors(){
         });
 }
 
+export function searchInstructors(params, setOffers){
+    console.log(params);
+    return api
+        .get("/searchInstructors",  {params})
+        .then((data) => setOffers(data.data))
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}
+
 export function changeAdminData(newAdminData){
     let email = getUsernameFromToken();
     newAdminData["email"] = email;
@@ -161,7 +172,6 @@ export function changeAdminData(newAdminData){
                 })
     .catch((err) => alert(err.data));
 }
-export function searchInstructors(params, setOffers){} 
 
 
 

@@ -21,7 +21,7 @@ import { userType } from "../../services/userService";
 import Biography from "./Biography";
 
 
-function OwnerProfile(){
+function OwnerProfile({ instructorEmail, close }){
 
     const style = {
         position: 'absolute',
@@ -35,7 +35,7 @@ function OwnerProfile(){
         p: 4,
         paleGreen: "#dae0d2"
       };
-
+    
     const [ownerData, setOwnerData] = useState();
     const [open, setOpen] = useState(false);
 
@@ -49,7 +49,7 @@ function OwnerProfile(){
     const handleClose = () => setOpen(false);
 
     const childToParent = (childData) => {
-        if(getRoleFromToken() === userType.INSTRUCTOR){
+        if(!instructorEmail && getRoleFromToken() === userType.INSTRUCTOR){
             setOwnerData(prevState => ({
                 ...prevState,
                 ["firstName"]: childData.firstName,
@@ -82,10 +82,18 @@ function OwnerProfile(){
 
     useEffect(() => {
         async function setData() {
-            let username = getUsernameFromToken();
-            let role = getRoleFromToken();
-            let requestData = await getOfferByOwnerEmail[role](username);
-            setOwnerData(!!requestData ? requestData.data : {});        //  requestData.data.email;
+            let requestData = null;
+            if(instructorEmail){
+                let username = instructorEmail;
+                requestData = await getInstructorByUsername(username);
+            }
+            else{
+                let username = getUsernameFromToken();
+                let role = getRoleFromToken();
+                requestData = await getOfferByOwnerEmail[role](username);
+            }
+
+            setOwnerData(!!requestData ? requestData.data : {});
 
         return requestData;    
     }
@@ -99,6 +107,14 @@ function OwnerProfile(){
         return(
             <div className="ownerprofileContainer">
 
+            {(instructorEmail != null) ? (
+                <div className="closeProfileBtn">
+                <Button size="large" sx={{}} onClick={() => close()}>
+                x
+                </Button>
+                </div>
+            ) : (<></>)}
+
             <Grid container component="main" sx={{ height: '100vh', width: '40vw', marginLeft:'10%' }}> 
                 <CssBaseline />
                 <Grid item xs={12} sm={5}>
@@ -106,41 +122,49 @@ function OwnerProfile(){
                 </Grid>
 
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
-       
-                <Grid item xs={12} sm={1}>
-                    <EmailIcon/>
-                    <br/><br/>
-                    <LockIcon/>
-                    <br/><br/>
-                    <SettingsIcon/>
-                    <br/><br/>
-                    <DeleteIcon/>
-                </Grid>
-                      
-                <Grid item xs={12} sm={4}>
-                    <Typography>
-                            <label className="email">{ownerData.email}</label>
+
+                {
+                (instructorEmail == null) ? (
+                    <>
+                        <Grid item xs={12} sm={1}>
+                            <EmailIcon/>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
+                            <LockIcon/>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
+                            <SettingsIcon/>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
+                            <DeleteIcon/>
+                        </Grid>
                             
-                    </Typography>         
-                </Grid>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
-                >
-                    
-                        <ChangeOwnerData currentOwnerData={ownerData} close={handleClose} childToParent={childToParent}/>
-                    
-                </Modal>
-        
+                        <Grid item xs={12} sm={4}>
+                            <Typography>
+                                    <label className="email">{ownerData.email}</label>
+                                    <br/><br/>
+                                    <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
+                                    <br/><br/>
+                                    <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
+                                    <br/><br/>
+                                    <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} > Delete profile</Button>
+                                    
+                            </Typography>         
+                        </Grid>
+                        <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                        >
+                            
+                                <ChangeOwnerData currentOwnerData={ownerData} close={handleClose} childToParent={childToParent}/>
+                            
+                        </Modal>
+                    </>
+                ):(
+                    <></>
+                )
+            }
+
                 <AddressInfoBox addressData={ownerData}/>
                 
                 <Grid xs={12} sm={5}/>
