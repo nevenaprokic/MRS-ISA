@@ -19,8 +19,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) {
         List<InstructorProfileData> retList = new ArrayList<>();
-//        List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
-        List<Instructor> instructors = instructorRepository.findAll();
+        List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
         for(Instructor i : instructors){
             retList.add(new InstructorProfileData(i));
         }
