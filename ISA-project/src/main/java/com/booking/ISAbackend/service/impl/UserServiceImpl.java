@@ -253,5 +253,26 @@ public class UserServiceImpl implements UserService{
 
 		}
 	}
+	@Override
+	public void changeShipOwnerData(ShipOwnerNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		UserProfileData data = new UserProfileData(newData.getEmail(), newData.getFirstName(), newData.getLastName(), newData.getPhoneNumber(),
+				newData.getStreet(), newData.getCity(), newData.getState());
+		boolean validation = validateUserNewData(data);
+		if(validation){
+			MyUser user = userRepository.findByEmail(newData.getEmail());
+			Optional<ShipOwner> shipOwner = shipOwnerRepository.findById(user.getId());
+			if(shipOwner.isPresent()){
+				ShipOwner owner = shipOwner.get();
+				owner.setFirstName(newData.getFirstName());
+				owner.setLastName(newData.getLastName());
+				owner.setPhoneNumber(newData.getPhoneNumber());
+				Address newAddress = new Address(newData.getStreet(), newData.getCity(), newData.getState());
+				addressRepository.save(newAddress);
+				owner.setAddress(newAddress);
+				userRepository.save(owner);
+			}
+
+		}
+	}
 
 }
