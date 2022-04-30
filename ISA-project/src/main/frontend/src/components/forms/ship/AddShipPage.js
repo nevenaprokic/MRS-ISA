@@ -25,9 +25,30 @@ function AddShipPage() {
   const [submitForm, setSubmitForm] = useState(false);
 
   const onSubmit = (data) => {
-    data["photos"] = pictureInputList;
-    data["additionalServices"] = additionalServicesInputList;
-    addShip(data);
+    let formData = new FormData();
+    pictureInputList.forEach(element => {
+      formData.append("photos", element, element.name);
+    });
+        
+    console.log(formData.get("photos"));
+    formData.append('description', data.description);
+    formData.append('price', data.price);
+    formData.append('street', data.street);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('rulesOfConduct', data.rulesOfConduct);
+    formData.append('additionalEquipment', data.additionalEquipment);
+    formData.append('peopleNum', data.peopleNum);
+    formData.append('cancelationConditions', data.cancelationConditions);
+    formData.append('offerName', data.offerName);
+    formData.append('type', data.type);
+    formData.append('size', data.size);
+    formData.append('motorNumber', data.motorNumber);
+    formData.append('motorPower', data.motorPower);
+    formData.append('maxSpeed', data.maxSpeed);
+    formData.append('navigationEquipment', data.navigationEquipment);
+
+    addShip(formData, additionalServicesInputList);
     setSubmitForm(true);
   };
 

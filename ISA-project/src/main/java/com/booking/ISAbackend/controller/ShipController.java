@@ -1,6 +1,5 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.dto.NewShipDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
@@ -11,9 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ship")
@@ -69,13 +71,35 @@ public class ShipController {
         }
     }
     @PostMapping("addShip")
-    public ResponseEntity<String> addShip(@RequestBody NewShipDTO ship) {
+    public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
+                                          @RequestParam("photos") List<MultipartFile> photos,
+                                          @RequestParam("offerName") String offerName,
+                                          @RequestParam("price") String price,
+                                          @RequestParam("description") String description,
+                                          @RequestParam("street") String street,
+                                          @RequestParam("city") String city,
+                                          @RequestParam("state") String state,
+                                          @RequestParam("rulesOfConduct") String rulesOfConduct,
+                                          @RequestParam("cancelationConditions") String cancelationConditions,
+                                          @RequestParam("additionalEquipment") String additionalEquipment,
+                                          @RequestParam("peopleNum") String peopleNum,
+                                          @RequestParam("type") String type,
+                                          @RequestParam("size") String size,
+                                          @RequestParam("motorNumber") String motorNumber,
+                                          @RequestParam("motorPower") String motorPower,
+                                          @RequestParam("maxSpeed") String maxSpeed,
+                                          @RequestParam("navigationEquipment") String navigationEquipment) {
         try {
-            shipService.addShip(ship);
-            return ResponseEntity.ok("Successfully added new ship");
+            NewShipDTO shipDTO = new NewShipDTO(ownerEmail, offerName, description, price, photos, peopleNum,
+                    rulesOfConduct, cancelationConditions, street, city, state, type, size, motorNumber,
+                    motorPower, maxSpeed, additionalEquipment, navigationEquipment);
+            int shipId = shipService.addShip(shipDTO);
+            return ResponseEntity.ok(String.valueOf(shipId));
         } catch (ShipAlreadyExistsException | InvalidPriceException | InvalidAddressException | InvalidPeopleNumberException | InvalidSizeException | InvalidMotorNumberException | InvalidMotorPowerException | InvalidMaxSpeedException e) {
+            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -109,6 +133,20 @@ public class ShipController {
             }
             return ResponseEntity.ok(dto);
         }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("add-additional-services")
+    public ResponseEntity<String> addAdditionalServiceForShip(@RequestBody Map<String, Object> data){
+        try{
+            HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");
+            int id = Integer.parseInt(paramsMap.get("offerId").toString());
+            List<HashMap<String, String>> additionalServiceDTO = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTO");
+
+            shipService.addAdditionalServices(additionalServiceDTO, id);
+            return ResponseEntity.ok().body("Successfully added new ship");
+        }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

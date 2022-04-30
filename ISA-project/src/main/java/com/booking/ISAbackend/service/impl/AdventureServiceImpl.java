@@ -287,7 +287,7 @@ public class AdventureServiceImpl implements AdventureService {
         Adventure newAdventure = new Adventure(adventure.getOfferName(),
                 adventure.getDescription(),
                 Double.valueOf(adventure.getPrice()),
-                convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
+                photoService.convertPhotosFromDTO(adventure.getPhotos(), instructor.getEmail()),
                 Integer.valueOf(adventure.getPeopleNum()),
                 adventure.getRulesOfConduct(),
                 additionalServices,
@@ -317,20 +317,7 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
 
-    private List<Photo> convertPhotosFromDTO(List<MultipartFile> photos, String email) throws IOException {
-        List<Photo> adventurePhotos = new ArrayList<Photo>();
-        int counter = 0;
-        for (MultipartFile photoData: photos
-        ) {
-               String photoName = savePhotoInFileSystem(photoData.getBytes(), email, counter);
-               Photo p = new Photo(photoName);
-               adventurePhotos.add(p);
-               photoRepositorys.save(p);
-               counter++;
 
-        }
-        return adventurePhotos;
-    }
 
     private List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
@@ -338,7 +325,7 @@ public class AdventureServiceImpl implements AdventureService {
         for (String photoData: photos
         ) {
             byte[] bytes = DatatypeConverter.parseBase64Binary(photoData);
-            String photoName = savePhotoInFileSystem(bytes, email, counter);
+            String photoName = photoService.savePhotoInFileSystem(bytes, email, counter);
             Photo p = new Photo(photoName);
             adventurePhotos.add(p);
             photoRepositorys.save(p);
@@ -348,17 +335,7 @@ public class AdventureServiceImpl implements AdventureService {
         return adventurePhotos;
     }
 
-    private String savePhotoInFileSystem(byte[] bytes, String ownerEmail, int counter) throws IOException {
-        String folder = "./src/main/frontend/src/components/images/";
-        LocalDateTime uniqueTime = LocalDateTime.now();
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
-        String photoName = ownerEmail + "_" + uniqueTime.format(formater) + counter + ".jpg";
-        Path path = Paths.get(folder + photoName);
-        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
-            fos.write(bytes);
-        }
-        return photoName;
-    }
+
 
     private List<Photo> updateAdventurePhotos(List<String> newPhotos, List<Photo> oldPhotos, String ownerEmail) throws IOException {
         //dobaviti stare slike, obrisati i postaviti nove

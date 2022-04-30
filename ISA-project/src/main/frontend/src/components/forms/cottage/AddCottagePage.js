@@ -25,9 +25,25 @@ function AddCottagePage() {
   const [submitForm, setSubmitForm] = useState(false);
 
   const onSubmit = (data) => {
-    data["photos"] = pictureInputList;
-    data["additionalServices"] = additionalServicesInputList;
-    addCottage(data);
+    let formData = new FormData();
+    pictureInputList.forEach(element => {
+      formData.append("photos", element, element.name);
+    });
+        
+    console.log(formData.get("photos"));
+    formData.append('description', data.description);
+    formData.append('price', data.price);
+    formData.append('street', data.street);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('rulesOfConduct', data.rulesOfConduct);
+    formData.append('peopleNum', data.peopleNum);
+    formData.append('cancelationConditions', data.cancelationConditions);
+    formData.append('offerName', data.offerName);
+    formData.append('roomNumber', data.roomNumber);
+    formData.append('bedNumber', data.bedNumber);
+
+    addCottage(formData, additionalServicesInputList);
     setSubmitForm(true);
   };
 
