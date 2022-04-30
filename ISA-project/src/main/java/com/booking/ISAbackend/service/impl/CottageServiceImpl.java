@@ -74,7 +74,7 @@ public class CottageServiceImpl implements CottageService {
             }
         }
         else{
-            throw new CottageAlreadyExistsException("You already have adventure with same name. Name has to be unique!");
+            throw new CottageAlreadyExistsException("You already have cottage with same name. Name has to be unique!");
         }
 
     }

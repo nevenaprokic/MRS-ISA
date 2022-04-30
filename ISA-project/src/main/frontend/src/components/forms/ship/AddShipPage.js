@@ -9,6 +9,7 @@ import AdditionalServices from "../addtitionaServices/AdditionalServices";
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
+import {addShip} from "../../../services/ShipService";
 
 function AddShipPage() {
   const {
@@ -21,8 +22,14 @@ function AddShipPage() {
     { serviceName: "", servicePrice: "" },
   ]);
   const [pictureInputList, pictureSetInputList] = useState([]);
+  const [submitForm, setSubmitForm] = useState(false);
 
-  const onSubmit = (data) => {};
+  const onSubmit = (data) => {
+    data["photos"] = pictureInputList;
+    data["additionalServices"] = additionalServicesInputList;
+    addShip(data);
+    setSubmitForm(true);
+  };
 
   return (
     <div className="formContainer">
@@ -292,13 +299,13 @@ function AddShipPage() {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="navigationEqupment"
+            id="navigationEquipment"
             label="Navigation Equipment"
             multiline
             rows={4}
             defaultValue=""
             fullWidth
-            {...register("navigationEqupment")}
+            {...register("navigationEquipment")}
           />
         </Grid>
         <Grid item xs={12}>
