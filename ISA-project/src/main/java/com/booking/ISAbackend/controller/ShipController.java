@@ -69,15 +69,16 @@ public class ShipController {
         }
     }
     @PostMapping("addShip")
-    public ResponseEntity<String> addShip(@RequestBody NewShipDTO ship){
-        try{
+    public ResponseEntity<String> addShip(@RequestBody NewShipDTO ship) {
+        try {
             shipService.addShip(ship);
             return ResponseEntity.ok("Successfully added new ship");
-        } catch ( ShipAlreadyExistsException |InvalidPriceException | InvalidAddressException | InvalidPeopleNumberException | InvalidSizeException | InvalidMotorNumberException | InvalidMotorPowerException | InvalidMaxSpeedException e) {
+        } catch (ShipAlreadyExistsException | InvalidPriceException | InvalidAddressException | InvalidPeopleNumberException | InvalidSizeException | InvalidMotorNumberException | InvalidMotorPowerException | InvalidMaxSpeedException e) {
             return ResponseEntity.status(400).body(e.getMessage());
-        }catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
+    }
 
     @GetMapping("getAllShips")
     @Transactional

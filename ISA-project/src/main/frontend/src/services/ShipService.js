@@ -60,7 +60,6 @@ export function searchShipByShipOwner(params, setOffers){
         });
 }
 
-} 
 export function addShip(shipData){
     let email = getUsernameFromToken();
     shipData["ownerEmail"] = email;
