@@ -86,7 +86,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose}/>);
       case userType.INSTRUCTOR:
-        return (<OwnerProfile instructorEmail={offer.email} close={handleClose} />);
+        return (<OwnerProfile instructor={offer} close={handleClose} />);
       default:
         return (<div>Undefined offer type</div>);
     }

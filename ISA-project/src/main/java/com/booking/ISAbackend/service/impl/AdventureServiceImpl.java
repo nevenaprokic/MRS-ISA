@@ -316,6 +316,9 @@ public class AdventureServiceImpl implements AdventureService {
         return  false;
     }
 
+
+
+
     private List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
         int counter = 0;

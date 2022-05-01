@@ -22,7 +22,7 @@ import Biography from "./Biography";
 import InstructorsAdventures from "../pages/InstructorsAdventures";
 
 
-function OwnerProfile({ instructorEmail, close }){
+function OwnerProfile({ instructor, close }){
 
     const style = {
         position: 'absolute',
@@ -51,7 +51,7 @@ function OwnerProfile({ instructorEmail, close }){
     const handleClose = () => setOpen(false);
 
     const childToParent = (childData) => {
-        if(!instructorEmail && getRoleFromToken() === userType.INSTRUCTOR){
+        if(!instructor && getRoleFromToken() === userType.INSTRUCTOR){
             setOwnerData(prevState => ({
                 ...prevState,
                 ["firstName"]: childData.firstName,
@@ -60,8 +60,7 @@ function OwnerProfile({ instructorEmail, close }){
                 ["city"]: childData.city,
                 ["street"]: childData.street,
                 ["state"]: childData.state,
-                ["biography"]: childData.biography,
-
+                ["biography"]: childData.biography
             })
             );
         }
@@ -73,8 +72,7 @@ function OwnerProfile({ instructorEmail, close }){
                 ["phoneNumber"]: childData.phoneNumber,
                 ["city"]: childData.city,
                 ["street"]: childData.street,
-                ["state"]: childData.state,
-
+                ["state"]: childData.state
             })
             );
         }
@@ -83,21 +81,19 @@ function OwnerProfile({ instructorEmail, close }){
       
 
     useEffect(() => {
-        (instructorEmail != null) ? setIsUnauthUser(true) : setIsUnauthUser(false);
+        (instructor != null) ? setIsUnauthUser(true) : setIsUnauthUser(false);
 
         async function setData() {
             let requestData = null;
-            if(instructorEmail){
-                let username = instructorEmail;
-                requestData = await getInstructorByUsername(username);
+            if(isUnauthUser){
+                setOwnerData(instructor);
             }
             else{
                 let username = getUsernameFromToken();
                 let role = getRoleFromToken();
                 requestData = await getOfferByOwnerEmail[role](username);
+                setOwnerData(!!requestData ? requestData.data : {});
             }
-
-            setOwnerData(!!requestData ? requestData.data : {});
 
         return requestData;    
     }
@@ -169,16 +165,27 @@ function OwnerProfile({ instructorEmail, close }){
                 )
             }
 
-                <AddressInfoBox addressData={ownerData}/>
+                {(isUnauthUser) ? (
+                    <>
+                        <Grid xs={12} sm={5}>
+                        <AddressInfoBox addressData={ownerData}/>
+                        </Grid>
+                            <AdditionalinfoBox additionalDate={ownerData}/>    
+                    </>
+                    ) : 
+                    (
+                        <>
+                            <Grid xs={12} sm={5} />
+                            <AdditionalinfoBox additionalDate={ownerData}/>
+                            <AddressInfoBox addressData={ownerData}/>
+                        </>
+                    )}
                 
-                <Grid xs={12} sm={5}/>
-
-                 <AdditionalinfoBox additionalDate={ownerData}/>
 
                  <Grid xs={12} sm={5}/>
 
                  {(isUnauthUser) ? (
-                    <InstructorsAdventures />
+                    <InstructorsAdventures adventures={instructor.adventures} />
                     ) : 
                     (<></>)}
 

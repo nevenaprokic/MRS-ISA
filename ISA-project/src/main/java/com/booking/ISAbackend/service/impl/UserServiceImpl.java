@@ -13,6 +13,7 @@ import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.*;
 
 import com.booking.ISAbackend.repository.*;
+import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,22 +65,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public InstructorProfileData getInstructorDataByEmail(String email) {
-		Instructor instructor = findInstructorByEmail(email);
-		if(instructor != null){
-			InstructorProfileData data = new InstructorProfileData(instructor.getEmail(),
-					instructor.getFirstName(),
-					instructor.getLastName(),
-					instructor.getPhoneNumber(),
-					instructor.getAddress().getStreet(),
-					instructor.getAddress().getCity(),
-					instructor.getAddress().getState(),
-					instructor.getOwnerCategory().toString(),
-					instructor.getBiography());
-			return data;
+		InstructorProfileData dto = null;
+		Instructor i = findInstructorByEmail(email);
+		if(i != null){
+			dto = new InstructorProfileData(i);
+			return dto;
 		}
-		return null;
-
-
+		return dto;
 	}
 	@Override
 	public CottageOwner findCottageOwnerByEmail(String email){
@@ -191,8 +183,6 @@ public class UserServiceImpl implements UserService{
 			}
 			instructorRepository.save(instructor);
 		}
-
-
 	}
 
 	@Override
@@ -213,7 +203,6 @@ public class UserServiceImpl implements UserService{
 				instructor.setAddress(newAddress);
 				userRepository.save(instructor);
 			}
-
 		}
 	}
 
@@ -222,8 +211,6 @@ public class UserServiceImpl implements UserService{
 				Validator.onlyLetterAndSpacesValidation(newData.getFirstName()) &&
 				Validator.onlyLetterAndSpacesValidation(newData.getLastName()) &&
 				Validator.isValidAdress(newData.getStreet(), newData.getCity(), newData.getStreet());
-
-
 	}
 
 	@Override
@@ -232,6 +219,7 @@ public class UserServiceImpl implements UserService{
 		Optional<Instructor> instructor = instructorRepository.findById(user.getId());
 		return instructor.orElse(null);
 	}
+
 	@Override
 	public void changeCottageOwnerData(CottageOwnerNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		UserProfileData data = new UserProfileData(newData.getEmail(), newData.getFirstName(), newData.getLastName(), newData.getPhoneNumber(),
