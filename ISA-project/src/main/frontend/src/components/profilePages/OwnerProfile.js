@@ -19,6 +19,7 @@ import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userType } from "../../services/userService";
 import Biography from "./Biography";
+import InstructorsAdventures from "../pages/InstructorsAdventures";
 
 
 function OwnerProfile({ instructorEmail, close }){
@@ -38,6 +39,7 @@ function OwnerProfile({ instructorEmail, close }){
     
     const [ownerData, setOwnerData] = useState();
     const [open, setOpen] = useState(false);
+    const [isUnauthUser, setIsUnauthUser] = useState(false);
 
     let getOfferByOwnerEmail = {
         [userType.COTTAGE_OWNER] :  getCottageOwnerByUsername,
@@ -81,6 +83,8 @@ function OwnerProfile({ instructorEmail, close }){
       
 
     useEffect(() => {
+        (instructorEmail != null) ? setIsUnauthUser(true) : setIsUnauthUser(false);
+
         async function setData() {
             let requestData = null;
             if(instructorEmail){
@@ -105,9 +109,9 @@ function OwnerProfile({ instructorEmail, close }){
 
     if(ownerData){
         return(
-            <div className="ownerprofileContainer">
+            <div className={ isUnauthUser ? 'ownerprofileContainerUnauthUser' : 'ownerprofileContainer'} >
 
-            {(instructorEmail != null) ? (
+            {(isUnauthUser) ? (
                 <div className="closeProfileBtn">
                 <Button size="large" sx={{}} onClick={() => close()}>
                 x
@@ -124,7 +128,7 @@ function OwnerProfile({ instructorEmail, close }){
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
 
                 {
-                (instructorEmail == null) ? (
+                (!isUnauthUser) ? (
                     <>
                         <Grid item xs={12} sm={1}>
                             <EmailIcon/>
@@ -170,6 +174,13 @@ function OwnerProfile({ instructorEmail, close }){
                 <Grid xs={12} sm={5}/>
 
                  <AdditionalinfoBox additionalDate={ownerData}/>
+
+                 <Grid xs={12} sm={5}/>
+
+                 {(isUnauthUser) ? (
+                    <InstructorsAdventures />
+                    ) : 
+                    (<></>)}
 
             </Grid>
         </div>

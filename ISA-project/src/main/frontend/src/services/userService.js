@@ -164,7 +164,7 @@ export function getAdminByEmail(){
 export function getInstructors(){
     return api
         .get("/getAllInstructors")
-        .then((data) => data)
+        .then((data) => data )
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
             return err.message;
