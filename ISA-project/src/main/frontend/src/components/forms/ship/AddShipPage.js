@@ -9,9 +9,9 @@ import AdditionalServices from "../addtitionaServices/AdditionalServices";
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
-import { addCottage } from "../../../services/CottageService";
+import {addShip} from "../../../services/ShipService";
 
-function AddCottagePage() {
+function AddShipPage() {
   const {
     register,
     handleSubmit,
@@ -37,20 +37,25 @@ function AddCottagePage() {
     formData.append('city', data.city);
     formData.append('state', data.state);
     formData.append('rulesOfConduct', data.rulesOfConduct);
+    formData.append('additionalEquipment', data.additionalEquipment);
     formData.append('peopleNum', data.peopleNum);
     formData.append('cancelationConditions', data.cancelationConditions);
     formData.append('offerName', data.offerName);
-    formData.append('roomNumber', data.roomNumber);
-    formData.append('bedNumber', data.bedNumber);
+    formData.append('type', data.type);
+    formData.append('size', data.size);
+    formData.append('motorNumber', data.motorNumber);
+    formData.append('motorPower', data.motorPower);
+    formData.append('maxSpeed', data.maxSpeed);
+    formData.append('navigationEquipment', data.navigationEquipment);
 
-    addCottage(formData, additionalServicesInputList);
+    addShip(formData, additionalServicesInputList);
     setSubmitForm(true);
   };
 
   return (
     <div className="formContainer">
       <Typography variant="h6" gutterBottom>
-        Adding new cottage
+        Adding new ship
       </Typography>
       <Typography gutterBottom>
         <label className="headerText">
@@ -129,42 +134,99 @@ function AddCottagePage() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="roomNumber"
-            label="Number of rooms"
+            id="type"
+            label="Ship type"
+            defaultValue=""
+            InputLabelProps={{
+              shrink: true,
+            }}
+            fullWidth
+            required
+            {...register("type", { required: true })}
+          />
+          {errors.type && <label className="requiredLabel">Required! </label>}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            id="size"
+            label="Size"
             type="number"
             InputLabelProps={{
               shrink: true,
             }}
             fullWidth
             required
-            {...register("roomNumber", {
+            {...register("size", {
               required: true,
               pattern: /^[1-9]+[0-9]*$/,
             })}
           />
-          {errors.roomNumber && (
+          {errors.size && (
             <label className="requiredLabel">
               Required! Only positive numbers are allowed
             </label>
           )}
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             fullWidth
-            label="Number of beds"
-            id="bedNumber"
+            label="Numer of motors"
+            id="motorNumber"
             type="number"
             required
             InputLabelProps={{
               shrink: true,
             }}
-            {...register("bedNumber", {
+            {...register("motorNumber", {
               required: true,
               pattern: /^[1-9]+[0-9]*$/,
             })}
           />
-          {errors.bedNumber && (
+          {errors.motorNumber && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            id="motorPower"
+            label="Motor power"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            fullWidth
+            required
+            {...register("motorPower", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
+          />
+          {errors.motorPower && (
+            <label className="requiredLabel">
+              Required! Only positive numbers are allowed
+            </label>
+          )}
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            label="Max speed"
+            id="maxSpeed"
+            type="number"
+            required
+            InputLabelProps={{
+              shrink: true,
+            }}
+            {...register("maxSpeed", {
+              required: true,
+              pattern: /^[1-9]+[0-9]*$/,
+            })}
+          />
+          {errors.maxSpeed && (
             <label className="requiredLabel">
               Required! Only positive numbers are allowed
             </label>
@@ -246,6 +308,28 @@ function AddCottagePage() {
           />
         </Grid>
         <Grid item xs={12}>
+          <TextField
+            id="additionalEquipment"
+            label="Additional Equipment"
+            multiline
+            rows={4}
+            defaultValue=""
+            fullWidth
+            {...register("additionalEquipment")}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="navigationEquipment"
+            label="Navigation Equipment"
+            multiline
+            rows={4}
+            defaultValue=""
+            fullWidth
+            {...register("navigationEquipment")}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <UploadPictureForm
             pictureSetInputList={pictureSetInputList}
             pictureInputList={pictureInputList}
@@ -290,4 +374,4 @@ function AddCottagePage() {
   );
 }
 
-export default AddCottagePage;
+export default AddShipPage;

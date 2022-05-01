@@ -14,4 +14,8 @@ public class ShipOwner extends Owner {
 
 	@OneToMany(mappedBy = "shipOwner", fetch = FetchType.LAZY)
 	private List<Ship> ships;
+
+	public List<Ship> getShips() {
+		return ships;
+	}
 }

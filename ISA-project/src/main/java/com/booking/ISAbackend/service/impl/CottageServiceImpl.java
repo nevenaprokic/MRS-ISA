@@ -1,25 +1,25 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.client.Client;
-import com.booking.ISAbackend.dto.AdditionalServiceDTO;
-import com.booking.ISAbackend.dto.AdventureDTO;
-import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
-import com.booking.ISAbackend.repository.AdditionalServiceRepository;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.CottageRepository;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.CottageService;
+import com.booking.ISAbackend.service.PhotoService;
 import com.booking.ISAbackend.service.UserService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CottageServiceImpl implements CottageService {
@@ -31,6 +31,8 @@ public class CottageServiceImpl implements CottageService {
     private AddressRepository addressRepository;
     @Autowired
     private AdditionalServiceService additionalServiceService;
+    @Autowired
+    private PhotoService photoService;
 
 
     @Override
@@ -67,16 +69,17 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public void addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException {
+    public int addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException, IOException {
         CottageOwner cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
         if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.getCottages())){
             if(validateCottage(cottageDTO)){
-                saveCottage(cottageDTO, cottageOwner);
+                return saveCottage(cottageDTO, cottageOwner).getId();
             }
         }
         else{
-            throw new CottageAlreadyExistsException("You already have adventure with same name. Name has to be unique!");
+            throw new CottageAlreadyExistsException("You already have cottage with same name. Name has to be unique!");
         }
+        return -1;
 
     }
     private boolean isCottageAlreadyExists(String cottageName, List<Cottage> existingCottages){
@@ -97,7 +100,7 @@ public class CottageServiceImpl implements CottageService {
                 (!cottage.getDescription().isEmpty());
         return validationResult;
     }
-    private void saveCottage(NewCottageDTO cottage, CottageOwner cottageOwner) {
+    private Cottage saveCottage(NewCottageDTO cottage, CottageOwner cottageOwner) throws IOException {
         List<QuickReservation> quickReservations = new ArrayList<QuickReservation>();
         List<Reservation> reservations = new ArrayList<Reservation>();
         List<Client> subscribedClients = new ArrayList<Client>();
@@ -111,7 +114,7 @@ public class CottageServiceImpl implements CottageService {
         Cottage newCottage = new Cottage(cottage.getOfferName(),
                 cottage.getDescription(),
                 Double.valueOf(cottage.getPrice()),
-                photos,
+                photoService.convertPhotosFromDTO(cottage.getPhotos(), cottageOwner.getEmail()),
                 Integer.valueOf(cottage.getPeopleNum()),
                 cottage.getRulesOfConduct(),
                 additionalServices,
@@ -125,7 +128,18 @@ public class CottageServiceImpl implements CottageService {
                 Integer.parseInt(cottage.getBedNumber()),
                 cottageOwner);
 
-        cottageRepository.save(newCottage);
+        return cottageRepository.save(newCottage);
+    }
+    @Override
+    public void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, int offerId) throws InvalidPriceException, RequiredFiledException {
+        Optional<Cottage> cottage = cottageRepository.findById(offerId);
+        if(cottage.isPresent() && Validator.isValidAdditionalServices(additionalServiceDTOs)){
+            Cottage c = cottage.get();
+            List<AdditionalService> additionalServices = additionalServiceService.convertServicesFromDTO(additionalServiceDTOs);
+            c.setAdditionalServices(additionalServices);
+            cottageRepository.save(c);
+        }
+
     }
 
 }

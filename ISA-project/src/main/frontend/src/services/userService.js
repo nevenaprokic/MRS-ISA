@@ -114,6 +114,26 @@ export function changeOwnerData(newOwnerData){
                 })
     .catch((err) => alert(err.data));
 }
+export function changeCottageOwnerData(newCottageOwnerData){
+    let email = getUsernameFromToken();
+    newCottageOwnerData["email"] = email;
+    api
+    .post("/changeCottageOwnerData", newCottageOwnerData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
+    .catch((err) => alert(err.data));
+}
+export function changeShipOwnerData(newShipOwnerData){
+    let email = getUsernameFromToken();
+    newShipOwnerData["email"] = email;
+    api
+    .post("/changeShipOwnerData", newShipOwnerData)
+    .then((responseData) => {
+                alert(responseData.data); 
+                })
+    .catch((err) => alert(err.data));
+}
 
 export function changeInstructorData(newOwnerData){
     let email = getUsernameFromToken();
@@ -172,7 +192,6 @@ export function changeAdminData(newAdminData){
                 })
     .catch((err) => alert(err.data));
 }
-export function searchInstructors(params, setOffers){} 
 
 
 

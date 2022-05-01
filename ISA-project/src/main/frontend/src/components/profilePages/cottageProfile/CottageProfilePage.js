@@ -108,7 +108,7 @@ function CottageProfilePage({ id, close }) {
                   <div className="mark">
                   <Rating name="read-only" value={markData} readOnly />
                   </div>
-
+                </div>
                 <ImagesBox images={images} />
                 <QuickActionBox id={cottageData.id} />
                 <Grid container xs={12}>

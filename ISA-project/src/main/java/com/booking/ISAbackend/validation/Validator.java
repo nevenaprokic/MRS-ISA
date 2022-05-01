@@ -54,6 +54,46 @@ public class Validator {
 
         }
     }
+    public static boolean isValidSize(String size) throws InvalidSizeException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(size);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidSizeException("Size mast be positive whole number! ");
+
+        }
+    }
+    public static boolean isValidMotorNumber(String motorNumber) throws InvalidMotorNumberException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(motorNumber);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidMotorNumberException("Number of motor be positive whole number! ");
+
+        }
+    }
+    public static boolean isValidMotorPower(String motorPower) throws InvalidMotorPowerException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(motorPower);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidMotorPowerException("Motor power be positive whole number! ");
+
+        }
+    }
+    public static boolean isValidMaxSpeed(String motorSpeed) throws InvalidMaxSpeedException {
+        String regex = "^[1-9]+[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(motorSpeed);
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidMaxSpeedException("Max motor speed be positive whole number! ");
+
+        }
+    }
 
     public static boolean isValidAdress(String street, String city, String state) throws InvalidAddressException {
         String cityRegex = "^[a-zA-Z\\s]*$";
