@@ -23,7 +23,7 @@ function AdditionalinfoBox({additionalDate}){
                 <div className="boxItem">
                     <AssessmentIcon color="action"/>
                 </div>
-                <label className="boxItemTitle">User kategory: </label>
+                <label className="boxItemTitle">User category: </label>
                 <label className="boxItemText">{additionalDate.userCategory}</label>
             </div>
 

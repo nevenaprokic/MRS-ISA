@@ -4,14 +4,39 @@ $orange :#CC7351;
 $darkGrrenGray: #5f6d5f;
 $transparentLightGreen: rgb(211, 228, 205, 0.4);
 
+// unauth
+$middleGreen: hsl(110, 17%, 71%);
+$profile_page_width: 60%;
+
 .ownerprofileContainer{
     width: $content_width;
-    margin-top: 0%;
+    margin-top: 2%;
     margin-left: 50%;
-    padding: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
+    border-radius: 20px;
     transform: translateX(-50%);
-    color: gray;
     margin-bottom: 7%;
+    border: solid medium $middleGreen;
+    background-color: white;
+}
+
+.ownerprofileContainerUnauthUser{
+    width: $profile_page_width;
+    margin-top: 2%;
+    margin-left: 50%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
+    border-radius: 20px;
+    transform: translateX(-50%);
+    margin-bottom: 7%;
+    border: solid medium $middleGreen;
+    background-color: white;
+    overflow: auto;
 }
 
 .boxItem{

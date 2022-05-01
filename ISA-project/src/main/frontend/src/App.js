@@ -20,6 +20,7 @@ import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
 import AdminHomePage from './components/homePages/AdminHomePage';
 import AdminProfile from './components/profilePages/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
+import InstructorsAdventures from './components/pages/InstructorsAdventures';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
           <Route path='/user-home-page/admin' element={<AdminHomePage />}/>
           <Route path='/user-profile/admin' element={<AdminProfile />}/>
           <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
+          <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
         </Routes>
     </div>
   );

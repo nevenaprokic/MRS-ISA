@@ -2,6 +2,8 @@ package com.booking.ISAbackend.dto;
 
 import com.booking.ISAbackend.model.Instructor;
 
+import java.util.List;
+
 public class InstructorProfileData {
 
     private String email;
@@ -11,6 +13,18 @@ public class InstructorProfileData {
     private String lastName;
 
     private String phoneNumber;
+
+    private String street;
+
+    private String city;
+
+    private String state;
+
+    private String userCategory;
+
+    private String biography;
+
+    private List<AdventureDTO> adventures;
 
     public InstructorProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory, String biography) {
         this.email = email;
@@ -72,11 +86,12 @@ public class InstructorProfileData {
         return biography;
     }
 
-    private String street;
-    private String city;
-    private String state;
-    private String userCategory;
-    private String biography;
+    public List<AdventureDTO> getAdventures() {
+        return adventures;
+    }
 
+    public void setAdventures(List<AdventureDTO> adventures) {
+        this.adventures = adventures;
+    }
 
 }

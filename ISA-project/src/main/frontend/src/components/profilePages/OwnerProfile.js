@@ -19,9 +19,10 @@ import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userType } from "../../services/userService";
 import Biography from "./Biography";
+import InstructorsAdventures from "../pages/InstructorsAdventures";
 
 
-function OwnerProfile({ instructorEmail, close }){
+function OwnerProfile({ instructor, close }){
 
     const style = {
         position: 'absolute',
@@ -38,6 +39,7 @@ function OwnerProfile({ instructorEmail, close }){
     
     const [ownerData, setOwnerData] = useState();
     const [open, setOpen] = useState(false);
+    const [isUnauthUser, setIsUnauthUser] = useState(false);
 
     let getOfferByOwnerEmail = {
         [userType.COTTAGE_OWNER] :  getCottageOwnerByUsername,
@@ -49,7 +51,7 @@ function OwnerProfile({ instructorEmail, close }){
     const handleClose = () => setOpen(false);
 
     const childToParent = (childData) => {
-        if(!instructorEmail && getRoleFromToken() === userType.INSTRUCTOR){
+        if(!instructor && getRoleFromToken() === userType.INSTRUCTOR){
             setOwnerData(prevState => ({
                 ...prevState,
                 ["firstName"]: childData.firstName,
@@ -58,8 +60,7 @@ function OwnerProfile({ instructorEmail, close }){
                 ["city"]: childData.city,
                 ["street"]: childData.street,
                 ["state"]: childData.state,
-                ["biography"]: childData.biography,
-
+                ["biography"]: childData.biography
             })
             );
         }
@@ -71,8 +72,7 @@ function OwnerProfile({ instructorEmail, close }){
                 ["phoneNumber"]: childData.phoneNumber,
                 ["city"]: childData.city,
                 ["street"]: childData.street,
-                ["state"]: childData.state,
-
+                ["state"]: childData.state
             })
             );
         }
@@ -81,19 +81,19 @@ function OwnerProfile({ instructorEmail, close }){
       
 
     useEffect(() => {
+        (instructor != null) ? setIsUnauthUser(true) : setIsUnauthUser(false);
+
         async function setData() {
             let requestData = null;
-            if(instructorEmail){
-                let username = instructorEmail;
-                requestData = await getInstructorByUsername(username);
+            if(isUnauthUser){
+                setOwnerData(instructor);
             }
             else{
                 let username = getUsernameFromToken();
                 let role = getRoleFromToken();
                 requestData = await getOfferByOwnerEmail[role](username);
+                setOwnerData(!!requestData ? requestData.data : {});
             }
-
-            setOwnerData(!!requestData ? requestData.data : {});
 
         return requestData;    
     }
@@ -105,9 +105,9 @@ function OwnerProfile({ instructorEmail, close }){
 
     if(ownerData){
         return(
-            <div className="ownerprofileContainer">
+            <div className={ isUnauthUser ? 'ownerprofileContainerUnauthUser' : 'ownerprofileContainer'} >
 
-            {(instructorEmail != null) ? (
+            {(isUnauthUser) ? (
                 <div className="closeProfileBtn">
                 <Button size="large" sx={{}} onClick={() => close()}>
                 x
@@ -124,7 +124,7 @@ function OwnerProfile({ instructorEmail, close }){
                 <BasicInfoBox basicData={ownerData}></BasicInfoBox>
 
                 {
-                (instructorEmail == null) ? (
+                (!isUnauthUser) ? (
                     <>
                         <Grid item xs={12} sm={1}>
                             <EmailIcon/>
@@ -165,11 +165,29 @@ function OwnerProfile({ instructorEmail, close }){
                 )
             }
 
-                <AddressInfoBox addressData={ownerData}/>
+                {(isUnauthUser) ? (
+                    <>
+                        <Grid xs={12} sm={5}>
+                        <AddressInfoBox addressData={ownerData}/>
+                        </Grid>
+                            <AdditionalinfoBox additionalDate={ownerData}/>    
+                    </>
+                    ) : 
+                    (
+                        <>
+                            <Grid xs={12} sm={5} />
+                            <AdditionalinfoBox additionalDate={ownerData}/>
+                            <AddressInfoBox addressData={ownerData}/>
+                        </>
+                    )}
                 
-                <Grid xs={12} sm={5}/>
 
-                 <AdditionalinfoBox additionalDate={ownerData}/>
+                 <Grid xs={12} sm={5}/>
+
+                 {(isUnauthUser) ? (
+                    <InstructorsAdventures adventures={instructor.adventures} />
+                    ) : 
+                    (<></>)}
 
             </Grid>
         </div>

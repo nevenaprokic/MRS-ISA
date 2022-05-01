@@ -38,7 +38,7 @@ public class AdventureServiceImpl implements AdventureService {
     private AddressRepository addressRepository;
 
     @Autowired
-    private AdventureReporitory adventureReporitory;
+    private AdventureReporitory adventureRepository;
 
     @Autowired
     private PhotoRepository photoRepositorys;
@@ -71,7 +71,7 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     @Transactional
     public List<AdventureDTO> getInstructorAdventures(String email) { //ubaciti ocenu
-        List<Adventure> adventures = adventureReporitory.findCottageByInstructorEmail(email);
+        List<Adventure> adventures = adventureRepository.findCottageByInstructorEmail(email);
         List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
         if(adventures != null){
             for (Adventure a: adventures
@@ -101,12 +101,12 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Override
         public void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, int offerId) throws InvalidPriceException, RequiredFiledException {
-        Optional<Adventure> adventure = adventureReporitory.findById(offerId);
+        Optional<Adventure> adventure = adventureRepository.findById(offerId);
         if(adventure.isPresent() && Validator.isValidAdditionalServices(additionalServiceDTOs)){
             Adventure a = adventure.get();
             List<AdditionalService> additionalServices = additionalServiceService.convertServicesFromDTO(additionalServiceDTOs);
             a.setAdditionalServices(additionalServices);
-            adventureReporitory.save(a);
+            adventureRepository.save(a);
         }
 
     }
@@ -114,7 +114,7 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     @Transactional
     public AdventureDetailsDTO findAdventureById(int id) throws AdventureNotFoundException, IOException {
-        Optional<Adventure> adventure = adventureReporitory.findById(id);
+        Optional<Adventure> adventure = adventureRepository.findById(id);
         if(adventure.isPresent()){
             Adventure a = adventure.get();
             AdventureDetailsDTO dto = new AdventureDetailsDTO(a.getId(),
@@ -155,13 +155,13 @@ public class AdventureServiceImpl implements AdventureService {
                 adventure.setPhotos(updateAdventurePhotos(adventureInfo.getPhotos(), adventure.getPhotos(), instructorEmail));
 
                 updateAdventuerAddress(adventure.getAddress(), new AddressDTO(adventureInfo.getStreet(), adventureInfo.getCity(), adventureInfo.getState()));
-                adventureReporitory.save(adventure);
+                adventureRepository.save(adventure);
             }
     }
 
     @Override
     public Adventure findAdventureByI(int id) {
-        Optional<Adventure> adventure = adventureReporitory.findById(id);
+        Optional<Adventure> adventure = adventureRepository.findById(id);
         return adventure.orElse(null);
     }
 
@@ -184,7 +184,7 @@ public class AdventureServiceImpl implements AdventureService {
             }
             removeAdventureServices(currentAdditionalServices, newServices);
             adventure.setAdditionalServices(currentAdditionalServices);
-            adventureReporitory.save(adventure);
+            adventureRepository.save(adventure);
 
         }
     }
@@ -300,9 +300,9 @@ public class AdventureServiceImpl implements AdventureService {
                 additionalEquipment,
                 instructor);
 
-        adventureReporitory.save(newAdventure);
+        adventureRepository.save(newAdventure);
 
-        return adventureReporitory.save(newAdventure);
+        return adventureRepository.save(newAdventure);
 
     }
 
