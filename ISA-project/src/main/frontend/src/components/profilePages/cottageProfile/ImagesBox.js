@@ -1,5 +1,5 @@
 import { Grid, Box} from "@mui/material";
-import "./CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import { Carousel } from 'react-carousel-minimal';
  
 

@@ -8,14 +8,16 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Card from '../layout/Card';
+import Card from '../../layout/Card';
 import { useForm } from "react-hook-form";
-import api from '../../app/api';
+import api from '../../../app/api';
 import jwt from 'jwt-decode';
-import MainNavigation from '../layout/MainNavigation';
-import { userType } from '../../services/userService';
+import MainNavigation from '../../layout/MainNavigation';
+import { userType } from '../../../app/Enum';
+import 'react-toastify/dist/ReactToastify.css';
+import {toast} from 'react-toastify';
 
-
+toast.configure();
 const theme = createTheme();
 
 export default function LogIn() {
@@ -40,7 +42,7 @@ export default function LogIn() {
               openUserHomePage(token);
           })
           .catch((err) => {
-              console.log("Nije uspesna prijava");
+            toast.error("User not found", {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
           });
 
         }

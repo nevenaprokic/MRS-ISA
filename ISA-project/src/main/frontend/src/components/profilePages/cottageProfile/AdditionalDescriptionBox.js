@@ -1,5 +1,5 @@
 import { Grid, Box} from "@mui/material";
-import "./CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import HotelIcon from '@mui/icons-material/Hotel';
 import MeetingRoom from "@mui/icons-material/MeetingRoom";

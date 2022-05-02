@@ -1,4 +1,4 @@
-import "./CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import { Grid, Box, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
@@ -12,12 +12,11 @@ import PriceList from "./Pricelist";
 import ImagesBox from "./ImagesBox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import '../../../style/OfferData.scss';
 import {getMarkByOfferId} from '../../../services/MarkService';
 import Rating from '@mui/material/Rating';
 import Divider from '@mui/material/Divider';
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
-import { userType } from "../../../services/userService";
+import { userType } from "../../../app/Enum";
 
 
 const theme = createTheme({
@@ -66,7 +65,7 @@ function CottageProfilePage({ id, close }) {
     return (
       <div className="changeDataContainer" id="changeDataContainer">
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
           <Box
             sx={{
               marginTop: 0,
@@ -98,7 +97,7 @@ function CottageProfilePage({ id, close }) {
               <div className="profileContainer">
                 <div className="headerContainer">
                     <h2 className="adventureTittle">{cottageData.name}</h2>
-                    {(getRoleFromToken() == null) ? 
+                    {(getRoleFromToken() != null) ? 
                     (<div className="changeBtn">
                       <Button variant="contained">Change info</Button>
                       </div>) : 
@@ -119,7 +118,7 @@ function CottageProfilePage({ id, close }) {
                     <AdditionalDescriptionBox additionData={cottageData} />
                   </Grid>
                 </Grid>
-                <PriceList basicPrice={cottageData.price} />
+                <PriceList offer={cottageData} />
               </div>
               </Grid>
             </Box>

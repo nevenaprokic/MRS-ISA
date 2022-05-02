@@ -13,9 +13,9 @@ import MainNavigationHome from '../layout/MainNavigationHome';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
-import ClientProfile from '../profilePages/ClientProfile';
+import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import Grid from '@mui/material/Grid';
-import Album from '../pages/home';
+import Album from '../collections/Album';
 
 
 function TabPanel(props) {

@@ -14,10 +14,10 @@ import {getMarkByOfferId} from '../../services/MarkService';
 import Rating from '@mui/material/Rating';
 import { getRoleFromToken} from "../../app/jwtTokenUtils";
 import Modal from '@mui/material/Modal';
-import { userType, offerTypeByUserType, offerType} from "../../services/userService";
+import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
-import OwnerProfile from "../profilePages/OwnerProfile";
+import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -105,7 +105,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
-        <Card sx={{ maxWidth: 345, maxHeight: 330, minHeight:330}}>
+        <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
           <CardMedia component="img" height="140" image={imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">

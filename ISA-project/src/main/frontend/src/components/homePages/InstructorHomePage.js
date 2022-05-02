@@ -1,15 +1,8 @@
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { Button } from '@mui/material';
-import logo from '../../logo.png';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -19,8 +12,8 @@ import MainNavigationHome from '../layout/MainNavigationHome';
 import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
-import Album from '../pages/home';
-import OwnerProfile from '../profilePages/OwnerProfile';
+import Album from '../collections/Album';
+import OwnerProfile from '../profilePages/userProfile/OwnerProfile';
 import AddAdventurePage from '../forms/adventure/AddAdventurePage';
 
 function TabPanel(props) {

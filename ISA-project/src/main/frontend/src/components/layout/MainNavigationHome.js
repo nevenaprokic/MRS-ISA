@@ -8,7 +8,8 @@ function MainNavigationHome(){
     return <header className={classes.header}>
         <div><img src={logo} /></div>
         <div className={classes.logo}></div>
-        <div className='headerLine'></div>
+        <div className='headerLine'></div> 
+        <Link to='/'>Log out</Link> 
     </header>
 }
 

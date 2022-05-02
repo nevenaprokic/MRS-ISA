@@ -14,3 +14,16 @@ export function getAdditionalServiceByOffer(id){
             return err.message;
         });
 }
+
+export function addAddtionalServices(offerId, additionalServiceDTOS){
+    console.log(additionalServiceDTOS);
+    api
+    .post("/adventure/add-additional-services",  {
+        params:{
+            offerId : offerId,
+            additionalServiceDTOS : additionalServiceDTOS
+        }
+    })
+    .then((responseData) => alert(responseData.data))
+    .catch((errMessage) => alert(errMessage.data));
+}

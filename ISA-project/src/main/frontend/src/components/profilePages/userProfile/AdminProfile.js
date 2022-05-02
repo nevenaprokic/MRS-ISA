@@ -1,24 +1,20 @@
-import "../../style/AdminProfile.scss" 
+import "../../../style/AdminProfile.scss" 
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import profileIcon from '../images/admin_icon.png'
+import profileIcon from '../../images/admin_icon.png'
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import BasicInfoBox from "./BasicInfoBox";
 import AddressInfoBox from "./AddressInfoBox";
-import AdditionalinfoBox from "./AdditionalInfoBox";
 import SettingsIcon from '@mui/icons-material/Settings';
-import { getUsernameFromToken, getRoleFromToken } from '../../app/jwtTokenUtils';
-import { getInstructorByUsername, getCottageOwnerByUsername, getShipOwnerByUsername, getAdminByEmail } from "../../services/userService";
 import { useState, useEffect } from 'react';
-import ChangeOwnerData from "../forms/ChangeOwnerData";
 import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { userType } from "../../services/userService";
-import ChangeAdminData from "../forms/ChangeAdminData";
+import ChangeAdminData from "../../forms/user/ChangeAdminData";
+import {getAdminByEmail} from "../../../services/AdminService";
 
 function AdminProfile(){
 

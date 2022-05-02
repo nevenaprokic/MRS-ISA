@@ -1,4 +1,4 @@
-import "../cottageProfile/CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import { Grid, Box, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
@@ -92,7 +92,7 @@ function ShipProfilePage({ id, close }) {
               <div className="profileContainer">
                 <div className="headerContainer">
                   <h2 className="adventureTittle">{shipData.name}</h2>
-                  {(getRoleFromToken() == null) ? 
+                  {(getRoleFromToken() != null) ? 
                   (<div className="changeBtn">
                   <Button variant="contained">Change info</Button>
                 </div>) : 

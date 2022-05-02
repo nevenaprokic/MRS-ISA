@@ -1,22 +1,17 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Card from '../layout/Card';
-import { NativeSelect, InputLabel, FormControl } from '@mui/material';
+import { FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
-import { useRef, useState, useEffect } from "react";
 import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
-import { getUsernameFromToken } from '../../app/jwtTokenUtils';
-import api from '../../app/api';
+import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
+import api from '../../../app/api';
 
 export default function ChangeClientData({currentClientData, close, childToParent}) {
 

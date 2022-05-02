@@ -4,14 +4,12 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import ErrorIcon from '@mui/icons-material/Error';
-import ArticleIcon from '@mui/icons-material/Article';
-import { getUsernameFromToken, getRoleFromToken } from '../../app/jwtTokenUtils';
-import { userType } from "../../services/userService";
+import { getRoleFromToken } from '../../../app/jwtTokenUtils';
+import { userType } from "../../../app/Enum";
 import Biography from "./Biography";
 
 
-function AdditionalinfoBox({additionalDate}){
+function AdditionalInfoBox({additionalDate}){
     console.log(additionalDate);
     return(
         <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
@@ -27,7 +25,7 @@ function AdditionalinfoBox({additionalDate}){
                 <label className="boxItemText">{additionalDate.userCategory}</label>
             </div>
 
-            {getRoleFromToken() === userType.INSTRUCTOR && 
+            {getRoleFromToken() != userType.COTTAGE_OWNER && getRoleFromToken() != userType.SHIP_OWNER && 
                 
                 <Biography bigraphy={additionalDate.biography} />
                    
@@ -39,4 +37,4 @@ function AdditionalinfoBox({additionalDate}){
     );
 }
 
-export default AdditionalinfoBox;
+export default AdditionalInfoBox;

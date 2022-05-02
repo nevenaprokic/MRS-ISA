@@ -1,14 +1,9 @@
-import { Grid, Box, Button} from "@mui/material";
-import "./CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import HomeIcon from '@mui/icons-material/Home';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import HotelIcon from '@mui/icons-material/Hotel';
 import MeetingRoom from "@mui/icons-material/MeetingRoom";
 import ArticleIcon from '@mui/icons-material/Article';
-import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from "@emotion/react";
-import ReadMoreReact from 'read-more-react';
 import ShowMoreText from "react-show-more-text";
 import {getAddressByCottageId} from '../../../services/AddressService';
 import * as React from 'react';
@@ -25,7 +20,6 @@ const theme = createTheme({
     },
   });
 
-  let shownTextlength = 250; //maksimalna velicina stringa za prvi prikaz
   
   function executeOnClick(isExpanded) {
         console.log(isExpanded);

@@ -12,9 +12,9 @@ import MainNavigationHome from "../layout/MainNavigationHome";
 import Grid from "@mui/material/Grid";
 import Search from "../forms/search/Search";
 import SearchIcon from "@mui/icons-material/Search";
-import Album from "../pages/home";
-import OwnerProfile from "../profilePages/OwnerProfile";
-import { offerType } from "../../services/userService";
+import Album from "../collections/Album";
+import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
+import { offerType } from "../../app/Enum";
 import { useState } from "react";
 import AddCottagePage from "../forms/cottage/AddCottagePage";
 

@@ -4,12 +4,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Card from '../layout/Card';
+import Card from '../../layout/Card';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useNavigate } from "react-router-dom";
-import MainNavigation from '../layout/MainNavigation';
+import MainNavigation from '../../layout/MainNavigation';
 
 
 const theme = createTheme();

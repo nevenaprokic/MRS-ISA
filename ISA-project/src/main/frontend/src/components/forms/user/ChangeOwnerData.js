@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,12 +10,17 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormControl } from '@mui/material';
 import { useForm } from "react-hook-form";
+import "../../../style/ChangeOwnerData.scss" 
 import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
-import { changeAdminData } from '../../services/userService';
-import "../../style/ChangeOwnerData.scss"
+import { userType } from "../../../app/Enum";
+import { getRoleFromToken } from '../../../app/jwtTokenUtils';
+import {changeInstructorData} from "../../../services/InstructorService";
+import {changeCottageOwnerData} from "../../../services/CottageOwnerService";
+import {changeShipOwnerData} from "../../../services/ShipOwnerService";
 
-export default function ChangeAdminData({currentAdminData, close, childToParent}) {
+
+export default function ChangeOwnerData({currentOwnerData, close, childToParent}) {
 
   const theme = createTheme({
     palette: {
@@ -28,12 +35,21 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
 
   const { register, handleSubmit, formState: { errors }, watch } = useForm({});
 
-  const onSubmit = (data) => {
-    console.log(data);
-    childToParent(data);
-    changeAdminData(data);
-    close();
+  let changeData = {
+    [userType.COTTAGE_OWNER] :  changeCottageOwnerData,
+    [userType.INSTRUCTOR] :  changeInstructorData,
+    [userType.SHIP_OWNER] :  changeShipOwnerData
   }
+
+  const onSubmit = (data) => {
+      let role = getRoleFromToken();
+      changeData[role](data);
+      // if (getRoleFromToken() === userType.INSTRUCTOR){
+      //   changeInstructorData(data);
+      // }
+      childToParent(data);
+      close();
+    }
 
   return (
     <div className="changeDataContainer" id="changeDataContainer">
@@ -59,7 +75,7 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                       </Typography>
                   </div>
                   <div className="closeBtn" >
-                    <Button size="large" sx={{}} onClick={ () => close() } >x</Button>
+                    <Button size="large" onClick={() => close()} sx={{}}>x</Button>
                   </div>
                  
                 </div>
@@ -70,9 +86,8 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="firstName"
                   id="firstName"
-                  defaultValue={currentAdminData.firstName}
-                  {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
-                   />
+                  defaultValue={currentOwnerData.firstName}
+                   {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">First Name</FormHelperText>
                 {errors.firstName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
@@ -80,9 +95,8 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="lastName"
                   id="lastName"
-                  defaultValue={currentAdminData.lastName}
-                  {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
-                   />
+                  defaultValue={currentOwnerData.lastName}
+                   {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Last Name</FormHelperText>
                 {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
               </FormControl>
@@ -90,9 +104,8 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="phoneNumber"
                   id="phoneNumber"
-                  defaultValue={currentAdminData.phoneNumber}
-                  {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}
-                  />
+                  defaultValue={currentOwnerData.phoneNumber}
+                   {...register("phoneNumber", {pattern:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/})}/>
                 <FormHelperText id="standard-weight-helper-text">Phone number</FormHelperText>
                 {errors.phoneNumber && <p className="errorLabel">Allowed phone number formats:<br/> '###-###-*####'  <br/>
                                                                                                     '(###) ###-####'   <br/>
@@ -106,9 +119,8 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="street"
                   id="street"
-                  defaultValue={currentAdminData.street}
-                  {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}
-                  />
+                  defaultValue={currentOwnerData.street}
+                   {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
                 {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
               </FormControl>   
@@ -116,9 +128,8 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="city"
                   id="city"
-                  defaultValue={currentAdminData.city}
-                  {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
-                   />
+                  defaultValue={currentOwnerData.city}
+                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
                 {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>   
@@ -126,12 +137,25 @@ export default function ChangeAdminData({currentAdminData, close, childToParent}
                   <Input 
                   name="state"
                   id="state"
-                  defaultValue={currentAdminData.state}
-                  {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
-                  />
+                  defaultValue={currentOwnerData.state}
+                   {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
-              </FormControl>                 
+              </FormControl>  
+              {getRoleFromToken() === userType.INSTRUCTOR && 
+                <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "95%"}}>
+                  <TextField
+                    id="biography"
+                    multiline
+                    defaultValue={currentOwnerData.biography}
+                    variant="standard"
+                    {...register("biography")}
+                  />
+                  
+                </FormControl>     
+                }
+              
+                
               
               </Grid>
               <Button

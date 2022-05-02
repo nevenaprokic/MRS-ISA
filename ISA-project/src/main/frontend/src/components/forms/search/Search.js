@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { searchCottages, searchCottagesByCottageOwner } from '../../../services/CottageService';
 import { searchShips, searchShipByShipOwner } from '../../../services/ShipService';
-import { offerType, searchInstructors } from '../../../services/userService';
+import { offerType } from '../../../app/Enum';
+import {searchInstructors} from '../../../services/InstructorService';
 
 
 

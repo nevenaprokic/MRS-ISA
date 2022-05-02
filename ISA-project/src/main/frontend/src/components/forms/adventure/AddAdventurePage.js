@@ -9,7 +9,7 @@ import AdditionalServices from '../addtitionaServices/AdditionalServices';
 import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
-import { addAdventure, test } from "../../../services/userService";
+import { addAdventure } from "../../../services/AdventureService";
 import { CssBaseline } from "@mui/material";
 import MainNavigationHome from "../../layout/MainNavigationHome";
 

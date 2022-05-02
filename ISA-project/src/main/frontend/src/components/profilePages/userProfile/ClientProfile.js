@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import profileIcon from '../images/profile.png'
+import profileIcon from '../../images/profile.png'
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import BasicInfoBox from "./BasicInfoBox";
@@ -12,12 +12,12 @@ import AddressInfoBox from "./AddressInfoBox";
 import AdditionalInfoClientBox from "./AdditionalInfoClientBox";
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState, useEffect } from 'react';
-import { getUsernameFromToken } from '../../app/jwtTokenUtils';
-import api from "../../app/api";
+import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
+import api from "../../../app/api";
 import Modal from '@mui/material/Modal';
-import ChangeClientData from "../forms/ChangeClientData";
+import ChangeClientData from "../../forms/user/ChangeClientData";
 import DeleteIcon from '@mui/icons-material/Delete';
-import ChangePassword from "../forms/ChangePassword";
+import ChangePassword from "../../forms/user/ChangePassword";
 
 
 function ClientProfile(){

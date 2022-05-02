@@ -5,14 +5,13 @@ import Container from '@mui/material/Container';
 import {getCottageByCottageOwnerEmail} from '../../services/CottageService';
 import { useState, useEffect } from 'react';
 import { getUsernameFromToken , getRoleFromToken} from "../../app/jwtTokenUtils";
-import { userType, offerTypeByUserType} from "../../services/userService";
+import { userType, offerTypeByUserType} from "../../app/Enum";
 import { getAdventureByInstructorEmail } from "../../services/AdventureService";
 import {getShipByShipOwnerEmail} from '../../services/ShipService';
 
 
 
 export default function Album( {albumData, setAlbumeData}){
-  //const [albumData, setAlbumeData] = useState();
   let role = getRoleFromToken();
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER] :  getCottageByCottageOwnerEmail,
@@ -20,23 +19,6 @@ export default function Album( {albumData, setAlbumeData}){
     [userType.SHIP_OWNER]: getShipByShipOwnerEmail
   }
   
-//   let getOfferProfileByRole = {
-//     [userType.COTTAGE_OWNER] :  getCottageProfile,
-//     [userType.INSTRUCTOR] :  getShipProfile,
-//     [userType.SHIP_OWNER]: getShipProfile
-//   }
-
-//   function getCottageProfile(offer){
-//       return (
-//         <MediaCard offer={offer}></MediaCard>
-//       );
-//   }
-
-//   function getShipProfile(offer){
-//     return (
-//       <MediaCardShip offer={offer}></MediaCardShip>
-//     );
-// }
     useEffect(() => {
         async function getOfferData() {
           let username = getUsernameFromToken();

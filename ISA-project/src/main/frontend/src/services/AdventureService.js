@@ -1,5 +1,7 @@
 import axios from "axios";
 import api from "../app/api";
+import {addAddtionalServices} from "./AdditionalServicesService";
+import { getUsernameFromToken } from "../app/jwtTokenUtils";
 
 export function getAdventureByInstructorEmail(username){
     return api
@@ -52,29 +54,20 @@ function updateAdditionalServices(offerId, additionalServiceDTOS){
     .catch((errMessage) => alert(errMessage.data));
 }
 
-// export function test(id){
-//     api
-//     .get("/adventure/getTest", {
-//         params:{
-//             id:id
-//         }
-//     })
-//     .then((responseData) => {
-//         //updateAdditionalServices(adventureData.get("adventureId"), additionalServices);
-//         console.log(responseData.data);
-//         let byte = responseData.data.photos;
-//         var blob = new Blob([byte], {type: "image/jpg"});
-//         let fd = new FormData();
-//         fd.append("fd", blob, "danas");
-//         console.log(fd.get("fd"));
-//         let src = "data:image/png;base64," + byte;
-//         return(
-//             <img src={src}></img>
-//         );
-//     })
-//     .catch((err) => {
-//         alert(err.data)});
-// }
+export function addAdventure(adventureData, additionalServices){
+    let email = getUsernameFromToken();
+    adventureData.append('email', email);
+    console.log(adventureData.get("offerName"));
+    api
+    .post("/adventure/addAdventure", adventureData)
+    .then((responseData) => {
+        let adventureId = responseData.data;
+        addAddtionalServices(adventureId, additionalServices);
+    })
+    .catch((err) => {
+        console.log(err);
+        alert(err.data)});
+}
 
 
 

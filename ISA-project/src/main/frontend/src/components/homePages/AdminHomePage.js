@@ -14,8 +14,8 @@ import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
-import ClientProfile from '../profilePages/ClientProfile';
-import AdminProfile from '../profilePages/AdminProfile';
+import ClientProfile from '../profilePages/userProfile/ClientProfile';
+import AdminProfile from '../profilePages/userProfile/AdminProfile';
 
 
 function TabPanel(props) {

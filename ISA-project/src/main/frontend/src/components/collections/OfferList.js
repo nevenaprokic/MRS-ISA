@@ -1,11 +1,12 @@
 import React from 'react'
 import {getCottages} from '../../services/CottageService';
 import {getShips} from '../../services/ShipService';
-import {getInstructors, offerType, userType} from '../../services/userService';
+import {offerType, userType} from '../../app/Enum';
 import { useState, useEffect } from "react";
 import MediaCard from "../layout/MediaCard";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import {getInstructors} from '../../services/InstructorService';
 
 export default function OfferList({type, offers, setOffers}) {
 

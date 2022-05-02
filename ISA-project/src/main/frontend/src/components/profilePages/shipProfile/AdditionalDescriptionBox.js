@@ -1,5 +1,5 @@
 
-import "../cottageProfile/CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import ArticleIcon from '@mui/icons-material/Article';
 import ShowMoreText from "react-show-more-text";
 

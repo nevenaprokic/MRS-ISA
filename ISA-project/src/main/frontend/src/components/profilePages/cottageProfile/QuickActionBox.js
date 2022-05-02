@@ -2,7 +2,7 @@ import { Grid, Box, Button } from "@mui/material";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
-import "./CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import getQuickActionByOfferId from "../../../services/QuickActionService";

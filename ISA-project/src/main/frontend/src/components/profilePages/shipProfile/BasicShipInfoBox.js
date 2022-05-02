@@ -1,5 +1,5 @@
 
-import "../cottageProfile/CottageProfilePage.scss";
+import "../adventureProfile/AdventureProfilePage.scss";
 import HomeIcon from '@mui/icons-material/Home';
 import { createTheme } from '@mui/material/styles';
 import {getAddressByShipId} from '../../../services/AddressService';

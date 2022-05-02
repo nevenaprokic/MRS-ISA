@@ -13,11 +13,11 @@ import MainNavigation from '../layout/MainNavigation';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
-import { offerType, userType } from "../../services/userService";
-import ClientProfile from '../profilePages/ClientProfile';
+import { offerType, userType } from "../../app/Enum";
+import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import Grid from '@mui/material/Grid';
-import Album from '../pages/home';
-import OfferList from '../pages/OfferList';
+import Album from '../collections/Album';
+import OfferList from '../collections/OfferList';
 import PriceList from '../profilePages/cottageProfile/Pricelist';
 
 
