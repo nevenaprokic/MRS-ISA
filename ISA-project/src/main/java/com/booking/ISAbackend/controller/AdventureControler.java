@@ -2,30 +2,15 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
-import com.booking.ISAbackend.model.AdditionalService;
-import com.booking.ISAbackend.model.Adventure;
-import com.booking.ISAbackend.model.Photo;
+import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.service.AdventureService;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.servlet.annotation.MultipartConfig;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,6 +143,17 @@ public class AdventureControler {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @GetMapping("search-adventures")
+    @Transactional
+    public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
+
+        try{
+            List<AdventureDTO> advetures = adventureService.searchAdventuresByInstructor(name, maxPeople, address, price, email);
+            return ResponseEntity.ok(advetures);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

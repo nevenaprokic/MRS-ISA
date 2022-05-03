@@ -10,6 +10,7 @@ import { searchCottages, searchCottagesByCottageOwner } from '../../../services/
 import { searchShips, searchShipByShipOwner } from '../../../services/ShipService';
 import { offerType } from '../../../app/Enum';
 import {searchInstructors} from '../../../services/InstructorService';
+import { searchAdventureByInstructor } from '../../../services/AdventureService';
 
 
 
@@ -35,7 +36,8 @@ export default function Search({params, setParams, type, setOffers}){
         [offerType.SHIP]: searchShips,
         [offerType.ADVENTURE] :  searchInstructors,
         [offerType.COTTAGE_OWNER] : searchCottagesByCottageOwner,
-        [offerType.SHIP_OWNER] : searchShipByShipOwner
+        [offerType.SHIP_OWNER] : searchShipByShipOwner,
+        [offerType.INSTRUCTOR] : searchAdventureByInstructor
   }
 
     return(
@@ -136,6 +138,7 @@ export default function Search({params, setParams, type, setOffers}){
                 onChange = { event => { setParams({...params, "address": event.target.value}); }}
                 />
             </Grid>
+            {console.log(type)}
 
             <Grid item xs>
                 <Button size="large" sx={{}} onClick={ () => searchOffer[type](params, setOffers) } >Search</Button>

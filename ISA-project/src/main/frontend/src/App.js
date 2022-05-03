@@ -20,7 +20,7 @@ import ShipOwnerHomePage from './components/homePages/ShipOwnerHomePage';
 import AdminHomePage from './components/homePages/AdminHomePage';
 import AdminProfile from './components/profilePages/userProfile/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
-import InstructorsAdventures from './components/pages/InstructorsAdventures';
+import InstructorsAdventures from './components/collections/InstructorsAdventures';
 
 
 function App() {

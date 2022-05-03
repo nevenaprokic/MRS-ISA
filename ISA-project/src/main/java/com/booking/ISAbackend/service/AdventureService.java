@@ -12,10 +12,18 @@ import java.util.List;
 
 public interface AdventureService {
     int addAdventure(NewAdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException;
+
     List<AdventureDTO> getInstructorAdventures(String email);
+
     void addAdditionalServices(List<HashMap<String, String>> additionalServices, int offerID) throws InvalidPriceException, RequiredFiledException;
+
     AdventureDetailsDTO findAdventureById(int parseInt) throws AdventureNotFoundException, IOException;
+
     void updateAdventure(AdventureDTO adventureInfo, int adventureId) throws InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException;
+
     Adventure findAdventureByI(int id);
+
     void updateAdventureAdditionalServices(List<HashMap<String, String>> additionalServices, int offerID) throws InvalidPriceException, RequiredFiledException;
+
+    List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email);
 }

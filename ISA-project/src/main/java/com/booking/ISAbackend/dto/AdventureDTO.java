@@ -129,6 +129,14 @@ public class AdventureDTO {
         this.additionalEquipment = additionalEquipment;
     }
 
+    public AdventureDTO(int id, String ownerEmail, String offerName, String description, String price) {
+        this.id = id;
+        this.ownerEmail = ownerEmail;
+        this.offerName = offerName;
+        this.description = description;
+        this.price = price;
+    }
+
     public AdventureDTO() {
 
     }
