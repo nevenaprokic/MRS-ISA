@@ -4,7 +4,11 @@ import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.model.*;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ShipDTO {
@@ -44,7 +48,7 @@ public class ShipDTO {
         this.additionalEquipment = additionalEquipment;
 
     }
-    public ShipDTO(Ship s) {
+    public ShipDTO(Ship s) throws IOException {
         this.id = s.getId();
         this.name = s.getName();
         this.description = s.getDescription();
@@ -62,10 +66,13 @@ public class ShipDTO {
         this.additionalEquipment = s.getAdditionalEquipment();
 
     }
-    private List<String> getPhoto(Ship ship){
+    private List<String> getPhoto(Ship ship) throws IOException {
         List<String> photos = new ArrayList<>();
         for(Photo p: ship.getPhotos()){
-            photos.add(p.getPath());
+            String pathFile = "./src/main/frontend/src/components/images/" + p.getPath();
+            byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
+            String photoData = Base64.getEncoder().encodeToString(bytes);
+            photos.add(photoData);
         }
         return photos;
     }

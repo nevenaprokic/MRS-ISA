@@ -13,7 +13,7 @@ import java.util.List;
 public interface AdventureService {
     int addAdventure(NewAdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException;
 
-    List<AdventureDTO> getInstructorAdventures(String email);
+    List<AdventureDTO> getInstructorAdventures(String email) throws IOException;
 
     void addAdditionalServices(List<HashMap<String, String>> additionalServices, int offerID) throws InvalidPriceException, RequiredFiledException;
 

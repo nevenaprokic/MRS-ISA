@@ -59,7 +59,7 @@ function CottageProfilePage({ id, close }) {
   if (cottageData && markData) {
 
     cottageData.photos.forEach((photo) => {
-      let imag = { image: require("/src/components/images/" + photo) };
+      let imag = { image: "data:image/jpg;base64," + photo };
       images.push(imag);
     });
     return (

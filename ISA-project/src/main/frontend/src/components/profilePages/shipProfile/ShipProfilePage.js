@@ -54,7 +54,7 @@ function ShipProfilePage({ id, close }) {
   let photos = [];
   if (shipData && markData) {
     shipData.photos.forEach((photo) => {
-      let imag = { image: require("/src/components/images/" + photo) };
+      let imag = { image: "data:image/jpg;base64," + photo };
       photos.push(imag);
     });
     return (

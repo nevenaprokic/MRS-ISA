@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -70,7 +71,7 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Override
     @Transactional
-    public List<AdventureDTO> getInstructorAdventures(String email) { //ubaciti ocenu
+    public List<AdventureDTO> getInstructorAdventures(String email) throws IOException { //ubaciti ocenu
         List<Adventure> adventures = adventureRepository.findCottageByInstructorEmail(email);
         List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
         if(adventures != null){
@@ -258,10 +259,13 @@ public class AdventureServiceImpl implements AdventureService {
         return  additionalServiceDTOList;
     }
 
-    private List<String> getPhoto(Adventure a){
+    private List<String> getPhoto(Adventure a) throws IOException {
         List<String> photos = new ArrayList<>();
         for(Photo p: a.getPhotos()){
-            photos.add(p.getPath());
+            String pathFile = "./src/main/frontend/src/components/images/" + p.getPath();
+            byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
+            String photoData = Base64.getEncoder().encodeToString(bytes);
+            photos.add(photoData);
         }
         return photos;
     }

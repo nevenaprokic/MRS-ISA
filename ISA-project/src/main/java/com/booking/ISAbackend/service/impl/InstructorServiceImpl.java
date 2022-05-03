@@ -12,6 +12,7 @@ import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class InstructorServiceImpl implements InstructorService {
     private AdventureService adventureService;
 
     @Override
-    public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException {
+    public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException, IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
         if(phoneNumber.equals("") || Validator.phoneNumberValidation(phoneNumber)){
             List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
@@ -37,14 +38,14 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public List<InstructorProfileData> findAll() {
+    public List<InstructorProfileData> findAll() throws IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
         List<Instructor> instructors = instructorRepository.findAll();
         makeInstructorDTOs(retList, instructors);
         return retList;
     }
 
-    private void makeInstructorDTOs(List<InstructorProfileData> retList, List<Instructor> instructors) {
+    private void makeInstructorDTOs(List<InstructorProfileData> retList, List<Instructor> instructors) throws IOException {
         for (Instructor i : instructors) {
             List<AdventureDTO> adventures = adventureService.getInstructorAdventures(i.getEmail());
             InstructorProfileData dto = new InstructorProfileData(i);
@@ -52,7 +53,5 @@ public class InstructorServiceImpl implements InstructorService {
             retList.add(dto);
         }
     }
-
-
 
 }

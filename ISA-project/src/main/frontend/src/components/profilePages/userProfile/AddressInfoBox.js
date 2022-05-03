@@ -10,7 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 
 function AddressInfoBox({addressData}){
     return(
-        <Grid item xs={12} sm={12} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
+        <Grid item xs={12} sm={7} component={Paper} elevation={10} square height={"30%"} sx={{borderRadius: "5%", minHeight: "200px"}}>
           <Box className="infoBoxContainer">
            
            <div className="infoBox">

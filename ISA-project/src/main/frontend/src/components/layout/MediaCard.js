@@ -36,10 +36,9 @@ export default function MediaCard({ offer, offerT }) {
   const handleClose = () => setOpen(false);
 
   let imag = require("../images/no-image.png");
-  if(offer.photos && offer.photos.length != 0){
-    // console.log(require("/src/components/images/" + offerData.photos[0]));
-    imag = require("/src/components/images/" + offer.photos[0]);
-  }
+  // if(offer.photos.length != 0){
+  //   imag = require("/src/components/images/" + offer.photos[0]);
+  // }
 
   const childToParent = (childData) => {
     if(offerT === offerType.ADVENTURE){
@@ -103,7 +102,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
     return (
       <ThemeProvider theme={secondaryTheme}>
         <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
-          <CardMedia component="img" height="140" image={imag} alt="slike" />
+          <CardMedia component="img" height="140" image={offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
               {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}

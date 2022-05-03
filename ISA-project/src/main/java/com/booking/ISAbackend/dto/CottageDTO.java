@@ -3,7 +3,11 @@ package com.booking.ISAbackend.dto;;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class CottageDTO {
@@ -36,7 +40,7 @@ public class CottageDTO {
 
     }
 
-    public CottageDTO(Cottage c) {
+    public CottageDTO(Cottage c) throws IOException {
         this.id = c.getId();
         this.name = c.getName();
         this.description = c.getDescription();
@@ -49,10 +53,13 @@ public class CottageDTO {
         this.bedNumber = c.getBedNumber();
     }
 
-    private List<String> getPhoto(Cottage c){
+    private List<String> getPhoto(Cottage c) throws IOException {
         List<String> photos = new ArrayList<>();
         for(Photo p: c.getPhotos()){
-            photos.add(p.getPath());
+            String pathFile = "./src/main/frontend/src/components/images/" + p.getPath();
+            byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
+            String photoData = Base64.getEncoder().encodeToString(bytes);
+            photos.add(photoData);
         }
         return photos;
     }
