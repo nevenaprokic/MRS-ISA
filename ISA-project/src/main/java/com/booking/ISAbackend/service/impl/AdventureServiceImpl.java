@@ -176,7 +176,7 @@ public class AdventureServiceImpl implements AdventureService {
             for(HashMap<String, String> newService:  newServices){
                 if(isAditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
                     AdditionalService service = findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
-                    service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice")));
+                    service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice"))));
                     additionalServiceRepository.save(service);
                 }
                 else if(!newService.get("serviceName").equals("")){

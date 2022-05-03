@@ -82,7 +82,6 @@ function PriceList({ offer }) {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    {console.log("CENA", row.price)}
                     <TableCell align="left">{row.price}</TableCell>
                   </TableRow>
                 ))}
