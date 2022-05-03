@@ -123,11 +123,12 @@ public class Validator {
         for (HashMap<String, String> serviceMap: additionalServices
         ) {
             if(!(serviceMap.get("serviceName")).equals("")){
-                if(serviceMap.get("servicePrice").equals("")){
-                    throw new RequiredFiledException("Price is required for additional service" + serviceMap.get("serviceName") + "!It isn't enough to write only the name");
+                try{
+                    double price = Double.valueOf(String.valueOf(serviceMap.get("servicePrice")));
+                    return isValidPrice(String.valueOf(price));
                 }
-                else{
-                    return isValidPrice(String.valueOf(serviceMap.get("servicePrice")));
+                catch (Exception e){
+                    throw new RequiredFiledException("Price is required for additional service" + serviceMap.get("serviceName") + "!It isn't enough to write only the name");
                 }
             }
         }

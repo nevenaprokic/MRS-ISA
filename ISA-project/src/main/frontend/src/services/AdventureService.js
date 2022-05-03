@@ -34,7 +34,7 @@ export function updateAdventure(adventureData, additionalServices){
     api
     .post("/adventure/update-adventure", adventureData)
     .then((responseData) => {
-        // updateAdditionalServices(adventureData.id, additionalServices);
+         updateAdditionalServices(adventureData.id, additionalServices);
     })
     .catch((err) => {
         console.log(err);
@@ -42,6 +42,11 @@ export function updateAdventure(adventureData, additionalServices){
 }
 
 function updateAdditionalServices(offerId, additionalServiceDTOS){
+    // additionalServiceDTOS.forEach(element => {
+    //     if(element["serviceName"] !== "" && element["servicePrice"] === ""){
+    //         element["servicePrice"] = -1;
+    //     }
+    // });
     console.log(additionalServiceDTOS);
     api
     .post("/adventure/update-adventure-services",  {

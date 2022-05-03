@@ -175,10 +175,12 @@ public class AdventureServiceImpl implements AdventureService {
         if(adventure != null && Validator.isValidAdditionalServices(newServices)){
             for(HashMap<String, String> newService:  newServices){
                 if(isAditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
-
+                    AdditionalService service = findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
+                    service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice")));
+                    additionalServiceRepository.save(service);
                 }
                 else if(!newService.get("serviceName").equals("")){
-                    AdditionalService service = new AdditionalService(newService.get("serviceName"), Double.valueOf(newService.get("servicePrice")));
+                    AdditionalService service = new AdditionalService(newService.get("serviceName"), Double.valueOf(String.valueOf(newService.get("servicePrice"))));
                     currentAdditionalServices.add(service);
                     additionalServiceRepository.save(service);
                 }
@@ -188,6 +190,15 @@ public class AdventureServiceImpl implements AdventureService {
             adventureRepository.save(adventure);
 
         }
+    }
+
+    private AdditionalService findAdditionalService(List<AdditionalService> currentAdditionalServices, String serviceName) {
+        for(AdditionalService oldService : currentAdditionalServices){
+            if(oldService.getName().equals(serviceName)){
+                return oldService;
+            }
+        }
+        return null;
     }
 
     @Override

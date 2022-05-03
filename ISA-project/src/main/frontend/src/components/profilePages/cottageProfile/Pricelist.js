@@ -11,23 +11,35 @@ import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesS
 import { useState, useEffect } from "react";
 
 function PriceList({ offer }) {
+
   function createData() {
+    rows = [];
     serviceData.forEach((data) => {
         let name = data.serviceName;
         let price = data.servicePrice;
         rows.push({name, price});
+        console.log("rows", rows);
       });
   }
   let rows = [];
   const [serviceData, setServiceData] = useState();
+
   useEffect(() => {
-    async function setData() {
-      const serviceData = await getAdditionalServiceByOffer(offer.id);
-      setServiceData(serviceData.data ? serviceData.data : {});
-      return serviceData.data;
-    }
-    setData();
-  }, []);
+      if(!!serviceData){
+        async function setData() {
+          const serviceData = await getAdditionalServiceByOffer(offer.id);
+          setServiceData(serviceData.data ? serviceData.data : {});
+          return serviceData.data;
+        }
+        setData();
+      }
+      else{
+        setServiceData(offer.additionalServices);
+      }
+    
+   
+  }, [offer]);
+
   if (serviceData) {
     createData();
     return (
@@ -70,6 +82,7 @@ function PriceList({ offer }) {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
+                    {console.log("CENA", row.price)}
                     <TableCell align="left">{row.price}</TableCell>
                   </TableRow>
                 ))}

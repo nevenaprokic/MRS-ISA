@@ -22,6 +22,14 @@ public class AdditionalService {
 
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
