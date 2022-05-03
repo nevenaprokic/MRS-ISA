@@ -72,14 +72,14 @@ export function addAdventure(adventureData, additionalServices){
 export function searchAdventureByInstructor(params, setOffers){
     params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 
     params.price = params.price == "" ? -1 : params.price; 
-    params.cottageOwnerUsername = getUsernameFromToken();
-    // return api
-    //     .get("/adventure/search-adventure",  {params})
-    //     .then((data) => setOffers(data.data))
-    //     .catch((err) => {
-    //         console.log("Nije uspesno dobavljeno");
-    //         return err.message;
-    //     });
+    params.email = getUsernameFromToken();
+    return api
+        .get("/adventure/search-adventures",  {params})
+        .then((data) => console.log(data)) //setOffers(data.data)
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
     
 }
 

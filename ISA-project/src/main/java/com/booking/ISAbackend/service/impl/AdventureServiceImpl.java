@@ -188,6 +188,19 @@ public class AdventureServiceImpl implements AdventureService {
 
         }
     }
+
+    @Override
+    public List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) {
+        List<Adventure> matchingAdventures = adventureRepository.searchAdventureByInstructorEmail(name,maxPeople,address,price,email);
+        List<AdventureDTO> adventureDTOs = new ArrayList<AdventureDTO>();
+        for (Adventure a: matchingAdventures){
+            //int id, String ownerEmail, String offerName, String description, String price
+            AdventureDTO dto = new AdventureDTO(a.getId(), a.getInstructor().getEmail(), a.getName(), a.getDescription(), String.valueOf(a.getPrice()));
+            adventureDTOs.add(dto);
+        }
+        return adventureDTOs;
+    }
+
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {
         List<byte[]> photosInBytes = new ArrayList<byte[]>();
         for (Photo p : photos) {
