@@ -4,7 +4,7 @@ import ImagesBox from "./ImagesBox";
 import QuickActionBox from "../cottageProfile/QuickActionBox";
 import BasicAdventureInfiBox from "./BasicAdventureInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
-import PriceList from "./Pricelist";
+import PriceList from "../cottageProfile/Pricelist";
 import { Grid, Box, Button} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
@@ -125,7 +125,7 @@ function AdventureProfilePage({id, close, childToParenMediaCard}){
                 
                     
                 </Grid>
-                <PriceList priceData={adventureData}/>
+                <PriceList offer={adventureData}/>
             </div>
         </ThemeProvider>
         </div>

@@ -75,9 +75,10 @@ export function searchAdventureByInstructor(params, setOffers){
     params.email = getUsernameFromToken();
     return api
         .get("/adventure/search-adventures",  {params})
-        .then((data) => console.log(data)) //setOffers(data.data)
+        .then((data) => setOffers(data.data)) //setOffers(data.data)
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
+            console.log(err);
             return err.message;
         });
     
