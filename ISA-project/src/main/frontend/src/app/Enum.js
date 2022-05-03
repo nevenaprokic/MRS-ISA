@@ -14,7 +14,8 @@ export const offerType = {
     COTTAGE: 2 ,
     SHIP: 3,
     COTTAGE_OWNER: 4,
-    SHIP_OWNER: 5
+    SHIP_OWNER: 5,
+    INSTRUCTOR: 6
 }
 
 Object.freeze(offerType);

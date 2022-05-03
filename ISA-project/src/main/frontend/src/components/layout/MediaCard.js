@@ -105,11 +105,13 @@ const modalOfferComponent = (offerStr, offerId) =>{
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
+        {console.log(offer)}
         <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
           <CardMedia component="img" height="140" image={imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
-              {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.firstName + " " + offer.lastName}
+              {/* {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.firstName + " " + offer.lastName} */}
+              {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.offerName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offer.description : offer.biography} </p>     

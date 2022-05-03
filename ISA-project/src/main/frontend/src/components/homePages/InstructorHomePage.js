@@ -15,6 +15,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Album from '../collections/Album';
 import OwnerProfile from '../profilePages/userProfile/OwnerProfile';
 import AddAdventurePage from '../forms/adventure/AddAdventurePage';
+import { useState } from 'react';
+import { offerType } from '../../app/Enum';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,9 +56,33 @@ function a11yProps(index) {
 
   
   const [value, setValue] = React.useState(0);
+  const [offers, setOffers] = useState();
+  const [params, setParams] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    name: "",
+    address: "",
+    maxPeople: -1,
+    price: -1,
+  });
+
+  const resetParams = () => {
+    setParams({
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      name: "",
+      address: "",
+      maxPeople: -1,
+      price: -1,
+    });
+  };
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    resetParams();
   };
 
   const outerTheme = createTheme({
@@ -106,10 +132,15 @@ function a11yProps(index) {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search/>
+                          <Search
+                            params={params}
+                            setParams={setParams}
+                            type={offerType.INSTRUCTOR}
+                            setOffers={setOffers}
+                          />
                           </Grid>
                         </Box>
-                      <Album/> {//komponenta sa karticama;
+                      <Album albumData={offers} setAlbumeData={setOffers} /> {//komponenta sa karticama;
                       }   
                 </TabPanel>
                 <TabPanel value={value} index={2}>
