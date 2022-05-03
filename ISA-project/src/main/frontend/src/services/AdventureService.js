@@ -34,7 +34,7 @@ export function updateAdventure(adventureData, additionalServices){
     api
     .post("/adventure/update-adventure", adventureData)
     .then((responseData) => {
-        updateAdditionalServices(adventureData.id, additionalServices);
+        // updateAdditionalServices(adventureData.id, additionalServices);
     })
     .catch((err) => {
         console.log(err);

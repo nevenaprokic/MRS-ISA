@@ -28,12 +28,10 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException {
         List<InstructorProfileData> retList = new ArrayList<>();
-        if(!phoneNumber.equals("")){
-            if(Validator.phoneNumberValidation(phoneNumber)){
-                List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
-                makeInstructorDTOs(retList, instructors);
-                return retList;
-            }
+        if(phoneNumber.equals("") || Validator.phoneNumberValidation(phoneNumber)){
+            List<Instructor> instructors = instructorRepository.searchInstructors(firstName, lastName, address, phoneNumber);
+            makeInstructorDTOs(retList, instructors);
+            return retList;
         }
         return retList;
     }

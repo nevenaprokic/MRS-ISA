@@ -31,38 +31,31 @@ export default function MediaCard({ offer, offerT }) {
   const [offerData, setOfferData] = useState();
 
   const [open, setOpen] = useState(false);
-  const [clientData, setClientData] = useState();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleOpenPass = () => setOpen(true);
-  const handleClosePass = () => setOpen(false);
-
- 
-
   let imag = require("../images/no-image.png");
   if(offer.photos && offer.photos.length != 0){
-    console.log(require("/src/components/images/" + offer.photos[0]));
+    // console.log(require("/src/components/images/" + offerData.photos[0]));
     imag = require("/src/components/images/" + offer.photos[0]);
   }
 
-
   const childToParent = (childData) => {
-    console.log("TUU");
-    
     if(offerT === offerType.ADVENTURE){
       imag = require("../images/no-image.png");
-      if(offer.photos.length != 0){
-        imag = "data:image/jpg;base64," + offer.photos[0];
+      if(childData.photos.length != 0){
+        imag = "data:image/jpg;base64," + childData.photos[0];
       }
+      console.log("BEFORE SET DATA");
       setOfferData(prevState => ({
         ...prevState,
         ["offerName"]: childData.offerName,
         ["description"]: childData.description,
         ["photos"]:childData.photos,
 
-    }) ); 
+    })
+     ); 
     } 
     else{
       setOfferData(prevState => ({
@@ -75,12 +68,11 @@ export default function MediaCard({ offer, offerT }) {
     }
   }
 
-
 const modalOfferComponent = (offerStr, offerId) =>{
 
     switch (offerStr){
       case offerType.ADVENTURE:
-        return ( <AdventureProfilePage id={offerId} close={handleClose} childToParenMediaCard={childToParent}/>);
+        return ( <AdventureProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent} />);
       case offerType.COTTAGE: 
         return ( <CottageProfilePage id={offerId} close={handleClose}/>);
       case offerType.SHIP:
@@ -92,29 +84,32 @@ const modalOfferComponent = (offerStr, offerId) =>{
     }
   }
 
+  useEffect(() => {
+  }, [offerData]);
+
   const [markData, setMarkData] = useState();
   useEffect(() => {
-    setOfferData(offer);
+    if(!offerData)
+      setOfferData(offer);
     async function setData() {
       const markData = await getMarkByOfferId(offer.id);
       setMarkData(markData.data ? markData.data : "0");
       return markData.data;
     }
     setData();
+
   }, []);
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
-        {console.log(offer)}
         <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
           <CardMedia component="img" height="140" image={imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
-              {/* {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.firstName + " " + offer.lastName} */}
-              {offer.name && offerT != userType.INSTRUCTOR ? offer.name : offer.offerName}
+              {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offer.description : offer.biography} </p>     
+              <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offerData.description : offerData.biography} </p>     
             </Typography>
           </CardContent>
           <CardActions>

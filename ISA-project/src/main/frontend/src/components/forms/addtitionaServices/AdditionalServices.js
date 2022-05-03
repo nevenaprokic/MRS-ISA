@@ -10,10 +10,10 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 function AdditionalServices({inputList, setInputList, errors, registerForm}){
     
-    const handleInputChange = function(index,e) {
+    const handleInputChange = function(index, e) {
         const value = e.target.value;
         const list = [...inputList];
-        list[index][this] = value;
+        list[index][this] = value.toString();
         setInputList(list);
       };
        

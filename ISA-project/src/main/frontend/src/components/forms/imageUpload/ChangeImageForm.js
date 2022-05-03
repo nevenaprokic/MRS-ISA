@@ -22,7 +22,6 @@ function ChangeImageForm({images, setImages, childToParent}){
                 const base64 = getBase64StringFromDataURL(reader.result);
                 selectedPictures.push(base64);
                 setImages(selectedPictures);
-                console.log(base64);
             };
             reader.readAsDataURL(file);
             

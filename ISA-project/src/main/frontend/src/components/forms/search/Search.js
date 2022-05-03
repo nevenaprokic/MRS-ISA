@@ -23,12 +23,12 @@ export default function Search({params, setParams, type, setOffers}){
         console.log(value);
         let reg = new RegExp(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).test(value);
         console.log(reg);
-        if(!reg){
+        if(!reg && event.target.value != ""){
             console.log("set err")
             setError('Wrong format for phone number');
         }else{
             setError('');
-            setParams({...params, "price": event.target.value});
+            setParams({...params, "phoneNumber": event.target.value});
         }
     }
     let searchOffer = {

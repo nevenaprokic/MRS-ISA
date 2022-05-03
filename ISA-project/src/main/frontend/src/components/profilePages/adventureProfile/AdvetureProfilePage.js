@@ -29,7 +29,7 @@ const theme = createTheme({
 
  
 
-function AdventureProfilePage({id, close, childToParenMediaCard}){
+function AdventureProfilePage({id, close, childToParentMediaCard}){
 
 
     const [adventureData, setAdventureData] = useState();
@@ -38,13 +38,11 @@ function AdventureProfilePage({id, close, childToParenMediaCard}){
     const handleOpenForm = () => setOpenForm(true);
     
     const handleCloseForm = () => {
-        childToParenMediaCard(adventureData);
         setOpenForm(false);
     }
 
     
     const childToParent = (childData) => {
-            console.log("CHILD",childData);
             setAdventureData(prevState => ({
                 ...prevState,
                 ["offerName"]: childData.offerName,
@@ -63,6 +61,8 @@ function AdventureProfilePage({id, close, childToParenMediaCard}){
 
             })
             ); 
+
+            childToParentMediaCard(childData);
       }
       
 
