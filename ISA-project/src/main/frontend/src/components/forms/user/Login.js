@@ -49,9 +49,8 @@ export default function LogIn() {
   function openUserHomePage(token){
       //prepraviti da se otvara home page za svaku rolu posebno
       //window.location = "/user-home-page/instructor";
-      console.log(jwt(token).role.name);
       let homePageLocation = homePages[jwt(token).role.name];
-      
+      console.log(homePageLocation);
       if(!!homePageLocation){
         window.location = homePageLocation;
       }

@@ -25,18 +25,12 @@ function PriceList({ offer }) {
   const [serviceData, setServiceData] = useState();
 
   useEffect(() => {
-      if(!!serviceData){
         async function setData() {
           const serviceData = await getAdditionalServiceByOffer(offer.id);
           setServiceData(serviceData.data ? serviceData.data : {});
           return serviceData.data;
         }
-        setData();
-      }
-      else{
-        setServiceData(offer.additionalServices);
-      }
-    
+        setData();   
    
   }, [offer]);
 

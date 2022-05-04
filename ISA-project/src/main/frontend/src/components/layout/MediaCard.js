@@ -102,7 +102,8 @@ const modalOfferComponent = (offerStr, offerId) =>{
     return (
       <ThemeProvider theme={secondaryTheme}>
         <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
-          <CardMedia component="img" height="140" image={offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag} alt="slike" />
+          {console.log(offerData)}
+          <CardMedia component="img" height="140" image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
               {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}
