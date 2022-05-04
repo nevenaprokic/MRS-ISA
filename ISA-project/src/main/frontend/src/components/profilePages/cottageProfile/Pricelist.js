@@ -1,4 +1,4 @@
-import "../adventureProfile/AdventureProfilePage.scss";
+import "./CottageProfilePage.scss";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,7 +18,6 @@ function PriceList({ offer }) {
         let name = data.serviceName;
         let price = data.servicePrice;
         rows.push({name, price});
-        console.log("rows", rows);
       });
   }
   let rows = [];
@@ -45,7 +44,7 @@ function PriceList({ offer }) {
               sx={{ fontSize: "30px", marginTop: "2px" }}
             />
           </div>
-          <label className="priceListTittle"> Pricelist</label>
+          <label className="priceListTittle"> Price list</label>
         </div>
         <div className="basePrice">
           <label>Basic price: {offer.price} €</label>

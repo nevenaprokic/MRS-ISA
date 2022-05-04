@@ -124,7 +124,18 @@ insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pe
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,7);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,3);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,3000,'2022-04-10',2,5);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,2500,'2022-04-17',3,6);
 
+-- /*MARK*/
+insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,3);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Onako!',3,4);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',4,5);
+insert into mark(approved, comment, mark, reservation_id) values (true,'okej!',4,6);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,7);
 /*COMPLAINT*/
 -- insert into complaint(text,reservation_id) values('Sve pohvale!',2);
 
@@ -135,9 +146,13 @@ insert into delete_request(description, my_user_id) values('Ne zelim vise da pos
 -- -- -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 
 /*QUICK RESERVATION*/
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-04-26','2022-04-20',2,2500,'2022-04-23','2022-04-11',6);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-20',2,2500,'2022-05-23','2022-05-01',6);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-10','2022-05-01',10,10000,'2022-05-08','2022-04-25',8);
-
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-17',2,2500,'2022-05-23','2022-05-02',1);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-18','2022-05-10',10,10000,'2022-05-15','2022-05-02',2);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-06-26','2022-05-20',2,2500,'2022-06-23','2022-05-03',1);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-20',2,2500,'2022-05-23','2022-05-01',5);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-20',2,2500,'2022-05-23','2022-05-01',4);
 /*REGISTRATION REQUEST*/
 
 
@@ -227,8 +242,7 @@ insert into additional_service(name,price) values ('fen', 80);
 -- /*DELETE REQUEST*/
 -- insert into delete_request(description, my_user_id) values('Ne zelim vise da poslujem!',7);
 --
--- /*MARK*/
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
+
 --
 -- /*PHOTO*/
 -- insert into photo(path) values('pecanje an dunavu1.jpg');

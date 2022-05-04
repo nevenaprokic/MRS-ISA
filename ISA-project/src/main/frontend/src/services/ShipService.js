@@ -1,6 +1,8 @@
 import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export function getShipByShipOwnerEmail(username) {
   return api
@@ -9,7 +11,15 @@ export function getShipByShipOwnerEmail(username) {
         email: username,
       },
     })
-    .then((data) => data)
+    .then((data) => {
+      if (data.data.length == 0) {
+        toast.info("You don't have any ships.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      }
+      return data;
+    })
     .catch((err) => {
       console.log("Nije uspesno dobavljeno");
       return err.message;
@@ -42,13 +52,21 @@ export function getShips() {
 export function searchShips(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
   params.price = params.price == "" ? -1 : params.price;
-  console.log(params);
-  return api.get("/ship/searchShips", { params })
-  .then((data) => setOffers(data.data))
-  .catch((err) => {
-    console.log("Nije uspesno dobavljeno");
-    return err.message;
-  });
+  return api
+    .get("/ship/searchShips", { params })
+    .then((data) => {
+      if (data.data.length == 0) {
+        toast.info("There are no ships that match the search parameters.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      }
+      setOffers(data.data);
+    })
+    .catch((err) => {
+      console.log("Nije uspesno dobavljeno");
+      return err.message;
+    });
 }
 
 export function searchShipByShipOwner(params, setOffers) {
@@ -57,7 +75,18 @@ export function searchShipByShipOwner(params, setOffers) {
   params.shipOwnerUsername = getUsernameFromToken();
   return api
     .get("/ship/searchShipByShipOwner", { params })
-    .then((data) => setOffers(data.data))
+    .then((data) => {
+      if (data.data.length == 0) {
+        toast.info(
+          "You don't have any ships that match the search parameters.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          }
+        );
+      }
+      setOffers(data.data);
+    })
     .catch((err) => {
       console.log("Nije uspesno dobavljeno");
       return err.message;
@@ -72,9 +101,17 @@ export function addShip(shipData, additionalServiceData) {
     .then((responseData) => {
       let shipId = responseData.data;
       addAddtionalServices(shipId, additionalServiceData);
-      alert(responseData.data);
+      toast.success("You successfully added a new ship.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
     })
-    .catch((err) => alert(err.data));
+    .catch((err) => {
+      toast.error("You made a mistake, try again.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    });
 }
 
 function addAddtionalServices(offerId, additionalServiceDTO) {
@@ -86,6 +123,6 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
         additionalServiceDTO: additionalServiceDTO,
       },
     })
-    .then((responseData) => alert(responseData.data))
+    .then((responseData) => console.log("uspesno"))
     .catch((errMessage) => alert(errMessage.data));
 }

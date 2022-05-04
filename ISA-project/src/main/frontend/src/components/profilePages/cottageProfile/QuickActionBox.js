@@ -1,8 +1,7 @@
-import { Grid, Box, Button } from "@mui/material";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { Button } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
-import "../adventureProfile/AdventureProfilePage.scss";
+import "./CottageProfilePage.scss";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import getQuickActionByOfferId from "../../../services/QuickActionService";
@@ -26,7 +25,6 @@ function QuickActionBox({ id }) {
     async function setData() {
       let quickActions = await getQuickActionByOfferId(id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
-      console.log(quickActions);
       return quickActions;
     }
     setData();
