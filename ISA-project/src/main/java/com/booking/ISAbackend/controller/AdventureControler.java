@@ -49,7 +49,7 @@ public class AdventureControler {
 
     @PostMapping(value = "addAdventure" )
     public ResponseEntity<String> addAdventure(@RequestParam("email") String ownerEmail,
-                                               @RequestParam("photos") List<MultipartFile> photos,
+                                               @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                                @RequestParam("offerName") String offerName,
                                                @RequestParam("price") String price,
                                                @RequestParam("description") String description,

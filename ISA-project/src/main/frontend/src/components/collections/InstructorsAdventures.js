@@ -29,7 +29,7 @@ export default function InstructorsAdventures({adventures}) {
                     <Typography>{adventure.offerName}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {(adventure.photos.length != 0) ? (<img src={ require("/src/components/images/" + adventure.photos[0])} width="60%"></img>) : (<img src={imag} width="60%"></img>)}                    
+                    {(adventure.photos.length != 0) ? (<img src={ "data:image/jpg;base64," + adventure.photos[0]} width="60%"></img>) : (<img src={imag} width="60%"></img>)}                    
                     <Typography>Description: {adventure.description}</Typography>
                     <Typography>Price: {adventure.price}</Typography>
                     <Typography>Number of people: {adventure.peopleNum}</Typography>

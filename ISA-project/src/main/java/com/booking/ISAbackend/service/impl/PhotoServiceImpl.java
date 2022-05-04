@@ -37,6 +37,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     public List<Photo> convertPhotosFromDTO(List<MultipartFile> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
+        if(photos == null){
+            return adventurePhotos;
+        }
         int counter = 0;
         for (MultipartFile photoData: photos
         ) {

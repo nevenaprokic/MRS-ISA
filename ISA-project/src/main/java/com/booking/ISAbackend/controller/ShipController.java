@@ -72,7 +72,7 @@ public class ShipController {
     }
     @PostMapping("addShip")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
-                                          @RequestParam("photos") List<MultipartFile> photos,
+                                          @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
                                           @RequestParam("price") String price,
                                           @RequestParam("description") String description,
