@@ -99,10 +99,14 @@ export default function ChangePassword({close}) {
                   required
                    {...register("newPassword2", {
                     validate: value =>
-                      value === password.current || "Lozinke se ne slazu"
+                      value === password.current || "Passwords don't match"
                   })}/>
                 <FormHelperText id="standard-weight-helper-text">Confirm new password</FormHelperText>
-                {errors.lastName && <label className="errorLabel">Only letters are allowed!</label>}
+                {errors.newPassword2 && (
+                    <p style={{ color: "#ED6663" }}>
+                      {errors.newPassword2.message}
+                    </p>
+                  )}
               </FormControl>
               
               </Grid>
