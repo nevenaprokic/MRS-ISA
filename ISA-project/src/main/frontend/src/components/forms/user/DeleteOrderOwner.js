@@ -10,7 +10,10 @@ import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import "../../../style/DeleteOrder.scss";
 import "react-toastify/dist/ReactToastify.css";
-import {sendDeleteRequestCottageOwner} from "../../../services/CottageOwnerService"; 
+import { sendDeleteRequestCottageOwner } from "../../../services/CottageOwnerService";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
+import { sendDeleteRequestShipOwner } from "../../../services/ShipOwnerService";
+import { userType } from "../../../app/Enum";
 
 export default function ChangePassword({ close }) {
   const theme = createTheme({
@@ -31,9 +34,13 @@ export default function ChangePassword({ close }) {
     watch,
   } = useForm({});
 
+  let sendDeleteRequest = {
+    [userType.COTTAGE_OWNER]: sendDeleteRequestCottageOwner,
+    [userType.SHIP_OWNER]: sendDeleteRequestShipOwner,
+  };
   const onSubmit = (data) => {
-    
-    sendDeleteRequestCottageOwner(data);
+    let role = getRoleFromToken();
+    sendDeleteRequest[role](data);
 
     close();
   };
@@ -87,21 +94,17 @@ export default function ChangePassword({ close }) {
                   fullWidth
                   {...register("reason", { required: true })}
                 />
-                {errors.reason && (
-                    <p style={{ color: "#ED6663" }}>
-                      Required!
-                    </p>
-                  )}
+                {errors.reason && <p style={{ color: "#ED6663" }}>Required!</p>}
               </Grid>
-              <div  className="buttonDelete">
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Send request
-              </Button>
+              <div className="buttonDelete">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Send request
+                </Button>
               </div>
               <div>
                 <br></br>

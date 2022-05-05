@@ -153,4 +153,16 @@ public class UserController {
 			return ResponseEntity.status(400).body("Unable to send request to delete the order.");
 		}
 	}
+
+	@PostMapping("sendDeleteRequestShipOwner")
+	public ResponseEntity<String> sendDeleteRequestShipOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+		try{
+			if(userService.sendDeleteRequestShipOwner(email, data.get("reason")))
+				return ResponseEntity.ok("Successfully created request to delete the order.");
+			else
+				return ResponseEntity.status(400).body("Unable to send request to delete the order, user's offers have reservations.");
+		} catch (Exception e) {
+			return ResponseEntity.status(400).body("Unable to send request to delete the order.");
+		}
+	}
 }

@@ -283,4 +283,20 @@ public class UserServiceImpl implements UserService{
 		return true;
 	}
 
+	@Override
+	@Transactional
+	public boolean sendDeleteRequestShipOwner(String email, String reason) {
+		MyUser user = userRepository.findByEmail(email);
+		List<Reservation> listOfReservation = reservationRepository.findByShipOwnerEmail(email);
+		LocalDate today = LocalDate.now();
+		for(Reservation r:listOfReservation){
+			if((today.compareTo(r.getEndDate())<0)){
+				return false;
+			}
+		}
+		DeleteRequest deleteRequest = new DeleteRequest(reason, user);
+		deleteRequestRepository.save(deleteRequest);
+		return true;
+	}
+
 }
