@@ -9,6 +9,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import "../../../style/DeleteOrder.scss";
+import "react-toastify/dist/ReactToastify.css";
+import {sendDeleteRequestCottageOwner} from "../../../services/CottageOwnerService"; 
 
 export default function ChangePassword({ close }) {
   const theme = createTheme({
@@ -29,7 +31,12 @@ export default function ChangePassword({ close }) {
     watch,
   } = useForm({});
 
-  const onSubmit = (data) => {};
+  const onSubmit = (data) => {
+    
+    sendDeleteRequestCottageOwner(data);
+
+    close();
+  };
 
   return (
     <div className="deleteDataContainer" id="deleteDataContainer">

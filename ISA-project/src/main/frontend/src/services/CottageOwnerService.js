@@ -30,3 +30,20 @@ export function getCottageOwnerByUsername(username) {
       return err.message;
     });
 }
+
+export function sendDeleteRequestCottageOwner(data){
+  return api
+      .post("sendDeleteRequestCottageOwner?email=" + getUsernameFromToken(), data)
+      .then((data) => {
+        toast.success("You have successfully submitted a request to delete the order.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        toast.error("Your offers have reservations. Unable to send request to delete the order!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      });
+}

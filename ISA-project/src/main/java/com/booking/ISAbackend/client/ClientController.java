@@ -1,12 +1,9 @@
 package com.booking.ISAbackend.client;
 
-import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
-import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

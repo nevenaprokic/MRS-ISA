@@ -21,4 +21,9 @@ public class DeleteRequest {
 	public DeleteRequest(MyUser myUser) {
 		this.myUser = myUser;
 	}
+
+	public DeleteRequest(String description, MyUser myUser) {
+		this.description = description;
+		this.myUser = myUser;
+	}
 }
