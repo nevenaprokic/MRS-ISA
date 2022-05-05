@@ -41,7 +41,7 @@ export function sendDeleteRequestCottageOwner(data){
         });
       })
       .catch((err) => {
-        toast.error("Your offers have reservations. Unable to send request to delete the order!", {
+        toast.error(err.response.data, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 2000,
         });

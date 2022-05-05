@@ -35,4 +35,5 @@ public interface UserService {
     void changeCottageOwnerData(CottageOwnerNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     void changeShipOwnerData(ShipOwnerNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     boolean sendDeleteRequestCottageOwner(String email, String reason);
+    boolean sendDeleteRequestShipOwner(String email, String reason);
 }
