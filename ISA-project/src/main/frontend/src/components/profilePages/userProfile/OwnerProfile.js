@@ -24,7 +24,8 @@ import InstructorsAdventures from "../../collections/InstructorsAdventures";
 import { getInstructorByUsername } from "../../../services/InstructorService";
 import { getCottageOwnerByUsername } from "../../../services/CottageOwnerService";
 import AdditionalInfoBox from "./AdditionalInfoBox";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
+import ChangePassword from "../../forms/user/ChangePassword";
 
 function OwnerProfile({ instructor, close }) {
   const style = {
@@ -43,6 +44,10 @@ function OwnerProfile({ instructor, close }) {
   const [ownerData, setOwnerData] = useState();
   const [open, setOpen] = useState(false);
   const [isUnauthUser, setIsUnauthUser] = useState(false);
+  const [openPasswordManager, setPasswordManager] = useState(false);
+
+  const handleOpenPass = () => setPasswordManager(true);
+  const handleClosePass = () => setPasswordManager(false);
 
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER]: getCottageOwnerByUsername,
@@ -153,6 +158,7 @@ function OwnerProfile({ instructor, close }) {
                   <Button
                     size="small"
                     sx={{ backgroundColor: "#99A799", color: "black" }}
+                    onClick={handleOpenPass}
                   >
                     {" "}
                     Change password
@@ -178,6 +184,15 @@ function OwnerProfile({ instructor, close }) {
                   </Button>
                 </Typography>
               </Grid>
+              <Modal
+                open={openPasswordManager}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <ChangePassword close={handleClosePass} />
+              </Modal>
               <Modal
                 open={open}
                 onClose={handleClose}
