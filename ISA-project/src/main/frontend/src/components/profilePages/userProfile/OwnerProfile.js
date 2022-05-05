@@ -26,6 +26,7 @@ import { getCottageOwnerByUsername } from "../../../services/CottageOwnerService
 import AdditionalInfoBox from "./AdditionalInfoBox";
 import HomeIcon from "@mui/icons-material/Home";
 import ChangePassword from "../../forms/user/ChangePassword";
+import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
 
 function OwnerProfile({ instructor, close }) {
   const style = {
@@ -48,6 +49,11 @@ function OwnerProfile({ instructor, close }) {
 
   const handleOpenPass = () => setPasswordManager(true);
   const handleClosePass = () => setPasswordManager(false);
+
+  const [openDeleteManager, setDeleteManager] = useState(false);
+
+  const handleOpenDelete = () => setDeleteManager(true);
+  const handleCloseDelete = () => setDeleteManager(false);
 
   let getOfferByOwnerEmail = {
     [userType.COTTAGE_OWNER]: getCottageOwnerByUsername,
@@ -178,6 +184,7 @@ function OwnerProfile({ instructor, close }) {
                   <Button
                     size="small"
                     sx={{ backgroundColor: "#99A799", color: "black" }}
+                    onClick={handleOpenDelete}
                   >
                     {" "}
                     Delete profile
@@ -186,12 +193,12 @@ function OwnerProfile({ instructor, close }) {
               </Grid>
               <Modal
                 open={openPasswordManager}
-                onClose={handleClose}
+                onClose={handleClosePass}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
               >
-                <ChangePassword close={handleClosePass} />
+                <ChangePassword close={handleClosePass}/>
               </Modal>
               <Modal
                 open={open}
@@ -205,6 +212,15 @@ function OwnerProfile({ instructor, close }) {
                   close={handleClose}
                   childToParent={childToParent}
                 />
+              </Modal>
+              <Modal
+                open={openDeleteManager}
+                onClose={handleCloseDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <DeleteOrderOwner close={handleCloseDelete} />
               </Modal>
             </>
           ) : (

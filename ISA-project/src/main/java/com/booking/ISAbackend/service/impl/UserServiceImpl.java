@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,10 @@ public class UserServiceImpl implements UserService{
 	private CottageOwnerRepository cottageOwnerRepository;
 	@Autowired
 	private ShipOwnerRepository shipOwnerRepository;
+	@Autowired
+	private ReservationRepository reservationRepository;
+	@Autowired
+	private DeleteRequestRepository deleteRequestRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -261,6 +266,21 @@ public class UserServiceImpl implements UserService{
 			}
 
 		}
+	}
+	@Override
+	@Transactional
+	public boolean sendDeleteRequestCottageOwner(String email, String reason) {
+		MyUser user = userRepository.findByEmail(email);
+		List<Reservation> listOfReservation = reservationRepository.findByCottageOwnerEmail(email);
+		LocalDate today = LocalDate.now();
+		for(Reservation r:listOfReservation){
+			if((today.compareTo(r.getEndDate())<0)){
+				return false;
+			}
+		}
+		DeleteRequest deleteRequest = new DeleteRequest(reason, user);
+		deleteRequestRepository.save(deleteRequest);
+		return true;
 	}
 
 }

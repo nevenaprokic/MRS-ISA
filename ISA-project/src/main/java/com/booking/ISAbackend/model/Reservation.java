@@ -43,4 +43,68 @@ public class Reservation {
 	private List<Complaint> complaints;
 	@OneToOne
 	private ReservationReport report;
+
+	public Reservation(Integer id, LocalDate startDate, LocalDate endDate, List<AdditionalService> additionalServices, Double price, Integer numberOfPerson, Boolean deleted, Offer offer, Client client, List<Mark> marks, List<Complaint> complaints, ReservationReport report) {
+		this.id = id;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.additionalServices = additionalServices;
+		this.price = price;
+		this.numberOfPerson = numberOfPerson;
+		this.deleted = deleted;
+		this.offer = offer;
+		this.client = client;
+		this.marks = marks;
+		this.complaints = complaints;
+		this.report = report;
+	}
+	public Reservation(){}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public List<AdditionalService> getAdditionalServices() {
+		return additionalServices;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public Integer getNumberOfPerson() {
+		return numberOfPerson;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public Offer getOffer() {
+		return offer;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public List<Mark> getMarks() {
+		return marks;
+	}
+
+	public List<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public ReservationReport getReport() {
+		return report;
+	}
 }
