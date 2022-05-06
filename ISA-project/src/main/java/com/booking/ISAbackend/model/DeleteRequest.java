@@ -12,7 +12,9 @@ public class DeleteRequest {
 	private Integer id;
 	
 	private String description;
-	
+
+	private Boolean deleted = false;
+
 	@OneToOne
 	private MyUser myUser;
 

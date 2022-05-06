@@ -13,6 +13,7 @@ import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
 import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
 import api from '../../../app/api';
+import { toast } from "react-toastify";
 
 export default function ChangePassword({close}) {
 
@@ -35,11 +36,19 @@ export default function ChangePassword({close}) {
   const onSubmit = (data) => {
       api
       .post("updatePassword?email=" + getUsernameFromToken(), data)
+      .then(res => {
+        close();
+        toast.success(res.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      })
       .catch((err) => {
-          console.log("Nije uspesna promena lozinke.");
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        });
       });
-
-    close();
   }
 
   return (

@@ -96,7 +96,7 @@ function OwnerProfile({ instructor, close }) {
   useEffect(() => {
     async function setData() {
       let requestData = null;
-      if (isUnauthUser) {
+      if (instructor != null) {
         setOwnerData(instructor);
       } else {
         let username = getUsernameFromToken();

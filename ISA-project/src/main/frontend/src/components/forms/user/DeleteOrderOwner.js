@@ -14,6 +14,7 @@ import { sendDeleteRequestCottageOwner } from "../../../services/CottageOwnerSer
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { sendDeleteRequestShipOwner } from "../../../services/ShipOwnerService";
 import { userType } from "../../../app/Enum";
+import { sendDeleteRequestClient } from "../../../services/ClientService";
 
 export default function ChangePassword({ close }) {
   const theme = createTheme({
@@ -37,6 +38,7 @@ export default function ChangePassword({ close }) {
   let sendDeleteRequest = {
     [userType.COTTAGE_OWNER]: sendDeleteRequestCottageOwner,
     [userType.SHIP_OWNER]: sendDeleteRequestShipOwner,
+    [userType.CLIENT]: sendDeleteRequestClient
   };
   const onSubmit = (data) => {
     let role = getRoleFromToken();

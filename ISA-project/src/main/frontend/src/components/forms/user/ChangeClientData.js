@@ -12,6 +12,8 @@ import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
 import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
 import api from '../../../app/api';
+import { toast } from "react-toastify";
+
 
 export default function ChangeClientData({currentClientData, close, childToParent}) {
 
@@ -32,11 +34,20 @@ export default function ChangeClientData({currentClientData, close, childToParen
     childToParent(data);
     api
       .post("updateProfileInfo?email=" + getUsernameFromToken(), data)
+      .then(res => {
+        close();
+        toast.success(res.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      })
       .catch((err) => {
-          console.log("Nije promena licnih podataka.");
+          toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        });
       });
 
-    close();
   }
 
   return (
@@ -109,7 +120,7 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   name="street"
                   id="street"
                   defaultValue={currentClientData.street}
-                   {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ })}/>
+                   {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ , required: true })}/>
                 <FormHelperText id="standard-weight-helper-text">Street</FormHelperText>
                 {errors.street && <label className="errorLabel">Only letters, numbers and spaces are allowed!</label>}
               </FormControl>   
@@ -118,7 +129,7 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   name="city"
                   id="city"
                   defaultValue={currentClientData.city}
-                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                   {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, required: true })}/>
                 <FormHelperText id="standard-weight-helper-text">City</FormHelperText>
                 {errors.city && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>   
@@ -127,7 +138,7 @@ export default function ChangeClientData({currentClientData, close, childToParen
                   name="state"
                   id="state"
                   defaultValue={currentClientData.state}
-                   {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}/>
+                   {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, required: true })}/>
                 <FormHelperText id="standard-weight-helper-text">State</FormHelperText>
                 {errors.state && <label className="errorLabel">Only letters and spaces are allowed!</label>}
               </FormControl>                 

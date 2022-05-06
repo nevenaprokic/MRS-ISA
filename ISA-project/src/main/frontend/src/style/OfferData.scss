@@ -20,6 +20,18 @@ $pale_white_green: #f2f5f0;
     border-radius: 20px;
 }
 
+.passwordChangedContainer{
+    max-height: 700px;
+    background-color: white;
+    overflow: auto;
+    width: 30%;
+    margin-top: 5%;
+    margin-left: 50%;
+    padding: 3%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+}
+
 .errorLabel{
     color: #990000;
     font-size: small;

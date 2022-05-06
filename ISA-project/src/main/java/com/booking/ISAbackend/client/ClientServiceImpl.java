@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -119,12 +120,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void requestAccountDeletion(String email) throws AccountDeletionException {
+    public void requestAccountDeletion(String email, String reason) throws AccountDeletionException {
         MyUser user = clientRepository.findByEmail(email);
         List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(user.getId());
-//        List<Reservation> reservations = reservationRepository.findAll();
-        if(reservations.isEmpty()){
-            deleteRequestRepository.save(new DeleteRequest(user));
+        Optional<DeleteRequest> request = Optional.ofNullable(deleteRequestRepository.alreadyExists(user.getId()));
+        if(reservations.isEmpty() && request.isEmpty()){
+            deleteRequestRepository.save(new DeleteRequest(reason, user));
         }else{
             throw new AccountDeletionException("Account cannot be deleted.");
         }

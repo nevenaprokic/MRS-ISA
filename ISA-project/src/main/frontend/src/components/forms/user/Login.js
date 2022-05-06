@@ -45,7 +45,7 @@ export default function LogIn() {
         openUserHomePage(token);
       })
       .catch((err) => {
-        toast.error("User not found", {
+        toast.error("Username or password is not correct.", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,
         });

@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -96,16 +95,16 @@ export default function ClientHomePage() {
                     <Divider />
                     <Tab label="Profile page" {...a11yProps(1)} />
                     <Divider />
-                    <Tab label="Availability of cottages" {...a11yProps(2)} />
+                    <Tab label="Subscriptions" {...a11yProps(2)} />
                     <Divider />
                     <Tab label="Reservation history" {...a11yProps(3)} />
-                    <Tab label="Reservation report" {...a11yProps(4)} />
-                    <Tab label="New reservation" {...a11yProps(5)} />
-                    <Tab label="New action" {...a11yProps(6)} />
                     <Divider />
-                    <Tab label="Calendar" {...a11yProps(7)} />
+                    <Tab label="Cottages" {...a11yProps(4)} />
                     <Divider />
-                    <Tab label="Business report" {...a11yProps(8)} />
+                    <Tab label="Ships" {...a11yProps(5)} />
+                    <Divider />
+                    <Tab label="Instructors" {...a11yProps(6)} />
+                    <Divider />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                   <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>

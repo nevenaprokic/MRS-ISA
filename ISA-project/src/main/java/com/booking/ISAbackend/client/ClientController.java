@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 @RestController
@@ -25,13 +26,12 @@ public class ClientController {
         Client existUser = this.clientService.findByEmail(request.getEmail());
 
         if (existUser != null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            //throw new ResourceConflictException(request.getId(), "Username already exists");
+            return ResponseEntity.status(400).body("Email is already registered.");
         }
 
         String token = this.clientService.save(request);
 
-        return new ResponseEntity<>(token, HttpStatus.CREATED);
+        return ResponseEntity.ok("Registration was successful.");
     }
 
     @GetMapping("clientProfileInfo")
@@ -66,14 +66,13 @@ public class ClientController {
         }
     }
 
-    @GetMapping("deleteAccount")
-    public ResponseEntity<String> deleteAccount(@RequestParam String email){
+    @PostMapping("deleteAccount")
+    public ResponseEntity<String> deleteAccount(@RequestBody HashMap<String, String> data){
         try{
-            clientService.requestAccountDeletion(email);
+            clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
             return ResponseEntity.ok("Successfully created request for deleting account.");
         } catch (AccountDeletionException e) {
-
-            return ResponseEntity.status(400).body("Account cannot be deleted.");
+            return ResponseEntity.status(400).body("Account cannot be deleted or request already exist.");
         }
     }
 

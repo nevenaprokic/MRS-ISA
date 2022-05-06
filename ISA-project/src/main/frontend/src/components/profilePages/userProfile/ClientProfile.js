@@ -18,6 +18,8 @@ import Modal from '@mui/material/Modal';
 import ChangeClientData from "../../forms/user/ChangeClientData";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ChangePassword from "../../forms/user/ChangePassword";
+import {toast} from 'react-toastify';
+import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
 
 
 function ClientProfile(){
@@ -38,6 +40,10 @@ function ClientProfile(){
 
     const [clientData, setClientData] = useState();
     const [open, setOpen] = useState(false);
+
+    const [openDeleteManager, setDeleteManager] = useState(false);
+    const handleOpenDelete = () => setDeleteManager(true);
+    const handleCloseDelete = () => setDeleteManager(false);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -70,17 +76,6 @@ function ClientProfile(){
           setData();
     }, [])
 
-    const deleteAccount = () => {
-        api
-          .get("deleteAccount?email=" + getUsernameFromToken())
-          .then((res) => {
-              console.log(res);
-          })
-          .catch((err) => {
-              console.log("Nije uspesna prijava");
-          });
-    }
-
     if(clientData){
         return(
             <div className="ownerprofileContainer">
@@ -111,7 +106,7 @@ function ClientProfile(){
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={deleteAccount} > Delete profile</Button>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpenDelete} > Delete profile</Button>
                             
                     </Typography>         
                 </Grid>
@@ -139,6 +134,16 @@ function ClientProfile(){
                         <ChangePassword close={handleClosePass} />
                     
                 </Modal>
+
+                <Modal
+                open={openDeleteManager}
+                onClose={handleCloseDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <DeleteOrderOwner close={handleCloseDelete} />
+              </Modal>
         
                 <AddressInfoBox addressData={clientData}/>
                 

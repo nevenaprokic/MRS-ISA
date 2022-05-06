@@ -12,9 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '../../layout/Card';
+import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
+import Modal from '@mui/material/Modal';
 import api from '../../../app/api';
+import { toast } from "react-toastify";
+import SuccessfulRegistration from '../../notifications/SuccessfulRegistration'
 
 const theme = createTheme();
 export default function RegistrationClient() {
@@ -24,6 +28,10 @@ export default function RegistrationClient() {
     const password = useRef({});
     password.current = watch("password", "");
 
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const onSubmit = (data) => {
       //event.preventDefault();
       //const data = new FormData(event.currentTarget);
@@ -31,11 +39,17 @@ export default function RegistrationClient() {
       api
             .post("auth/client/registration", data)
             .then((res) => {
-                // const token = res.data.accessToken;
-                console.log(res); // dekodiranje tokena, da dobijes podatke
+              handleOpen();
+              // toast.success(res.data, {
+              //   position: toast.POSITION.BOTTOM_RIGHT,
+              //   autoClose: 2000,
+              // });
             })
             .catch((err) => {
-                console.log("Nije uspesna registracija");
+                toast.error(err.response.data, {
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 1500,
+                });
             });
      
     };
@@ -62,15 +76,14 @@ export default function RegistrationClient() {
                   <TextField
                     autoComplete="given-name"
                     name="firstName"
-                    required
                     fullWidth
                     id="firstName"
                     label="First Name"
                     autoFocus
                     variant="standard"
-                    {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
+                    {...register("firstName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, required:true })}
                   />
-                  {errors.firstName && <p style={{color:'#ED6663'}}>Please check the First Name</p>}
+                  {errors.firstName && <p style={{color:'#ED6663'}}>Only letters and spaces are allowed!</p>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -81,9 +94,9 @@ export default function RegistrationClient() {
                     name="lastName"
                     autoComplete="family-name"
                     variant="standard"
-                    {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/})}
+                    {...register("lastName", {pattern:/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, required:true })}
                   />
-                   {errors.lastName && <p style={{color:'#ED6663'}}>Please check the Last Name</p>}
+                   {errors.lastName && <p style={{color:'#ED6663'}}>Only letters and spaces are allowed!</p>}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -96,10 +109,10 @@ export default function RegistrationClient() {
                     variant="standard"
                     {...register("email",
                             {
-                                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, required:true 
                             })}
                   />
-                  {errors.email && <p style={{color:'#ED6663'}}>Please check the Email</p>}
+                  {errors.email && <p style={{color:'#ED6663'}}>Please check the Email!</p>}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -111,7 +124,7 @@ export default function RegistrationClient() {
                     id="password"
                     autoComplete="new-password"
                     variant="standard"
-                    {...register("password")}
+                    {...register("password", {required:true} )}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -146,7 +159,7 @@ export default function RegistrationClient() {
                                 pattern: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
                             })} 
                   />
-                  {errors.phoneNumber && <p style={{color:'#ED6663'}}>Please check the Phone Number</p>}
+                  {errors.phoneNumber && <p style={{color:'#ED6663'}}>Please check the Phone Number!</p>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -157,9 +170,9 @@ export default function RegistrationClient() {
                     id="street"
                     label="Street"
                     variant="standard"
-                    {...register("street", {pattern: /^[a-zA-Z0-9 ]+$/})}
+                    {...register("street", {pattern:/^[a-zA-Z0-9 ]+$/ , required: true })}
                   />
-                   {errors.street && <p style={{color:'#ED6663'}}>Please check the Street</p>}
+                   {errors.street && <p style={{color:'#ED6663'}}>Only letters, numbers and spaces are allowed!</p>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -170,9 +183,9 @@ export default function RegistrationClient() {
                     name="city"
                     autoComplete="city"
                     variant="standard"
-                    {...register("city", {pattern: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/})}
+                    {...register("city", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, required: true })}
                   />
-                  {errors.city && <p style={{color:'#ED6663'}}>Please check the City</p>}
+                  {errors.city && <p style={{color:'#ED6663'}}>Only letters and spaces are allowed!</p>}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -183,9 +196,9 @@ export default function RegistrationClient() {
                     id="state"
                     autoComplete="state"
                     variant="standard"
-                    {...register("state", {pattern: /[A-Z][a-z]+(?: +[A-Z][a-z]+)*/})}
+                    {...register("state", {pattern:/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, required: true })}
                   />
-                  {errors.state && <p style={{color:'#ED6663'}}>Please check the State</p>}
+                  {errors.state && <p style={{color:'#ED6663'}}>Only letters and spaces are allowed!</p>}
                 </Grid>
               </Grid>
               <Button
@@ -202,6 +215,16 @@ export default function RegistrationClient() {
                     Already have an account? Sign in
                   </Link>
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                >
+                      <SuccessfulRegistration />
+
+                </Modal>
               </Grid>
               <div><br/></div>
             </Box>

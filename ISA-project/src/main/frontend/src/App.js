@@ -22,7 +22,6 @@ import AdminProfile from './components/profilePages/userProfile/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
 
-
 function App() {
   return (
     <div>
