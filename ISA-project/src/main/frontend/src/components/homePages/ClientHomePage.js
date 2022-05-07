@@ -9,14 +9,15 @@ import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MainNavigationHome from '../layout/MainNavigationHome';
-import Search from '../forms/search/Search';
+import ClientSearch from '../forms/search/ClientSearch';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import Grid from '@mui/material/Grid';
-import Album from '../collections/Album';
 import OfferList from '../collections/OfferList';
 import { offerType } from "../../app/Enum";
+import ClientFilter from "../forms/search/ClientFilter"
+import ClientSort from "../forms/search/ClientSort"
 
 
 function TabPanel(props) {
@@ -65,7 +66,7 @@ export default function ClientHomePage() {
         name: "",
         address: "",
         maxPeople: -1,
-        price: -1,
+        description: "",
     });
 
     const resetParams = () => {
@@ -76,7 +77,7 @@ export default function ClientHomePage() {
         name: "",
         address: "",
         maxPeople: -1,
-        price: -1,
+        description: "",
     });
     }
 
@@ -144,7 +145,11 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <Search params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
+                              <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
+                              <br/>
+                              <ClientFilter/>
+                              <br />
+                              <ClientSort/>
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />

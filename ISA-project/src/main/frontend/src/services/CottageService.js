@@ -69,6 +69,27 @@ export function searchCottages(params, setOffers) {
       return err.message;
     });
 }
+
+export function searchCottagesClient(params, setOffers) {
+  return api
+    .get("/cottage/search-cottages-client", { params })
+    .then((data) => {
+      if (data.data.length == 0) {
+        console.log("JUJU NEVERA")
+        toast.info("There are no cottages that match the search parameters.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      }
+      setOffers(data.data);
+    })
+    .catch((err) => {
+      console.log("Nije uspesno dobavljeno");
+      return err.message;
+    });
+}
+
+
 export function searchCottagesByCottageOwner(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
   params.price = params.price == "" ? -1 : params.price;

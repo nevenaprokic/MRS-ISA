@@ -63,6 +63,11 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
+    public List<Cottage> searchCottagesClient(String name, String description, String address) {
+        return cottageRepository.searchCottagesClient(name, description, address);
+    }
+
+    @Override
     public List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email) {
         return cottageRepository.searchCottagesByCottageOwnerEmail(name, maxPeople, address, price, email);
     }
