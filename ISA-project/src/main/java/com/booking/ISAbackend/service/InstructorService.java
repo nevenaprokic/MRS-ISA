@@ -11,4 +11,6 @@ public interface InstructorService {
     List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException, IOException;
 
     List<InstructorProfileData> findAll() throws IOException;
+
+    boolean sendDeleteRequest(String email, String reason);
 }
