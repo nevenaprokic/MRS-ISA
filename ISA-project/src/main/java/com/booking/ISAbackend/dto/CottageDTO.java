@@ -21,6 +21,9 @@ public class CottageDTO {
     private String cancellationConditions;
     private Integer roomNumber;
     private Integer bedNumber;
+    private String street;
+    private String city;
+    private String state;
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
@@ -51,6 +54,9 @@ public class CottageDTO {
         this.cancellationConditions = c.getCancellationConditions();
         this.roomNumber = c.getRoomNumber();
         this.bedNumber = c.getBedNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
     }
 
     private List<String> getPhoto(Cottage c) throws IOException {
@@ -98,4 +104,15 @@ public class CottageDTO {
 
     public Integer getBedNumber() {return  bedNumber;}
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
 }

@@ -75,7 +75,6 @@ export function searchCottagesClient(params, setOffers) {
     .get("/cottage/search-cottages-client", { params })
     .then((data) => {
       if (data.data.length == 0) {
-        console.log("JUJU NEVERA")
         toast.info("There are no cottages that match the search parameters.", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 2000,
@@ -145,4 +144,44 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
     })
     .then((responseData) => console.log("Uspesno"))
     .catch((errMessage) => alert(errMessage.data));
+}
+
+export function sortCottages(value, sortAsc, offers, setOffers) {
+
+  switch(value) {
+    case 1:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.name, b.name);
+    });
+      break;
+    case 2:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.street, b.street);
+      });
+      break;
+    case 3:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.city, b.city);
+      });
+      break;
+    case 4:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.state, b.state);
+      });
+      break;
+    case 6:
+      offers.sort((a, b) => {
+        return (sortAsc) ?  a.price - b.price : b.price - a.price;
+      });
+      break;
+    default:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.name, b.name);
+    });
+  }
+  setOffers([...offers]);
+}
+
+function compareString(sortAsc, first, second){
+  return (sortAsc) ?  ((first > second) ? 1 : ((second > first) ? -1 : 0)) : ((first < second) ? 1 : ((second < first) ? -1 : 0))
 }

@@ -149,7 +149,7 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter/>
                               <br />
-                              <ClientSort/>
+                              <ClientSort offers={offers} setOffers={setOffers}/>
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />

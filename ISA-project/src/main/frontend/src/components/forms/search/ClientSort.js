@@ -7,8 +7,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { TextField } from "@mui/material";
-import SortIcon from '@mui/icons-material/Sort';
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
 import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
 import SortByAlphaTwoToneIcon from '@mui/icons-material/SortByAlphaTwoTone';
@@ -18,10 +16,26 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import {sortCottages} from '../../../services/CottageService'
 
-export default function ClientSort() {
+
+export default function ClientSort({offers, setOffers}) {
 
     const [sortAsc, setSortAsc] = useState(true);
+    const [criteria, setCriteria] = useState("Name");
+
+    const criteriaChanged = event => {
+        let value = event.target.value;
+        setCriteria(value);
+        sortCottages(value, sortAsc, offers, setOffers);
+        console.log("KACE VRATIM:", offers);
+    };
+
+    const orderChanged = () => {
+        sortCottages(criteria, !sortAsc, offers, setOffers);
+        setSortAsc(!sortAsc);
+        console.log("KACE VRATIM:", offers);
+    };
 
   return (
     <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
@@ -44,14 +58,17 @@ export default function ClientSort() {
                     id="demo-simple-select"
                     value={1}
                     label="Criteria"
+                    onChange={criteriaChanged}
                     >
                     <MenuItem value={1}>Name</MenuItem>
-                    <MenuItem value={2}>Address</MenuItem>
-                    <MenuItem value={3}>Rating</MenuItem>
-                    <MenuItem value={3}>Price</MenuItem>
+                    <MenuItem value={2}>Street</MenuItem>
+                    <MenuItem value={3}>City</MenuItem>
+                    <MenuItem value={4}>State</MenuItem>
+                    <MenuItem value={5}>Rating</MenuItem>
+                    <MenuItem value={6}>Price</MenuItem>
                     </Select>
                 </FormControl>
-                <Button onClick={ () => setSortAsc(!sortAsc) }> { (sortAsc) ? (<ArrowUpwardTwoToneIcon fontSize="large"/>) : (<ArrowDownwardTwoToneIcon fontSize="large"/>) } </Button>
+                <Button onClick={ () => { orderChanged(); }}> { (sortAsc) ? (<ArrowUpwardTwoToneIcon fontSize="large"/>) : (<ArrowDownwardTwoToneIcon fontSize="large"/>) } </Button>
             </Box>
             
             </Typography>
