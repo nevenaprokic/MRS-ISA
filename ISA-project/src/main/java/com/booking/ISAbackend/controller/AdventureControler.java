@@ -86,6 +86,8 @@ public class AdventureControler {
     //                                                                   @RequestParam("offerId") String offerId
     public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
         try{
+
+
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
             int id = Integer.parseInt(paramsMap.get("offerId").toString());
             List<HashMap<String, String>> additionalServiceDTOS = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTOS");
@@ -150,10 +152,23 @@ public class AdventureControler {
     public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
 
         try{
+            System.out.println(name + " " + address + " " + maxPeople + " " + price + " " + email);
             List<AdventureDTO> advetures = adventureService.searchAdventuresByInstructor(name, maxPeople, address, price, email);
             return ResponseEntity.ok(advetures);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("update-allowed")
+    public ResponseEntity<Boolean> isAllowedAdventureUpdate(@RequestParam String email, @RequestParam int adventureId){
+        try{
+            Boolean allowedUpdate = adventureService.chechUpdateAllowed(adventureId);
+            return ResponseEntity.ok(allowedUpdate);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

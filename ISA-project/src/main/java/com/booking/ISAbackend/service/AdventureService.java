@@ -25,5 +25,7 @@ public interface AdventureService {
 
     void updateAdventureAdditionalServices(List<HashMap<String, String>> additionalServices, int offerID) throws InvalidPriceException, RequiredFiledException;
 
-    List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email);
+    List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) throws IOException;
+
+    Boolean chechUpdateAllowed(int adventureId);
 }

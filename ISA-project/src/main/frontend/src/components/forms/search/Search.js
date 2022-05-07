@@ -16,10 +16,11 @@ import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
 import { searchAdventureByInstructor } from "../../../services/AdventureService";
 
-export default function Search({ params, setParams, type, setOffers }) {
+export default function Search({ params, setParams, type, setOffers, setSearchMood }) {
   const [error, setError] = useState("");
 
   const handleChange = (event) => {
+    console.log("TU");
     let {
       target: { value },
     } = event;
@@ -30,6 +31,7 @@ export default function Search({ params, setParams, type, setOffers }) {
       setError("Wrong format for phone number");
     } else {
       setError("");
+      console.log("PARAMETRI", params);
       setParams({ ...params, phoneNumber: event.target.value });
     }
   };
@@ -51,6 +53,7 @@ export default function Search({ params, setParams, type, setOffers }) {
             label="First Name"
             onChange={(event) => {
               setParams({ ...params, firstName: event.target.value });
+              
             }}
             InputLabelProps={{
               shrink: true,
@@ -67,6 +70,7 @@ export default function Search({ params, setParams, type, setOffers }) {
             }}
             onChange={(event) => {
               setParams({ ...params, name: event.target.value });
+              
             }}
           />
         )}

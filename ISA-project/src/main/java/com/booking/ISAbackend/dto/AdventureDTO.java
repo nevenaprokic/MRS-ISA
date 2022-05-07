@@ -129,12 +129,13 @@ public class AdventureDTO {
         this.additionalEquipment = additionalEquipment;
     }
 
-    public AdventureDTO(int id, String ownerEmail, String offerName, String description, String price) {
+    public AdventureDTO(int id, String ownerEmail, String offerName, String description, String price, List<String> photos) {
         this.id = id;
         this.ownerEmail = ownerEmail;
         this.offerName = offerName;
         this.description = description;
         this.price = price;
+        this.photos = photos;
     }
 
     public AdventureDTO() {

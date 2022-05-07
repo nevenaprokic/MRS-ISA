@@ -8,12 +8,13 @@ import PriceList from "../cottageProfile/Pricelist";
 import { Grid, Box, Button} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
-import { getAdventureById } from "../../../services/AdventureService";
+import { getAdventureById, checkUpdateAllowed } from "../../../services/AdventureService";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
 import { test } from "../../../services/AdventureService";
+import { toast } from "react-toastify";
 
 
 const theme = createTheme({
@@ -35,7 +36,25 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
-    const handleOpenForm = () => setOpenForm(true);
+
+    const handleOpenForm = () => {
+        console.log("TU");
+        async function checkAllowed(){
+            let allowed = await checkUpdateAllowed(adventureData);
+            console.log(allowed);
+            if(allowed){
+                setOpenForm(true);
+            }   
+            else{
+                toast.error("Update is not allowed because this adventure has reservations.", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            }
+        }
+    checkAllowed();
+
+    }
     
     const handleCloseForm = () => {
         setOpenForm(false);

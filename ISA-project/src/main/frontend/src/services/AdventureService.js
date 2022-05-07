@@ -2,6 +2,8 @@ import axios from "axios";
 import api from "../app/api";
 import {addAddtionalServices} from "./AdditionalServicesService";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import { toast } from "react-toastify";
+import { responsiveFontSizes } from "@mui/material";
 
 export function getAdventureByInstructorEmail(username){
     return api
@@ -11,9 +13,11 @@ export function getAdventureByInstructorEmail(username){
             }
         })
         .then((response) => response)
-        .catch((err) => {
-            alert(err.data)
-        });
+        .catch((err) => {toast.error(err.response.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    });
 }
 
 export function getAdventureById(id){
@@ -24,10 +28,30 @@ export function getAdventureById(id){
             }
         })
         .then((data) => data)
-        .catch((err) => {
-            console.log("Nije uspesno dobavljeno");
-            return err.message;
-        });
+        .catch((err) => {toast.error(err.response.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    });
+}
+
+export function checkUpdateAllowed(adventureData){
+    console.log(adventureData);
+        return api
+    .get("/adventure/update-allowed", {
+
+        params: {
+            email : adventureData.ownerEmail,
+            adventureId : adventureData.id
+        }
+    })
+    .then((response) => response.data)
+    .catch((err) => {
+        toast.error("Somethnig went wrong. Please wait a fiew seconds and try again.", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          });
+    })
 }
 
 export function updateAdventure(adventureData, additionalServices){
@@ -36,17 +60,14 @@ export function updateAdventure(adventureData, additionalServices){
     .then((responseData) => {
          updateAdditionalServices(adventureData.id, additionalServices);
     })
-    .catch((err) => {
-        console.log(err);
-        alert(err.data)});
+    .catch((err) => {toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            });
 }
 
 function updateAdditionalServices(offerId, additionalServiceDTOS){
-    // additionalServiceDTOS.forEach(element => {
-    //     if(element["serviceName"] !== "" && element["servicePrice"] === ""){
-    //         element["servicePrice"] = -1;
-    //     }
-    // });
     console.log(additionalServiceDTOS);
     api
     .post("/adventure/update-adventure-services",  {
@@ -55,8 +76,17 @@ function updateAdditionalServices(offerId, additionalServiceDTOS){
             additionalServiceDTOS : additionalServiceDTOS
         }
     })
-    .then((responseData) => alert(responseData.data))
-    .catch((errMessage) => alert(errMessage.data));
+    .then((responseData) => {
+                        toast.success(responseData.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    })
+    .catch((errMessage) => {toast.error(errMessage.response.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    });
 }
 
 export function addAdventure(adventureData, additionalServices){
@@ -69,9 +99,11 @@ export function addAdventure(adventureData, additionalServices){
         let adventureId = responseData.data;
         addAddtionalServices(adventureId, additionalServices);
     })
-    .catch((err) => {
-        console.log(err);
-        alert(err.data)});
+    .catch((err) => {toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            });
 }
 
 export function searchAdventureByInstructor(params, setOffers){
@@ -80,12 +112,12 @@ export function searchAdventureByInstructor(params, setOffers){
     params.email = getUsernameFromToken();
     return api
         .get("/adventure/search-adventures",  {params})
-        .then((data) => setOffers(data.data)) //setOffers(data.data)
-        .catch((err) => {
-            console.log("Nije uspesno dobavljeno");
-            console.log(err);
-            return err.message;
-        });
+        .then((data) => {console.log(data.data); setOffers(data.data)}) //setOffers(data.data)
+        .catch((err) => {toast.error(err.response.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    });
     
 }
 
