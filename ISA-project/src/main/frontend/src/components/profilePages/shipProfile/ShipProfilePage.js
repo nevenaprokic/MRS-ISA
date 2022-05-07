@@ -15,6 +15,8 @@ import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { getMarkByOfferId } from "../../../services/MarkService";
 import Divider from "@mui/material/Divider";
 import Rating from "@mui/material/Rating";
+import { userType } from "../../../app/Enum";
+
 
 const theme = createTheme({
   palette: {
@@ -65,7 +67,7 @@ function ShipProfilePage({ id, close }) {
             </div>
             <div className="headerContainer">
               <h2 className="adventureTittle">{shipData.name}</h2>
-              {getRoleFromToken() != null ? (
+              {(getRoleFromToken() != null && getRoleFromToken() != userType.CLIENT) ? (
                 <div className="changeBtn">
                   <Button variant="contained">Change info</Button>
                 </div>
