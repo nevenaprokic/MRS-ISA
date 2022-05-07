@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ChangeAdminData from "../../forms/user/ChangeAdminData";
 import {getAdminByEmail} from "../../../services/AdminService";
+import ChangePassword from "../../forms/user/ChangePassword";
 
 function AdminProfile(){
 
@@ -23,6 +24,10 @@ function AdminProfile(){
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [openPasswordManager, setPasswordManager] = useState(false);
+    const handleOpenPass = () => setPasswordManager(true);
+    const handleClosePass = () => setPasswordManager(false);
 
     const childToParent = (childData) => {
         setAdminData(prevState => ({
@@ -74,7 +79,7 @@ function AdminProfile(){
                         <Typography>
                                 <label className="email">{adminData.email}</label>
                                 <br/><br/>
-                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}}> Change password</Button>
+                                <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpenPass}> Change password</Button>
                                 <br/><br/>
                                 <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"} } onClick={handleOpen}> Change private data</Button>
                                 <br/><br/>
@@ -93,6 +98,15 @@ function AdminProfile(){
                         
                             <ChangeAdminData currentAdminData={adminData} close={handleClose} childToParent={childToParent} />
                     
+                    </Modal>
+                    <Modal
+                        open={openPasswordManager}
+                        onClose={handleClosePass}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+                    >
+                        <ChangePassword close={handleClosePass}/>
                     </Modal>
 
                     <AddressInfoBox addressData={adminData}/>

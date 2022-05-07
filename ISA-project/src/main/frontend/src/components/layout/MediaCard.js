@@ -26,7 +26,7 @@ const secondaryTheme = createTheme({
   },
 });
 
-export default function MediaCard({ offer, offerT }) {
+export default function MediaCard({ offer, offerT}) {
 
   const [offerData, setOfferData] = useState();
 
@@ -36,9 +36,6 @@ export default function MediaCard({ offer, offerT }) {
   const handleClose = () => setOpen(false);
 
   let imag = require("../images/no-image.png");
-  // if(offer.photos.length != 0){
-  //   imag = require("/src/components/images/" + offer.photos[0]);
-  // }
 
   const childToParent = (childData) => {
     if(offerT === offerType.ADVENTURE){
@@ -84,10 +81,12 @@ const modalOfferComponent = (offerStr, offerId) =>{
   }
 
   useEffect(() => {
+    console.log("tuuu");
   }, [offerData]);
 
   const [markData, setMarkData] = useState();
   useEffect(() => {
+    console.log("eeeeee");
     if(!offerData)
       setOfferData(offer);
     async function setData() {
@@ -101,8 +100,8 @@ const modalOfferComponent = (offerStr, offerId) =>{
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
-        <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
-          {console.log(offerData)}
+        <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:375}}>
+          {console.log(offerData, offer)}
           <CardMedia component="img" height="140" image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">

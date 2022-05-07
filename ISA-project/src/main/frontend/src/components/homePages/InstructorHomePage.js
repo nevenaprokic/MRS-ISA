@@ -140,7 +140,7 @@ function a11yProps(index) {
                           />
                           </Grid>
                         </Box>
-                      <Album albumData={offers} setAlbumeData={setOffers} /> {//komponenta sa karticama;
+                      <Album albumData={offers} setAlbumeData={setOffers}/> {//komponenta sa karticama;
                       }   
                 </TabPanel>
                 <TabPanel value={value} index={2}>
