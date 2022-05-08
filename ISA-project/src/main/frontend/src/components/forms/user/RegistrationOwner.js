@@ -14,6 +14,10 @@ import { useForm } from "react-hook-form";
 import { useRef } from "react";
 import MainNavigation from "../../layout/MainNavigationHome";
 import api from "../../../app/api";
+import Modal from '@mui/material/Modal';
+import { toast } from "react-toastify";
+import SuccessfulRegistration from '../../notifications/SuccessfulRegistration'
+import { useState } from 'react';
 
 const theme = createTheme();
 export default function RegistrationOwner() {
@@ -26,15 +30,21 @@ export default function RegistrationOwner() {
   const password = useRef({});
   password.current = watch("password", "");
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const onSubmit = (data) => {
     console.log(data);
 
     api
       .post("/registrationOwner", data)
-      .then(() => console.log("Uspesno ste poslali zahtev za registraciju."))
+      .then(() =>  {handleOpen();})
       .catch((err) => {
-        console.log("Niste uspesno poslali zahtev za registraciju.");
-        return err.message;
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        });
       });
   };
 
@@ -284,6 +294,16 @@ export default function RegistrationOwner() {
                   </Link>
                 </Grid>
               </Grid>
+              <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                >
+                      <SuccessfulRegistration />
+
+                </Modal>
               <div>
                 <br />
               </div>

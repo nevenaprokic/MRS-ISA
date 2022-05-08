@@ -38,7 +38,7 @@ export default function Registration(){
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(./logo.png)',
+            backgroundImage: 'url(https://cottagelife.com/wp-content/uploads/2022/01/shutterstock_2092851349-scaled.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

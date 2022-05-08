@@ -92,7 +92,7 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
         ) : (
           <TextField
             fullWidth
-            label="Price"
+            label="Max Price"
             id="price"
             type="number"
             onChange={(event) => {

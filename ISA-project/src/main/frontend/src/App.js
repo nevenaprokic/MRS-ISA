@@ -26,7 +26,7 @@ function App() {
   return (
     <div>
         <Routes>
-          <Route path="/" element={<MainNavigation />} />
+          <Route path="/" element={<UnauthenticatedUserHomePage />} />
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/registration" element={<Registration />} exact/>
           <Route path='/registration/registration-owner' element={<RegistrationOwner/>}/>
