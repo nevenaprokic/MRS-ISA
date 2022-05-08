@@ -15,6 +15,7 @@ public interface CottageService {
     Cottage findCottageById(Integer id);
     Address findAddressByCottageId(Integer id);
     List<Cottage> searchCottages(String name, Integer maxPeople, String address, Double price);
+    List<Cottage> searchCottagesClient(String name, String description, String address);
     List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email);
     int addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException, IOException;
     void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTO, int offerId) throws InvalidPriceException, RequiredFiledException;

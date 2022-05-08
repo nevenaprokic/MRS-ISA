@@ -149,4 +149,21 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("search-cottages-client")
+    @Transactional
+    public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestParam String name, @RequestParam String description, @RequestParam String address){
+
+        try{
+            List<Cottage> cottages = cottageService.searchCottagesClient(name, description, address);
+            List<CottageDTO> dto = new ArrayList<>();
+            for(Cottage c: cottages){
+                CottageDTO cottageDTO = new CottageDTO(c);
+                dto.add(cottageDTO);
+            }
+            return ResponseEntity.ok(dto);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

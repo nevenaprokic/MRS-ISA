@@ -14,6 +14,8 @@ import { getMarkByOfferId } from "../../../services/MarkService";
 import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
+import { userType } from "../../../app/Enum";
+
 
 const theme = createTheme({
   palette: {
@@ -67,7 +69,7 @@ function CottageProfilePage({ id, close }) {
             </div>
             <div className="headerContainer">
               <h2 className="adventureTittle">{cottageData.name}</h2>
-              {getRoleFromToken() != null ? (
+              { (getRoleFromToken() != null && getRoleFromToken() != userType.CLIENT) ? (
                 <div className="changeBtn">
                   <Button variant="contained">Change info</Button>
                 </div>

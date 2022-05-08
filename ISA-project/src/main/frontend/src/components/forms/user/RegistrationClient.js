@@ -142,6 +142,11 @@ export default function RegistrationClient() {
                           value === password.current || "The passwords do not match!"
                       })}
                   />
+                  {errors.confirmPassword && (
+                    <p style={{ color: "#ED6663" }}>
+                      {errors.confirmPassword.message}
+                    </p>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

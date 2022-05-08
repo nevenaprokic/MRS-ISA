@@ -5,44 +5,22 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import {
-  searchCottages,
-  searchCottagesByCottageOwner,
+    searchCottagesClient
 } from "../../../services/CottageService";
 import {
-  searchShips,
-  searchShipByShipOwner,
+  searchShips
 } from "../../../services/ShipService";
 import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
-import { searchAdventureByInstructor } from "../../../services/AdventureService";
 
-export default function Search({ params, setParams, type, setOffers, setSearchMood }) {
-  const [error, setError] = useState("");
+export default function ClientSearch({ params, setParams, type, setOffers }) {
+    const [error, setError] = useState("");
 
-
-  const handleChange = (event) => {
-    let {
-      target: { value },
-    } = event;
-    let reg = new RegExp(
-      /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-    ).test(value);
-    if (!reg && event.target.value != "") {
-      setError("Wrong format for phone number");
-    } else {
-      setError("");
-      setParams({ ...params, phoneNumber: event.target.value });
-    }
-  };
-  
-  let searchOffer = {
-    [offerType.COTTAGE]: searchCottages,
-    [offerType.SHIP]: searchShips,
-    [offerType.ADVENTURE]: searchInstructors,
-    [offerType.COTTAGE_OWNER]: searchCottagesByCottageOwner,
-    [offerType.SHIP_OWNER]: searchShipByShipOwner,
-    [offerType.INSTRUCTOR]: searchAdventureByInstructor,
-  };
+    let searchOffer = {
+        [offerType.COTTAGE]: searchCottagesClient,
+        [offerType.SHIP]: searchShips,
+        [offerType.ADVENTURE]: searchInstructors
+      };
 
   return (
     <Grid container spacing={5}>
@@ -53,7 +31,6 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
             label="First Name"
             onChange={(event) => {
               setParams({ ...params, firstName: event.target.value });
-              
             }}
             InputLabelProps={{
               shrink: true,
@@ -70,7 +47,6 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
             }}
             onChange={(event) => {
               setParams({ ...params, name: event.target.value });
-              
             }}
           />
         )}
@@ -90,49 +66,16 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
             }}
           />
         ) : (
-          <TextField
-            fullWidth
-            label="Price"
-            id="price"
-            type="number"
-            onChange={(event) => {
-              setParams({ ...params, price: event.target.value });
-            }}
-            InputProps={{
-              startAdornment: <InputAdornment position="end">€</InputAdornment>,
-            }}
-          />
-        )}
-      </Grid>
-
-      <Grid item xs>
-        {type == offerType.ADVENTURE ? (
-          <>
             <TextField
-              id="phoneNumber"
-              label="Phone Number"
-              onChange={(event) => { setParams({ ...params, phoneNumber: event.target.value }); }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              fullWidth
-            />
-            {error != "" && (
-              <p style={{ color: "#ED6663" }}>Please check the phone number</p>
-            )}
-          </>
-        ) : (
-          <TextField
-            id="peopleNum"
-            label="Maximum number of people"
-            type="number"
-            onChange={(event) => {
-              setParams({ ...params, maxPeople: event.target.value });
-            }}
+            id="description"
+            label="Description"
+            defaultValue=""
             InputLabelProps={{
               shrink: true,
             }}
-            fullWidth
+            onChange={(event) => {
+              setParams({ ...params, description: event.target.value });
+            }}
           />
         )}
       </Grid>

@@ -123,12 +123,19 @@ public class ClientServiceImpl implements ClientService {
     public void requestAccountDeletion(String email, String reason) throws AccountDeletionException {
         MyUser user = clientRepository.findByEmail(email);
         List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(user.getId());
-        Optional<DeleteRequest> request = Optional.ofNullable(deleteRequestRepository.alreadyExists(user.getId()));
-        if(reservations.isEmpty() && request.isEmpty()){
+//        Optional<DeleteRequest> request = Optional.ofNullable(deleteRequestRepository.alreadyExists(user.getId()));
+        if(reservations.isEmpty()){
             deleteRequestRepository.save(new DeleteRequest(reason, user));
         }else{
             throw new AccountDeletionException("Account cannot be deleted.");
         }
+    }
+
+    @Override
+    public boolean alreadyRequestedDeletion(String email) {
+        MyUser user = clientRepository.findByEmail(email);
+        Optional<DeleteRequest> request = Optional.ofNullable(deleteRequestRepository.alreadyExists(user.getId()));
+        return request.isPresent();
     }
 
 }

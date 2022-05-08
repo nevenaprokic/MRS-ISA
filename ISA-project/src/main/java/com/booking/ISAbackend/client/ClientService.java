@@ -13,4 +13,6 @@ public interface ClientService {
     void updateInfo(String email, ClientDTO dto) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
 
     void requestAccountDeletion(String email, String reason) throws AccountDeletionException;
+
+    boolean alreadyRequestedDeletion(String email);
 }
