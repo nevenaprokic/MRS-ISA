@@ -18,8 +18,14 @@ import Modal from '@mui/material/Modal';
 import { toast } from "react-toastify";
 import SuccessfulRegistration from '../../notifications/SuccessfulRegistration'
 import { useState } from 'react';
+import Paper from '@mui/material/Paper';
+import MainNavigationHome from "../../layout/MainNavigation";
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: { main: "#9DAB86" },
+  },
+});
 export default function RegistrationOwner() {
   const {
     register,
@@ -51,9 +57,24 @@ export default function RegistrationOwner() {
   return (
     <Card>
       <ThemeProvider theme={theme}>
-        <MainNavigation />
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
+        <MainNavigationHome />
+        <Grid container component="main" sx={{ height: '100vh' }}>
+            <CssBaseline />
+            <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
               marginTop: 8,
@@ -74,7 +95,8 @@ export default function RegistrationOwner() {
               onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 3 }}
             >
-              <Grid container spacing={2}>
+              <Grid container spacing={2} width={"70%"} marginLeft={"15%"}>
+                
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="given-name"
@@ -281,9 +303,9 @@ export default function RegistrationOwner() {
               </Grid>
               <Button
                 type="submit"
-                fullWidth
+                
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, width:"40%", marginLeft:"30%" }}
               >
                 Sign Up
               </Button>
@@ -309,7 +331,8 @@ export default function RegistrationOwner() {
               </div>
             </Box>
           </Box>
-        </Container>
+           </Grid>
+        </Grid>
       </ThemeProvider>
     </Card>
   );
