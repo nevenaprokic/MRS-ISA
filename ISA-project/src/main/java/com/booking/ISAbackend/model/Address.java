@@ -18,6 +18,17 @@ public class Address {
 	@Column(nullable = false)
 	private String street;
 
+    public Address(String street, String city, String state) {
+		this.street = street;
+		this.city = city;
+		this.state = state;
+    }
+
+
+	public Address() {
+
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -32,5 +43,17 @@ public class Address {
 
 	public String getStreet() {
 		return street;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
 	}
 }

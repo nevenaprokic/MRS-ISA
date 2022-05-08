@@ -29,10 +29,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
     // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
     @Autowired
@@ -111,7 +111,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
-
+        web.ignoring().antMatchers(HttpMethod.POST, "/auth/client/registration");
+        web.ignoring().antMatchers(HttpMethod.POST, "/adventure/addAdventure");
+        web.ignoring().antMatchers(HttpMethod.POST,"/cottage/addCottage");
+        web.ignoring().antMatchers(HttpMethod.POST, "/cottage/add-additional-services");
+        web.ignoring().antMatchers(HttpMethod.POST, "/adventure/add-additional-services");
+        web.ignoring().antMatchers(HttpMethod.POST, "/ship/addShip");
+        web.ignoring().antMatchers(HttpMethod.POST, "/ship/add-additional-services");
+        web.ignoring().antMatchers(HttpMethod.POST, "/changeCottageOwnerData");
+        web.ignoring().antMatchers(HttpMethod.POST, "/changeShipOwnerData");
         // Ovim smo dozvolili pristup statickim resursima aplikacije
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");

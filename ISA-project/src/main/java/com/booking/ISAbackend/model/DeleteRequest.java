@@ -12,7 +12,20 @@ public class DeleteRequest {
 	private Integer id;
 	
 	private String description;
-	
+
+	private Boolean deleted = false;
+
 	@OneToOne
 	private MyUser myUser;
+
+	public DeleteRequest(){}
+
+	public DeleteRequest(MyUser myUser) {
+		this.myUser = myUser;
+	}
+
+	public DeleteRequest(String description, MyUser myUser) {
+		this.description = description;
+		this.myUser = myUser;
+	}
 }

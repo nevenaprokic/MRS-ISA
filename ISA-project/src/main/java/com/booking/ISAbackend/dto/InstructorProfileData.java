@@ -1,5 +1,9 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.Instructor;
+
+import java.util.List;
+
 public class InstructorProfileData {
 
     private String email;
@@ -9,6 +13,18 @@ public class InstructorProfileData {
     private String lastName;
 
     private String phoneNumber;
+
+    private String street;
+
+    private String city;
+
+    private String state;
+
+    private String userCategory;
+
+    private String biography;
+
+    private List<AdventureDTO> adventures;
 
     public InstructorProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory, String biography) {
         this.email = email;
@@ -20,6 +36,18 @@ public class InstructorProfileData {
         this.state = state;
         this.userCategory = userCategory;
         this.biography = biography;
+    }
+
+    public InstructorProfileData(Instructor i) {
+        this.email = i.getEmail();
+        this.firstName = i.getFirstName();
+        this.lastName = i.getLastName();
+        this.phoneNumber = i.getPhoneNumber();
+        this.street = i.getAddress().getStreet();
+        this.city = i.getAddress().getCity();
+        this.state = i.getAddress().getState();
+        this.userCategory = i.getOwnerCategory().toString();
+        this.biography = i.getBiography();
     }
 
     public String getEmail() {
@@ -58,11 +86,12 @@ public class InstructorProfileData {
         return biography;
     }
 
-    private String street;
-    private String city;
-    private String state;
-    private String userCategory;
-    private String biography;
+    public List<AdventureDTO> getAdventures() {
+        return adventures;
+    }
 
+    public void setAdventures(List<AdventureDTO> adventures) {
+        this.adventures = adventures;
+    }
 
 }

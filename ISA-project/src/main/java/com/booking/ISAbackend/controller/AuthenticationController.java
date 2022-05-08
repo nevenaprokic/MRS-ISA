@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,23 +39,28 @@ public class AuthenticationController {
 
 	@PostMapping("/login")
 	public ResponseEntity<UserTokenState> createAuthenticationToken(
-			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
+			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception{
 
 		// Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
 		// AuthenticationException
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+		try{
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 
-		// Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni com.booking.ISAbackend.security
-		// kontekst
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			// Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni com.booking.ISAbackend.security
+			// kontekst
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		// Kreiraj token za tog korisnika
-		MyUser user = (MyUser) authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getEmail());
-		int expiresIn = tokenUtils.getExpiredIn();
+			// Kreiraj token za tog korisnika
+			MyUser user = (MyUser) authentication.getPrincipal();
 
-		// Vrati token kao odgovor na uspesnu autentifikaciju
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+			String jwt = tokenUtils.generateToken(user);
+			int expiresIn = tokenUtils.getExpiredIn();
+
+			// Vrati token kao odgovor na uspesnu autentifikaciju
+			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+		}catch(Exception e){
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
 	}
 }

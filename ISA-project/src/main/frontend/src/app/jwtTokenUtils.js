@@ -12,3 +12,14 @@ export function getUsernameFromToken(){
         return null;
     }
 }
+export function getRoleFromToken(){
+    try{
+        let token = jwtDecode(localStorage.getItem("user"));
+        let role = token.role.name;
+        return role;
+    }
+    catch{
+        console.log("Greska");
+        return null;
+    }
+}
