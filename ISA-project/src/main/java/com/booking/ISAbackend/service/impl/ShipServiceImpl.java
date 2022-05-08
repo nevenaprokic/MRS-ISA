@@ -2,6 +2,7 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.dto.NewShipDTO;
+import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AddressRepository;
@@ -35,18 +36,35 @@ public class ShipServiceImpl implements ShipService {
     private AdditionalServiceService additionalServiceService;
 
     @Override
-    public List<Ship> findAll() {
-        return  shipRepository.findAll();
+    @Transactional
+    public List<ShipDTO> findAll() throws IOException {
+        List<Ship> ships = shipRepository.findAll();
+        List<ShipDTO> dto = new ArrayList<>();
+        for(Ship s: ships){
+            ShipDTO shipDTO = new ShipDTO(s);
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
     @Override
-    public List<Ship> findShipByShipOwnerEmail(String email) {
-        return shipRepository.findShipByShipOwnerEmail(email);
+    @Transactional
+    public List<ShipDTO> findShipByShipOwnerEmail(String email) throws IOException {
+        List<Ship> ships = shipRepository.findShipByShipOwnerEmail(email);
+        List<ShipDTO> dto = new ArrayList<>();
+        for (Ship ship : ships) {
+            ShipDTO shipDTO = new ShipDTO(ship);
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
     @Override
-    public Ship findShipById(Integer id) {
-        return shipRepository.findShipById(id);
+    @Transactional
+    public ShipDTO findShipById(Integer id) throws IOException {
+        Ship ship = shipRepository.findShipById(id);
+        ShipDTO shipDTO = new ShipDTO(ship);
+        return shipDTO;
     }
 
     @Override
@@ -57,13 +75,27 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    public List<Ship> searchShips(String name, Integer maxPeople, String address, Double price) {
-        return shipRepository.searchShips(name, maxPeople, address, price);
+    @Transactional
+    public List<ShipDTO> searchShips(String name, Integer maxPeople, String address, Double price) throws IOException {
+        List<Ship> ships = shipRepository.searchShips(name, maxPeople, address, price);
+        List<ShipDTO> dto = new ArrayList<>();
+        for(Ship s: ships){
+            ShipDTO shipDTO = new ShipDTO(s);
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
     @Override
-    public List<Ship> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) {
-        return shipRepository.searchShipsByShipOwnerEmail(name, maxPeople, address, price, email);
+    @Transactional
+    public List<ShipDTO> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) throws IOException {
+        List<Ship> ships = shipRepository.searchShipsByShipOwnerEmail(name, maxPeople, address, price, email);
+        List<ShipDTO> dto = new ArrayList<>();
+        for(Ship s: ships){
+            ShipDTO shipDTO = new ShipDTO(s);
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
     @Override

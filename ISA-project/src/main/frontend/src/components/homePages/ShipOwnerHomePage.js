@@ -120,8 +120,8 @@ export default function ShipOwnerHomePage() {
             <Divider />
             <Tab label="Profile page" {...a11yProps(1)} />
             <Divider />
-            <Tab label="Availability of cottages" {...a11yProps(2)} />
-            <Tab label="Add new cottage" {...a11yProps(3)} />
+            <Tab label="Availability of ship" {...a11yProps(2)} />
+            <Tab label="Add new ship" {...a11yProps(3)} />
             <Divider />
             <Tab label="Reservation history" {...a11yProps(4)} />
             <Tab label="Reservation report" {...a11yProps(5)} />

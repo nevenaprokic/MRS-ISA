@@ -18,9 +18,11 @@ public class Cottage extends Offer{
 	@JoinColumn(name = "my_user_id")
 	private CottageOwner cottageOwner;
 
+
 	public Cottage() {
 
 	}
+
 
 	public Integer getRoomNumber() {return roomNumber;}
 	public  Integer getBedNumber() {return  bedNumber;}

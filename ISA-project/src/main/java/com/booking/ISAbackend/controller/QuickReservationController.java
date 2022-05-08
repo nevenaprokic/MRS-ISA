@@ -23,17 +23,11 @@ public class QuickReservationController {
     private QuickReservationService quickReservationService;
 
     @GetMapping("getQuickActions")
-    @Transactional
-
     public ResponseEntity<List<QuickActionDTO>> getQuickActionsByOfferId(@RequestParam String id){
         try {
-            List<QuickReservation> quickReservations = quickReservationService.findQuickReservationByOfferId(Integer.parseInt(id));
-            List<QuickActionDTO> dto = new ArrayList<>();
-            for(QuickReservation res: quickReservations){
-                QuickActionDTO quickActionDTO = new QuickActionDTO(res);
-                dto.add(quickActionDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<QuickActionDTO> quickReservations = quickReservationService.findQuickReservationByOfferId(Integer.parseInt(id));
+
+            return ResponseEntity.ok(quickReservations);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

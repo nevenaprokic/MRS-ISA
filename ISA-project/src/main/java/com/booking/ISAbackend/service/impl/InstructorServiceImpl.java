@@ -16,6 +16,7 @@ import com.booking.ISAbackend.service.InstructorService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ public class InstructorServiceImpl implements InstructorService {
     private DeleteRequestRepository deleteRequestRepository;
 
     @Override
+    @Transactional
     public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException, IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
         if(phoneNumber.equals("") || Validator.phoneNumberValidation(phoneNumber)){
@@ -53,6 +55,7 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
+    @Transactional
     public List<InstructorProfileData> findAll() throws IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
         List<Instructor> instructors = instructorRepository.findAll();

@@ -25,7 +25,6 @@ public class InstructorController {
     private InstructorService instructorService;
 
     @GetMapping("searchInstructors")
-    @Transactional
     public ResponseEntity<List<InstructorProfileData>> searchShips(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String address, @RequestParam String phoneNumber){
         try{
             List<InstructorProfileData> instructors  = instructorService.searchInstructors(firstName, lastName, address, phoneNumber);
@@ -36,7 +35,6 @@ public class InstructorController {
     }
 
     @GetMapping("getAllInstructors")
-    @Transactional
     public ResponseEntity<List<InstructorProfileData>> getAll(){
         try{
             List<InstructorProfileData> instructors  = instructorService.findAll();

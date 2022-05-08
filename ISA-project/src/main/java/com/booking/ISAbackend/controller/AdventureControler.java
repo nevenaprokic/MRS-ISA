@@ -147,7 +147,6 @@ public class AdventureControler {
     }
 
     @GetMapping("search-adventures")
-    @Transactional
     public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
 
         try{

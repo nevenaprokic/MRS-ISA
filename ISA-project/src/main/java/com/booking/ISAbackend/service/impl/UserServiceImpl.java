@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional
 	public InstructorProfileData getInstructorDataByEmail(String email) {
 		InstructorProfileData dto = null;
 		Instructor i = findInstructorByEmail(email);
@@ -78,11 +79,37 @@ public class UserServiceImpl implements UserService{
 		}
 		return dto;
 	}
+
+	@Override
+	@Transactional
+	public CottageOwnerProfileInfoDTO getCottageOwnerDataByEmail(String email) {
+		CottageOwnerProfileInfoDTO dto = null;
+		CottageOwner cottageOwner = findCottageOwnerByEmail(email);
+		if(cottageOwner != null){
+			dto = new CottageOwnerProfileInfoDTO(cottageOwner);
+			return dto;
+		}
+		return dto;
+	}
+
 	@Override
 	public CottageOwner findCottageOwnerByEmail(String email){
 		MyUser user = userRepository.findByEmail(email);
 		Optional<CottageOwner> cottageOwner = cottageOwnerRepository.findById(user.getId());
+
 		return cottageOwner.orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public ShipOwnerProfileInfoDTO getShipOwnerDataByEmail(String email) {
+		ShipOwnerProfileInfoDTO dto = null;
+		ShipOwner shipOwner = findShipOwnerByEmail(email);
+		if(shipOwner != null){
+			dto = new ShipOwnerProfileInfoDTO(shipOwner);
+			return dto;
+		}
+		return dto;
 	}
 	@Override
 	public ShipOwner findShipOwnerByEmail(String email){

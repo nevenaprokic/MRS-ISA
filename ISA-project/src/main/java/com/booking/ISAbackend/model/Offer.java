@@ -41,6 +41,11 @@ public class Offer {
 	@ManyToMany(mappedBy = "subscribedOffers")
 	private List<Client> subscribedClients;
 
+	@Version
+	@Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
+
 	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
 		this.name = name;
 		this.description = description;
@@ -59,6 +64,13 @@ public class Offer {
 
 	public Offer() {
 
+	}
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	public Integer getId() {return id;}
 

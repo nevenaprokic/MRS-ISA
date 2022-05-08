@@ -203,6 +203,7 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
     @Override
+    @Transactional
     public List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) throws IOException {
         List<Adventure> matchingAdventures = adventureRepository.searchAdventureByInstructorEmail(name,maxPeople,address,price,email);
         List<AdventureDTO> adventureDTOs = new ArrayList<AdventureDTO>();

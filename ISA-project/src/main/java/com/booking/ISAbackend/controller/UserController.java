@@ -31,7 +31,6 @@ public class UserController {
 	private RegistrationRequestService registrationRequestService;
 
 	@GetMapping("instructorProfileInfo")
-	@Transactional
 	public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
 		InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
@@ -43,27 +42,23 @@ public class UserController {
 
 	}
     @GetMapping("cottageOwnerProfileInfo")
-    @Transactional
     public ResponseEntity<CottageOwnerProfileInfoDTO> getCottageOwnerProfileInfo(@RequestParam String email){
         //odraditi autentifikaciju i autorizaciju
 
 		try{
-			CottageOwner cottageOwner =  userService.findCottageOwnerByEmail(email);
-			CottageOwnerProfileInfoDTO data = new CottageOwnerProfileInfoDTO(cottageOwner);
-			return ResponseEntity.ok(data);
+			CottageOwnerProfileInfoDTO cottageOwner =  userService.getCottageOwnerDataByEmail(email);
+			return ResponseEntity.ok(cottageOwner);
 		}catch  (Exception e){
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
     }
-	@GetMapping("shipOwnerProfileInfo")
-	@Transactional
+	@GetMapping("shipOwnerProfileInfo")//adresa pravi problem
 	public ResponseEntity<ShipOwnerProfileInfoDTO> getShipOwnerProfileInfo(@RequestParam String email){
 		//odraditi autentifikaciju i autorizaciju
 
 		try{
-			ShipOwner shipOwner =  userService.findShipOwnerByEmail(email);
-			ShipOwnerProfileInfoDTO data = new ShipOwnerProfileInfoDTO(shipOwner);
-			return ResponseEntity.ok(data);
+			ShipOwnerProfileInfoDTO shipOwner =  userService.getShipOwnerDataByEmail(email);
+			return ResponseEntity.ok(shipOwner);
 		}catch  (Exception e){
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -105,7 +100,7 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("admin-profile")
+	@GetMapping("admin-profile")//adresa pravi problem
 	public ResponseEntity<UserProfileData> getAdminProfileInfo(@RequestParam String email){
 		try{
 				UserProfileData adminData = userService.findAdminByEmail(email);
