@@ -4,10 +4,7 @@ import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
-import com.booking.ISAbackend.repository.AdditionalServiceRepository;
-import com.booking.ISAbackend.repository.AddressRepository;
-import com.booking.ISAbackend.repository.AdventureReporitory;
-import com.booking.ISAbackend.repository.PhotoRepository;
+import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.PhotoService;
@@ -26,6 +23,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -52,6 +50,9 @@ public class AdventureServiceImpl implements AdventureService {
     private AdditionalServiceService additionalServiceService;
     @Autowired
     private PhotoService photoService;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     @Transactional
@@ -202,15 +203,27 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
     @Override
-    public List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) {
+    public List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) throws IOException {
         List<Adventure> matchingAdventures = adventureRepository.searchAdventureByInstructorEmail(name,maxPeople,address,price,email);
         List<AdventureDTO> adventureDTOs = new ArrayList<AdventureDTO>();
         for (Adventure a: matchingAdventures){
             //int id, String ownerEmail, String offerName, String description, String price
-            AdventureDTO dto = new AdventureDTO(a.getId(), a.getInstructor().getEmail(), a.getName(), a.getDescription(), String.valueOf(a.getPrice()));
+            AdventureDTO dto = new AdventureDTO(a.getId(), a.getInstructor().getEmail(), a.getName(), a.getDescription(), String.valueOf(a.getPrice()), getPhoto(a));
             adventureDTOs.add(dto);
         }
         return adventureDTOs;
+    }
+
+    @Override
+    public Boolean chechUpdateAllowed(int adventureId) {
+        List<Reservation> reservations = reservationRepository.findAllByOfferId(adventureId);
+        LocalDate today = LocalDate.now();
+        for(Reservation r:reservations){
+            if((today.compareTo(r.getEndDate())<0)){
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {
@@ -396,5 +409,7 @@ public class AdventureServiceImpl implements AdventureService {
         return oldAddres;
 
     }
+
+
 
 }

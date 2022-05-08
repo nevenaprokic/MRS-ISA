@@ -33,10 +33,11 @@ export default function Album( {albumData, setAlbumeData}){
 
    
     if(albumData){     
+      {console.log(albumData)}
         return(<Container sx={{ py: 8}} maxWidth="md" >
           <Grid container spacing={4}>
             {albumData.map((offer) => (
-              <Grid item key={offer} xs={12} sm={6} md={4}>
+              <Grid item key={offer.id} xs={12} sm={6} md={4}>
                 <MediaCard offer={offer} offerT={offerTypeByUserType[getRoleFromToken()]}/>           
               </Grid>
             ))}

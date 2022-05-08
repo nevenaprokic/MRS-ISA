@@ -18,6 +18,7 @@ import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
 import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
+import { maxHeight } from "@mui/system";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -26,7 +27,7 @@ const secondaryTheme = createTheme({
   },
 });
 
-export default function MediaCard({ offer, offerT }) {
+export default function MediaCard({ offer, offerT}) {
 
   const [offerData, setOfferData] = useState();
 
@@ -36,9 +37,11 @@ export default function MediaCard({ offer, offerT }) {
   const handleClose = () => setOpen(false);
 
   let imag = require("../images/no-image.png");
-  // if(offer.photos.length != 0){
-  //   imag = require("/src/components/images/" + offer.photos[0]);
-  // }
+  let imagHeight = 140;
+  if(offerT == userType.INSTRUCTOR){
+    imag = require("../images/profile.png");
+    imagHeight = 220;
+  }
 
   const childToParent = (childData) => {
     if(offerT === offerType.ADVENTURE){
@@ -87,7 +90,14 @@ const modalOfferComponent = (offerStr, offerId) =>{
   }, [offerData]);
 
   const [markData, setMarkData] = useState();
+
+  let minH = 400;
+  let maxH = 400;
   useEffect(() => {
+    if(offerT == userType.INSTRUCTOR){
+      maxH = 315;
+      minH = 315;
+    }
     if(!offerData)
       setOfferData(offer);
     async function setData() {
@@ -98,16 +108,25 @@ const modalOfferComponent = (offerStr, offerId) =>{
     setData();
 
   }, []);
+
+
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
-        <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:330}}>
-          {console.log(offerData)}
-          <CardMedia component="img" height="140" image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
+        <Card sx={{ maxWidth: 345, maxHeight: maxH, minHeight:minH }}>
+          <CardMedia component="img" height={imagHeight} image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
               {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}
             </Typography>
+
+            {offerT != userType.INSTRUCTOR  && <Typography variant="body2" color="text.secondary">
+              <p>
+              <Rating name="read-only" value={markData} readOnly />
+              </p>
+              <p>Price: {offerData.price}€</p>
+          </Typography>}
+
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offerData.description : offerData.biography} </p>     
             </Typography>

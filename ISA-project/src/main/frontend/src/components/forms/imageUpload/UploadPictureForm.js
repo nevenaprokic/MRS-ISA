@@ -10,17 +10,12 @@ function UploadPictureForm({pictureInputList, pictureSetInputList}){
         display: 'none',
       });
 
-
-    
-
     const handlePictureUpload = function(e) {
         const selectedPictures = [...pictureInputList];
         selectedPictures.push(e.target.files[0]);
         pictureSetInputList(selectedPictures);
     }
 
-    
-    //UVEZIVANJE 2 KOMPNENTE
     return(
 
        <Grid continer spacing={10}>

@@ -10,31 +10,9 @@ import EuroIcon from "@mui/icons-material/Euro";
 import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
 import { useState, useEffect } from "react";
 
-function PriceList({ offer }) {
+function PriceList({ offer, additionalServices }) {
 
-  function createData() {
-    rows = [];
-    serviceData.forEach((data) => {
-        let name = data.serviceName;
-        let price = data.servicePrice;
-        rows.push({name, price});
-      });
-  }
-  let rows = [];
-  const [serviceData, setServiceData] = useState();
-
-  useEffect(() => {
-        async function setData() {
-          const serviceData = await getAdditionalServiceByOffer(offer.id);
-          setServiceData(serviceData.data ? serviceData.data : {});
-          return serviceData.data;
-        }
-        setData();   
-   
-  }, [offer]);
-
-  if (serviceData) {
-    createData();
+  if (offer) {
     return (
       <div className="pricesContainer">
         <div>
@@ -50,6 +28,7 @@ function PriceList({ offer }) {
           <label>Basic price: {offer.price} €</label>
         </div>
 
+        {additionalServices &&
         <div className="tableContainer">
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -67,7 +46,8 @@ function PriceList({ offer }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                
+                {additionalServices.map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -81,7 +61,7 @@ function PriceList({ offer }) {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
+        </div>}
       </div>
     );
   }

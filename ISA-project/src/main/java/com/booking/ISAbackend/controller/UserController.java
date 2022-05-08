@@ -86,9 +86,12 @@ public class UserController {
 	public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
 		try{
 			userService.changeInstrctorData(newData);
-			return ResponseEntity.ok("Successfully changed you data");
+			return ResponseEntity.ok("Successfully changed your data");
 		} catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException  e) {
 			return ResponseEntity.status(400).body(e.getMessage());
+		}
+		catch (Exception  e) {
+			return ResponseEntity.status(400).body("Something went wrong, please try again.");
 		}
 	}
 

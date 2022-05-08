@@ -8,12 +8,16 @@ import PriceList from "../cottageProfile/Pricelist";
 import { Grid, Box, Button} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
-import { getAdventureById } from "../../../services/AdventureService";
+import { getAdventureById, checkUpdateAllowed } from "../../../services/AdventureService";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
 import { test } from "../../../services/AdventureService";
+import { toast } from "react-toastify";
+import { getMarkByOfferId } from "../../../services/MarkService";
+import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
+import Rating from "@mui/material/Rating";
 
 
 const theme = createTheme({
@@ -31,11 +35,31 @@ const theme = createTheme({
 
 function AdventureProfilePage({id, close, childToParentMediaCard}){
 
-
+  
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
-    const handleOpenForm = () => setOpenForm(true);
+
+    const [markData, setMarkData] = useState();
+
+    const handleOpenForm = () => {
+        console.log("TU");
+        async function checkAllowed(){
+            let allowed = await checkUpdateAllowed(adventureData);
+            console.log(allowed);
+            if(allowed){
+                setOpenForm(true);
+            }   
+            else{
+                toast.error("Update is not allowed because this adventure has reservations.", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            }
+        }
+    checkAllowed();
+
+    }
     
     const handleCloseForm = () => {
         setOpenForm(false);
@@ -74,7 +98,25 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
             return adventure;
         } 
         getAdventureData();
+
+        async function setData() {
+            const markData = await getMarkByOfferId(id);
+            setMarkData(markData.data ? markData.data : "0");
+            return markData.data;
+          }
+        setData();
     }, []);
+
+    function createServiceData() {
+        let rows = [];
+        adventureData.additionalServices.forEach((data) => {
+            let name = data.serviceName;
+            let price = data.servicePrice;
+            rows.push({name, price});
+          });
+        return rows;
+      }
+    
 
     let images = [];
 
@@ -102,6 +144,10 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         <Button variant="contained" onClick={handleOpenForm}>Change info</Button>
                     </div>    
                 </div>
+                {!!markData && 
+                <div className="mark">
+                    <Rating name="read-only" value={markData} readOnly />
+                </div>}
                 <Modal
                     open={openChangeForm}
                     onClose={handleCloseForm}
@@ -125,7 +171,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 
                     
                 </Grid>
-                <PriceList offer={adventureData}/>
+                <PriceList offer={adventureData} additionalServices={createServiceData()}/>
             </div>
         </ThemeProvider>
         </div>

@@ -12,7 +12,11 @@ import { useNavigate } from "react-router-dom";
 import MainNavigation from '../../layout/MainNavigation';
 
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: { main: "#9DAB86" },
+  },
+});
 
 export default function Registration(){
     let navigate = useNavigate(); 
@@ -38,7 +42,7 @@ export default function Registration(){
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(./logo.png)',
+            backgroundImage: 'url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

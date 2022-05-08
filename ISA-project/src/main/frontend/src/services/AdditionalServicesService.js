@@ -1,18 +1,20 @@
 import axios from "axios";
 import api from "../app/api";
+import { toast } from "react-toastify";
 
 export function getAdditionalServiceByOffer(id){
-    return api
+    api
         .get("/getAdditionalServiceInfo", {
             params:{
                 id:id
             }
         })
         .then((data) => data)
-        .catch((err) => {
-            console.log("Nije uspesno dobavljeno");
-            return err.message;
+        .catch((err) => {toast.error(err.response.data, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
         });
+    })
 }
 
 export function addAddtionalServices(offerId, additionalServiceDTOS){
@@ -24,6 +26,15 @@ export function addAddtionalServices(offerId, additionalServiceDTOS){
             additionalServiceDTOS : additionalServiceDTOS
         }
     })
-    .then((responseData) => alert(responseData.data))
-    .catch((errMessage) => alert(errMessage.data));
+    .then((responseData) => {
+                            toast.success(responseData.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            });
+                        })
+    .catch((errMessage) => {toast.error(errMessage.response.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            });
+                        });
 }

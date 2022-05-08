@@ -41,6 +41,7 @@ function ShipProfilePage({ id, close }) {
     }
     setData();
   }, []);
+
   const [markData, setMarkData] = useState();
   useEffect(() => {
     async function setData() {
@@ -50,6 +51,17 @@ function ShipProfilePage({ id, close }) {
     }
     setData();
   }, []);
+
+  // function createServiceData() {
+  //   let rows = [];
+  //   shipData.additionalServices.forEach((data) => {
+  //       let name = data.serviceName;
+  //       let price = data.servicePrice;
+  //       rows.push({name, price});
+  //     });
+  //   return rows;
+  // }
+
   let photos = [];
   if (shipData && markData) {
     shipData.photos.forEach((photo) => {
