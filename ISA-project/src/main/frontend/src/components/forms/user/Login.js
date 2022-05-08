@@ -18,7 +18,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 toast.configure();
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: { main: "#9DAB86" },
+  },
+});
 
 export default function LogIn() {
   let homePages = {
@@ -74,7 +78,7 @@ export default function LogIn() {
             sm={4}
             md={7}
             sx={{
-              backgroundImage: "url(./logo.png)",
+              backgroundImage: "url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)",
               backgroundRepeat: "no-repeat",
               backgroundColor: (t) =>
                 t.palette.mode === "light"
@@ -82,7 +86,7 @@ export default function LogIn() {
                   : t.palette.grey[900],
               backgroundSize: "cover",
               backgroundPosition: "center",
-            }}
+                  }}
           />
           <Grid
             item
@@ -145,6 +149,7 @@ export default function LogIn() {
                   type="submit"
                   fullWidth
                   variant="contained"
+                  style={theme.secondary}
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Sign In

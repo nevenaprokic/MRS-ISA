@@ -47,8 +47,28 @@ $profile_page_width: 60%;
 .boxItemTitle{
     margin-left: 5%;
     font-size: 18px;
-    color: gray;
-    
+    color: gray; 
+}
+
+.adventureAttribute{
+    margin-left: 1%;
+    font-size: 18px;
+    color: gray; 
+}
+
+.boxItemTitle{
+    margin-left: 5%;
+    font-size: 18px;
+    color: gray; 
+    $orange :#CC7351;
+}
+
+.adventureTitle{
+    margin-left: 1%;
+    font-size: 18px;
+    color :#CC7351;
+    font-weight: bold !important;
+    font-style: italic;
 }
 
 .infoBox{

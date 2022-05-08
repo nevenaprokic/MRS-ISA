@@ -3,9 +3,14 @@ package com.booking.ISAbackend.service.impl;
 import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.model.DeleteRequest;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.MyUser;
+import com.booking.ISAbackend.model.Reservation;
+import com.booking.ISAbackend.repository.DeleteRequestRepository;
 import com.booking.ISAbackend.repository.InstructorRepository;
+import com.booking.ISAbackend.repository.ReservationRepository;
+import com.booking.ISAbackend.repository.UserRepository;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.InstructorService;
 import com.booking.ISAbackend.validation.Validator;
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +31,15 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Autowired
     private AdventureService adventureService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private DeleteRequestRepository deleteRequestRepository;
 
     @Override
     public List<InstructorProfileData> searchInstructors(String firstName, String lastName, String address, String phoneNumber) throws InvalidPhoneNumberException, IOException {
@@ -43,6 +58,21 @@ public class InstructorServiceImpl implements InstructorService {
         List<Instructor> instructors = instructorRepository.findAll();
         makeInstructorDTOs(retList, instructors);
         return retList;
+    }
+
+    @Override
+    public boolean sendDeleteRequest(String email, String reason) {
+        MyUser user = userRepository.findByEmail(email);
+        List<Reservation> listOfReservation = reservationRepository.findByCottageOwnerEmail(email);
+        LocalDate today = LocalDate.now();
+        for(Reservation r:listOfReservation){
+            if((today.compareTo(r.getEndDate())<0)){
+                return false;
+            }
+        }
+        DeleteRequest deleteRequest = new DeleteRequest(reason, user);
+        deleteRequestRepository.save(deleteRequest);
+        return true;
     }
 
     private void makeInstructorDTOs(List<InstructorProfileData> retList, List<Instructor> instructors) throws IOException {

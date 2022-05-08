@@ -15,6 +15,7 @@ import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
+import { getAdditionalServiceByOffer } from "../../../services/AdditionalServicesService";
 
 
 const theme = createTheme({
@@ -28,8 +29,11 @@ const theme = createTheme({
   },
 });
 
+
+
 function CottageProfilePage({ id, close }) {
   const [cottageData, setCottageData] = useState();
+  const [additioanlServices, setServices] = useState();
 
   useEffect(() => {
     async function setcottageData() {
@@ -42,14 +46,28 @@ function CottageProfilePage({ id, close }) {
   }, []);
 
   const [markData, setMarkData] = useState();
+  const [serviceData, setServiceData] = useState();
+
   useEffect(() => {
     async function setData() {
       const markData = await getMarkByOfferId(id);
       setMarkData(markData.data ? markData.data : "0");
+      
       return markData.data;
     }
     setData();
+
   }, []);
+
+  function createServiceData() {
+    let rows = [];
+    cottageData.additionalServices.forEach((data) => {
+        let name = data.serviceName;
+        let price = data.servicePrice;
+        rows.push({name, price});
+      });
+    return rows;
+  }
 
   let images = [];
 
@@ -92,7 +110,7 @@ function CottageProfilePage({ id, close }) {
                 <AdditionalDescriptionBox additionData={cottageData} />
               </Grid>
             </Grid>
-            <PriceList offer={cottageData} />
+            <PriceList offer={cottageData} additionalServices={createServiceData()}/>
           </div>
         </ThemeProvider>
       </div>

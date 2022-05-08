@@ -50,7 +50,17 @@ export function searchInstructors(params, setOffers){
     console.log(params);
     return api
         .get("/searchInstructors",  {params})
-        .then((data) => setOffers(data.data))
+        .then((data) =>{
+          setOffers(data.data);
+          if (data.data.length == 0) {
+            toast.info(
+              "You don't have any instructors that match the search parameters.",
+              {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+              }
+            );
+        }})
         .catch((err) => {
             {toast.error("Instructor doesn't exists", {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -58,4 +68,21 @@ export function searchInstructors(params, setOffers){
             });
         }
         });
+}
+
+export function sendDeleteRequestInstructor(data){
+    return api
+    .post("instructor-delete-profile-request?email=" + getUsernameFromToken(), data)
+    .then((data) => {
+      toast.success("You have successfully submitted a request to delete the order.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    })
+    .catch((err) => {
+      toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    });
 }

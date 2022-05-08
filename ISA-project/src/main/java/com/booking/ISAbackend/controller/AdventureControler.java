@@ -142,7 +142,6 @@ public class AdventureControler {
             adventureService.updateAdventureAdditionalServices(additionalServiceDTOS, id);
             return ResponseEntity.ok().body("Successfully change adventure");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
