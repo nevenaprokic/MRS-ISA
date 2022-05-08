@@ -9,8 +9,12 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { TextField } from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import InputAdornment from "@mui/material/InputAdornment";
+import EastIcon from '@mui/icons-material/East';
+import BoyIcon from '@mui/icons-material/Boy';
+import StarIcon from '@mui/icons-material/Star';
 
-export default function ClientFilter() {
+export default function ClientFilter({ params, setParams }) {
 
   return (
     <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
@@ -24,28 +28,89 @@ export default function ClientFilter() {
                   </AccordionSummary>
                   <AccordionDetails>                 
                     <Typography>
-                    
-                      <TextField
-                        id="from"
-                        label="From"
-                        defaultValue=""
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                    />
-                    
-                    <TextField
-                        id="to"
-                        label="To"
-                        defaultValue=""
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                    />
-                    
-          </Typography>
-                    <Typography>Price: </Typography>
-                    <Typography>Number of people: </Typography>
+                      <Grid item>
+                          <TextField
+                            label="Min price"
+                            id="priceMin"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, minPrice: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end">€</InputAdornment>,
+                            }}
+                          />
+                          <EastIcon></EastIcon>
+                          <TextField
+                            label="Max price"
+                            id="priceMax"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, maxPrice: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end">€</InputAdornment>,
+                            }}
+                          />
+                      </Grid>
+                          <br/>
+                      <Grid item>
+                          <TextField
+                            style = {{maxWidth: 240}}
+                            label="Min number of people"
+                            id="minPeople"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, minPeople: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end"><BoyIcon/></InputAdornment>,
+                            }}
+                          />
+                           <EastIcon></EastIcon>
+                          <TextField
+                            style = {{maxWidth: 240}}
+                            label="Max number of people"
+                            id="maxPeople"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, maxPeople: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end"><BoyIcon/></InputAdornment>,
+                            }}
+                          />
+                      </Grid>
+                      <br/>
+                      <Grid item>
+                          <TextField
+                            style = {{maxWidth: 240}}
+                            label="Min rating"
+                            id="minRating"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, minRating: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end"><StarIcon/></InputAdornment>,
+                            }}
+                          />
+                           <EastIcon></EastIcon>
+                          <TextField
+                            style = {{maxWidth: 240}}
+                            label="Max rating"
+                            id="maxRating"
+                            type="number"
+                            onChange={(event) => {
+                              setParams({ ...params, maxRating: event.target.value });
+                            }}
+                            InputProps={{
+                              startAdornment: <InputAdornment position="end"><StarIcon/></InputAdornment>,
+                            }}
+                          />
+                      </Grid>
+
+                  </Typography>
                   </AccordionDetails>
                 </Accordion>
             </Grid>

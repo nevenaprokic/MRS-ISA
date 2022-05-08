@@ -62,11 +62,15 @@ export default function ClientHomePage() {
     const [params, setParams] = useState({
         firstName: "",
         lastName: "",
-        phoneNumber: "",
         name: "",
         address: "",
-        maxPeople: -1,
+        minPeople: -1,
+        maxPeople: Infinity,
+        minPrice: -1,
+        maxPrice: Infinity,
         description: "",
+        minRating:-1,
+        maxRating: Infinity,
         dateFrom: new Date().toLocaleDateString("en-US"),
         dateTo: new Date().toLocaleDateString("en-US"),
     });
@@ -75,13 +79,17 @@ export default function ClientHomePage() {
       setParams({
         firstName: "",
         lastName: "",
-        phoneNumber: "",
         name: "",
         address: "",
-        maxPeople: -1,
+        minPeople: -1,
+        maxPeople: Infinity,
+        minPrice: -1,
+        maxPrice: Infinity,
         description: "",
-        dateFrom: new Date(),
-        dateTo: new Date()
+        minRating:-1,
+        maxRating: Infinity,
+        dateFrom: new Date().toLocaleDateString("en-US"),
+        dateTo: new Date().toLocaleDateString("en-US"),
     });
     }
 
@@ -151,9 +159,9 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
                               <br/>
-                              <ClientFilter/>
+                              <ClientFilter params={params} setParams={setParams} />
                               <br />
-                              <ClientSort offers={offers} setOffers={setOffers}/>
+                              <ClientSort offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
