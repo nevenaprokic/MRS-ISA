@@ -23,6 +23,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -216,10 +217,13 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     public Boolean chechUpdateAllowed(int adventureId) {
         List<Reservation> reservations = reservationRepository.findAllByOfferId(adventureId);
-        if (reservations.isEmpty()){
-            return true;
+        LocalDate today = LocalDate.now();
+        for(Reservation r:reservations){
+            if((today.compareTo(r.getEndDate())<0)){
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {

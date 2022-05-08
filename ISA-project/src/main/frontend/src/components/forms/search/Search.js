@@ -156,7 +156,7 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
         <Button
           size="large"
           sx={{}}
-          onClick={() => searchOffer[type](params, setOffers)}
+          onClick={() => searchOffer[type](params, setOffers, setSearchMood)}
         >
           Search
         </Button>

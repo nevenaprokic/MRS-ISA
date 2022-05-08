@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -45,6 +43,17 @@ public class InstructorController {
             return ResponseEntity.ok(instructors);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("instructor-delete-profile-request")
+    public ResponseEntity<String> sendDeleteRequestCottageOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+        try{
+            if(instructorService.sendDeleteRequest(email, data.get("reason")))
+                return ResponseEntity.ok("Successfully created request to delete the order.");
+            else
+                return ResponseEntity.status(400).body("Unable to send request to delete the order, user's offers have reservations.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Unable to send request to delete the order.");
         }
     }
 }

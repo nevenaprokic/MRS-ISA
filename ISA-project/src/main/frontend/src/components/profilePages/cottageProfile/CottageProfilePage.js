@@ -28,6 +28,8 @@ const theme = createTheme({
   },
 });
 
+
+
 function CottageProfilePage({ id, close }) {
   const [cottageData, setCottageData] = useState();
 
@@ -50,6 +52,16 @@ function CottageProfilePage({ id, close }) {
     }
     setData();
   }, []);
+
+  // function createServiceData() {
+  //   let rows = [];
+  //   cottageData.additionalServices.forEach((data) => {
+  //       let name = data.serviceName;
+  //       let price = data.servicePrice;
+  //       rows.push({name, price});
+  //     });
+  //   return rows;
+  // }
 
   let images = [];
 

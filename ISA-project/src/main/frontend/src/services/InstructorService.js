@@ -59,3 +59,20 @@ export function searchInstructors(params, setOffers){
         }
         });
 }
+
+export function sendDeleteRequestInstructor(data){
+    return api
+    .post("instructor-delete-profile-request?email=" + getUsernameFromToken(), data)
+    .then((data) => {
+      toast.success("You have successfully submitted a request to delete the order.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    })
+    .catch((err) => {
+      toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    });
+}
