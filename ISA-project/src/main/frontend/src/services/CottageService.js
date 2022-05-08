@@ -71,6 +71,7 @@ export function searchCottages(params, setOffers) {
 }
 
 export function searchCottagesClient(params, setOffers) {
+  console.log(params);
   return api
     .get("/cottage/search-cottages-client", { params })
     .then((data) => {

@@ -67,6 +67,8 @@ export default function ClientHomePage() {
         address: "",
         maxPeople: -1,
         description: "",
+        dateFrom: new Date().toLocaleDateString("en-US"),
+        dateTo: new Date().toLocaleDateString("en-US"),
     });
 
     const resetParams = () => {
@@ -78,6 +80,8 @@ export default function ClientHomePage() {
         address: "",
         maxPeople: -1,
         description: "",
+        dateFrom: new Date(),
+        dateTo: new Date()
     });
     }
 
