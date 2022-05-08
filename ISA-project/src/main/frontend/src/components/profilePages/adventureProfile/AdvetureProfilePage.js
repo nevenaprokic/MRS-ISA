@@ -15,6 +15,7 @@ import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
 import { test } from "../../../services/AdventureService";
 import { toast } from "react-toastify";
+import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
 
 
 const theme = createTheme({
@@ -32,7 +33,7 @@ const theme = createTheme({
 
 function AdventureProfilePage({id, close, childToParentMediaCard}){
 
-
+  
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
@@ -95,6 +96,17 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
         getAdventureData();
     }, []);
 
+    function createServiceData() {
+        let rows = [];
+        adventureData.additionalServices.forEach((data) => {
+            let name = data.serviceName;
+            let price = data.servicePrice;
+            rows.push({name, price});
+          });
+        return rows;
+      }
+    
+
     let images = [];
 
     function setImages(){
@@ -144,7 +156,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 
                     
                 </Grid>
-                <PriceList offer={adventureData}/>
+                <PriceList offer={adventureData} additionalServices={createServiceData()}/>
             </div>
         </ThemeProvider>
         </div>

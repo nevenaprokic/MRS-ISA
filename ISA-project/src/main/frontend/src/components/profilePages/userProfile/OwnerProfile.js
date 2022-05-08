@@ -27,7 +27,7 @@ import AdditionalInfoBox from "./AdditionalInfoBox";
 import HomeIcon from "@mui/icons-material/Home";
 import ChangePassword from "../../forms/user/ChangePassword";
 import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
-import { sendDeleteRequestInstructor } from "../../../services/InstructorService";
+
 
 function OwnerProfile({ instructor, close }) {
   const style = {

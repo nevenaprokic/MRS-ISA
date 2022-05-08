@@ -85,6 +85,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
   }, [offerData]);
 
   const [markData, setMarkData] = useState();
+
   useEffect(() => {
     console.log("eeeeee");
     if(!offerData)
@@ -97,6 +98,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
     setData();
 
   }, []);
+  
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>

@@ -223,7 +223,7 @@ public class AdventureServiceImpl implements AdventureService {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {
