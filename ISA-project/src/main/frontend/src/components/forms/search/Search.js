@@ -16,23 +16,25 @@ import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
 import { searchAdventureByInstructor } from "../../../services/AdventureService";
 
-export default function Search({ params, setParams, type, setOffers }) {
+export default function Search({ params, setParams, type, setOffers, setSearchMood }) {
   const [error, setError] = useState("");
 
-  // const handleChange = (event) => {
-  //   let {
-  //     target: { value },
-  //   } = event;
-  //   let reg = new RegExp(
-  //     /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-  //   ).test(value);
-  //   if (!reg && event.target.value != "") {
-  //     setError("Wrong format for phone number");
-  //   } else {
-  //     setError("");
-  //     setParams({ ...params, phoneNumber: event.target.value });
-  //   }
-  // };
+
+  const handleChange = (event) => {
+    let {
+      target: { value },
+    } = event;
+    let reg = new RegExp(
+      /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
+    ).test(value);
+    if (!reg && event.target.value != "") {
+      setError("Wrong format for phone number");
+    } else {
+      setError("");
+      setParams({ ...params, phoneNumber: event.target.value });
+    }
+  };
+  
   let searchOffer = {
     [offerType.COTTAGE]: searchCottages,
     [offerType.SHIP]: searchShips,
@@ -51,6 +53,7 @@ export default function Search({ params, setParams, type, setOffers }) {
             label="First Name"
             onChange={(event) => {
               setParams({ ...params, firstName: event.target.value });
+              
             }}
             InputLabelProps={{
               shrink: true,
@@ -67,6 +70,7 @@ export default function Search({ params, setParams, type, setOffers }) {
             }}
             onChange={(event) => {
               setParams({ ...params, name: event.target.value });
+              
             }}
           />
         )}
@@ -105,16 +109,16 @@ export default function Search({ params, setParams, type, setOffers }) {
         {type == offerType.ADVENTURE ? (
           <>
             <TextField
-              id="rating"
-              label="Rating"
-              onChange={(event) => { setParams({ ...params, rating: event.target.value }); }}
+              id="phoneNumber"
+              label="Phone Number"
+              onChange={(event) => { setParams({ ...params, phoneNumber: event.target.value }); }}
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
             />
             {error != "" && (
-              <p style={{ color: "#ED6663" }}>Please check the rating</p>
+              <p style={{ color: "#ED6663" }}>Please check the phone number</p>
             )}
           </>
         ) : (

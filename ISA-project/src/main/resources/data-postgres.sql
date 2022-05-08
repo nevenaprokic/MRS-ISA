@@ -84,11 +84,20 @@ insert into additional_service(name,price) values ('vecera', 300);
 insert into additional_service(name,price) values ('fen', 80);
 
 /*PHOTO*/
-insert into photo(path) values('pecanje an dunavu1.jpg');
+insert into photo(path) values('pecanje6.jpg');
 insert into photo(path) values('bela ladja1.jpg');
 insert into photo(path) values('brvnara1.jpg');
 insert into photo(path) values('brvnara2.jpg');
 insert into photo(path) values('original.jpg');
+insert into photo(path) values('pecanje1.jpg');
+insert into photo(path) values('pecanje2.jpg');
+insert into photo(path) values('pecanje3.jpg');
+insert into photo(path) values('pecanje4.jpg');
+insert into photo(path) values('pecanje5.jpg');
+insert into photo(path) values('pecanje7.jpg');
+insert into photo(path) values('pecanje8.jpg');
+insert into photo(path) values('pecanje9.jpg');
+insert into photo(path) values('pecanje10.jpg');
 
 /*COTTAGE*/
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
@@ -109,15 +118,17 @@ insert into ship(additional_equipment, max_speed, motor_number, motor_power, nav
 insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
 
 /*ADVENTURE*/
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje u Kikindi',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na jezeru',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje na Ibru',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na Tisi',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8);
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Dunavu',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',9);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Savi',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Mušičarenje',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10);
 
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',7,9);
 insert into adventure(additional_equipment, id, my_user_id) values ('Ne poseduje pecarosku opremu',8,9);
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',9,10);
-
-
+insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',10,9);
+insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',11,9);
 
 
 -- /*RESERVATION*/
@@ -284,6 +295,17 @@ insert into offer_photos(offer_id,photos_id) values (5,2);
 insert into offer_photos(offer_id,photos_id) values (2,3);
 insert into offer_photos(offer_id,photos_id) values (2,4);
 insert into offer_photos(offer_id,photos_id) values (1,5);
+
+insert into offer_photos(offer_id,photos_id) values (7,6);
+insert into offer_photos(offer_id,photos_id) values (7,7);
+insert into offer_photos(offer_id,photos_id) values (7,8);
+insert into offer_photos(offer_id,photos_id) values (8,9);
+insert into offer_photos(offer_id,photos_id) values (8,10);
+insert into offer_photos(offer_id,photos_id) values (9,11);
+
+insert into offer_photos(offer_id,photos_id) values (10,12);
+insert into offer_photos(offer_id,photos_id) values (10,13);
+insert into offer_photos(offer_id,photos_id) values (11,14);
 --
 -- /*OWNER TRANSACTION*/
 -- insert into owner_transaction(owner_id,transaction_id) values (9,1);
