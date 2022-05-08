@@ -15,7 +15,9 @@ import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
 import { test } from "../../../services/AdventureService";
 import { toast } from "react-toastify";
+import { getMarkByOfferId } from "../../../services/MarkService";
 import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
+import Rating from "@mui/material/Rating";
 
 
 const theme = createTheme({
@@ -37,6 +39,8 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
+
+    const [markData, setMarkData] = useState();
 
     const handleOpenForm = () => {
         console.log("TU");
@@ -94,6 +98,13 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
             return adventure;
         } 
         getAdventureData();
+
+        async function setData() {
+            const markData = await getMarkByOfferId(id);
+            setMarkData(markData.data ? markData.data : "0");
+            return markData.data;
+          }
+        setData();
     }, []);
 
     function createServiceData() {
@@ -133,6 +144,10 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         <Button variant="contained" onClick={handleOpenForm}>Change info</Button>
                     </div>    
                 </div>
+                {!!markData && 
+                <div className="mark">
+                    <Rating name="read-only" value={markData} readOnly />
+                </div>}
                 <Modal
                     open={openChangeForm}
                     onClose={handleCloseForm}

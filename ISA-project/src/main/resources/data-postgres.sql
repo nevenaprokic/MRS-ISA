@@ -10,6 +10,8 @@ insert into address (street, city, state) values ('Bulevar kralja Petra 137', 'B
 insert into address (street, city, state) values ('Fruskogorksa 60', 'Novi Sad', 'Srbija');
 insert into address (street, city, state) values ('Mise Dimitrijevica 19', 'Novi Sad', 'Srbija');
 
+insert into address (street, city, state) values ('Kostovac', 'Kopaonik', 'Srbija');
+insert into address (street, city, state) values ('Treska 5b', 'Kopaonik', 'Srbija');
 /*ROLE*/
 insert into role(name) values ('CLIENT');
 insert into role(name) values ('ADMIN');
@@ -99,6 +101,16 @@ insert into photo(path) values('pecanje8.jpg');
 insert into photo(path) values('pecanje9.jpg');
 insert into photo(path) values('pecanje10.jpg');
 
+insert into photo(path) values('galeb.jpg');
+insert into photo(path) values('sidro.jpeg');
+insert into photo(path) values('jela1.jpg');
+insert into photo(path) values('sumska vila1.jpg');
+insert into photo(path) values('sumska vila2.jpg');
+insert into photo(path) values('sumska vila3.jpg');
+insert into photo(path) values('sumska vila4.jpg');
+insert into photo(path) values('hmf1.jpg');
+insert into photo(path) values('hmf2.jpg');
+
 /*COTTAGE*/
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,3000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1);
 insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,4000,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2);
@@ -130,6 +142,11 @@ insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pe
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',10,9);
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',11,9);
 
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Sumska vila se nalazi na Kopaoniku, na 6 km od ski-centra Kopaonik i nudi smeštaj sa barom, besplatnim WiFi internetom, zajedničkom kuhinjom i zajedničkim salonom','Sumska vila',8,120,'Nije dozvoljeno bilo kakvo unistavanje imovine.',11);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Holiday Home Floris nudi smeštaj sa terasom i pogledom na planinu, a nalazi se na oko 6 km od ski-centra Kopaonik. Gosti ove vikendice mogu da koriste vrt, pribor za pripremu roštilja, besplatan WiFi i besplatan privatni parking.','Holiday Home Floris',5,150,'Nije dozvoljeno bilo kakvo unistavanje imovine.',12);
+
+insert into cottage(bed_number, room_number, id, my_user_id) values (4,4,12,5);
+insert into cottage(bed_number, room_number, id, my_user_id) values (3,3,13,5);
 
 -- /*RESERVATION*/
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,7);
@@ -306,6 +323,19 @@ insert into offer_photos(offer_id,photos_id) values (9,11);
 insert into offer_photos(offer_id,photos_id) values (10,12);
 insert into offer_photos(offer_id,photos_id) values (10,13);
 insert into offer_photos(offer_id,photos_id) values (11,14);
+
+insert into offer_photos(offer_id,photos_id) values (4,15);
+insert into offer_photos(offer_id,photos_id) values (6,16);
+insert into offer_photos(offer_id,photos_id) values (3,17);
+
+insert into offer_photos(offer_id,photos_id) values (12,18);
+insert into offer_photos(offer_id,photos_id) values (12,19);
+insert into offer_photos(offer_id,photos_id) values (12,20);
+insert into offer_photos(offer_id,photos_id) values (12,21);
+
+insert into offer_photos(offer_id,photos_id) values (13,22);
+insert into offer_photos(offer_id,photos_id) values (13,23);
+
 --
 -- /*OWNER TRANSACTION*/
 -- insert into owner_transaction(owner_id,transaction_id) values (9,1);

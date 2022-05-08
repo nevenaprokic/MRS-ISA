@@ -28,6 +28,7 @@ public class ShipDTO {
     private Integer maxSpeed;
     private String navigationEquipment;
     private String additionalEquipment;
+    private List<AdditionalServiceDTO> additionalServices;
 
 
     public ShipDTO(Integer id, String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, String type, String size, Integer motorNumber, Integer motorPower, Integer maxSpeed, String navigationEquipment, String additionalEquipment) {
@@ -47,6 +48,7 @@ public class ShipDTO {
         this.navigationEquipment = navigationEquipment;
         this.additionalEquipment = additionalEquipment;
 
+
     }
     public ShipDTO(Ship s) throws IOException {
         this.id = s.getId();
@@ -64,6 +66,8 @@ public class ShipDTO {
         this.maxSpeed = s.getMaxSpeed();
         this.navigationEquipment = s.getNavigationEquipment();
         this.additionalEquipment = s.getAdditionalEquipment();
+        this.additionalServices = getAdditionalServices(s);
+
 
     }
     private List<String> getPhoto(Ship ship) throws IOException {
@@ -76,6 +80,17 @@ public class ShipDTO {
         }
         return photos;
     }
+
+    private List<AdditionalServiceDTO> getAdditionalServices(Ship s) {
+        List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
+        for (AdditionalService service: s.getAdditionalServices()
+        ) {
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getName(), service.getPrice());
+            additionalServiceDTOList.add(dto);
+        }
+        return  additionalServiceDTOList;
+    }
+
 
     public ShipDTO() {
 
@@ -137,6 +152,10 @@ public class ShipDTO {
 
     public String getAdditionalEquipment() {
         return additionalEquipment;
+    }
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
     }
 
 }
