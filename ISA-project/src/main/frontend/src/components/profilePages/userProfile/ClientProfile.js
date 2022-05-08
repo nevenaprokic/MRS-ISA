@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ChangePassword from "../../forms/user/ChangePassword";
 import {toast} from 'react-toastify';
 import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
+import { isDeletionRequested } from "../../../services/ClientService";
 
 
 function ClientProfile(){
@@ -106,7 +107,7 @@ function ClientProfile(){
                             <br/><br/>
                             <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpen}> Change private data</Button>
                             <br/><br/>
-                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={handleOpenDelete} > Delete profile</Button>
+                            <Button  size="small" sx={{backgroundColor:"#99A799", color:"black"}} onClick={() => {isDeletionRequested(handleOpenDelete);}} > Delete profile</Button>
                             
                     </Typography>         
                 </Grid>

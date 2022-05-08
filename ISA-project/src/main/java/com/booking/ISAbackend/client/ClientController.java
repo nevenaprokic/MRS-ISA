@@ -76,5 +76,10 @@ public class ClientController {
         }
     }
 
+    @GetMapping("deletion-requested")
+    public ResponseEntity<Boolean> alreadyRequestedDeletion(@RequestParam String email){
+        return ResponseEntity.ok(clientService.alreadyRequestedDeletion(email));
+    }
+
 
 }
