@@ -1,7 +1,6 @@
 import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
-
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -70,9 +69,13 @@ export function searchCottages(params, setOffers) {
     });
 }
 
-export function searchCottagesClient(params, setOffers) {
+export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
+  console.log(params);
+
   return api
-    .get("/cottage/search-cottages-client", { params })
+    .post("/cottage/search-cottages-client", {...params,
+       dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
+       dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
     .then((data) => {
       if (data.data.length == 0) {
         toast.info("There are no cottages that match the search parameters.", {
@@ -81,6 +84,7 @@ export function searchCottagesClient(params, setOffers) {
         });
       }
       setOffers(data.data);
+      setLastSearchedOffers(data.data);
     })
     .catch((err) => {
       console.log("Nije uspesno dobavljeno");
@@ -88,6 +92,25 @@ export function searchCottagesClient(params, setOffers) {
     });
 }
 
+export function filterCottagesClient(params, setOffers, lastSearchedOffers) {
+  console.log(params);
+  params.maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  params.maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
+  params.maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+
+  const filterOffers = (offer) => {
+    return (offer.price <= params.maxPrice && offer.price >= params.minPrice)
+      && (offer.numberOfPerson <= params.maxPeople && offer.numberOfPerson >= params.minPeople)
+      && (offer.mark <= params.maxRating && offer.mark >= params.minRating);
+ }
+  let filtered = lastSearchedOffers.filter(filterOffers);
+  if(filtered.length == 0)
+    toast.info("No cottages that satisfie these filters.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
+  setOffers(filtered);
+}
 
 export function searchCottagesByCottageOwner(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
@@ -169,6 +192,11 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
         return compareString(sortAsc, a.state, b.state);
       });
       break;
+      case 5:
+        offers.sort((a, b) => {
+          return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
+        });
+        break;
     case 6:
       offers.sort((a, b) => {
         return (sortAsc) ?  a.price - b.price : b.price - a.price;

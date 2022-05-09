@@ -27,6 +27,7 @@ public class CottageDTO {
     private String city;
     private String state;
     private List<AdditionalServiceDTO> additionalServices;
+    private Double mark;
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
@@ -132,5 +133,12 @@ public class CottageDTO {
 
     public List<AdditionalServiceDTO> getAdditionalServices() {
         return additionalServices;
+    }
+
+    public Double getMark() {
+        return mark;
+    }
+    public void setMark(Double mark) {
+        this.mark = mark;
     }
 }
