@@ -25,6 +25,8 @@ public class OwnerRegistrationRequestDTO {
 
     private String state;
 
+    private int id;
+
     public OwnerRegistrationRequestDTO(){}
 
     public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String password, String confirmPassword, String phoneNumber, String email, String street, String city, String state) {
@@ -39,6 +41,19 @@ public class OwnerRegistrationRequestDTO {
         this.street = street;
         this.city = city;
         this.state = state;
+    }
+
+    public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String phoneNumber, String email, String street, String city, String state, int id) {
+        this.explanation = explanation;
+        this.type = type;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.id = id;
     }
 
     public String getExplanation() {

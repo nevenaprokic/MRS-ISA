@@ -11,6 +11,10 @@ import com.booking.ISAbackend.service.RegistrationRequestService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RegistrationRequestServiceImpl implements RegistrationRequestService {
@@ -37,6 +41,30 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         return false;
 
     }
+
+    @Override
+    @Transactional
+    public List<OwnerRegistrationRequestDTO> getAll() {
+        List<RegistrationRequest> allRegistrationRequests = registrationRequestRepository.findAll();
+        List<OwnerRegistrationRequestDTO> requestDTOS = new ArrayList<OwnerRegistrationRequestDTO>();
+        for(RegistrationRequest request : allRegistrationRequests){
+            Address a = request.getAddress();
+            OwnerRegistrationRequestDTO registrationRequest = new OwnerRegistrationRequestDTO(request.getDescription(),
+                    request.getPersonType(),
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getPhoneNumber(),
+                    request.getEmail(),
+                    a.getStreet(),
+                    a.getCity(),
+                    a.getState(),
+                    request.getId());
+            requestDTOS.add(registrationRequest);
+
+        }
+        return requestDTOS;
+    }
+
     private boolean validateRequest(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidPasswordException, InvalidEmail, InvalidCredential, InvalidPhoneNumber {
         boolean validationResult = Validator.isValidAdress(request.getStreet(), request.getCity(), request.getState())
                 && Validator.isMachPassword(request.getPassword(), request.getConfirmPassword())

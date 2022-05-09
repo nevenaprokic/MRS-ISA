@@ -19,4 +19,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r INNER JOIN Ship s ON r.offer.id = s.id INNER JOIN Owner ow ON ow.id = s.shipOwner.id AND ow.email = ?1")
     List<Reservation> findByShipOwnerEmail(String email);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Adventure a ON r.offer.id = a.id INNER JOIN Owner ow ON ow.id = a.cottageOwner.id AND ow.email = ?1")
+    List<Reservation> findByInstructorEmail(String email);
 }

@@ -1,15 +1,18 @@
 import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import { toast } from "react-toastify";
 
 export function changeAdminData(newAdminData){
     let email = getUsernameFromToken();
     newAdminData["email"] = email;
     api
     .post("/change-admin-data", newAdminData)
-    .then((responseData) => {
-                alert(responseData.data); 
-                })
+    .then((responseData) => {toast.success(responseData.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            });
+})
     .catch((err) => alert(err.data));
 }
 

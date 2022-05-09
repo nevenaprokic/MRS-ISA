@@ -50,4 +50,44 @@ public class RegistrationRequest {
 	public RegistrationRequest() {
 
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getPersonType() {
+		return personType;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
 }
