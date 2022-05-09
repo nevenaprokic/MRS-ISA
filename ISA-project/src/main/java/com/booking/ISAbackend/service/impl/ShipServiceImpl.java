@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.NewShipDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;

@@ -1,6 +1,5 @@
 package com.booking.ISAbackend.confirmationToken;
 
-import com.booking.ISAbackend.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

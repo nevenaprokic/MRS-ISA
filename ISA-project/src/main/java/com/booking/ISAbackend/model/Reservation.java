@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.model;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDate;

@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/cottage")
+@RequestMapping("cottage")
 public class CottageController {
     @Autowired
     private CottageService cottageService;
 
-    @GetMapping("getCottages")
+    @GetMapping("get-cottages-by-owner-email")
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
         try{
             List<CottageDTO> cottages = cottageService.findCottageByCottageOwnerEmail(email);
@@ -34,7 +34,7 @@ public class CottageController {
         }
     }
 
-    @GetMapping("getCottageInfo")
+    @GetMapping("get-info")
     public ResponseEntity<CottageDTO> getCottageInfo(@RequestParam String idCottage){
         try{
             CottageDTO cottage = cottageService.findCottageById(Integer.parseInt(idCottage));
@@ -49,7 +49,7 @@ public class CottageController {
     }
 
 
-    @GetMapping("getAllCottages")
+    @GetMapping("get-all")
     public ResponseEntity<List<CottageDTO>> getCottages(){
         try{
             List<CottageDTO> cottages = cottageService.findAll();
@@ -59,7 +59,7 @@ public class CottageController {
         }
     }
 
-    @GetMapping("searchCottages")
+    @GetMapping("search")
     public ResponseEntity<List<CottageDTO>> searchCottages(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
         try{
@@ -69,7 +69,7 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("searchCottagesByCottageOwner")
+    @GetMapping("search-by-owner")
     public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
@@ -79,7 +79,7 @@ public class CottageController {
         }
     }
 
-    @PostMapping("addCottage")
+    @PostMapping("add")
     public ResponseEntity<String> addCottage(@RequestParam("email") String ownerEmail,
                                              @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                              @RequestParam("offerName") String offerName,
@@ -125,7 +125,7 @@ public class CottageController {
         }
     }
 
-    @PostMapping("search-cottages-client")
+    @PostMapping("search-client")
     public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody CottageSearchParamsDTO params){
 
         try{

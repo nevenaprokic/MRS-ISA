@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.dto.QuickActionDTO;
+import com.booking.ISAbackend.dto.QuickReservationDTO;
 import com.booking.ISAbackend.model.QuickReservation;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.service.QuickReservationService;
@@ -20,7 +20,7 @@ public class QuickReservationServiceImpl implements QuickReservationService {
 
     @Override
     @Transactional
-    public List<QuickActionDTO> findQuickReservationByOfferId(Integer id){
+    public List<QuickReservationDTO> findQuickReservationByOfferId(Integer id){
         List<QuickReservation> listOfAllQuickReservation = quickReservationRepository.findQuickReservationByOfferId(id);
         List<QuickReservation> listOfCurrentQuickReservation = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -30,9 +30,9 @@ public class QuickReservationServiceImpl implements QuickReservationService {
                 listOfCurrentQuickReservation.add(qr);
             }
         }
-        List<QuickActionDTO> dto = new ArrayList<>();
+        List<QuickReservationDTO> dto = new ArrayList<>();
         for(QuickReservation res: listOfCurrentQuickReservation){
-            QuickActionDTO quickActionDTO = new QuickActionDTO(res);
+            QuickReservationDTO quickActionDTO = new QuickReservationDTO(res);
             dto.add(quickActionDTO);
         }
         return dto;

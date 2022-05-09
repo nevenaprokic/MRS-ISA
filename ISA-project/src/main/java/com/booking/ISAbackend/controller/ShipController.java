@@ -18,14 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/ship")
+@RequestMapping("ship")
 public class ShipController {
-    //provera da li je ulogovan i autorizacija
+
     @Autowired
     private ShipService shipService;
 
-
-    @GetMapping("getShips")
+    @GetMapping("get-all-by-owner")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
         try {
             List<ShipDTO> ships = shipService.findShipByShipOwnerEmail(email);
@@ -35,7 +34,7 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("getShipInfo")
+    @GetMapping("get-info")
     public ResponseEntity<ShipDTO> getShipInfo(@RequestParam String idShip){
         try{
             ShipDTO ship = shipService.findShipById(Integer.parseInt(idShip));
@@ -48,7 +47,7 @@ public class ShipController {
         }
 
     }
-    @GetMapping("searchShipByShipOwner")
+    @GetMapping("search-by-owner")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
         try{
             List<ShipDTO> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
@@ -58,7 +57,7 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("addShip")
+    @PostMapping("add")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
                                           @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
@@ -92,7 +91,7 @@ public class ShipController {
         }
     }
 
-    @GetMapping("getAllShips")
+    @GetMapping("get-all")
     public ResponseEntity<List<ShipDTO>> getShips(){
         try{
             List<ShipDTO> ships = shipService.findAll();
@@ -103,7 +102,7 @@ public class ShipController {
         }
     }
 
-    @GetMapping("searchShips")
+    @GetMapping("search")
     public ResponseEntity<List<ShipDTO>> searchShips(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
         try{

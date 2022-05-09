@@ -1,4 +1,4 @@
-package com.booking.ISAbackend.client;
+package com.booking.ISAbackend.model;
 
 import com.booking.ISAbackend.model.*;
 

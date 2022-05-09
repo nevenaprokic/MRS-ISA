@@ -8,7 +8,7 @@ export function changeCottageOwnerData(newCottageOwnerData) {
   let email = getUsernameFromToken();
   newCottageOwnerData["email"] = email;
   api
-    .post("/changeCottageOwnerData", newCottageOwnerData)
+    .post("/cottage-owner/change-data", newCottageOwnerData)
     .then((responseData) => {
       toast.success("You successfully changed the data.", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -19,7 +19,7 @@ export function changeCottageOwnerData(newCottageOwnerData) {
 }
 export function getCottageOwnerByUsername(username) {
   return api
-    .get("/cottageOwnerProfileInfo", {
+    .get("/cottage-owner/profile-info", {
       params: {
         email: username,
       },
@@ -33,7 +33,7 @@ export function getCottageOwnerByUsername(username) {
 
 export function sendDeleteRequestCottageOwner(data){
   return api
-      .post("sendDeleteRequestCottageOwner?email=" + getUsernameFromToken(), data)
+      .post("/cottage-owner/send-delete-request?email=" + getUsernameFromToken(), data)
       .then((data) => {
         toast.success("You have successfully submitted a request to delete the order.", {
           position: toast.POSITION.BOTTOM_RIGHT,

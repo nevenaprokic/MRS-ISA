@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("additional-service")
 public class AdditionalServiceController {
 
     @Autowired
     private OfferService offerService;
 
-    @GetMapping("getAdditionalServiceInfo")
+    @GetMapping("get-info")
     public ResponseEntity<List<AdditionalServiceDTO>> getAdditionalServiceByOffer(@RequestParam String id){
         try{
             List<AdditionalServiceDTO> additionalServices = offerService.findAdditionalServiceByOffer(Integer.parseInt(id));

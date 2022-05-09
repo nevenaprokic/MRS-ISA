@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 export function getCottageByCottageOwnerEmail(username) {
   return api
-    .get("/cottage/getCottages", {
+    .get("/cottage/get-cottages-by-owner-email", {
       params: {
         email: username,
       },
@@ -27,7 +27,7 @@ export function getCottageByCottageOwnerEmail(username) {
 }
 export function getCottageById(id) {
   return api
-    .get("/cottage/getCottageInfo", {
+    .get("/cottage/get-info", {
       params: {
         idCottage: id,
       },
@@ -41,7 +41,7 @@ export function getCottageById(id) {
 
 export function getCottages() {
   return api
-    .get("/cottage/getAllCottages")
+    .get("/cottage/get-all")
     .then((data) => data)
     .catch((err) => {
       console.log("Nije uspesno dobavljeno");
@@ -53,7 +53,7 @@ export function searchCottages(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
   params.price = params.price == "" ? -1 : params.price;
   return api
-    .get("/cottage/searchCottages", { params })
+    .get("/cottage/search", { params })
     .then((data) => {
       if (data.data.length == 0) {
         toast.info("There are no cottages that match the search parameters.", {
@@ -73,7 +73,7 @@ export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
   console.log(params);
 
   return api
-    .post("/cottage/search-cottages-client", {...params,
+    .post("/cottage/search-client", {...params,
        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
     .then((data) => {
@@ -117,7 +117,7 @@ export function searchCottagesByCottageOwner(params, setOffers) {
   params.price = params.price == "" ? -1 : params.price;
   params.cottageOwnerUsername = getUsernameFromToken();
   return api
-    .get("/cottage/searchCottagesByCottageOwner", { params })
+    .get("/cottage/search-by-owner", { params })
     .then((data) => {
       if (data.data.length == 0) {
         toast.info(
@@ -139,7 +139,7 @@ export function addCottage(cottageData, additionalServiceData) {
   let email = getUsernameFromToken();
   cottageData.append("email", email);
   api
-    .post("/cottage/addCottage", cottageData)
+    .post("/cottage/add", cottageData)
     .then((responseData) => {
       let cottageId = responseData.data;
       addAddtionalServices(cottageId, additionalServiceData);

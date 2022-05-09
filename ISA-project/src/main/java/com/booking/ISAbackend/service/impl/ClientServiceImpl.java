@@ -1,16 +1,16 @@
-package com.booking.ISAbackend.client;
+package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
+import com.booking.ISAbackend.dto.ClientDTO;
+import com.booking.ISAbackend.dto.ClientRequest;
 import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.*;
-import com.booking.ISAbackend.repository.AddressRepository;
-import com.booking.ISAbackend.repository.DeleteRequestRepository;
-import com.booking.ISAbackend.repository.ReservationRepository;
-import com.booking.ISAbackend.repository.RoleRepository;
+import com.booking.ISAbackend.repository.*;
+import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,48 +75,60 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findByEmail(String email) {
-        return clientRepository.findByEmail(email);
+    @Transactional
+    public ClientDTO findByEmail(String email) {
+        Client client = clientRepository.findByEmail(email);
+        ClientDTO dto = new ClientDTO(
+                client.getEmail(),
+                client.getFirstName(),
+                client.getLastName(),
+                client.getPhoneNumber(),
+                client.getAddress().getStreet(),
+                client.getAddress().getCity(),
+                client.getAddress().getState(),
+                client.getClientCategory().toString(),
+                client.getPenal()
+        );
+        return dto;
     }
 
     @Override
+    @Transactional
     public void updateInfo(String email, ClientDTO dto) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
         Client c = clientRepository.findByEmail(email);
         Address address = c.getAddress();
-        if(c != null){
-            if(!dto.getFirstName().equals("")){
-                if(Validator.onlyLetterAndSpacesValidation(dto.getFirstName())) {
-                    c.setFirstName(dto.getFirstName());
-                }
+        if(!dto.getFirstName().equals("")){
+            if(Validator.onlyLetterAndSpacesValidation(dto.getFirstName())) {
+                c.setFirstName(dto.getFirstName());
             }
-            if(!dto.getLastName().equals("")){
-                if(Validator.onlyLetterAndSpacesValidation(dto.getLastName())){
-                    c.setLastName(dto.getLastName());
-                }
+        }
+        if(!dto.getLastName().equals("")){
+            if(Validator.onlyLetterAndSpacesValidation(dto.getLastName())){
+                c.setLastName(dto.getLastName());
             }
-            if(!dto.getPhoneNumber().equals("")){
-                if(Validator.phoneNumberValidation(dto.getPhoneNumber())){
-                    c.setPhoneNumber(dto.getPhoneNumber());
-                }
+        }
+        if(!dto.getPhoneNumber().equals("")){
+            if(Validator.phoneNumberValidation(dto.getPhoneNumber())){
+                c.setPhoneNumber(dto.getPhoneNumber());
             }
-            if(!dto.getStreet().equals("")){
-                if(Validator.isValidAdress(dto.getStreet(), address.getCity(), address.getState()))
-                {
-                    address.setStreet(dto.getStreet());
-                }
+        }
+        if(!dto.getStreet().equals("")){
+            if(Validator.isValidAdress(dto.getStreet(), address.getCity(), address.getState()))
+            {
+                address.setStreet(dto.getStreet());
             }
-            if(!dto.getCity().equals("")){
-                if(Validator.isValidAdress(address.getStreet(), dto.getCity(), address.getState()))
-                {
-                    address.setCity(dto.getCity());
-                }
+        }
+        if(!dto.getCity().equals("")){
+            if(Validator.isValidAdress(address.getStreet(), dto.getCity(), address.getState()))
+            {
+                address.setCity(dto.getCity());
             }
-            if(!dto.getState().equals("")){
-                if(Validator.isValidAdress(address.getStreet(), address.getCity(), dto.getState())) {
-                    address.setState(dto.getState());
-                }
+        }
+        if(!dto.getState().equals("")){
+            if(Validator.isValidAdress(address.getStreet(), address.getCity(), dto.getState())) {
+                address.setState(dto.getState());
             }
-    }
+        }
     }
 
     @Override

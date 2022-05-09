@@ -1,9 +1,7 @@
 package com.booking.ISAbackend.dto;
 
-import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.model.*;
 
-import javax.persistence.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

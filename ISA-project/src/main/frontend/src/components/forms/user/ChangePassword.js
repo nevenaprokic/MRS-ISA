@@ -36,7 +36,7 @@ export default function ChangePassword({close}) {
 
   const onSubmit = (data) => {
       api
-      .post("updatePassword?email=" + getUsernameFromToken(), data)
+      .post("/user/update-password?email=" + getUsernameFromToken(), data)
       .then(res => {
         close();
         toast.success(res.data, {
