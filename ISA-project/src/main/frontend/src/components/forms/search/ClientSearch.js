@@ -15,8 +15,7 @@ import {
 import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
 
-export default function ClientSearch({ params, setParams, type, setOffers }) {
-    const [error, setError] = useState("");
+export default function ClientSearch({ params, setParams, type, setOffers, setLastSearchedOffers }) {
 
   const [valueFrom, setValueFrom] = React.useState();
   const [valueTo, setValueTo] = React.useState();
@@ -117,7 +116,7 @@ export default function ClientSearch({ params, setParams, type, setOffers }) {
         <Button
           size="large"
           sx={{}}
-          onClick={() => searchOffer[type](params, setOffers)}
+          onClick={() => searchOffer[type](params, setOffers, setLastSearchedOffers)}
         >
           Search
         </Button>

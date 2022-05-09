@@ -11,10 +11,21 @@ import { TextField } from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import InputAdornment from "@mui/material/InputAdornment";
 import EastIcon from '@mui/icons-material/East';
+import Button from "@mui/material/Button";
 import BoyIcon from '@mui/icons-material/Boy';
 import StarIcon from '@mui/icons-material/Star';
+import { offerType } from "../../../app/Enum";
+import {
+  filterCottagesClient
+} from "../../../services/CottageService";
 
-export default function ClientFilter({ params, setParams }) {
+export default function ClientFilter({ params, setParams, setOffers, type, lastSearchedOffers }) {
+
+  let filterOffer = {
+    [offerType.COTTAGE]: filterCottagesClient,
+    // [offerType.SHIP]: searchShips,
+    // [offerType.ADVENTURE]: searchInstructors
+  };
 
   return (
     <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
@@ -28,7 +39,7 @@ export default function ClientFilter({ params, setParams }) {
                   </AccordionSummary>
                   <AccordionDetails>                 
                     <Typography>
-                      <Grid item>
+                      <Grid item xs>
                           <TextField
                             label="Min price"
                             id="priceMin"
@@ -52,6 +63,13 @@ export default function ClientFilter({ params, setParams }) {
                               startAdornment: <InputAdornment position="end">€</InputAdornment>,
                             }}
                           />
+                          <Button
+                            size="large"
+                            sx={{}}
+                            onClick={() => filterOffer[type](params, setOffers, lastSearchedOffers)}
+                          >
+                            Filter
+                          </Button>
                       </Grid>
                           <br/>
                       <Grid item>

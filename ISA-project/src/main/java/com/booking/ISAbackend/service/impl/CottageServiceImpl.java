@@ -1,15 +1,13 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.CottageRepository;
-import com.booking.ISAbackend.service.AdditionalServiceService;
-import com.booking.ISAbackend.service.CottageService;
-import com.booking.ISAbackend.service.PhotoService;
-import com.booking.ISAbackend.service.UserService;
+import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,21 +31,43 @@ public class CottageServiceImpl implements CottageService {
     private AdditionalServiceService additionalServiceService;
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private MarkService markService;
 
 
     @Override
-    public List<Cottage> findAll(){
-        return cottageRepository.findAll();
+    @Transactional
+    public List<CottageDTO> findAll() throws IOException {
+        List<Cottage> cottages = cottageRepository.findAll();
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            dto.add(cottageDTO);
+        }
+        return dto;
     }
 
     @Override
-    public List<Cottage> findCottageByCottageOwnerEmail(String email) {
-        return cottageRepository.findCottageByCottageOwnerEmail(email);
+    @Transactional
+    public List<CottageDTO> findCottageByCottageOwnerEmail(String email) throws IOException {
+        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            dto.add(cottageDTO);
+        }
+        return dto;
     }
 
     @Override
-    public Cottage findCottageById(Integer id) {
-        return  cottageRepository.findCottageById(id);
+    @Transactional
+    public CottageDTO findCottageById(Integer id) throws IOException {
+        Cottage cottage = cottageRepository.findCottageById(id);
+        CottageDTO cottageDTO = new CottageDTO(cottage);
+        cottageDTO.setMark(markService.getMark(cottage.getId()));
+        return  cottageDTO;
     }
 
     @Override
@@ -58,18 +78,41 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
-    public List<Cottage> searchCottages(String name, Integer maxPeople, String address, Double price) {
-        return cottageRepository.searchCottages(name, maxPeople, address, price);
+    @Transactional
+    public List<CottageDTO> searchCottages(String name, Integer maxPeople, String address, Double price) throws IOException {
+        List<Cottage> cottages = cottageRepository.searchCottages(name, maxPeople, address, price);
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            dto.add(cottageDTO);
+        }
+        return dto;
     }
 
     @Override
-    public List<Cottage> searchCottagesClient(String name, String description, String address) {
-        return cottageRepository.searchCottagesClient(name, description, address);
+    @Transactional
+    public List<CottageDTO> searchCottagesClient(String name, String description, String address) throws IOException {
+        List<Cottage> cottages = cottageRepository.searchCottagesClient(name, description, address);
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            dto.add(cottageDTO);
+        }
+        return dto;
     }
 
     @Override
-    public List<Cottage> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email) {
-        return cottageRepository.searchCottagesByCottageOwnerEmail(name, maxPeople, address, price, email);
+    @Transactional
+    public List<CottageDTO> searchCottagesByCottageOwner(String name, Integer maxPeople, String address, Double price, String email) throws IOException {
+        List<Cottage> cottages = cottageRepository.searchCottagesByCottageOwnerEmail(name, maxPeople, address, price, email);
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            dto.add(cottageDTO);
+        }
+        return dto;
     }
 
     @Override

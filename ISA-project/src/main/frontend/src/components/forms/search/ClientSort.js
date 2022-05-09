@@ -56,7 +56,7 @@ export default function ClientSort({offers, setOffers}) {
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={1}
+                    value={criteria}
                     label="Criteria"
                     onChange={criteriaChanged}
                     >

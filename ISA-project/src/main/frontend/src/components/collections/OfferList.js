@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import {getInstructors} from '../../services/InstructorService';
 
-export default function OfferList({type, offers, setOffers}) {
+export default function OfferList({type, offers, setOffers, setLastSearchedOffers}) {
 
     let getOffers = {
       [offerType.COTTAGE] : getCottages,
@@ -19,9 +19,8 @@ export default function OfferList({type, offers, setOffers}) {
     useEffect(() => {
         async function setData() {
           const offersData = await getOffers[type]();
-          console.log("Offers:data")
-          console.log(offersData);
-          setOffers(offersData ? offersData.data : {});     
+          setOffers(offersData ? offersData.data : {});  
+          setLastSearchedOffers(offersData ? offersData.data : {});
 
         return offersData;    
         }

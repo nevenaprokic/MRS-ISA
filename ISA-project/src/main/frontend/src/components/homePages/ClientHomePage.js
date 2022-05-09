@@ -59,6 +59,8 @@ export default function ClientHomePage() {
     const [value, setValue] = useState(0);
     const [offers, setOffers] = useState();
 
+    const [lastSearchedOffers, setLastSearchedOffers] = useState();
+
     const [params, setParams] = useState({
         firstName: "",
         lastName: "",
@@ -71,8 +73,8 @@ export default function ClientHomePage() {
         description: "",
         minRating:-1,
         maxRating: Infinity,
-        dateFrom: new Date().toLocaleDateString("en-US"),
-        dateTo: new Date().toLocaleDateString("en-US"),
+        dateFrom: new Date().toISOString().split('T')[0],
+        dateTo: new Date().toISOString().split('T')[0],
     });
 
     const resetParams = () => {
@@ -88,8 +90,8 @@ export default function ClientHomePage() {
         description: "",
         minRating:-1,
         maxRating: Infinity,
-        dateFrom: new Date().toLocaleDateString("en-US"),
-        dateTo: new Date().toLocaleDateString("en-US"),
+        dateFrom: new Date().toISOString().split('T')[0],
+        dateTo: new Date().toISOString().split('T')[0],
     });
     }
 
@@ -157,14 +159,14 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} />
+                              <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={params} setParams={setParams} />
+                              <ClientFilter params={params} setParams={setParams} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
                               <ClientSort offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
-                      <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
+                      <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
                 </Box>
             </Container>

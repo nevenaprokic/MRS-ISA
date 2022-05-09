@@ -24,31 +24,23 @@ public class CottageController {
     private CottageService cottageService;
 
     @GetMapping("getCottages")
-    @Transactional
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
         try{
-            List<Cottage> cottages = cottageService.findCottageByCottageOwnerEmail(email);
-            List<CottageDTO> dto = new ArrayList<>();
-            for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c);
-                dto.add(cottageDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<CottageDTO> cottages = cottageService.findCottageByCottageOwnerEmail(email);
+            return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("getCottageInfo")
-    @Transactional
     public ResponseEntity<CottageDTO> getCottageInfo(@RequestParam String idCottage){
         try{
-            Cottage cottage = cottageService.findCottageById(Integer.parseInt(idCottage));
+            CottageDTO cottage = cottageService.findCottageById(Integer.parseInt(idCottage));
 
             if(cottage == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            CottageDTO cottageDTO = new CottageDTO(cottage);
-            return  ResponseEntity.ok(cottageDTO);
+            return  ResponseEntity.ok(cottage);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -57,48 +49,30 @@ public class CottageController {
 
 
     @GetMapping("getAllCottages")
-    @Transactional
     public ResponseEntity<List<CottageDTO>> getCottages(){
         try{
-            List<Cottage> cottages = cottageService.findAll();
-            List<CottageDTO> dto = new ArrayList<>();
-            for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c);
-                dto.add(cottageDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<CottageDTO> cottages = cottageService.findAll();
+            return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("searchCottages")
-    @Transactional
     public ResponseEntity<List<CottageDTO>> searchCottages(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
         try{
-            List<Cottage> cottages = cottageService.searchCottages(name, maxPeople, address, price);
-            List<CottageDTO> dto = new ArrayList<>();
-            for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c);
-                dto.add(cottageDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<CottageDTO> cottages = cottageService.searchCottages(name, maxPeople, address, price);
+            return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("searchCottagesByCottageOwner")
-    @Transactional
     public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
         try{
-            List<Cottage> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
-            List<CottageDTO> dto = new ArrayList<>();
-            for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c);
-                dto.add(cottageDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<CottageDTO> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
+            return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -151,17 +125,11 @@ public class CottageController {
     }
 
     @GetMapping("search-cottages-client")
-    @Transactional
     public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestParam String name, @RequestParam String description, @RequestParam String address){
 
         try{
-            List<Cottage> cottages = cottageService.searchCottagesClient(name, description, address);
-            List<CottageDTO> dto = new ArrayList<>();
-            for(Cottage c: cottages){
-                CottageDTO cottageDTO = new CottageDTO(c);
-                dto.add(cottageDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<CottageDTO> cottages = cottageService.searchCottagesClient(name, description, address);
+            return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
