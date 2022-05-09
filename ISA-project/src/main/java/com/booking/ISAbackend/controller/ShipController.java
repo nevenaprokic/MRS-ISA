@@ -18,59 +18,46 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/ship")
+@RequestMapping("ship")
 public class ShipController {
-    //provera da li je ulogovan i autorizacija
+
     @Autowired
     private ShipService shipService;
 
-
-    @GetMapping("getShips")
-    @Transactional
+    @GetMapping("get-all-by-owner")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
         try {
-            List<Ship> ships = shipService.findShipByShipOwnerEmail(email);
-            List<ShipDTO> dto = new ArrayList<>();
-            for (Ship ship : ships) {
-                ShipDTO shipDTO = new ShipDTO(ship);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.findShipByShipOwnerEmail(email);
+
+            return ResponseEntity.ok(ships);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("getShipInfo")
-    @Transactional
+    @GetMapping("get-info")
     public ResponseEntity<ShipDTO> getShipInfo(@RequestParam String idShip){
         try{
-            Ship ship = shipService.findShipById(Integer.parseInt(idShip));
+            ShipDTO ship = shipService.findShipById(Integer.parseInt(idShip));
 
             if(ship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            ShipDTO shipDTO = new ShipDTO(ship);
-            return  ResponseEntity.ok(shipDTO);
+            return  ResponseEntity.ok(ship);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
-    @GetMapping("searchShipByShipOwner")
-    @Transactional
+    @GetMapping("search-by-owner")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
         try{
-            List<Ship> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
+
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("addShip")
+    @PostMapping("add")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
                                           @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
@@ -104,34 +91,23 @@ public class ShipController {
         }
     }
 
-    @GetMapping("getAllShips")
-    @Transactional
+    @GetMapping("get-all")
     public ResponseEntity<List<ShipDTO>> getShips(){
         try{
-            List<Ship> ships = shipService.findAll();
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.findAll();
+
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("searchShips")
-    @Transactional
+    @GetMapping("search")
     public ResponseEntity<List<ShipDTO>> searchShips(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
         try{
-            List<Ship> ships = shipService.searchShips(name, maxPeople, address, price);
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.searchShips(name, maxPeople, address, price);
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

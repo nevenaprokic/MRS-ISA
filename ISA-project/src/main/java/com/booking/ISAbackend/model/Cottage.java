@@ -1,7 +1,5 @@
 package com.booking.ISAbackend.model;
 
-import com.booking.ISAbackend.client.Client;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,9 +16,11 @@ public class Cottage extends Offer{
 	@JoinColumn(name = "my_user_id")
 	private CottageOwner cottageOwner;
 
+
 	public Cottage() {
 
 	}
+
 
 	public Integer getRoomNumber() {return roomNumber;}
 	public  Integer getBedNumber() {return  bedNumber;}

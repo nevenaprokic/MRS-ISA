@@ -9,7 +9,7 @@ export function changeShipOwnerData(newShipOwnerData) {
   let email = getUsernameFromToken();
   newShipOwnerData["email"] = email;
   api
-    .post("/changeShipOwnerData", newShipOwnerData)
+    .post("/ship-owner/change-data", newShipOwnerData)
     .then((responseData) => {
       toast.success("You successfully changed the data.", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -21,7 +21,7 @@ export function changeShipOwnerData(newShipOwnerData) {
 
 export function getShipOwnerByUsername(username) {
   return api
-    .get("/shipOwnerProfileInfo", {
+    .get("/ship-owner/profile-info", {
       params: {
         email: username,
       },
@@ -35,7 +35,7 @@ export function getShipOwnerByUsername(username) {
 
 export function sendDeleteRequestShipOwner(data){
   return api
-      .post("sendDeleteRequestShipOwner?email=" + getUsernameFromToken(), data)
+      .post("/ship-owner/send-delete-request?email=" + getUsernameFromToken(), data)
       .then((data) => {
         toast.success("You have successfully submitted a request to delete the order.", {
           position: toast.POSITION.BOTTOM_RIGHT,

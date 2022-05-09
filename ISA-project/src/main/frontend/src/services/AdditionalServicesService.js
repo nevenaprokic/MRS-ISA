@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 export function getAdditionalServiceByOffer(id){
     api
-        .get("/getAdditionalServiceInfo", {
+        .get("/additional-service/get-info", {
             params:{
                 id:id
             }

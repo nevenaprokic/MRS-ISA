@@ -28,13 +28,11 @@ export default function ClientSort({offers, setOffers}) {
         let value = event.target.value;
         setCriteria(value);
         sortCottages(value, sortAsc, offers, setOffers);
-        console.log("KACE VRATIM:", offers);
     };
 
     const orderChanged = () => {
         sortCottages(criteria, !sortAsc, offers, setOffers);
         setSortAsc(!sortAsc);
-        console.log("KACE VRATIM:", offers);
     };
 
   return (

@@ -16,22 +16,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("address")
 public class AddressController {
 
     @Autowired
     private OfferService offerService;
 
-    @GetMapping("getAddressInfo")
-    @Transactional
+    @GetMapping("get-info")
     public ResponseEntity<AddressDTO> getAddressInfo(@RequestParam String id){
         try{
-            Address address = offerService.findAddressByOfferId(Integer.parseInt(id));
+            AddressDTO address = offerService.findAddressByOfferId(Integer.parseInt(id));
 
             if(address == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            AddressDTO addressDTO = new AddressDTO(address);
-            return  ResponseEntity.ok(addressDTO);
+            return  ResponseEntity.ok(address);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

@@ -1,10 +1,12 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.QuickReservationDTO;
 import com.booking.ISAbackend.model.QuickReservation;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.service.QuickReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +19,8 @@ public class QuickReservationServiceImpl implements QuickReservationService {
     private QuickReservationRepository quickReservationRepository;
 
     @Override
-    public List<QuickReservation> findQuickReservationByOfferId(Integer id){
+    @Transactional
+    public List<QuickReservationDTO> findQuickReservationByOfferId(Integer id){
         List<QuickReservation> listOfAllQuickReservation = quickReservationRepository.findQuickReservationByOfferId(id);
         List<QuickReservation> listOfCurrentQuickReservation = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -27,7 +30,12 @@ public class QuickReservationServiceImpl implements QuickReservationService {
                 listOfCurrentQuickReservation.add(qr);
             }
         }
-        return listOfCurrentQuickReservation;
+        List<QuickReservationDTO> dto = new ArrayList<>();
+        for(QuickReservation res: listOfCurrentQuickReservation){
+            QuickReservationDTO quickActionDTO = new QuickReservationDTO(res);
+            dto.add(quickActionDTO);
+        }
+        return dto;
 
     }
 }

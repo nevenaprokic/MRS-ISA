@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuickActionDTO {
+public class QuickReservationDTO {
     private LocalDate startDate;
     private LocalDate endDateAction;
     private LocalDate startDateAction;
@@ -15,8 +15,8 @@ public class QuickActionDTO {
     private List<String> additionalServices;
     private Double price;
     private Integer numberOfPerson;
-    public QuickActionDTO(){}
-    public QuickActionDTO(LocalDate startDate, LocalDate endDateAction, LocalDate startDateAction, LocalDate endDate, List<String> additionalServices, Double price, Integer numberOfPerson) {
+    public QuickReservationDTO(){}
+    public QuickReservationDTO(LocalDate startDate, LocalDate endDateAction, LocalDate startDateAction, LocalDate endDate, List<String> additionalServices, Double price, Integer numberOfPerson) {
         this.startDate = startDate;
         this.endDateAction = endDateAction;
         this.startDateAction = startDateAction;
@@ -25,7 +25,7 @@ public class QuickActionDTO {
         this.price = price;
         this.numberOfPerson = numberOfPerson;
     }
-    public QuickActionDTO(QuickReservation res) {
+    public QuickReservationDTO(QuickReservation res) {
         this.startDate = res.getStartDate();
         this.endDateAction = res.getEndDateAction();
         this.startDateAction = res.getStartDateAction();

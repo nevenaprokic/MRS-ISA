@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.CottageSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;

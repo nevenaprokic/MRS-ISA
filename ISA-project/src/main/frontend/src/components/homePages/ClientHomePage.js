@@ -67,6 +67,12 @@ export default function ClientHomePage() {
         address: "",
         dateFrom: new Date().toISOString().split('T')[0],
         dateTo: new Date().toISOString().split('T')[0],
+        maxRating: Infinity,
+        maxPrice: Infinity,
+        maxPeople: Infinity,
+        minPeople: -1,
+        minPrice: -1,
+        minRating: -1
     });
 
     const resetParams = () => {
@@ -76,6 +82,12 @@ export default function ClientHomePage() {
         address: "",
         dateFrom: new Date().toISOString().split('T')[0],
         dateTo: new Date().toISOString().split('T')[0],
+        maxRating: Infinity,
+        maxPrice: Infinity,
+        maxPeople: Infinity,
+        minPeople: -1,
+        minPrice: -1,
+        minRating: -1
     });
     }
 

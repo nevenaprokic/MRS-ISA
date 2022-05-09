@@ -3,7 +3,7 @@ import api from "../app/api";
 
 export function getMarkByOfferId(id){
     return api
-        .get("/getMark", {
+        .get("/mark/get", {
             params:{
                 id:id
             }

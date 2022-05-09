@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 export function getShipByShipOwnerEmail(username) {
   return api
-    .get("/ship/getShips", {
+    .get("/ship/get-all-by-owner", {
       params: {
         email: username,
       },
@@ -27,7 +27,7 @@ export function getShipByShipOwnerEmail(username) {
 }
 export function getShipById(id) {
   return api
-    .get("/ship/getShipInfo", {
+    .get("/ship/get-info", {
       params: {
         idShip: id,
       },
@@ -41,7 +41,7 @@ export function getShipById(id) {
 
 export function getShips() {
   return api
-    .get("/ship/getAllShips")
+    .get("/ship/get-all")
     .then((data) => data)
     .catch((err) => {
       console.log("Nije uspesno dobavljeno");
@@ -53,7 +53,7 @@ export function searchShips(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
   params.price = params.price == "" ? -1 : params.price;
   return api
-    .get("/ship/searchShips", { params })
+    .get("/ship/search", { params })
     .then((data) => {
       if (data.data.length == 0) {
         toast.info("There are no ships that match the search parameters.", {
@@ -74,7 +74,7 @@ export function searchShipByShipOwner(params, setOffers) {
   params.price = params.price == "" ? -1 : params.price;
   params.shipOwnerUsername = getUsernameFromToken();
   return api
-    .get("/ship/searchShipByShipOwner", { params })
+    .get("/ship/search-by-owner", { params })
     .then((data) => {
       if (data.data.length == 0) {
         toast.info(
@@ -97,7 +97,7 @@ export function addShip(shipData, additionalServiceData) {
   let email = getUsernameFromToken();
   shipData.append("email", email);
   api
-    .post("/ship/addShip", shipData)
+    .post("/ship/add", shipData)
     .then((responseData) => {
       let shipId = responseData.data;
       addAddtionalServices(shipId, additionalServiceData);

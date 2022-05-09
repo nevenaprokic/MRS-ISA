@@ -17,37 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/adventure")
-public class AdventureControler {
+@RequestMapping("adventure")
+public class AdventureController {
 
     @Autowired
     private AdventureService adventureService;
-//
-//
-//    @GetMapping("getTest")
-//    @Transactional
-//    public ResponseEntity<TestDTO> test(@RequestParam String id) throws IOException {
-//        Adventure a = adventureService.findAdventureByI(Integer.parseInt(id));
-//        List<byte[]> photos = new ArrayList<byte[]>();
-//        for (Photo p : a.getPhotos()){
-//            String folder = "./src/main/frontend/src/components/images/";
-//            Path path = Paths.get(folder + p.getPath());
-//            BufferedImage image = ImageIO.read(new FileInputStream(path.toString()));
-//            //BufferedImage  Convert to  ByteArrayOutputStream
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            ImageIO.write(image, "jpg", out);
-//            //ByteArrayOutputStream  Convert to  byte[]
-//            byte[] imageByte = out.toByteArray();
-//            MultipartFile pf = new ConvertToMultipartFile(imageByte, p.getPath(), p.getPath(), "jpg", imageByte.length );
-//
-//            photos.add(imageByte);
-//        }
-//        TestDTO dto = new TestDTO("photos", photos);
-//
-//        return ResponseEntity.ok(dto);
-//    }
 
-    @PostMapping(value = "addAdventure" )
+    @PostMapping(value = "add-adventure" )
     public ResponseEntity<String> addAdventure(@RequestParam("email") String ownerEmail,
                                                @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                                @RequestParam("offerName") String offerName,
@@ -82,8 +58,6 @@ public class AdventureControler {
     }
 
     @PostMapping("add-additional-services")
-    //RequestParam("additionalServices") List<AdditionalServiceDTO> additionalServiceDTOS,
-    //                                                                   @RequestParam("offerId") String offerId
     public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
         try{
 
@@ -147,7 +121,6 @@ public class AdventureControler {
     }
 
     @GetMapping("search-adventures")
-    @Transactional
     public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
 
         try{

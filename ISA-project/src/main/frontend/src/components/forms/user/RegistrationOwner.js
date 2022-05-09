@@ -44,7 +44,7 @@ export default function RegistrationOwner() {
     console.log(data);
 
     api
-      .post("/registrationOwner", data)
+      .post("/user/registration-owner", data)
       .then(() =>  {handleOpen();})
       .catch((err) => {
         toast.error(err.response.data, {

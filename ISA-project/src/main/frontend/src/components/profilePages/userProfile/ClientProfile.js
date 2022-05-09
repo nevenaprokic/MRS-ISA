@@ -70,7 +70,7 @@ function ClientProfile(){
     useEffect(() => {
         async function setData() {
             const request = await api.get(
-              "clientProfileInfo?email=" + getUsernameFromToken()
+              "client/profile-info?email=" + getUsernameFromToken()
             ).catch(() => { console.log("Doslo je do neke greske kod dobavljanja podataka o klijentu."); });
             setClientData(request ? request.data : null);
           }

@@ -3,7 +3,7 @@ import api from "../app/api";
 
 export function getAddressByCottageId(id){
     return api
-        .get("/getAddressInfo", {
+        .get("/address/get-info", {
             params:{
                 id:id
             }
@@ -17,7 +17,7 @@ export function getAddressByCottageId(id){
 
 export function getAddressByShipId(id){
     return api
-        .get("/getAddressInfo", {
+        .get("/address/get-info", {
             params:{
                 id:id
             }

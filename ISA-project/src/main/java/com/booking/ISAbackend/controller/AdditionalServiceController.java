@@ -16,23 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("additional-service")
 public class AdditionalServiceController {
 
     @Autowired
     private OfferService offerService;
 
-    @GetMapping("getAdditionalServiceInfo")
-    @Transactional
+    @GetMapping("get-info")
     public ResponseEntity<List<AdditionalServiceDTO>> getAdditionalServiceByOffer(@RequestParam String id){
         try{
-            List<AdditionalService> additionalServices = offerService.findAdditionalServiceByOffer(Integer.parseInt(id));
-            List<AdditionalServiceDTO> additionalServiceDTO = new ArrayList<>();
-            for(AdditionalService ad: additionalServices){
-                AdditionalServiceDTO a = new AdditionalServiceDTO(ad);
-                additionalServiceDTO.add(a);
-            }
-            return ResponseEntity.ok(additionalServiceDTO);
+            List<AdditionalServiceDTO> additionalServices = offerService.findAdditionalServiceByOffer(Integer.parseInt(id));
+            return ResponseEntity.ok(additionalServices);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
