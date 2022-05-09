@@ -70,9 +70,12 @@ export function searchCottages(params, setOffers) {
 }
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
-  // console.log(params);
+  console.log(params);
+
   return api
-    .get("/cottage/search-cottages-client", {params})
+    .post("/cottage/search-cottages-client", {...params,
+       dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
+       dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
     .then((data) => {
       if (data.data.length == 0) {
         toast.info("There are no cottages that match the search parameters.", {

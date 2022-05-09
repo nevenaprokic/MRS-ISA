@@ -9,12 +9,6 @@ public class CottageSearchParamsDTO {
     private String name;
     private String description;
     private String address;
-//    private Integer minPeople;
-//    private Integer maxPeople;
-//    private Double minPrice;
-//    private Double maxPrice;
-//    private Integer minRating;
-//    private Integer maxRating;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateFrom;

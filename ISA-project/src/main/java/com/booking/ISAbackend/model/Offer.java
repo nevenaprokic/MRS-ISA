@@ -4,6 +4,7 @@ import com.booking.ISAbackend.client.Client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -164,5 +165,18 @@ public class Offer {
 
 	public void setSubscribedClients(List<Client> subscribedClients) {
 		this.subscribedClients = subscribedClients;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Offer offer = (Offer) o;
+		return id.equals(offer.id) && Objects.equals(name, offer.name) && Objects.equals(description, offer.description);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, description);
 	}
 }

@@ -62,34 +62,18 @@ export default function ClientHomePage() {
     const [lastSearchedOffers, setLastSearchedOffers] = useState();
 
     const [params, setParams] = useState({
-        firstName: "",
-        lastName: "",
         name: "",
-        address: "",
-        minPeople: -1,
-        maxPeople: Infinity,
-        minPrice: -1,
-        maxPrice: Infinity,
         description: "",
-        minRating:-1,
-        maxRating: Infinity,
+        address: "",
         dateFrom: new Date().toISOString().split('T')[0],
         dateTo: new Date().toISOString().split('T')[0],
     });
 
     const resetParams = () => {
       setParams({
-        firstName: "",
-        lastName: "",
         name: "",
-        address: "",
-        minPeople: -1,
-        maxPeople: Infinity,
-        minPrice: -1,
-        maxPrice: Infinity,
         description: "",
-        minRating:-1,
-        maxRating: Infinity,
+        address: "",
         dateFrom: new Date().toISOString().split('T')[0],
         dateTo: new Date().toISOString().split('T')[0],
     });

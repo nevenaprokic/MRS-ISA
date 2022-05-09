@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.CottageDTO;
+import com.booking.ISAbackend.dto.CottageSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Cottage;
@@ -124,11 +125,11 @@ public class CottageController {
         }
     }
 
-    @GetMapping("search-cottages-client")
-    public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestParam String name, @RequestParam String description, @RequestParam String address){
+    @PostMapping("search-cottages-client")
+    public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody CottageSearchParamsDTO params){
 
         try{
-            List<CottageDTO> cottages = cottageService.searchCottagesClient(name, description, address);
+            List<CottageDTO> cottages = cottageService.searchCottagesClient(params);
             return ResponseEntity.ok(cottages);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
