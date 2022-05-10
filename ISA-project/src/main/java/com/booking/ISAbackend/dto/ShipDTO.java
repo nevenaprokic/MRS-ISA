@@ -66,7 +66,7 @@ public class ShipDTO {
         this.maxSpeed = s.getMaxSpeed();
         this.navigationEquipment = s.getNavigationEquipment();
         this.additionalEquipment = s.getAdditionalEquipment();
-//        this.additionalServices = getAdditionalServices(s);
+        this.additionalServices = getAdditionalServices(s);
         this.street = s.getAddress().getStreet();
         this.city = s.getAddress().getCity();
         this.state = s.getAddress().getState();
@@ -167,4 +167,15 @@ public class ShipDTO {
         this.mark = mark;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
 }

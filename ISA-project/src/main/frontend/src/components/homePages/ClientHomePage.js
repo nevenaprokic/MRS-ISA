@@ -82,18 +82,19 @@ export default function ClientHomePage() {
       maxSize: "" 
   });
 
-    // const resetParams = () => {
-    //   setParams({
-    //     name: "",
-    //     description: "",
-    //     address: "",
-    //     dateFrom: tommorowDate,
-    //     dateTo: tommorowDate
-    // });
-    // }
+    const resetParams = () => {
+      setParams({
+        name: "",
+        description: "",
+        address: "",
+        dateFrom: tommorowDate,
+        dateTo: tommorowDate
+    });
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
+      resetParams();
     };
   
     const outerTheme = createTheme({
