@@ -58,6 +58,8 @@ export default function ClientHomePage() {
 
     const [value, setValue] = useState(0);
     const [offers, setOffers] = useState();
+    let tommorowDate = new Date();
+    tommorowDate.setDate(tommorowDate.getDate() + 1)
 
     const [lastSearchedOffers, setLastSearchedOffers] = useState();
 
@@ -65,8 +67,8 @@ export default function ClientHomePage() {
         name: "",
         description: "",
         address: "",
-        dateFrom: new Date().toISOString().split('T')[0],
-        dateTo: new Date().toISOString().split('T')[0],
+        dateFrom: tommorowDate,
+        dateTo: tommorowDate,
         maxRating: Infinity,
         maxPrice: Infinity,
         maxPeople: Infinity,
@@ -80,8 +82,8 @@ export default function ClientHomePage() {
         name: "",
         description: "",
         address: "",
-        dateFrom: new Date().toISOString().split('T')[0],
-        dateTo: new Date().toISOString().split('T')[0],
+        dateFrom: tommorowDate,
+        dateTo: tommorowDate,
         maxRating: Infinity,
         maxPrice: Infinity,
         maxPeople: Infinity,

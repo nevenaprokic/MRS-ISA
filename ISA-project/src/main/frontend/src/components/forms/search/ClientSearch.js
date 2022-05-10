@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
@@ -41,6 +41,14 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
         [offerType.SHIP]: searchShipsClient,
         [offerType.ADVENTURE]: searchInstructors
       };
+
+    useEffect(() => {
+      let tommotowDate = new Date();
+      tommotowDate.setDate(tommotowDate.getDate() + 1);
+      setValueFrom(tommotowDate);
+      setValueTo(tommotowDate);
+        
+      }, [])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>

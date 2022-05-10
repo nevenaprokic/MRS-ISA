@@ -2,6 +2,7 @@ package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Reservation;
+import com.booking.ISAbackend.model.Ship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +27,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
             " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
     List<Cottage> nonAvailableCottages(LocalDate from, LocalDate to);
+
+    @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Ship c ON r.offer.id = c.id WHERE" +
+            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
+    List<Ship> nonAvailableShips(LocalDate from, LocalDate to);
 }

@@ -71,6 +71,9 @@ export function searchShips(params, setOffers) {
 }
 
 export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
+  console.log(params);
+  console.log(params.dateFrom <= params.dateTo);
+  console.log(params.dateFrom > new Date());
 
   if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
       return api
