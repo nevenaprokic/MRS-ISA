@@ -1,6 +1,8 @@
 package com.booking.ISAbackend.service;
 
+import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.NewShipDTO;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Address;
@@ -15,6 +17,7 @@ public interface ShipService {
     List<ShipDTO> findShipByShipOwnerEmail(String email) throws IOException;
     ShipDTO findShipById(Integer id) throws IOException;
     Address findAddressByShipId(Integer id);
+    List<ShipDTO> searchShipsClient(OfferSearchParamsDTO params) throws IOException;
     List<ShipDTO> searchShips(String name, Integer maxPeople, String address, Double price) throws IOException;
     List<ShipDTO> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) throws IOException;
     int addShip(NewShipDTO shipDTO) throws InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException, InvalidPriceException, InvalidPeopleNumberException, ShipAlreadyExistsException, InvalidAddressException, IOException;

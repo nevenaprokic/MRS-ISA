@@ -3,14 +3,14 @@ import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
     searchCottagesClient
 } from "../../../services/CottageService";
 import {
-  searchShips
+  searchShipsClient
 } from "../../../services/ShipService";
 import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
@@ -21,23 +21,34 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
   const [valueTo, setValueTo] = React.useState();
 
   const handleChangeFrom = (newValue) => {
-    newValue = newValue.toLocaleDateString("en-US");
+    // newValue = newValue.toLocaleDateString("en-US");
     setValueFrom(newValue);
     setParams({ ...params, dateFrom: newValue});
   };
 
   const handleChangeTo = (newValue) => {
-    newValue = newValue.toLocaleDateString("en-US");
+    // newValue = newValue.toLocaleDateString("en-US");
     setValueTo(newValue);
     setParams({ ...params, dateTo: newValue});
   };
 
+  const handleSubmit = () => {
+    searchOffer[type](params, setOffers, setLastSearchedOffers);
+  };
 
     let searchOffer = {
         [offerType.COTTAGE]: searchCottagesClient,
-        [offerType.SHIP]: searchShips,
+        [offerType.SHIP]: searchShipsClient,
         [offerType.ADVENTURE]: searchInstructors
       };
+
+    useEffect(() => {
+      let tommotowDate = new Date();
+      tommotowDate.setDate(tommotowDate.getDate() + 1);
+      setValueFrom(tommotowDate);
+      setValueTo(tommotowDate);
+        
+      }, [])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -116,7 +127,7 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
         <Button
           size="large"
           sx={{}}
-          onClick={() => searchOffer[type](params, setOffers, setLastSearchedOffers)}
+          onClick={() => handleSubmit()}
         >
           Search
         </Button>
@@ -130,11 +141,6 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
             inputFormat="dd/MM/yyyy"
             value={valueFrom}
             onChange={handleChangeFrom}
-            // onChange={(event) => {
-            //   handleChangeFrom(event);
-            //   console.log("AAA");
-            //   setParams({ ...params, dateFrom: event.target.value });
-            // }}
             renderInput={(params) => <TextField {...params} />}
           />
       </Grid>

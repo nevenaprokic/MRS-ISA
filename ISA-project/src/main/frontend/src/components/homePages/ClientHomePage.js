@@ -58,6 +58,8 @@ export default function ClientHomePage() {
 
     const [value, setValue] = useState(0);
     const [offers, setOffers] = useState();
+    let tommorowDate = new Date();
+    tommorowDate.setDate(tommorowDate.getDate() + 1)
 
     const [lastSearchedOffers, setLastSearchedOffers] = useState();
 
@@ -65,31 +67,30 @@ export default function ClientHomePage() {
         name: "",
         description: "",
         address: "",
-        dateFrom: new Date().toISOString().split('T')[0],
-        dateTo: new Date().toISOString().split('T')[0],
-        maxRating: Infinity,
-        maxPrice: Infinity,
-        maxPeople: Infinity,
-        minPeople: -1,
-        minPrice: -1,
-        minRating: -1
+        dateFrom: tommorowDate,
+        dateTo: tommorowDate
     });
 
-    const resetParams = () => {
-      setParams({
-        name: "",
-        description: "",
-        address: "",
-        dateFrom: new Date().toISOString().split('T')[0],
-        dateTo: new Date().toISOString().split('T')[0],
-        maxRating: Infinity,
-        maxPrice: Infinity,
-        maxPeople: Infinity,
-        minPeople: -1,
-        minPrice: -1,
-        minRating: -1
-    });
-    }
+    const [filter, setFilter] = useState({
+      maxRating: "",
+      maxPrice: "",
+      maxPeople: "",
+      minPeople: "",
+      minPrice: "",
+      minRating: "",
+      minSize: "",
+      maxSize: "" 
+  });
+
+    // const resetParams = () => {
+    //   setParams({
+    //     name: "",
+    //     description: "",
+    //     address: "",
+    //     dateFrom: tommorowDate,
+    //     dateTo: tommorowDate
+    // });
+    // }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -157,12 +158,28 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={params} setParams={setParams} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
-                              <ClientSort offers={offers} setOffers={setOffers} />
+                              <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                </TabPanel>
+
+                <TabPanel value={value} index={8}>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <ClientSearch params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                              <br/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <br />
+                              <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} />
+                          </Grid>
+                        </Box>
+                      <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
                 </Box>
             </Container>

@@ -69,6 +69,8 @@ function BasicShipInfoBox({ basicInfo }) {
           </div>
           <label className="basicBoxItemTitle">Ship type: </label>
           <label className="basicBoxItemText">{basicInfo.type}</label>
+          <label className="basicBoxItemTitle">Size: </label>
+          <label className="basicBoxItemText">{basicInfo.size}</label>
         </div>
         <div>
           <div className="basicBoxItem">

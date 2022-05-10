@@ -3,6 +3,7 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import {compareString} from './UtilService'
 
 export function getCottageByCottageOwnerEmail(username) {
   return api
@@ -70,42 +71,53 @@ export function searchCottages(params, setOffers) {
 }
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
-  console.log(params);
-
-  return api
-    .post("/cottage/search-client", {...params,
-       dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
-       dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
-    .then((data) => {
-      if (data.data.length == 0) {
-        toast.info("There are no cottages that match the search parameters.", {
+  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
+      return api
+      .post("/cottage/search-client", {...params,
+        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
+        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
+      .then((data) => {
+        if (data.data.length == 0) {
+          toast.info("There are no cottages that match the search parameters.", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          });
+        }
+        setOffers(data.data);
+        setLastSearchedOffers(data.data);
+      })
+      .catch((err) => {
+        toast.error(err.message, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 2000,
         });
-      }
-      setOffers(data.data);
-      setLastSearchedOffers(data.data);
-    })
-    .catch((err) => {
-      console.log("Nije uspesno dobavljeno");
-      return err.message;
-    });
+      });
+  }else{
+      toast.error("Date periods are not correct.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+      return;
+  }
 }
 
 export function filterCottagesClient(params, setOffers, lastSearchedOffers) {
-  console.log(params);
-  params.maxRating = params.maxRating == "" ? Infinity : params.maxRating;
-  params.maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
-  params.maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+  let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  let maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
+  let maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+
+  let minRating = params.minRating == "" ? -1 : params.minRating;
+  let minPrice = params.minPrice == "" ? -1 : params.minPrice;
+  let minPeople = params.minPeople == "" ? -1 : params.minPeople;
 
   const filterOffers = (offer) => {
-    return (offer.price <= params.maxPrice && offer.price >= params.minPrice)
-      && (offer.numberOfPerson <= params.maxPeople && offer.numberOfPerson >= params.minPeople)
-      && (offer.mark <= params.maxRating && offer.mark >= params.minRating);
+    return (offer.price <= maxPrice && offer.price >= minPrice)
+      && (offer.numberOfPerson <= maxPeople && offer.numberOfPerson >= minPeople)
+      && (offer.mark <= maxRating && offer.mark >= minRating);
  }
   let filtered = lastSearchedOffers.filter(filterOffers);
   if(filtered.length == 0)
-    toast.info("No cottages that satisfie these filters.", {
+    toast.info("No offers that satisfy these filters.", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
@@ -170,7 +182,7 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
 }
 
 export function sortCottages(value, sortAsc, offers, setOffers) {
-
+  console.log(offers);
   switch(value) {
     case 1:
       offers.sort((a, b) => {
@@ -189,15 +201,10 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
       break;
     case 4:
       offers.sort((a, b) => {
-        return compareString(sortAsc, a.state, b.state);
+        return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
       });
       break;
-      case 5:
-        offers.sort((a, b) => {
-          return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
-        });
-        break;
-    case 6:
+    case 5:
       offers.sort((a, b) => {
         return (sortAsc) ?  a.price - b.price : b.price - a.price;
       });
@@ -208,8 +215,4 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
     });
   }
   setOffers([...offers]);
-}
-
-function compareString(sortAsc, first, second){
-  return (sortAsc) ?  ((first > second) ? 1 : ((second > first) ? -1 : 0)) : ((first < second) ? 1 : ((second < first) ? -1 : 0))
 }

@@ -1,19 +1,16 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.CottageDTO;
-import com.booking.ISAbackend.dto.CottageSearchParamsDTO;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
-import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.service.CottageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,8 +123,7 @@ public class CottageController {
     }
 
     @PostMapping("search-client")
-    public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody CottageSearchParamsDTO params){
-
+    public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesClient(params);
             return ResponseEntity.ok(cottages);

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-public class CottageSearchParamsDTO {
+public class OfferSearchParamsDTO {
 
     private String name;
     private String description;
@@ -15,9 +15,9 @@ public class CottageSearchParamsDTO {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateTo;
 
-    public CottageSearchParamsDTO(){}
+    public OfferSearchParamsDTO(){}
 
-    public CottageSearchParamsDTO(String name, String description, String address, LocalDate dateFrom, LocalDate dateTo) {
+    public OfferSearchParamsDTO(String name, String description, String address, LocalDate dateFrom, LocalDate dateTo) {
         this.name = name;
         this.description = description;
         this.address = address;
