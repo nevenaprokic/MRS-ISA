@@ -27,6 +27,8 @@ public class OwnerRegistrationRequestDTO {
 
     private int id;
 
+    private String sendingTime;
+
     public OwnerRegistrationRequestDTO(){}
 
     public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String password, String confirmPassword, String phoneNumber, String email, String street, String city, String state) {
@@ -43,7 +45,7 @@ public class OwnerRegistrationRequestDTO {
         this.state = state;
     }
 
-    public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String phoneNumber, String email, String street, String city, String state, int id) {
+    public OwnerRegistrationRequestDTO(String explanation, String type, String firstName, String lastName, String phoneNumber, String email, String street, String city, String state, int id, String sendingTime) {
         this.explanation = explanation;
         this.type = type;
         this.firstName = firstName;
@@ -54,6 +56,7 @@ public class OwnerRegistrationRequestDTO {
         this.city = city;
         this.state = state;
         this.id = id;
+        this.sendingTime = sendingTime;
     }
 
     public String getExplanation() {
@@ -99,4 +102,6 @@ public class OwnerRegistrationRequestDTO {
     public String getState() {
         return state;
     }
+
+    public String getSendingTime() {return  sendingTime;}
 }

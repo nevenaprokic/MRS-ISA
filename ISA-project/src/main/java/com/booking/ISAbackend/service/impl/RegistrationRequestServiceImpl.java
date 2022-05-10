@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,8 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         if(validateRequest(request)) {
             if(myUser == null) {
                 Address address = new Address(request.getStreet(), request.getCity(), request.getState());
-                RegistrationRequest registrationRequest = new RegistrationRequest(request.getExplanation(), request.getType(), request.getFirstName(), request.getLastName(), request.getPassword(), request.getPhoneNumber(), request.getEmail(), false, address);
+                LocalDate sendingTime = LocalDate.now();
+                RegistrationRequest registrationRequest = new RegistrationRequest(request.getExplanation(), request.getType(), request.getFirstName(), request.getLastName(), request.getPassword(), request.getPhoneNumber(), request.getEmail(), false, sendingTime,  address);
                 addressRepository.save(address);
                 registrationRequestRepository.save(registrationRequest);
                 return true;
@@ -58,7 +61,8 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
                     a.getStreet(),
                     a.getCity(),
                     a.getState(),
-                    request.getId());
+                    request.getId(),
+                    formatDate(request.getSendingTime()));
             requestDTOS.add(registrationRequest);
 
         }
@@ -74,6 +78,11 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
                 && Validator.isValidPhoneNumber(request.getPhoneNumber())
                 && (!request.getExplanation().isEmpty());
         return validationResult;
+    }
+
+    private String formatDate(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
     }
 
 }

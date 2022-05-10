@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.model;
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class RegistrationRequest {
@@ -31,6 +32,10 @@ public class RegistrationRequest {
 	@Column(nullable = false)
 	private Boolean deleted;
 
+	@Column(nullable = false)
+	private LocalDate sendingTime;
+
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
 	private Address address;
@@ -44,6 +49,19 @@ public class RegistrationRequest {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.deleted = deleted;
+		this.address = address;
+	}
+
+	public RegistrationRequest(String description, String personType, String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, LocalDate sendingTime, Address address) {
+		this.description = description;
+		this.personType = personType;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.deleted = deleted;
+		this.sendingTime = sendingTime;
 		this.address = address;
 	}
 
@@ -89,5 +107,9 @@ public class RegistrationRequest {
 
 	public Address getAddress() {
 		return address;
+	}
+
+	public LocalDate getSendingTime(){
+		return  sendingTime;
 	}
 }
