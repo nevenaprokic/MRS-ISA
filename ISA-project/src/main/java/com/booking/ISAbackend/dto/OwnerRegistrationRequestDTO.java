@@ -104,4 +104,6 @@ public class OwnerRegistrationRequestDTO {
     }
 
     public String getSendingTime() {return  sendingTime;}
+
+    public int getId() {return id;}
 }

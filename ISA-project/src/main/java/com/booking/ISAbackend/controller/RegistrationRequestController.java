@@ -27,5 +27,29 @@ public class RegistrationRequestController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    @PostMapping("accept")
+    public ResponseEntity<List<OwnerRegistrationRequestDTO>> acceptRegistrationRequest(@RequestBody int requestId){
+        try{
+            registrationRequests.acceptRegistrationRequest(requestId);
+            List<OwnerRegistrationRequestDTO> updateRequestsList = registrationRequests.getAll();
+            return ResponseEntity.ok(updateRequestsList);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("discard")
+    public ResponseEntity<List<OwnerRegistrationRequestDTO>> discardRegistrationRequest(@RequestParam int requestId, @RequestBody  String message){
+        try{
+            registrationRequests.discardRegistrationRequest(requestId, message);
+            List<OwnerRegistrationRequestDTO> updateRequestsList = registrationRequests.getAll();
+            return ResponseEntity.ok(updateRequestsList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

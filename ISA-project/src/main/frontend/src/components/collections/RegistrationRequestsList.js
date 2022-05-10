@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllRegistrationRegusestr } from "../../services/RegistrationRequestService";
+import { getAllRegistrationRegusestr, acceptRegistrationRequest } from "../../services/RegistrationRequestService";
 import * as React from 'react';
 
 import Box from '@mui/material/Box';
@@ -27,7 +27,7 @@ import Modal from "@mui/material/Modal";
 
 
 
-function Row({row}) {
+function Row({row, setRequests}) {
     console.log(row);
     const  request  = row;
     const [open, setOpen] = React.useState(false);
@@ -50,6 +50,11 @@ function Row({row}) {
     const handleOpenDelete = () => setDeleteManager(true);
     const handleCloseDelete = () => setDeleteManager(false);
   
+    function handleRequestAccepted(requestId){
+      console.log(requestId);
+      acceptRegistrationRequest(requestId, setRequests);
+    }
+
     return (
         <ThemeProvider theme={theme}>
       <React.Fragment>
@@ -74,6 +79,7 @@ function Row({row}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
+                    onClick={() => handleRequestAccepted(request.id)}
                   >
                   Accept 
                   </Button></TableCell>
@@ -95,7 +101,7 @@ function Row({row}) {
                 aria-describedby="modal-modal-description"
                 sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
               >
-                <RejecetRegistrationRequestForm close={handleCloseDelete} id={request.id} />
+                <RejecetRegistrationRequestForm close={handleCloseDelete} requestId={request.id} setRequests={setRequests}/>
         </Modal>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -199,7 +205,7 @@ function RegistrationRequestsList(){
                 <TableBody>
                 {requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     
-                    <Row key={row.id} row={row} />
+                    <Row key={row.id} row={row} setRequests={setRequests}/>
                 ))}
                 </TableBody>
             </Table>

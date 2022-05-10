@@ -12,8 +12,9 @@ import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import "../../style/DeleteOrder.scss";
 import "react-toastify/dist/ReactToastify.css";
+import {discarRegistrationRequest} from "../../services/RegistrationRequestService";
 
-function RejectRegistrationRequest({requestId, close}){
+function RejectRegistrationRequest({requestId, close, setRequests}){
     //slanje teksta i id-a zahteva na bek i slanje mejla korisniku;
 
     
@@ -38,7 +39,7 @@ function RejectRegistrationRequest({requestId, close}){
     
       const onSubmit = (data) => {
         console.log(data);
-        //slanje id-a i poruke na bek
+        discarRegistrationRequest(requestId, data.reason,setRequests );
     
         close();
       };
