@@ -157,6 +157,12 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-11',2,300,'2022-05-10',2,5);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-25',3,250,'2022-05-17',3,6);
 
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,600,'2021-07-17',1,7);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-03-18',4,600,'2022-03-17',2,7);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-18',4,600,'2022-02-17',1,8);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,600,'2021-07-17',2,8);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-03-18',4,600,'2021-03-17',1,9);
+
 -- /*MARK*/
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,3);
@@ -164,6 +170,12 @@ insert into mark(approved, comment, mark, reservation_id) values (true,'Onako!',
 insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',4,5);
 insert into mark(approved, comment, mark, reservation_id) values (true,'okej!',4,6);
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,7);
+
+insert into mark(approved, comment, mark, reservation_id) values (true,'Lep provod, nije dobar ambijent!',4,8);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican avantura!',5,9);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Sjajno!',5,10);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',3,11);
+insert into mark(approved, comment, mark, reservation_id) values (true,'Super je bilo!',4,12);
 /*COMPLAINT*/
 -- insert into complaint(text,reservation_id) values('Sve pohvale!',2);
 
@@ -181,6 +193,11 @@ insert into quick_reservation(end_date,end_date_action,number_of_person,price,st
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-06-26','2022-05-20',2,250,'2022-06-23','2022-05-03',1);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',5);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',4);
+
+/*REGISTRATION REQUEST*/
+/*id, deleted, description, email, first_name, last_name, password, person_type,phone_number, address_id*/
+insert into registration_request(deleted, description, email,first_name,last_name,password,person_type,phone_number,address_id, sending_time) values(false, 'Zelim da poslujem u ovoj aplikaciji jer sam iskusni pecaros', 'natasha.lakovic@gmail.com', 'Natasa', 'Lakovic', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '10', '111-111-1111',10, '2022-05-05');/*sifra*/
+insert into registration_request(deleted, description, email,first_name,last_name,password,person_type,phone_number,address_id, sending_time) values(false, 'Imam veoma moderne vikendice koje zelim da izdajem', 'antic4235@gmail.com', 'Ivan', 'Antic', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '10', '123-132-1231',10, '2022-05-06');/*sifra*/
 /*REGISTRATION REQUEST*/
 
 

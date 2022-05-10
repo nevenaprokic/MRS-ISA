@@ -21,6 +21,7 @@ import AdminHomePage from './components/homePages/AdminHomePage';
 import AdminProfile from './components/profilePages/userProfile/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
+import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path='/user-profile/admin' element={<AdminProfile />}/>
           <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
           <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
+          <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
         </Routes>
     </div>
   );

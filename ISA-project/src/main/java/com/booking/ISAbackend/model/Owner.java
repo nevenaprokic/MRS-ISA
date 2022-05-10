@@ -25,4 +25,6 @@ public class Owner extends MyUser {
 		return ownerCategory;
 	}
 
+	public void setOwnerCategory(OwnerCategory category){ this.ownerCategory = category;}
+
 }

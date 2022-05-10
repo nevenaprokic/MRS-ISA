@@ -66,7 +66,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public boolean sendDeleteRequest(String email, String reason) {
         MyUser user = userRepository.findByEmail(email);
-        List<Reservation> listOfReservation = reservationRepository.findByCottageOwnerEmail(email);
+        List<Reservation> listOfReservation = reservationRepository.findByInstructorEmail(email);
         LocalDate today = LocalDate.now();
         for(Reservation r:listOfReservation){
             if((today.compareTo(r.getEndDate())<0)){
