@@ -10,7 +10,7 @@ import {
     searchCottagesClient
 } from "../../../services/CottageService";
 import {
-  searchShips
+  searchShipsClient
 } from "../../../services/ShipService";
 import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
@@ -21,27 +21,24 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
   const [valueTo, setValueTo] = React.useState();
 
   const handleChangeFrom = (newValue) => {
-    //newValue = newValue.toLocaleDateString("en-US");
+    // newValue = newValue.toLocaleDateString("en-US");
     setValueFrom(newValue);
     setParams({ ...params, dateFrom: newValue});
   };
 
   const handleChangeTo = (newValue) => {
-    //newValue = newValue.toLocaleDateString("en-US");
+    // newValue = newValue.toLocaleDateString("en-US");
     setValueTo(newValue);
     setParams({ ...params, dateTo: newValue});
   };
 
   const handleSubmit = () => {
-    console.log(valueFrom);
-    console.log(valueTo);
-    console.log(valueFrom > valueTo);
     searchOffer[type](params, setOffers, setLastSearchedOffers);
   };
 
     let searchOffer = {
         [offerType.COTTAGE]: searchCottagesClient,
-        [offerType.SHIP]: searchShips,
+        [offerType.SHIP]: searchShipsClient,
         [offerType.ADVENTURE]: searchInstructors
       };
 
@@ -136,11 +133,6 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
             inputFormat="dd/MM/yyyy"
             value={valueFrom}
             onChange={handleChangeFrom}
-            // onChange={(event) => {
-            //   handleChangeFrom(event);
-            //   console.log("AAA");
-            //   setParams({ ...params, dateFrom: event.target.value });
-            // }}
             renderInput={(params) => <TextField {...params} />}
           />
       </Grid>

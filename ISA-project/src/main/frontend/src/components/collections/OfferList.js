@@ -19,8 +19,9 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
     useEffect(() => {
         async function setData() {
           const offersData = await getOffers[type]();
-          setOffers(offersData ? offersData.data : {});  
-          setLastSearchedOffers(offersData ? offersData.data : {});
+          setOffers(offersData ? offersData.data : {});
+          if(setLastSearchedOffers)  
+            setLastSearchedOffers(offersData ? offersData.data : {});
 
         return offersData;    
         }

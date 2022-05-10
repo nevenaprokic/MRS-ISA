@@ -2,7 +2,7 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.CottageDTO;
-import com.booking.ISAbackend.dto.CottageSearchParamsDTO;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
@@ -97,7 +97,7 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public List<CottageDTO> searchCottagesClient(CottageSearchParamsDTO params) throws IOException {
+    public List<CottageDTO> searchCottagesClient(OfferSearchParamsDTO params) throws IOException {
         List<Cottage> cottages = cottageRepository.searchCottagesClient(params.getName(), params.getDescription(), params.getAddress());
         List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDateFrom(), params.getDateTo());
 

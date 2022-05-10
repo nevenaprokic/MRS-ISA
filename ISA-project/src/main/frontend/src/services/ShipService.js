@@ -71,8 +71,8 @@ export function searchShips(params, setOffers) {
 }
 
 export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
-  console.log(params);
-  if(params.dateFrom < params.dateTo && params.dateFrom > new Date()){
+
+  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
       return api
       .post("/ship/search-client", {...params,
         dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
@@ -88,7 +88,7 @@ export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
         setLastSearchedOffers(data.data);
       })
       .catch((err) => {
-          toast.error(err.message, {
+          toast.error("Something went wrong.", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 2000,
         });

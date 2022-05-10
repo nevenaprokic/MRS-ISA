@@ -71,8 +71,7 @@ export function searchCottages(params, setOffers) {
 }
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
-  console.log(params);
-  if(params.dateFrom < params.dateTo && params.dateFrom > new Date()){
+  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
       return api
       .post("/cottage/search-client", {...params,
         dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],

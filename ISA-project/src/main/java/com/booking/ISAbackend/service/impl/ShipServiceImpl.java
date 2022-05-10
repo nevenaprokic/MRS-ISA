@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.NewShipDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
@@ -74,6 +75,18 @@ public class ShipServiceImpl implements ShipService {
         Ship ship = shipRepository.findShipById(id);
         Address address = ship.getAddress();
         return address;
+    }
+
+    @Override
+    public List<ShipDTO> searchShipsClient(OfferSearchParamsDTO params) throws IOException {
+        List<Ship> ships = shipRepository.findAll();
+        List<ShipDTO> dto = new ArrayList<>();
+        for(Ship s: ships){
+            ShipDTO shipDTO = new ShipDTO(s);
+            shipDTO.setMark(markService.getMark(s.getId()));
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
     @Override
