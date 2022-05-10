@@ -1,15 +1,14 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.OwnerRegistrationRequestDTO;
+import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.exceptions.*;
-import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.MyUser;
-import com.booking.ISAbackend.model.RegistrationRequest;
-import com.booking.ISAbackend.repository.AddressRepository;
-import com.booking.ISAbackend.repository.RegistrationRequestRepository;
+import com.booking.ISAbackend.model.*;
+import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.RegistrationRequestService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +26,18 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
     AddressRepository addressRepository;
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    InstructorRepository instructorRepository;
+    @Autowired
+    CottageOwnerRepository cottageOwnerRepository;
+    @Autowired
+    ShipOwnerRepository shipOwnerRepository;
+    @Autowired
+    EmailSender emailSender;
 
     @Override
     public boolean save(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidEmail, InvalidCredential, InvalidPhoneNumber, InvalidPasswordException {
@@ -51,23 +62,25 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         List<RegistrationRequest> allRegistrationRequests = registrationRequestRepository.findAll();
         List<OwnerRegistrationRequestDTO> requestDTOS = new ArrayList<OwnerRegistrationRequestDTO>();
         for(RegistrationRequest request : allRegistrationRequests){
-            Address a = request.getAddress();
-            OwnerRegistrationRequestDTO registrationRequest = new OwnerRegistrationRequestDTO(request.getDescription(),
-                    request.getPersonType(),
-                    request.getFirstName(),
-                    request.getLastName(),
-                    request.getPhoneNumber(),
-                    request.getEmail(),
-                    a.getStreet(),
-                    a.getCity(),
-                    a.getState(),
-                    request.getId(),
-                    formatDate(request.getSendingTime()));
-            requestDTOS.add(registrationRequest);
-
+            if(!request.getDeleted()) {
+                Address a = request.getAddress();
+                OwnerRegistrationRequestDTO registrationRequest = new OwnerRegistrationRequestDTO(request.getDescription(),
+                        request.getPersonType(),
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getPhoneNumber(),
+                        request.getEmail(),
+                        a.getStreet(),
+                        a.getCity(),
+                        a.getState(),
+                        request.getId(),
+                        formatDate(request.getSendingTime()));
+                requestDTOS.add(registrationRequest);
+            }
         }
         return requestDTOS;
     }
+
 
     private boolean validateRequest(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidPasswordException, InvalidEmail, InvalidCredential, InvalidPhoneNumber {
         boolean validationResult = Validator.isValidAdress(request.getStreet(), request.getCity(), request.getState())

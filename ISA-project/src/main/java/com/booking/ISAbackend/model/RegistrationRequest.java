@@ -112,4 +112,45 @@ public class RegistrationRequest {
 	public LocalDate getSendingTime(){
 		return  sendingTime;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setPersonType(String personType) {
+		this.personType = personType;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setSendingTime(LocalDate sendingTime) {
+		this.sendingTime = sendingTime;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }

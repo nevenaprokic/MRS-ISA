@@ -22,6 +22,8 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
 import TablePagination from '@mui/material/TablePagination';
+import RejecetRegistrationRequestForm from "./RejecetRegistrationRequestForm";
+import Modal from "@mui/material/Modal";
 
 
 
@@ -86,7 +88,15 @@ function Row({row}) {
                   Discard
                   </Button></TableCell>
         </TableRow>
-       
+        <Modal
+                open={openDeleteManager}
+                onClose={handleCloseDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <RejecetRegistrationRequestForm close={handleCloseDelete} id={request.id} />
+        </Modal>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
