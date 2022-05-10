@@ -88,8 +88,10 @@ export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
         setLastSearchedOffers(data.data);
       })
       .catch((err) => {
-        console.log("Nije uspesno dobavljeno");
-        return err.message;
+        toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
       });
   }else{
       toast.error("Date periods are not correct.", {

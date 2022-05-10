@@ -70,6 +70,39 @@ export function searchShips(params, setOffers) {
     });
 }
 
+export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
+  console.log(params);
+  if(params.dateFrom < params.dateTo && params.dateFrom > new Date()){
+      return api
+      .post("/ship/search-client", {...params,
+        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
+        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
+      .then((data) => {
+        if (data.data.length == 0) {
+          toast.info("There are no ships that match the search parameters.", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          });
+        }
+        setOffers(data.data);
+        setLastSearchedOffers(data.data);
+      })
+      .catch((err) => {
+          toast.error(err.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      });
+  }else{
+      toast.error("Date periods are not correct.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+      return;
+  }
+}
+
+
 export function searchShipByShipOwner(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
   params.price = params.price == "" ? -1 : params.price;

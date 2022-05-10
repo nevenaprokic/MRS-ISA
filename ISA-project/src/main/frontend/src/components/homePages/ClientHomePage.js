@@ -171,6 +171,8 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
+                              <ClientSearch params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                              <br/>
                               <br />
                               <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} />
                           </Grid>
