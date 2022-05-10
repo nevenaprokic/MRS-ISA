@@ -72,31 +72,32 @@ export function searchCottages(params, setOffers) {
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
   console.log(params);
-  if(params.dateFrom > params.dateTo){
-    toast.error("Date perios is not correct.", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
-    });
-    return;
+  if(params.dateFrom < params.dateTo && params.dateFrom > new Date()){
+      return api
+      .post("/cottage/search-client", {...params,
+        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
+        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
+      .then((data) => {
+        if (data.data.length == 0) {
+          toast.info("There are no cottages that match the search parameters.", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          });
+        }
+        setOffers(data.data);
+        setLastSearchedOffers(data.data);
+      })
+      .catch((err) => {
+        console.log("Nije uspesno dobavljeno");
+        return err.message;
+      });
+  }else{
+      toast.error("Date periods are not correct.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+      return;
   }
-  return api
-    .post("/cottage/search-client", {...params,
-       dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
-       dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
-    .then((data) => {
-      if (data.data.length == 0) {
-        toast.info("There are no cottages that match the search parameters.", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-      }
-      setOffers(data.data);
-      setLastSearchedOffers(data.data);
-    })
-    .catch((err) => {
-      console.log("Nije uspesno dobavljeno");
-      return err.message;
-    });
 }
 
 export function filterCottagesClient(params, setOffers, lastSearchedOffers) {

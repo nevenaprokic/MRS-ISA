@@ -24,6 +24,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByShipOwnerEmail(String email);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
-            " (r.startDate < ?1 AND r.endDate > ?1) OR (r.startDate > ?1 AND r.startDate < ?2) ")
+            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
     List<Cottage> nonAvailableCottages(LocalDate from, LocalDate to);
 }

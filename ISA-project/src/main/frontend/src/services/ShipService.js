@@ -158,12 +158,12 @@ export function sortShips(value, sortAsc, offers, setOffers) {
       break;
     case 6:
       offers.sort((a, b) => {
-        return (sortAsc) ?  a.price - b.price : b.price - a.price;
+        return (sortAsc) ?  a.size - b.size : b.size - a.size;
       });
       break;
       case 7:
         offers.sort((a, b) => {
-          return (sortAsc) ?  a.price - b.price : b.price - a.price;
+          return (sortAsc) ?  a.maxSpeed - b.maxSpeed : b.maxSpeed - a.maxSpeed;
         });
         break;
     default:

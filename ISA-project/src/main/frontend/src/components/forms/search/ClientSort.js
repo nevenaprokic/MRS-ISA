@@ -28,7 +28,7 @@ export default function ClientSort({offers, setOffers, type}) {
 
     let sortOffers = {
       [offerType.COTTAGE]: sortCottages,
-      [offerType.SHIP]: sortShips,
+      [offerType.SHIP]: sortShips
     };
 
 
@@ -72,10 +72,10 @@ export default function ClientSort({offers, setOffers, type}) {
                     <MenuItem value={4}>Rating</MenuItem>
                     <MenuItem value={5}>Price</MenuItem>
                     { type == offerType.SHIP && 
-                      <>
                         <MenuItem value={6}>Size</MenuItem>
-                        <MenuItem value={7}>Motor power</MenuItem>
-                      </>
+                    }
+                    { type == offerType.SHIP && 
+                        <MenuItem value={7}>Max speed</MenuItem>
                     }
                     </Select>
                 </FormControl>
