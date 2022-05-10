@@ -102,19 +102,22 @@ export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
 }
 
 export function filterCottagesClient(params, setOffers, lastSearchedOffers) {
-  console.log(params);
-  params.maxRating = params.maxRating == "" ? Infinity : params.maxRating;
-  params.maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
-  params.maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+  let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  let maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
+  let maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+
+  let minRating = params.minRating == "" ? -1 : params.minRating;
+  let minPrice = params.minPrice == "" ? -1 : params.minPrice;
+  let minPeople = params.minPeople == "" ? -1 : params.minPeople;
 
   const filterOffers = (offer) => {
-    return (offer.price <= params.maxPrice && offer.price >= params.minPrice)
-      && (offer.numberOfPerson <= params.maxPeople && offer.numberOfPerson >= params.minPeople)
-      && (offer.mark <= params.maxRating && offer.mark >= params.minRating);
+    return (offer.price <= maxPrice && offer.price >= minPrice)
+      && (offer.numberOfPerson <= maxPeople && offer.numberOfPerson >= minPeople)
+      && (offer.mark <= maxRating && offer.mark >= minRating);
  }
   let filtered = lastSearchedOffers.filter(filterOffers);
   if(filtered.length == 0)
-    toast.info("No cottages that satisfie these filters.", {
+    toast.info("No offers that satisfy these filters.", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });

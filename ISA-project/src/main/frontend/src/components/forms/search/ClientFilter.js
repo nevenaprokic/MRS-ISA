@@ -23,9 +23,23 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
 
   let filterOffer = {
     [offerType.COTTAGE]: filterCottagesClient,
-    // [offerType.SHIP]: searchShips,
-    // [offerType.ADVENTURE]: searchInstructors
+    [offerType.SHIP]: filterCottagesClient
   };
+
+  const resetFields = () => {
+    setParams({
+    maxRating: "",
+    maxPrice: "",
+    maxPeople: "",
+    minPeople: "",
+    minPrice: "",
+    minRating: "" });
+  }
+
+  const handleReset = () => {
+    setOffers(lastSearchedOffers);
+    resetFields();
+  }
 
   return (
     <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
@@ -44,6 +58,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             label="Min price"
                             id="priceMin"
                             type="number"
+                            value={params.minPrice}
                             onChange={(event) => {
                               setParams({ ...params, minPrice: event.target.value });
                             }}
@@ -56,6 +71,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             label="Max price"
                             id="priceMax"
                             type="number"
+                            value={params.maxPrice}
                             onChange={(event) => {
                               setParams({ ...params, maxPrice: event.target.value });
                             }}
@@ -70,6 +86,13 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                           >
                             Filter
                           </Button>
+                          <Button
+                            size="large"
+                            sx={{}}
+                            onClick={() => handleReset()}
+                          >
+                            Reset
+                          </Button>
                       </Grid>
                           <br/>
                       <Grid item>
@@ -78,6 +101,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             label="Min number of people"
                             id="minPeople"
                             type="number"
+                            value={params.minPeople}
                             onChange={(event) => {
                               setParams({ ...params, minPeople: event.target.value });
                             }}
@@ -91,6 +115,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             label="Max number of people"
                             id="maxPeople"
                             type="number"
+                            value={params.maxPeople}
                             onChange={(event) => {
                               setParams({ ...params, maxPeople: event.target.value });
                             }}
@@ -106,6 +131,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             label="Min rating"
                             id="minRating"
                             type="number"
+                            value={params.minRating}
                             onChange={(event) => {
                               setParams({ ...params, minRating: event.target.value });
                             }}
@@ -118,6 +144,7 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             style = {{maxWidth: 240}}
                             label="Max rating"
                             id="maxRating"
+                            value={params.maxRating}
                             type="number"
                             onChange={(event) => {
                               setParams({ ...params, maxRating: event.target.value });

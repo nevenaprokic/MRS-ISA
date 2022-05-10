@@ -68,30 +68,27 @@ export default function ClientHomePage() {
         description: "",
         address: "",
         dateFrom: tommorowDate,
-        dateTo: tommorowDate,
-        maxRating: Infinity,
-        maxPrice: Infinity,
-        maxPeople: Infinity,
-        minPeople: -1,
-        minPrice: -1,
-        minRating: -1
+        dateTo: tommorowDate
     });
 
-    const resetParams = () => {
-      setParams({
-        name: "",
-        description: "",
-        address: "",
-        dateFrom: tommorowDate,
-        dateTo: tommorowDate,
-        maxRating: Infinity,
-        maxPrice: Infinity,
-        maxPeople: Infinity,
-        minPeople: -1,
-        minPrice: -1,
-        minRating: -1
-    });
-    }
+    const [filter, setFilter] = useState({
+      maxRating: "",
+      maxPrice: "",
+      maxPeople: "",
+      minPeople: "",
+      minPrice: "",
+      minRating: ""
+  });
+
+    // const resetParams = () => {
+    //   setParams({
+    //     name: "",
+    //     description: "",
+    //     address: "",
+    //     dateFrom: tommorowDate,
+    //     dateTo: tommorowDate
+    // });
+    // }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -159,7 +156,7 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={params} setParams={setParams} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
                               <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
                           </Grid>
@@ -175,6 +172,7 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
                               <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} />
                           </Grid>

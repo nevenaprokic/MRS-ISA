@@ -24,7 +24,7 @@ import { offerType } from '../../../app/Enum';
 export default function ClientSort({offers, setOffers, type}) {
 
     const [sortAsc, setSortAsc] = useState(true);
-    const [criteria, setCriteria] = useState("Name");
+    const [criteria, setCriteria] = useState(1);
 
     let sortOffers = {
       [offerType.COTTAGE]: sortCottages,
