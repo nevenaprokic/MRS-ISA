@@ -91,14 +91,14 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         //obrisati zahtev logicki, sacuvati u bazi, aktivirati nalog i sacuvati u bazi, slanje mejla
         RegistrationRequest request = registrationRequestRepository.getById(id);
 
-        if(request.getPersonType().equals("10")){ //request.getPersonType().equals(UserType.INSTRUCTOR.toString())
+        if(request.getPersonType().equals(UserType.INSTRUCTOR.toString())){ //
             createInstructorAccount(request);
         }
-        else if(request.getPersonType().equals("20")){ //request.getPersonType().equals(UserType.COTTAGE_OWNER.toString())
-
+        else if(request.getPersonType().equals(UserType.COTTAGE_OWNER.toString())){ //
+            createCottageOwnerAccount(request);
         }
-        else if (request.getPersonType().equals("30")){ //request.getPersonType().equals(UserType.SHIP_OWNER.toString())
-
+        else if (request.getPersonType().equals(UserType.SHIP_OWNER.toString())){ //
+            createShipOwnerAccount(request);
         }
 
         request.setDeleted(true);
