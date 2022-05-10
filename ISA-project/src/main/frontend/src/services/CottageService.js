@@ -3,6 +3,7 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import {compareString} from './UtilService'
 
 export function getCottageByCottageOwnerEmail(username) {
   return api
@@ -176,7 +177,7 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
 }
 
 export function sortCottages(value, sortAsc, offers, setOffers) {
-
+  console.log(offers);
   switch(value) {
     case 1:
       offers.sort((a, b) => {
@@ -195,15 +196,10 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
       break;
     case 4:
       offers.sort((a, b) => {
-        return compareString(sortAsc, a.state, b.state);
+        return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
       });
       break;
-      case 5:
-        offers.sort((a, b) => {
-          return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
-        });
-        break;
-    case 6:
+    case 5:
       offers.sort((a, b) => {
         return (sortAsc) ?  a.price - b.price : b.price - a.price;
       });
@@ -214,8 +210,4 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
     });
   }
   setOffers([...offers]);
-}
-
-function compareString(sortAsc, first, second){
-  return (sortAsc) ?  ((first > second) ? 1 : ((second > first) ? -1 : 0)) : ((first < second) ? 1 : ((second < first) ? -1 : 0))
 }

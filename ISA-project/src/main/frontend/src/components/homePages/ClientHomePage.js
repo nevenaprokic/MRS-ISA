@@ -159,7 +159,7 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter params={params} setParams={setParams} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
-                              <ClientSort offers={offers} setOffers={setOffers} />
+                              <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
@@ -171,7 +171,8 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
-                              
+                              <br />
+                              <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} />
                           </Grid>
                         </Box>
                       <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />

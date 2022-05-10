@@ -17,21 +17,29 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {sortCottages} from '../../../services/CottageService'
+import {sortShips} from '../../../services/ShipService'
+import { offerType } from '../../../app/Enum';
 
 
-export default function ClientSort({offers, setOffers}) {
+export default function ClientSort({offers, setOffers, type}) {
 
     const [sortAsc, setSortAsc] = useState(true);
     const [criteria, setCriteria] = useState("Name");
 
+    let sortOffers = {
+      [offerType.COTTAGE]: sortCottages,
+      [offerType.SHIP]: sortShips,
+    };
+
+
     const criteriaChanged = event => {
         let value = event.target.value;
         setCriteria(value);
-        sortCottages(value, sortAsc, offers, setOffers);
+        sortOffers[type](value, sortAsc, offers, setOffers);
     };
 
     const orderChanged = () => {
-        sortCottages(criteria, !sortAsc, offers, setOffers);
+        sortOffers[type](criteria, !sortAsc, offers, setOffers);
         setSortAsc(!sortAsc);
     };
 
@@ -61,9 +69,14 @@ export default function ClientSort({offers, setOffers}) {
                     <MenuItem value={1}>Name</MenuItem>
                     <MenuItem value={2}>Street</MenuItem>
                     <MenuItem value={3}>City</MenuItem>
-                    <MenuItem value={4}>State</MenuItem>
-                    <MenuItem value={5}>Rating</MenuItem>
-                    <MenuItem value={6}>Price</MenuItem>
+                    <MenuItem value={4}>Rating</MenuItem>
+                    <MenuItem value={5}>Price</MenuItem>
+                    { type == offerType.SHIP && 
+                      <>
+                        <MenuItem value={6}>Size</MenuItem>
+                        <MenuItem value={7}>Motor power</MenuItem>
+                      </>
+                    }
                     </Select>
                 </FormControl>
                 <Button onClick={ () => { orderChanged(); }}> { (sortAsc) ? (<ArrowUpwardTwoToneIcon fontSize="large"/>) : (<ArrowDownwardTwoToneIcon fontSize="large"/>) } </Button>

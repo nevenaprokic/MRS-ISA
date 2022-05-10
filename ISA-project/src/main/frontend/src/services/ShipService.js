@@ -3,6 +3,7 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import {compareString} from './UtilService'
 
 export function getShipByShipOwnerEmail(username) {
   return api
@@ -125,4 +126,50 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
     })
     .then((responseData) => console.log("uspesno"))
     .catch((errMessage) => alert(errMessage.data));
+}
+
+export function sortShips(value, sortAsc, offers, setOffers) {
+  console.log(offers);
+  switch(value) {
+    case 1:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.name, b.name);
+    });
+      break;
+    case 2:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.street, b.street);
+      });
+      break;
+    case 3:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.city, b.city);
+      });
+      break;
+    case 4:
+      offers.sort((a, b) => {
+        return (sortAsc) ?  a.mark - b.mark : b.mark - a.mark;
+      });
+      break;
+    case 5:
+      offers.sort((a, b) => {
+        return (sortAsc) ?  a.price - b.price : b.price - a.price;
+      });
+      break;
+    case 6:
+      offers.sort((a, b) => {
+        return (sortAsc) ?  a.price - b.price : b.price - a.price;
+      });
+      break;
+      case 7:
+        offers.sort((a, b) => {
+          return (sortAsc) ?  a.price - b.price : b.price - a.price;
+        });
+        break;
+    default:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.name, b.name);
+    });
+  }
+  setOffers([...offers]);
 }

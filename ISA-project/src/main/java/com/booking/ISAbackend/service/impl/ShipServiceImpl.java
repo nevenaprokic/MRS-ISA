@@ -7,10 +7,7 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.ShipRepository;
-import com.booking.ISAbackend.service.AdditionalServiceService;
-import com.booking.ISAbackend.service.PhotoService;
-import com.booking.ISAbackend.service.ShipService;
-import com.booking.ISAbackend.service.UserService;
+import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +31,8 @@ public class ShipServiceImpl implements ShipService {
     private PhotoService photoService;
     @Autowired
     private AdditionalServiceService additionalServiceService;
+    @Autowired
+    private MarkService markService;
 
     @Override
     @Transactional
@@ -42,6 +41,7 @@ public class ShipServiceImpl implements ShipService {
         List<ShipDTO> dto = new ArrayList<>();
         for(Ship s: ships){
             ShipDTO shipDTO = new ShipDTO(s);
+            shipDTO.setMark(markService.getMark(s.getId()));
             dto.add(shipDTO);
         }
         return dto;
@@ -54,6 +54,7 @@ public class ShipServiceImpl implements ShipService {
         List<ShipDTO> dto = new ArrayList<>();
         for (Ship ship : ships) {
             ShipDTO shipDTO = new ShipDTO(ship);
+            shipDTO.setMark(markService.getMark(ship.getId()));
             dto.add(shipDTO);
         }
         return dto;
@@ -64,6 +65,7 @@ public class ShipServiceImpl implements ShipService {
     public ShipDTO findShipById(Integer id) throws IOException {
         Ship ship = shipRepository.findShipById(id);
         ShipDTO shipDTO = new ShipDTO(ship);
+        shipDTO.setMark(markService.getMark(ship.getId()));
         return shipDTO;
     }
 
@@ -81,6 +83,7 @@ public class ShipServiceImpl implements ShipService {
         List<ShipDTO> dto = new ArrayList<>();
         for(Ship s: ships){
             ShipDTO shipDTO = new ShipDTO(s);
+            shipDTO.setMark(markService.getMark(s.getId()));
             dto.add(shipDTO);
         }
         return dto;
@@ -93,6 +96,7 @@ public class ShipServiceImpl implements ShipService {
         List<ShipDTO> dto = new ArrayList<>();
         for(Ship s: ships){
             ShipDTO shipDTO = new ShipDTO(s);
+            shipDTO.setMark(markService.getMark(s.getId()));
             dto.add(shipDTO);
         }
         return dto;
