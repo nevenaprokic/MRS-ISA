@@ -71,7 +71,13 @@ export function searchCottages(params, setOffers) {
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
   console.log(params);
-
+  if(params.dateFrom > params.dateTo){
+    toast.error("Date perios is not correct.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
+    return;
+  }
   return api
     .post("/cottage/search-client", {...params,
        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],

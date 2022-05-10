@@ -21,17 +21,23 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
   const [valueTo, setValueTo] = React.useState();
 
   const handleChangeFrom = (newValue) => {
-    newValue = newValue.toLocaleDateString("en-US");
+    //newValue = newValue.toLocaleDateString("en-US");
     setValueFrom(newValue);
     setParams({ ...params, dateFrom: newValue});
   };
 
   const handleChangeTo = (newValue) => {
-    newValue = newValue.toLocaleDateString("en-US");
+    //newValue = newValue.toLocaleDateString("en-US");
     setValueTo(newValue);
     setParams({ ...params, dateTo: newValue});
   };
 
+  const handleSubmit = () => {
+    console.log(valueFrom);
+    console.log(valueTo);
+    console.log(valueFrom > valueTo);
+    searchOffer[type](params, setOffers, setLastSearchedOffers);
+  };
 
     let searchOffer = {
         [offerType.COTTAGE]: searchCottagesClient,
@@ -116,7 +122,7 @@ export default function ClientSearch({ params, setParams, type, setOffers, setLa
         <Button
           size="large"
           sx={{}}
-          onClick={() => searchOffer[type](params, setOffers, setLastSearchedOffers)}
+          onClick={() => handleSubmit()}
         >
           Search
         </Button>

@@ -164,6 +164,18 @@ export default function ClientHomePage() {
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
+
+                <TabPanel value={value} index={8}>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              
+                          </Grid>
+                        </Box>
+                      <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                </TabPanel>
                 </Box>
             </Container>
             </ThemeProvider>
