@@ -77,7 +77,9 @@ export default function ClientHomePage() {
       maxPeople: "",
       minPeople: "",
       minPrice: "",
-      minRating: ""
+      minRating: "",
+      minSize: "",
+      maxSize: "" 
   });
 
     // const resetParams = () => {

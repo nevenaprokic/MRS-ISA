@@ -14,16 +14,18 @@ import EastIcon from '@mui/icons-material/East';
 import Button from "@mui/material/Button";
 import BoyIcon from '@mui/icons-material/Boy';
 import StarIcon from '@mui/icons-material/Star';
+import StraightenIcon from '@mui/icons-material/Straighten';
 import { offerType } from "../../../app/Enum";
 import {
   filterCottagesClient
 } from "../../../services/CottageService";
+import {filterShipsClient} from "../../../services/ShipService";
 
 export default function ClientFilter({ params, setParams, setOffers, type, lastSearchedOffers }) {
 
   let filterOffer = {
     [offerType.COTTAGE]: filterCottagesClient,
-    [offerType.SHIP]: filterCottagesClient
+    [offerType.SHIP]: filterShipsClient
   };
 
   const resetFields = () => {
@@ -33,7 +35,9 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
     maxPeople: "",
     minPeople: "",
     minPrice: "",
-    minRating: "" });
+    minRating: "",
+    minSize: "",
+    maxSize: "" });
   }
 
   const handleReset = () => {
@@ -154,6 +158,37 @@ export default function ClientFilter({ params, setParams, setOffers, type, lastS
                             }}
                           />
                       </Grid>
+                      <br/>
+                      {type == offerType.SHIP &&
+                      <Grid item>
+                      <TextField
+                        style = {{maxWidth: 240}}
+                        label="Min size"
+                        id="minSize"
+                        type="number"
+                        value={params.minSize}
+                        onChange={(event) => {
+                          setParams({ ...params, minSize: event.target.value });
+                        }}
+                        InputProps={{
+                          startAdornment: <InputAdornment position="end"><StraightenIcon/></InputAdornment>,
+                        }}
+                      />
+                       <EastIcon></EastIcon>
+                      <TextField
+                        style = {{maxWidth: 240}}
+                        label="Max size"
+                        id="maxSize"
+                        value={params.maxSize}
+                        type="number"
+                        onChange={(event) => {
+                          setParams({ ...params, maxSize: event.target.value });
+                        }}
+                        InputProps={{
+                          startAdornment: <InputAdornment position="end"><StraightenIcon/></InputAdornment>,
+                        }}
+                      />
+                  </Grid>}
 
                   </Typography>
                   </AccordionDetails>

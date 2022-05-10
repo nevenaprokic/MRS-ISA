@@ -105,6 +105,32 @@ export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
   }
 }
 
+export function filterShipsClient(params, setOffers, lastSearchedOffers) {
+  
+  let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  let maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
+  let maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
+  let maxSize = params.maxSize == "" ? Infinity : params.maxSize;
+
+  let minRating = params.minRating == "" ? -1 : params.minRating;
+  let minPrice = params.minPrice == "" ? -1 : params.minPrice;
+  let minPeople = params.minPeople == "" ? -1 : params.minPeople;
+  let minSize = params.minSize == "" ? -1 : params.minSize;
+
+  const filterOffers = (offer) => {
+    return (offer.price <= maxPrice && offer.price >= minPrice)
+      && (offer.numberOfPerson <= maxPeople && offer.numberOfPerson >= minPeople)
+      && (offer.mark <= maxRating && offer.mark >= minRating)
+      && (offer.size <= maxSize && offer.size >= minSize);
+ }
+  let filtered = lastSearchedOffers.filter(filterOffers);
+  if(filtered.length == 0)
+    toast.info("No offers that satisfy these filters.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
+  setOffers(filtered);
+}
 
 export function searchShipByShipOwner(params, setOffers) {
   params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople;
