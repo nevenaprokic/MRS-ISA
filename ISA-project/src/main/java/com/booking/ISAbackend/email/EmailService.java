@@ -39,4 +39,26 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
 
     }
+
+    @Async
+    public void sendConfirmationRegistrationRequest(String email) throws MailException, InterruptedException {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response for registration request");
+        mail.setText("Hello, your registration request has been accepted. You can use our application now. Good Luck!");
+        javaMailSender.send(mail);
+
+    }
+    @Async
+    public void sendRejectionRegistrationRequest(String email, String message) throws MailException, InterruptedException {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response for registration request");
+        mail.setText("Hello, your registration request has been denied with the following explanation.\n" + message);
+        javaMailSender.send(mail);
+
+    }
+
 }
