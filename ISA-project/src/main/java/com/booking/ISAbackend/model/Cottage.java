@@ -1,7 +1,5 @@
 package com.booking.ISAbackend.model;
 
-import com.booking.ISAbackend.client.Client;
-
 import javax.persistence.*;
 import java.util.List;
 

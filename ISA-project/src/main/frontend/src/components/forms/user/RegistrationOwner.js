@@ -20,6 +20,7 @@ import SuccessfulRegistration from '../../notifications/SuccessfulRegistration'
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import MainNavigationHome from "../../layout/MainNavigation";
+import {userType} from "../../../app/Enum";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +45,7 @@ export default function RegistrationOwner() {
     console.log(data);
 
     api
-      .post("/registrationOwner", data)
+      .post("/user/registration-owner", data)
       .then(() =>  {handleOpen();})
       .catch((err) => {
         toast.error(err.response.data, {
@@ -269,16 +270,16 @@ export default function RegistrationOwner() {
                       Type of owner
                     </InputLabel>
                     <NativeSelect
-                      defaultValue={30}
+                      defaultValue={userType.COTTAGE_OWNER}
                       {...register("type", { required: true })}
                       inputProps={{
                         name: "type",
                         id: "type",
                       }}
                     >
-                      <option value={10}>Instructor</option>
-                      <option value={20}>Cottage owner</option>
-                      <option value={30}>Ship owner</option>
+                      <option value={userType.INSTRUCTOR}>Instructor</option>
+                      <option value={userType.COTTAGE_OWNER}>Cottage owner</option>
+                      <option value={userType.SHIP_OWNER}>Ship owner</option>
                     </NativeSelect>
                   </FormControl>
                   <div>

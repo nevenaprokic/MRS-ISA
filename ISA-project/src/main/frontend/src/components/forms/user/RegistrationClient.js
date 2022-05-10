@@ -43,7 +43,7 @@ export default function RegistrationClient() {
       //const data = new FormData(event.currentTarget);
       console.log(data);
       api
-            .post("auth/client/registration", data)
+            .post("/client/registration", data)
             .then((res) => {
               handleOpen();
               // toast.success(res.data, {

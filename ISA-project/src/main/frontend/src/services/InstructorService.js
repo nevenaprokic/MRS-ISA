@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export function getInstructorByUsername(username){
     return api
-       .get("/instructorProfileInfo",{
+       .get("/instructor/profile-info",{
         params: {
             email: username
           }
@@ -22,7 +22,7 @@ export function changeInstructorData(newOwnerData){
     let email = getUsernameFromToken();
     newOwnerData["email"] = email;
     api
-    .post("/change-instructor-data", newOwnerData)
+    .post("/instructor/change-data", newOwnerData)
     .then((responseData) => {toast.success(responseData.data, {
                                 position: toast.POSITION.BOTTOM_RIGHT,
                                 autoClose: 1500,
@@ -37,7 +37,7 @@ export function changeInstructorData(newOwnerData){
 
 export function getInstructors(){
     return api
-        .get("/getAllInstructors")
+        .get("/instructor/get-all")
         .then((data) => data )
         .catch((err) => {toast.error("Something went wrong.", {
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -49,7 +49,7 @@ export function getInstructors(){
 export function searchInstructors(params, setOffers){
     console.log(params);
     return api
-        .get("/searchInstructors",  {params})
+        .get("/instructor/search",  {params})
         .then((data) =>{
           setOffers(data.data);
           if (data.data.length == 0) {
@@ -72,7 +72,7 @@ export function searchInstructors(params, setOffers){
 
 export function sendDeleteRequestInstructor(data){
     return api
-    .post("instructor-delete-profile-request?email=" + getUsernameFromToken(), data)
+    .post("/instructor/delete-profile-request?email=" + getUsernameFromToken(), data)
     .then((data) => {
       toast.success("You have successfully submitted a request to delete the order.", {
         position: toast.POSITION.BOTTOM_RIGHT,

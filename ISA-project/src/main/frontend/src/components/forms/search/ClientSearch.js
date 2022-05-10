@@ -1,9 +1,11 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
     searchCottagesClient
 } from "../../../services/CottageService";
@@ -13,8 +15,23 @@ import {
 import { offerType } from "../../../app/Enum";
 import { searchInstructors } from "../../../services/InstructorService";
 
-export default function ClientSearch({ params, setParams, type, setOffers }) {
-    const [error, setError] = useState("");
+export default function ClientSearch({ params, setParams, type, setOffers, setLastSearchedOffers }) {
+
+  const [valueFrom, setValueFrom] = React.useState();
+  const [valueTo, setValueTo] = React.useState();
+
+  const handleChangeFrom = (newValue) => {
+    newValue = newValue.toLocaleDateString("en-US");
+    setValueFrom(newValue);
+    setParams({ ...params, dateFrom: newValue});
+  };
+
+  const handleChangeTo = (newValue) => {
+    newValue = newValue.toLocaleDateString("en-US");
+    setValueTo(newValue);
+    setParams({ ...params, dateTo: newValue});
+  };
+
 
     let searchOffer = {
         [offerType.COTTAGE]: searchCottagesClient,
@@ -23,6 +40,7 @@ export default function ClientSearch({ params, setParams, type, setOffers }) {
       };
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
     <Grid container spacing={5}>
       <Grid item xs>
         {type == offerType.ADVENTURE ? (
@@ -93,17 +111,43 @@ export default function ClientSearch({ params, setParams, type, setOffers }) {
           }}
         />
       </Grid>
-      {console.log(type)}
 
       <Grid item xs>
         <Button
           size="large"
           sx={{}}
-          onClick={() => searchOffer[type](params, setOffers)}
+          onClick={() => searchOffer[type](params, setOffers, setLastSearchedOffers)}
         >
           Search
         </Button>
       </Grid>
     </Grid>
+    <br/>
+    <Grid container spacing={5}>
+      <Grid item>
+        <MobileDatePicker
+            label="From"
+            inputFormat="dd/MM/yyyy"
+            value={valueFrom}
+            onChange={handleChangeFrom}
+            // onChange={(event) => {
+            //   handleChangeFrom(event);
+            //   console.log("AAA");
+            //   setParams({ ...params, dateFrom: event.target.value });
+            // }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+      </Grid>
+      <Grid item>
+        <MobileDatePicker
+            label="To"
+            inputFormat="dd/MM/yyyy"
+            value={valueTo}
+            onChange={handleChangeTo}
+            renderInput={(params) => <TextField {...params} />}
+          />
+      </Grid>
+    </Grid>
+    </LocalizationProvider>
   );
 }

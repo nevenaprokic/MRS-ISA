@@ -1,33 +1,35 @@
-package com.booking.ISAbackend.client;
+package com.booking.ISAbackend.dto;
 
-public class ClientDTO {
+public class ClientRequest {
 
     private String email;
+    private String password;
     private String firstName;
     private String lastName;
-    private String phoneNumber;
     private String street;
     private String city;
     private String state;
-    private String clientCategory;
-    private Integer penal;
+    private String phoneNumber;
 
-    public ClientDTO() {}
+    public ClientRequest() {}
 
-    public ClientDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String clientCategory, Integer penal) {
+    public ClientRequest(String email, String password, String firstName, String lastName, String street, String city, String state, String phoneNumber) {
         this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
         this.street = street;
         this.city = city;
         this.state = state;
-        this.clientCategory = clientCategory;
-        this.penal = penal;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getFirstName() {
@@ -36,10 +38,6 @@ public class ClientDTO {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
     }
 
     public String getStreet() {
@@ -54,16 +52,16 @@ public class ClientDTO {
         return state;
     }
 
-    public String getClientCategory() {
-        return clientCategory;
-    }
-
-    public Integer getPenal() {
-        return penal;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFirstName(String firstName) {
@@ -72,10 +70,6 @@ public class ClientDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public void setStreet(String street) {
@@ -90,11 +84,7 @@ public class ClientDTO {
         this.state = state;
     }
 
-    public void setClientCategory(String clientCategory) {
-        this.clientCategory = clientCategory;
-    }
-
-    public void setPenal(Integer penal) {
-        this.penal = penal;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -1,6 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
@@ -13,7 +13,6 @@ import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.imageio.ImageIO;
@@ -24,8 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service

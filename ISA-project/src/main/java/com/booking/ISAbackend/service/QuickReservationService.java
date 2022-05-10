@@ -1,10 +1,9 @@
 package com.booking.ISAbackend.service;
 
-import com.booking.ISAbackend.dto.QuickActionDTO;
-import com.booking.ISAbackend.model.QuickReservation;
+import com.booking.ISAbackend.dto.QuickReservationDTO;
 
 import java.util.List;
 
 public interface QuickReservationService {
-    List<QuickActionDTO> findQuickReservationByOfferId(Integer id);
+    List<QuickReservationDTO> findQuickReservationByOfferId(Integer id);
 }

@@ -1,16 +1,15 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.dto.CottageDTO;
+import com.booking.ISAbackend.dto.CottageSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.CottageRepository;
-import com.booking.ISAbackend.service.AdditionalServiceService;
-import com.booking.ISAbackend.service.CottageService;
-import com.booking.ISAbackend.service.PhotoService;
-import com.booking.ISAbackend.service.UserService;
+import com.booking.ISAbackend.repository.ReservationRepository;
+import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CottageServiceImpl implements CottageService {
@@ -34,6 +34,10 @@ public class CottageServiceImpl implements CottageService {
     private AdditionalServiceService additionalServiceService;
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private MarkService markService;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
 
     @Override
@@ -43,6 +47,7 @@ public class CottageServiceImpl implements CottageService {
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
             CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
             dto.add(cottageDTO);
         }
         return dto;
@@ -55,6 +60,7 @@ public class CottageServiceImpl implements CottageService {
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
             CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
             dto.add(cottageDTO);
         }
         return dto;
@@ -65,6 +71,7 @@ public class CottageServiceImpl implements CottageService {
     public CottageDTO findCottageById(Integer id) throws IOException {
         Cottage cottage = cottageRepository.findCottageById(id);
         CottageDTO cottageDTO = new CottageDTO(cottage);
+        cottageDTO.setMark(markService.getMark(cottage.getId()));
         return  cottageDTO;
     }
 
@@ -82,6 +89,7 @@ public class CottageServiceImpl implements CottageService {
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
             CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
             dto.add(cottageDTO);
         }
         return dto;
@@ -89,11 +97,18 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public List<CottageDTO> searchCottagesClient(String name, String description, String address) throws IOException {
-        List<Cottage> cottages = cottageRepository.searchCottagesClient(name, description, address);
+    public List<CottageDTO> searchCottagesClient(CottageSearchParamsDTO params) throws IOException {
+        List<Cottage> cottages = cottageRepository.searchCottagesClient(params.getName(), params.getDescription(), params.getAddress());
+        List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDateFrom(), params.getDateTo());
+
+        List<Cottage> availableCottages = cottages.stream()
+                .filter(element -> !nonAvailableCottages.contains(element))
+                .collect(Collectors.toList());
+
         List<CottageDTO> dto = new ArrayList<>();
-        for(Cottage c: cottages){
+        for(Cottage c: availableCottages){
             CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
             dto.add(cottageDTO);
         }
         return dto;

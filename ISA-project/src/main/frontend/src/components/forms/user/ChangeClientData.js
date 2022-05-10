@@ -33,7 +33,7 @@ export default function ChangeClientData({currentClientData, close, childToParen
   const onSubmit = (data) => {
     childToParent(data);
     api
-      .post("updateProfileInfo?email=" + getUsernameFromToken(), data)
+      .post("client/update-profile-info?email=" + getUsernameFromToken(), data)
       .then(res => {
         close();
         toast.success(res.data, {

@@ -7,7 +7,7 @@ export function changeAdminData(newAdminData){
     let email = getUsernameFromToken();
     newAdminData["email"] = email;
     api
-    .post("/change-admin-data", newAdminData)
+    .post("/admin/change-data", newAdminData)
     .then((responseData) => {toast.success(responseData.data, {
                                 position: toast.POSITION.BOTTOM_RIGHT,
                                 autoClose: 1500,
@@ -19,7 +19,7 @@ export function changeAdminData(newAdminData){
 export function getAdminByEmail(){
     let email = getUsernameFromToken();
     return api
-    .get("/admin-profile", 
+    .get("/admin/profile-info", 
         {
             params:{
             email: email

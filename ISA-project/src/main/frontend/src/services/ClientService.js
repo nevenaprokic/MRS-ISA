@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 export const sendDeleteRequestClient = (data) => {
     console.log(data);
     api
-      .post("deleteAccount", { ...data,
+      .post("client/delete-account", { ...data,
           "email": getUsernameFromToken(),
         })
       .then((res) => {
@@ -21,7 +21,7 @@ export const sendDeleteRequestClient = (data) => {
 export const isDeletionRequested = (handleOpenDelete) => {
   let deleted = false;
   api
-      .get("deletion-requested?email=" + getUsernameFromToken())
+      .get("/client/deletion-requested?email=" + getUsernameFromToken())
       .then((res) => {
           deleted = res.data;
           if(!deleted)

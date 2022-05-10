@@ -3,7 +3,7 @@ import api from "../app/api";
 
 export default function getQuickActionByOfferId(id){
     return api
-        .get("/getQuickActions", {
+        .get("quick-reservation/get", {
             params:{
                 id:id
             }

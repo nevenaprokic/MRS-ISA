@@ -1,29 +1,33 @@
-package com.booking.ISAbackend.client;
+package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.dto.ClientDTO;
+import com.booking.ISAbackend.dto.ClientRequest;
+import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 @RestController
+@RequestMapping("client")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
-    @PostMapping("auth/client/registration")
+    @PostMapping("registration")
     public ResponseEntity<String> addClient(@RequestBody ClientRequest request, UriComponentsBuilder ucBuilder) throws InterruptedException {
 
-        Client existUser = this.clientService.findByEmail(request.getEmail());
+        ClientDTO existUser = this.clientService.findByEmail(request.getEmail());
 
         if (existUser != null) {
             return ResponseEntity.status(400).body("Email is already registered.");
@@ -34,28 +38,13 @@ public class ClientController {
         return ResponseEntity.ok("Registration was successful.");
     }
 
-    @GetMapping("clientProfileInfo")
-    @Transactional
-    public ResponseEntity<ClientDTO> getInstructorProfileInfo(@RequestParam String email){
-
-        Client client = clientService.findByEmail(email);
-        ClientDTO dto = new ClientDTO(
-            client.getEmail(),
-                client.getFirstName(),
-                client.getLastName(),
-                client.getPhoneNumber(),
-                client.getAddress().getStreet(),
-                client.getAddress().getCity(),
-                client.getAddress().getState(),
-                client.getClientCategory().toString(),
-                client.getPenal()
-        );
-
+    @GetMapping("profile-info")
+    public ResponseEntity<ClientDTO> getClientProfileInfo(@RequestParam String email){
+        ClientDTO dto = clientService.findByEmail(email);
         return ResponseEntity.ok(dto);
     }
 
-    @PostMapping("updateProfileInfo")
-    @Transactional
+    @PostMapping("update-profile-info")
     public ResponseEntity<String> updateInfo(@RequestParam String email, @RequestBody ClientDTO dto) {
         try{
             clientService.updateInfo(email, dto);
@@ -66,7 +55,7 @@ public class ClientController {
         }
     }
 
-    @PostMapping("deleteAccount")
+    @PostMapping("delete-account")
     public ResponseEntity<String> deleteAccount(@RequestBody HashMap<String, String> data){
         try{
             clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
