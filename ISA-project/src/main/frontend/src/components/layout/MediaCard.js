@@ -122,7 +122,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
 
             {offerT != userType.INSTRUCTOR  && <Typography variant="body2" color="text.secondary">
               <p>
-              <Rating name="read-only" value={markData} readOnly />
+              <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
               </p>
               <p>Price: {offerData.price}€</p>
           </Typography>}

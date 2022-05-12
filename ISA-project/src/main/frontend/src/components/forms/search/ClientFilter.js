@@ -1,198 +1,288 @@
-import React from 'react'
-import Paper from '@mui/material/Paper';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import InputAdornment from "@mui/material/InputAdornment";
-import EastIcon from '@mui/icons-material/East';
 import Button from "@mui/material/Button";
-import BoyIcon from '@mui/icons-material/Boy';
-import StarIcon from '@mui/icons-material/Star';
-import StraightenIcon from '@mui/icons-material/Straighten';
 import { offerType } from "../../../app/Enum";
-import {
-  filterCottagesClient
-} from "../../../services/CottageService";
-import {filterShipsClient} from "../../../services/ShipService";
+import { filterCottagesClient } from "../../../services/CottageService";
+import { filterShipsClient } from "../../../services/ShipService";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import * as React from "react";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Slider from "@mui/material/Slider";
+import { sortCottages } from "../../../services/CottageService";
+import { sortShips } from "../../../services/ShipService";
+import { useState } from "react";
+import ArrowUpwardTwoToneIcon from "@mui/icons-material/ArrowUpwardTwoTone";
+import ArrowDownwardTwoToneIcon from "@mui/icons-material/ArrowDownwardTwoTone";
+import Rating from "@mui/material/Rating";
+import { useEffect } from "react";
 
-export default function ClientFilter({ params, setParams, setOffers, type, lastSearchedOffers }) {
+
+function getValue(value) {
+  return `${value}`;
+}
+
+const stars = [
+  { title: <Rating name="half-rating-read" value={0} readOnly />, star: "0" },
+  { title: <Rating name="half-rating-read" value={1} readOnly />, star: "1" },
+  { title: <Rating name="half-rating-read" value={2} readOnly />, star: "2" },
+  { title: <Rating name="half-rating-read" value={3} readOnly />, star: "3" },
+  { title: <Rating name="half-rating-read" value={4} readOnly />, star: "4" },
+  { title: <Rating name="half-rating-read" value={5} readOnly />, star: "5" },
+];
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+function getMinNumPeople(offers) {
+  console.log(offers);
+  const totals = offers.map((x) => x.numberOfPerson);
+  return Math.min(...totals);
+}
+function getMaxNumPeople(offers) {
+  const totals = offers.map((x) => x.numberOfPerson);
+  return Math.max(...totals);
+}
+
+export default function ClientFilter({
+  params,
+  setParams,
+  setOffers,
+  type,
+  lastSearchedOffers,
+  offers,
+}) {
+  let minPeople = 0;
+  let maxPeople = 50;
+
+  useEffect(() => {
+   
+    // console.log(offers);
+    // const people = offers.map((x) => x.numberOfPerson);
+    // const minPeople = Math.min(...people);
+    // const maxPeople = Math.max(...people);
+    // const price = offers.map((x) => x.price);
+    // const minPrice = Math.min(...price);
+    // const maxPrice = Math.max(...price);
+  }, [offers]);
+  
+  const [valueNumPeople, setValueNumPeople] = React.useState([
+    minPeople,
+    maxPeople,
+  ]);
+  const [valuePrice, setValuePrice] = React.useState([20, 37]);
+  const [valueStar, setValueStar] = React.useState();
+ 
+  
+
+  
+
+  const handleChangePeopleNumber = (event, newValue, activeThumb) => {
+    setParams({ ...params, minPeople: newValue[0], maxPeople: newValue[1] });
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setValueNumPeople(newValue);
+  };
+  const handleChangePrice = (event, newValue, activeThumb) => {
+    setParams({ ...params, minPrice: newValue[0], maxPrice: newValue[1] });
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setValuePrice(newValue);
+  };
+  const [sortAsc, setSortAsc] = useState(true);
+  const [criteria, setCriteria] = useState(1);
+
+  let sortOffers = {
+    [offerType.COTTAGE]: sortCottages,
+    [offerType.SHIP]: sortShips,
+  };
+
+  const criteriaChanged = (event) => {
+    let value = event.target.value;
+    setCriteria(value);
+    sortOffers[type](value, sortAsc, offers, setOffers);
+  };
+
+  const orderChanged = () => {
+    sortOffers[type](criteria, !sortAsc, offers, setOffers);
+    setSortAsc(!sortAsc);
+  };
 
   let filterOffer = {
     [offerType.COTTAGE]: filterCottagesClient,
-    [offerType.SHIP]: filterShipsClient
+    [offerType.SHIP]: filterShipsClient,
   };
 
   const resetFields = () => {
     setParams({
-    maxRating: "",
-    maxPrice: "",
-    maxPeople: "",
-    minPeople: "",
-    minPrice: "",
-    minRating: "",
-    minSize: "",
-    maxSize: "" });
-  }
+      maxRating: "",
+      maxPrice: "",
+      maxPeople: "",
+      minPeople: "",
+      minPrice: "",
+      minRating: "",
+      minSize: "",
+      maxSize: "",
+    });
+  };
 
   const handleReset = () => {
     setOffers(lastSearchedOffers);
     resetFields();
-  }
+  };
+  const sendParams = () => {
+    if (valueStar !== undefined) {
+      if (valueStar.length != 0) {
+        const totals = valueStar.map((x) => x.star);
+        setParams({
+          ...params,
+          maxRating: Math.max(...totals),
+          minRating: Math.min(...totals),
+        });
+      }
+    }
+    filterOffer[type](params, setOffers, lastSearchedOffers);
+  };
 
   return (
-    <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
-            <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography><FilterAltIcon/></Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>                 
-                    <Typography>
-                      <Grid item xs>
-                          <TextField
-                            label="Min price"
-                            id="priceMin"
-                            type="number"
-                            value={params.minPrice}
-                            onChange={(event) => {
-                              setParams({ ...params, minPrice: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end">€</InputAdornment>,
-                            }}
-                          />
-                          <EastIcon></EastIcon>
-                          <TextField
-                            label="Max price"
-                            id="priceMax"
-                            type="number"
-                            value={params.maxPrice}
-                            onChange={(event) => {
-                              setParams({ ...params, maxPrice: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end">€</InputAdornment>,
-                            }}
-                          />
-                          <Button
-                            size="large"
-                            sx={{}}
-                            onClick={() => filterOffer[type](params, setOffers, lastSearchedOffers)}
-                          >
-                            Filter
-                          </Button>
-                          <Button
-                            size="large"
-                            sx={{}}
-                            onClick={() => handleReset()}
-                          >
-                            Reset
-                          </Button>
-                      </Grid>
-                          <br/>
-                      <Grid item>
-                          <TextField
-                            style = {{maxWidth: 240}}
-                            label="Min number of people"
-                            id="minPeople"
-                            type="number"
-                            value={params.minPeople}
-                            onChange={(event) => {
-                              setParams({ ...params, minPeople: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end"><BoyIcon/></InputAdornment>,
-                            }}
-                          />
-                           <EastIcon></EastIcon>
-                          <TextField
-                            style = {{maxWidth: 240}}
-                            label="Max number of people"
-                            id="maxPeople"
-                            type="number"
-                            value={params.maxPeople}
-                            onChange={(event) => {
-                              setParams({ ...params, maxPeople: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end"><BoyIcon/></InputAdornment>,
-                            }}
-                          />
-                      </Grid>
-                      <br/>
-                      <Grid item>
-                          <TextField
-                            style = {{maxWidth: 240}}
-                            label="Min rating"
-                            id="minRating"
-                            type="number"
-                            value={params.minRating}
-                            onChange={(event) => {
-                              setParams({ ...params, minRating: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end"><StarIcon/></InputAdornment>,
-                            }}
-                          />
-                           <EastIcon></EastIcon>
-                          <TextField
-                            style = {{maxWidth: 240}}
-                            label="Max rating"
-                            id="maxRating"
-                            value={params.maxRating}
-                            type="number"
-                            onChange={(event) => {
-                              setParams({ ...params, maxRating: event.target.value });
-                            }}
-                            InputProps={{
-                              startAdornment: <InputAdornment position="end"><StarIcon/></InputAdornment>,
-                            }}
-                          />
-                      </Grid>
-                      <br/>
-                      {type == offerType.SHIP &&
-                      <Grid item>
-                      <TextField
-                        style = {{maxWidth: 240}}
-                        label="Min size"
-                        id="minSize"
-                        type="number"
-                        value={params.minSize}
-                        onChange={(event) => {
-                          setParams({ ...params, minSize: event.target.value });
-                        }}
-                        InputProps={{
-                          startAdornment: <InputAdornment position="end"><StraightenIcon/></InputAdornment>,
-                        }}
-                      />
-                       <EastIcon></EastIcon>
-                      <TextField
-                        style = {{maxWidth: 240}}
-                        label="Max size"
-                        id="maxSize"
-                        value={params.maxSize}
-                        type="number"
-                        onChange={(event) => {
-                          setParams({ ...params, maxSize: event.target.value });
-                        }}
-                        InputProps={{
-                          startAdornment: <InputAdornment position="end"><StraightenIcon/></InputAdornment>,
-                        }}
-                      />
-                  </Grid>}
-
-                  </Typography>
-                  </AccordionDetails>
-                </Accordion>
-            </Grid>
-  )
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid container spacing={5}>
+        <Grid item>
+          <FormControl style={{ minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-label">
+              Sorting criteria
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={criteria}
+              label="Criteria"
+              onChange={criteriaChanged}
+            >
+              <MenuItem value={1}>Name</MenuItem>
+              <MenuItem value={2}>Street</MenuItem>
+              <MenuItem value={3}>City</MenuItem>
+              <MenuItem value={4}>Rating</MenuItem>
+              <MenuItem value={5}>Price</MenuItem>
+              {type == offerType.SHIP && <MenuItem value={6}>Size</MenuItem>}
+              {type == offerType.SHIP && (
+                <MenuItem value={7}>Max speed</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+          <Button
+            onClick={() => {
+              orderChanged();
+            }}
+          >
+            {" "}
+            {sortAsc ? (
+              <ArrowUpwardTwoToneIcon fontSize="large" />
+            ) : (
+              <ArrowDownwardTwoToneIcon fontSize="large" />
+            )}{" "}
+          </Button>
+        </Grid>
+        <Grid item xs>
+          <Autocomplete
+            multiple
+            id="checkboxes-tags-demo"
+            options={stars}
+            disableCloseOnSelect
+            value={valueStar}
+            onChange={(event, newValue) => {
+              setValueStar(newValue);
+            }}
+            getOptionLabel={(option) => option.title}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.title}
+              </li>
+            )}
+            style={{ width: 330 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Stars" placeholder="Rating" />
+            )}
+          />
+        </Grid>
+        <Grid item xs>
+          <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center" }}
+          >
+            Number of person
+          </Typography>
+          <Slider
+            getAriaLabel={() => "Minimum distance shift"}
+            value={valueNumPeople}
+            onChange={handleChangePeopleNumber}
+            valueLabelDisplay="auto"
+            getAriaValueText={getValue}
+            disableSwap
+            style={{ width: 170 }}
+            defaultValue={[2, 20]}
+            max={50}
+            min={0}
+          />
+          <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center" }}
+          >
+            {valueNumPeople[0] + " - " + valueNumPeople[1]}
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center" }}
+          >
+            Price €
+          </Typography>
+          <Slider
+            getAriaLabel={() => "Minimum distance shift"}
+            value={valuePrice}
+            onChange={handleChangePrice}
+            valueLabelDisplay="auto"
+            getAriaValueText={getValue}
+            disableSwap
+            style={{ width: 170 }}
+            defaultValue={[20, 50]}
+            max={300}
+            min={0}
+          />
+          <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center" }}
+          >
+            {valuePrice[0] + " - " + valuePrice[1]}
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          <Button size="large" sx={{}} onClick={() => sendParams()}>
+            Filter
+          </Button>
+        </Grid>
+      </Grid>
+    </LocalizationProvider>
+  );
 }

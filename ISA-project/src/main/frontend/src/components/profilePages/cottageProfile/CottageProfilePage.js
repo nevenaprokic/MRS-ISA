@@ -15,7 +15,6 @@ import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
-import { getAdditionalServiceByOffer } from "../../../services/AdditionalServicesService";
 
 
 const theme = createTheme({
@@ -97,7 +96,7 @@ function CottageProfilePage({ id, close }) {
 
               <Divider />
               <div className="mark">
-                <Rating name="read-only" value={markData} readOnly />
+                <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
               </div>
             </div>
             <ImagesBox images={images} />

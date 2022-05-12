@@ -89,7 +89,7 @@ function ShipProfilePage({ id, close }) {
 
               <Divider />
               <div className="mark">
-                <Rating name="read-only" value={markData} readOnly />
+                <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
               </div>
             </div>
 

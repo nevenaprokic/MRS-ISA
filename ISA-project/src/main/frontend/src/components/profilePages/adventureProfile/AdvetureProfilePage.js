@@ -146,7 +146,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 </div>
                 {!!markData && 
                 <div className="mark">
-                    <Rating name="read-only" value={markData} readOnly />
+                    <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
                 </div>}
                 <Modal
                     open={openChangeForm}

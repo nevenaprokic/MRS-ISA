@@ -18,7 +18,7 @@ import OfferList from '../collections/OfferList';
 import { offerType } from "../../app/Enum";
 import ClientFilter from "../forms/search/ClientFilter"
 import ClientSort from "../forms/search/ClientSort"
-
+import { useEffect } from "react";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -62,6 +62,8 @@ export default function ClientHomePage() {
     tommorowDate.setDate(tommorowDate.getDate() + 1)
 
     const [lastSearchedOffers, setLastSearchedOffers] = useState();
+    const [allOffers, setAllOffers] = useState();
+    
 
     const [params, setParams] = useState({
         name: "",
@@ -159,9 +161,9 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.COTTAGE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                               <br />
-                              <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} />
+                              {/* <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
@@ -177,7 +179,7 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
-                              <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} />
+                              {/* <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
