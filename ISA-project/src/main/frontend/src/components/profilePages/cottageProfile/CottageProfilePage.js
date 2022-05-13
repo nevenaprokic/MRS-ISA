@@ -15,7 +15,8 @@ import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
-
+import DeleteCottage from "../../forms/cottage/DeleteCottage";
+import Modal from '@mui/material/Modal';
 
 const theme = createTheme({
   palette: {
@@ -28,11 +29,22 @@ const theme = createTheme({
   },
 });
 
-
-
 function CottageProfilePage({ id, close }) {
   const [cottageData, setCottageData] = useState();
   const [additioanlServices, setServices] = useState();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    setOpen(true);
+  };
+  const handleCloseDeleteDialog = () => {
+    setOpen(false);
+  }
+
+  // const handleOpenDeleteDialog = () => {
+  //   <DeleteCottage/>
+  // }
 
   useEffect(() => {
     async function setcottageData() {
@@ -51,20 +63,19 @@ function CottageProfilePage({ id, close }) {
     async function setData() {
       const markData = await getMarkByOfferId(id);
       setMarkData(markData.data ? markData.data : "0");
-      
+
       return markData.data;
     }
     setData();
-
   }, []);
 
   function createServiceData() {
     let rows = [];
     cottageData.additionalServices.forEach((data) => {
-        let name = data.serviceName;
-        let price = data.servicePrice;
-        rows.push({name, price});
-      });
+      let name = data.serviceName;
+      let price = data.servicePrice;
+      rows.push({ name, price });
+    });
     return rows;
   }
 
@@ -86,19 +97,37 @@ function CottageProfilePage({ id, close }) {
             </div>
             <div className="headerContainer">
               <h2 className="adventureTittle">{cottageData.name}</h2>
-              { (getRoleFromToken() != null && getRoleFromToken() != userType.CLIENT) ? (
+              
+
+              <Divider />
+              <div className="mark">
+                <Rating
+                  name="half-rating-read"
+                  precision={0.5}
+                  value={markData}
+                  readOnly
+                />
+              </div>
+              {getRoleFromToken() != null &&
+              getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                  <Button variant="contained">Change info</Button>
+                    <Button style={{ marginLeft: '35%' }} variant="contained">Change info</Button>
+                    <Button style={{ marginLeft: '5%' }} variant="contained" onClick={handleOpenDeleteDialog}>Delete</Button>
                 </div>
               ) : (
                 <></>
               )}
-
-              <Divider />
-              <div className="mark">
-                <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
-              </div>
             </div>
+            <Modal
+                    open={open}
+                    onClose={handleCloseDeleteDialog}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                >
+                        <DeleteCottage closeDialog={handleCloseDeleteDialog} open={open} name={cottageData.name}/>
+                    
+                </Modal>
             <ImagesBox images={images} />
             <QuickActionBox id={cottageData.id} />
             <Grid container xs={12}>
@@ -109,7 +138,10 @@ function CottageProfilePage({ id, close }) {
                 <AdditionalDescriptionBox additionData={cottageData} />
               </Grid>
             </Grid>
-            <PriceList offer={cottageData} additionalServices={createServiceData()}/>
+            <PriceList
+              offer={cottageData}
+              additionalServices={createServiceData()}
+            />
           </div>
         </ThemeProvider>
       </div>
