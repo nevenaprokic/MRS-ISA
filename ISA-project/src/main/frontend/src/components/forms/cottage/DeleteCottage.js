@@ -5,9 +5,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {deleteCottage } from "../../../services/CottageService";
 
-export default function DeleteCottage({closeDialog, open, name}) {
+export default function DeleteCottage({closeDialog, open, name, id}) {
     const handleClose = () => {
+        closeDialog();
+    }
+    const handleDelete = () => {
+        async function isDeleted(){
+            await  deleteCottage(id);
+        }
+        isDeleted();
         closeDialog();
     }
 
@@ -29,7 +37,7 @@ export default function DeleteCottage({closeDialog, open, name}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleDelete} autoFocus>
             Agree
           </Button>
         </DialogActions>

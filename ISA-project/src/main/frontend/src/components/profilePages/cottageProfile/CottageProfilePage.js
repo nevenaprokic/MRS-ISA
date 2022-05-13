@@ -3,20 +3,20 @@ import { Grid, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import * as React from "react";
-import { getCottageById } from "../../../services/CottageService";
+import { getCottageById, checkReservation } from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
 import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "./Pricelist";
 import ImagesBox from "./ImagesBox";
-import { getMarkByOfferId } from "../../../services/MarkService";
 import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
 import DeleteCottage from "../../forms/cottage/DeleteCottage";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -31,20 +31,31 @@ const theme = createTheme({
 
 function CottageProfilePage({ id, close }) {
   const [cottageData, setCottageData] = useState();
-  const [additioanlServices, setServices] = useState();
-
-  const [open, setOpen] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleOpenDeleteDialog = () => {
-    setOpen(true);
+    checkAllowed(false);
   };
   const handleCloseDeleteDialog = () => {
-    setOpen(false);
+    setOpenDialog(false);
+  };
+  async function checkAllowed({operation}) {
+    let allowed = await checkReservation(cottageData);
+    let message = "Delete is not allowed because this cottage has reservations.";
+    if(operation)
+      message = "Update is not allowed because this cottage has reservations.";
+    if (allowed) {
+      setOpenDialog(true);
+    } else {
+      toast.error(
+        message,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    }
   }
-
-  // const handleOpenDeleteDialog = () => {
-  //   <DeleteCottage/>
-  // }
 
   useEffect(() => {
     async function setcottageData() {
@@ -54,19 +65,6 @@ function CottageProfilePage({ id, close }) {
       return cottage;
     }
     setcottageData();
-  }, []);
-
-  const [markData, setMarkData] = useState();
-  const [serviceData, setServiceData] = useState();
-
-  useEffect(() => {
-    async function setData() {
-      const markData = await getMarkByOfferId(id);
-      setMarkData(markData.data ? markData.data : "0");
-
-      return markData.data;
-    }
-    setData();
   }, []);
 
   function createServiceData() {
@@ -81,7 +79,7 @@ function CottageProfilePage({ id, close }) {
 
   let images = [];
 
-  if (cottageData && markData) {
+  if (cottageData) {
     cottageData.photos.forEach((photo) => {
       let imag = { image: "data:image/jpg;base64," + photo };
       images.push(imag);
@@ -97,37 +95,51 @@ function CottageProfilePage({ id, close }) {
             </div>
             <div className="headerContainer">
               <h2 className="adventureTittle">{cottageData.name}</h2>
-              
 
               <Divider />
               <div className="mark">
                 <Rating
                   name="half-rating-read"
                   precision={0.5}
-                  value={markData}
+                  value={cottageData.mark}
                   readOnly
                 />
               </div>
               {getRoleFromToken() != null &&
               getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                    <Button style={{ marginLeft: '35%' }} variant="contained">Change info</Button>
-                    <Button style={{ marginLeft: '5%' }} variant="contained" onClick={handleOpenDeleteDialog}>Delete</Button>
+                  <Button style={{ marginLeft: "35%" }} variant="contained">
+                    Change info
+                  </Button>
+                  <Button
+                    style={{ marginLeft: "5%" }}
+                    variant="contained"
+                    onClick={handleOpenDeleteDialog}
+                  >
+                    Delete
+                  </Button>
                 </div>
               ) : (
                 <></>
               )}
             </div>
             <Modal
-                    open={open}
-                    onClose={handleCloseDeleteDialog}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
-                >
-                        <DeleteCottage closeDialog={handleCloseDeleteDialog} open={open} name={cottageData.name}/>
-                    
-                </Modal>
+              open={openDialog}
+              onClose={handleCloseDeleteDialog}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                backgroundColor: "rgb(218, 224, 210, 0.6)",
+                overflow: "auto",
+              }}
+            >
+              <DeleteCottage
+                closeDialog={handleCloseDeleteDialog}
+                open={openDialog}
+                name={cottageData.name}
+                id={cottageData.id}
+              />
+            </Modal>
             <ImagesBox images={images} />
             <QuickActionBox id={cottageData.id} />
             <Grid container xs={12}>
