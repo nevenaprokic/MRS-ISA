@@ -5,6 +5,7 @@ import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.CottageService;
+import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class CottageController {
     @Autowired
     private CottageService cottageService;
+    @Autowired
+    private OfferService offerService;
 
     @GetMapping("get-cottages-by-owner-email")
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
@@ -141,5 +144,19 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @GetMapping("delete")
+
+    public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
+        try{
+            offerService.delete(cottageId);
+            return ResponseEntity.ok().body("Successfully delete cottage");
+        }catch (OfferNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
     }
 }

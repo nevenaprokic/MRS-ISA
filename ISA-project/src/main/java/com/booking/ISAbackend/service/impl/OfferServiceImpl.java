@@ -2,10 +2,13 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.AddressDTO;
+import com.booking.ISAbackend.exceptions.OfferNotFoundException;
 import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Offer;
 import com.booking.ISAbackend.repository.OfferRepository;
+import com.booking.ISAbackend.repository.QuickReservationRepository;
+import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,10 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
     @Autowired
     private OfferRepository offerRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
+    @Autowired
+    private QuickReservationRepository quickReservationRepository;
 
     @Override
     @Transactional
@@ -39,6 +46,20 @@ public class OfferServiceImpl implements OfferService {
             additionalServiceDTO.add(a);
         }
         return  additionalServiceDTO;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer offerId) throws OfferNotFoundException {//slike, sub, additional
+        Offer offer = offerRepository.findOfferById(offerId);
+        if (offer == null)
+            throw new OfferNotFoundException("Offer not found");
+
+        if(offer.getQuickReservations().size() != 0)
+            quickReservationRepository.deleteByOfferId(offerId);
+        if(offer.getReservations().size() != 0)
+            reservationRepository.deleteByOfferId(offerId);
+        offerRepository.updateDeleteByOfferId(offerId);
     }
 
 }

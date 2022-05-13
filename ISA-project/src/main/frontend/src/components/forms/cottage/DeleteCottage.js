@@ -7,16 +7,19 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {deleteCottage } from "../../../services/CottageService";
 
-export default function DeleteCottage({closeDialog, open, name, id}) {
+export default function DeleteCottage({closeDialog, open, name, id, close}) {
     const handleClose = () => {
         closeDialog();
+        // window.location = "/user-profile/cottage-owner";
+        close();
     }
     const handleDelete = () => {
         async function isDeleted(){
             await  deleteCottage(id);
         }
         isDeleted();
-        closeDialog();
+        window.location = "/user-profile/cottage-owner";
+        // closeDialog();
     }
 
   return (

@@ -138,6 +138,7 @@ function CottageProfilePage({ id, close }) {
                 open={openDialog}
                 name={cottageData.name}
                 id={cottageData.id}
+                cloese={close}
               />
             </Modal>
             <ImagesBox images={images} />
