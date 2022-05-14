@@ -127,7 +127,6 @@ function ShipProfilePage({ id, close }) {
                 open={openDialog}
                 name={shipData.name}
                 id={shipData.id}
-                cloese={close}
               />
             </Modal>
 

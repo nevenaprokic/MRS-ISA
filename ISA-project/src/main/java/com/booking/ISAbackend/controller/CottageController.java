@@ -134,6 +134,17 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("allowed-operation")
+    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer cottageId){
+        try{
+            Boolean allowedOperation = offerService.checkOperationAllowed(cottageId);
+            return ResponseEntity.ok(allowedOperation);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
     @GetMapping("delete")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){

@@ -5,14 +5,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {deleteCottage } from "../../../services/CottageService";
+import {deleteShip } from "../../../services/ShipService";
 
-export default function DeleteCottage({closeDialog, open, name, id, close}) {
+export default function DeleteCottage({closeDialog, open, name, id}) {
     const handleClose = () => {
         closeDialog();
     }
     const handleDelete = () => {
-        closeDialog();
+        async function isDeleted(){
+            await  deleteShip(id);
+        }
+        isDeleted();
+        window.location = "/user-profile/ship-owner";
     }
 
   return (

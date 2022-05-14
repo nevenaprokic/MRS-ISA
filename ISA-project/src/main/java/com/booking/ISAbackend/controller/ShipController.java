@@ -150,4 +150,18 @@ public class ShipController {
         }
     }
 
+    @GetMapping("delete")
+    public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
+        try{
+            offerService.delete(shipId);
+            return ResponseEntity.ok().body("Successfully delete ship");
+        }catch (OfferNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+    }
+
 }
