@@ -135,9 +135,9 @@ public class CottageController {
         }
     }
     @GetMapping("allowed-operation")
-    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam int cottageId){
+    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer cottageId){
         try{
-            Boolean allowedOperation = cottageService.checkOperationAllowed(cottageId);
+            Boolean allowedOperation = offerService.checkOperationAllowed(cottageId);
             return ResponseEntity.ok(allowedOperation);
         }
         catch (Exception e){
@@ -145,8 +145,8 @@ public class CottageController {
         }
 
     }
-    @GetMapping("delete")
 
+    @GetMapping("delete")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
         try{
             offerService.delete(cottageId);

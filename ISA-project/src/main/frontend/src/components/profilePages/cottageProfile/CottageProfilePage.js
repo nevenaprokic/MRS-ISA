@@ -138,10 +138,10 @@ function CottageProfilePage({ id, close }) {
                 open={openDialog}
                 name={cottageData.name}
                 id={cottageData.id}
-                cloese={close}
               />
             </Modal>
             <ImagesBox images={images} />
+            
             <QuickActionBox id={cottageData.id} />
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>

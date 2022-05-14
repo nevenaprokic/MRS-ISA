@@ -5,20 +5,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {deleteCottage } from "../../../services/CottageService";
+import {deleteShip } from "../../../services/ShipService";
 
 export default function DeleteCottage({closeDialog, open, name, id}) {
     const handleClose = () => {
         closeDialog();
-
     }
     const handleDelete = () => {
         async function isDeleted(){
-            await  deleteCottage(id);
+            await  deleteShip(id);
         }
         isDeleted();
-        window.location = "/user-profile/cottage-owner";
-
+        window.location = "/user-profile/ship-owner";
     }
 
   return (
@@ -34,7 +32,7 @@ export default function DeleteCottage({closeDialog, open, name, id}) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete {name} cottage?
+          Are you sure you want to delete {name} ship?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

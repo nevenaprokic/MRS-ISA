@@ -10,12 +10,16 @@ import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "../cottageProfile/Pricelist";
 import ImagesBox from "../cottageProfile/ImagesBox";
 import "../../../style/OfferData.scss";
-import { getShipById } from "../../../services/ShipService";
+import { getShipById, checkReservation } from "../../../services/ShipService";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
-import { getMarkByOfferId } from "../../../services/MarkService";
 import Divider from "@mui/material/Divider";
 import Rating from "@mui/material/Rating";
 import { userType } from "../../../app/Enum";
+import Modal from "@mui/material/Modal";
+import DeleteShip from "../../forms/ship/DeleteShip";
+import { toast } from "react-toastify";
+
+
 
 
 const theme = createTheme({
@@ -31,6 +35,32 @@ const theme = createTheme({
 
 function ShipProfilePage({ id, close }) {
   const [shipData, setShipData] = useState();
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    checkAllowed(false);
+  };
+  const handleCloseDeleteDialog = () => {
+    setOpenDialog(false);
+  };
+
+  async function checkAllowed({operation}) {
+    let allowed = await checkReservation(shipData);
+    let message = "Delete is not allowed because this ship has reservations.";
+    if(operation)
+      message = "Update is not allowed because this ship has reservations.";
+    if (allowed) {
+      setOpenDialog(true);
+    } else {
+      toast.error(
+        message,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    }
+  }
 
   useEffect(() => {
     async function setData() {
@@ -42,28 +72,8 @@ function ShipProfilePage({ id, close }) {
     setData();
   }, []);
 
-  const [markData, setMarkData] = useState();
-  useEffect(() => {
-    async function setData() {
-      const markData = await getMarkByOfferId(id);
-      setMarkData(markData.data ? markData.data : "0");
-      return markData.data;
-    }
-    setData();
-  }, []);
-
-  // function createServiceData() {
-  //   let rows = [];
-  //   shipData.additionalServices.forEach((data) => {
-  //       let name = data.serviceName;
-  //       let price = data.servicePrice;
-  //       rows.push({name, price});
-  //     });
-  //   return rows;
-  // }
-
   let photos = [];
-  if (shipData && markData) {
+  if (shipData) {
     shipData.photos.forEach((photo) => {
       let imag = { image: "data:image/jpg;base64," + photo };
       photos.push(imag);
@@ -79,19 +89,46 @@ function ShipProfilePage({ id, close }) {
             </div>
             <div className="headerContainer">
               <h2 className="adventureTittle">{shipData.name}</h2>
-              {(getRoleFromToken() != null && getRoleFromToken() != userType.CLIENT) ? (
+              <Divider />
+              <div className="mark">
+                <Rating name="half-rating-read" precision={0.5} value={shipData.mark} readOnly />
+              </div>
+          
+            {getRoleFromToken() != null &&
+              getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                  <Button variant="contained">Change info</Button>
+                  <Button style={{ marginLeft: "35%" }} variant="contained">
+                    Change info
+                  </Button>
+                  <Button
+                    style={{ marginLeft: "5%" }}
+                    variant="contained"
+                    onClick={handleOpenDeleteDialog}
+                  >
+                    Delete
+                  </Button>
                 </div>
               ) : (
                 <></>
               )}
-
-              <Divider />
-              <div className="mark">
-                <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
-              </div>
             </div>
+            <Modal
+              open={openDialog}
+              onClose={handleCloseDeleteDialog}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                backgroundColor: "rgb(218, 224, 210, 0.6)",
+                overflow: "auto",
+              }}
+            >
+              <DeleteShip
+                closeDialog={handleCloseDeleteDialog}
+                open={openDialog}
+                name={shipData.name}
+                id={shipData.id}
+              />
+            </Modal>
 
             <ImagesBox images={photos} />
             <QuickActionBox id={shipData.id} />

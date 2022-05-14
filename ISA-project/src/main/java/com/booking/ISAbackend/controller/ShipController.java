@@ -5,6 +5,7 @@ import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewShipDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
+import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ public class ShipController {
 
     @Autowired
     private ShipService shipService;
+    @Autowired
+    private OfferService offerService;
 
     @GetMapping("get-all-by-owner")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
@@ -133,6 +136,31 @@ public class ShipController {
             return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("allowed-operation")
+    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer shipId){
+        try{
+            Boolean allowedOperation = offerService.checkOperationAllowed(shipId);
+            return ResponseEntity.ok(allowedOperation);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("delete")
+    public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
+        try{
+            offerService.delete(shipId);
+            return ResponseEntity.ok().body("Successfully delete ship");
+        }catch (OfferNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
 
