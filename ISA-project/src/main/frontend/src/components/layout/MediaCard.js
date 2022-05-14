@@ -18,7 +18,7 @@ import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
 import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
-import { maxHeight } from "@mui/system";
+import ReservationForm from "../forms/reservations/ReservationForm";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -32,9 +32,13 @@ export default function MediaCard({ offer, offerT}) {
   const [offerData, setOfferData] = useState();
 
   const [open, setOpen] = useState(false);
+  const [openReserve, setOpenReserve] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpenReserve = () => setOpenReserve(true);
+  const handleCloseReserve = () => setOpenReserve(false);
 
   let imag = require("../images/no-image.png");
   let imagHeight = 140;
@@ -141,6 +145,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
             >
               View
             </Button>
+            { (getRoleFromToken() == userType.CLIENT && offerT != userType.INSTRUCTOR) && 
+              <Button
+              size="small"
+              variant="contained"
+              bgcolor="secondary"
+              color="primary"
+              onClick={handleOpenReserve}
+            >
+              Reserve
+            </Button>
+            }
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -149,6 +164,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
                 sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
             >
                     {modalOfferComponent(offerT, offer.id)}
+
+            </Modal>
+
+            <Modal
+                open={openReserve}
+                onClose={handleCloseReserve}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+            >
+                    <ReservationForm offer={offer} close={handleCloseReserve} />
 
             </Modal>
           </CardActions>

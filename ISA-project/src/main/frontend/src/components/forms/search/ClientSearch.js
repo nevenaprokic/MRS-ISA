@@ -1,7 +1,7 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Button from "@mui/material/Button";
 import { useState, useEffect } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -123,7 +123,7 @@ export default function ClientSearch({
           />
         </Grid>
         <Grid item>
-          <MobileDatePicker
+          <DesktopDatePicker
             label="From"
             inputFormat="dd/MM/yyyy"
             value={valueFrom}
@@ -132,7 +132,7 @@ export default function ClientSearch({
           />
         </Grid>
         <Grid item>
-          <MobileDatePicker
+          <DesktopDatePicker
             label="To"
             inputFormat="dd/MM/yyyy"
             value={valueTo}
