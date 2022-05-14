@@ -142,6 +142,7 @@ function CottageProfilePage({ id, close }) {
               />
             </Modal>
             <ImagesBox images={images} />
+            
             <QuickActionBox id={cottageData.id} />
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
