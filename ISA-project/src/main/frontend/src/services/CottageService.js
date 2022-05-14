@@ -216,3 +216,47 @@ export function sortCottages(value, sortAsc, offers, setOffers) {
   }
   setOffers([...offers]);
 }
+export function checkReservation(cottageData) {
+  return api
+    .get("/cottage/allowed-operation", {
+      params: {
+        cottageId: cottageData.id,
+      },
+    })
+    .then((response) => response.data)
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
+export function deleteCottage(cottageId) {
+  return api
+    .get("/cottage/delete", {
+      params: {
+        cottageId: cottageId,
+      },
+    })
+    .then((response) => {
+      toast.success(
+        "You successfully deleted the cottage!",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    })
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}

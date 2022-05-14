@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.model;
 
+import org.hibernate.annotations.Where;
+
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.*;
 
 @Entity
+@Where(clause = "deleted = false")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Offer {
 	@Id

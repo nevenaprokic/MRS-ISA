@@ -40,7 +40,7 @@ $paleGreen: #dae0d2;
     margin-left: 5%;
     display: inline-block;
     vertical-align: middle;
-    width: 65%;
+    width: 80% !important;
     font-size: 30px;
     color: $orange;
 }
@@ -48,8 +48,10 @@ $paleGreen: #dae0d2;
 .changeBtn{
     display: inline-block;
     vertical-align: middle;
-    width: 20%;
-    margin-left: 5%;
+    width: 55% !important;
+    margin-left: 5% !important;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .profileContainer{
@@ -273,5 +275,9 @@ $paleGreen: #dae0d2;
 .mark{
     margin-top: 10px;
     margin-left: 5%;
+    margin-right: 5%;
+    width: 30%;
+    display: inline-block;
+    vertical-align: middle;
 }
  
