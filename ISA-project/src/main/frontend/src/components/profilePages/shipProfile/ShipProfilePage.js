@@ -10,13 +10,15 @@ import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "../cottageProfile/Pricelist";
 import ImagesBox from "../cottageProfile/ImagesBox";
 import "../../../style/OfferData.scss";
-import { getShipById } from "../../../services/ShipService";
+import { getShipById, checkReservation } from "../../../services/ShipService";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import Divider from "@mui/material/Divider";
 import Rating from "@mui/material/Rating";
 import { userType } from "../../../app/Enum";
 import Modal from "@mui/material/Modal";
 import DeleteShip from "../../forms/ship/DeleteShip";
+import { toast } from "react-toastify";
+
 
 
 
@@ -36,11 +38,29 @@ function ShipProfilePage({ id, close }) {
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleOpenDeleteDialog = () => {
-    setOpenDialog(true);
+    checkAllowed(false);
   };
   const handleCloseDeleteDialog = () => {
     setOpenDialog(false);
   };
+
+  async function checkAllowed({operation}) {
+    let allowed = await checkReservation(shipData);
+    let message = "Delete is not allowed because this ship has reservations.";
+    if(operation)
+      message = "Update is not allowed because this ship has reservations.";
+    if (allowed) {
+      setOpenDialog(true);
+    } else {
+      toast.error(
+        message,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    }
+  }
 
   useEffect(() => {
     async function setData() {

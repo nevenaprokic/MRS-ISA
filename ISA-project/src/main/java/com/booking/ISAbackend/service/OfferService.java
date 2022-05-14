@@ -12,4 +12,5 @@ public interface OfferService {
     AddressDTO findAddressByOfferId(Integer id);
     List<AdditionalServiceDTO> findAdditionalServiceByOffer(Integer id);
     void delete(Integer offerId) throws OfferNotFoundException;
+    Boolean checkOperationAllowed(Integer offerId);
 }

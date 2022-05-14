@@ -201,16 +201,16 @@ public class CottageServiceImpl implements CottageService {
         }
 
     }
-    @Override
-    public Boolean checkOperationAllowed(int cottageId) {
-        List<Reservation> reservations = reservationRepository.findAllByOfferId(cottageId);
-        LocalDate today = LocalDate.now();
-        for(Reservation r:reservations){
-            if((today.compareTo(r.getEndDate())<0)){
-                return false;
-            }
-        }
-        return true;
-    }
+//    @Override
+//    public Boolean checkOperationAllowed(int cottageId) {
+//        List<Reservation> reservations = reservationRepository.findAllByOfferId(cottageId);
+//        LocalDate today = LocalDate.now();
+//        for(Reservation r:reservations){
+//            if((today.compareTo(r.getEndDate())<0)){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
 }

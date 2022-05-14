@@ -6,6 +6,7 @@ import com.booking.ISAbackend.exceptions.OfferNotFoundException;
 import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Address;
 import com.booking.ISAbackend.model.Offer;
+import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +62,17 @@ public class OfferServiceImpl implements OfferService {
         if(offer.getReservations().size() != 0)
             reservationRepository.deleteByOfferId(offerId);
         offerRepository.updateDeleteByOfferId(offerId);
+    }
+    @Override
+    public Boolean checkOperationAllowed(Integer offerId) {
+        List<Reservation> reservations = reservationRepository.findAllByOfferId(offerId);
+        LocalDate today = LocalDate.now();
+        for(Reservation r:reservations){
+            if((today.compareTo(r.getEndDate())<0)){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
