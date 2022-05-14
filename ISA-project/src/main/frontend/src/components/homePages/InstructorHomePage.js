@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Album from '../collections/Album';
 import OwnerProfile from '../profilePages/userProfile/OwnerProfile';
 import AddAdventurePage from '../forms/adventure/AddAdventurePage';
+import WorkingCalendar from '../calendar/WorkingCalendar';
 import { useState } from 'react';
 import { offerType } from '../../app/Enum';
 
@@ -165,7 +166,7 @@ function a11yProps(index) {
                     Item 10
                 </TabPanel>
                 <TabPanel value={value} index={12}>
-                    Item 12
+                    <WorkingCalendar/>
                 </TabPanel>
                 <TabPanel value={value} index={14}>
                     Item 14
