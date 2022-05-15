@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { ThemeProvider } from "@emotion/react";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import "./CottageProfilePage.scss";
+import { userType, offerType} from "../../../app/Enum";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import getQuickActionByOfferId from "../../../services/QuickActionService";
@@ -37,7 +38,6 @@ function QuickActionBox({ id }) {
   }, []);
 
   if (quickActionData) {
-    {console.log(quickActionData);}
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">
@@ -75,6 +75,7 @@ function QuickActionBox({ id }) {
                 </div>
                 <br></br>
                 <label className="priceItem">Price: {action.price} €</label>
+                { (getRoleFromToken() == userType.CLIENT) && 
                   <Button
                     className="bookingButton"
                     size="small"
@@ -85,7 +86,7 @@ function QuickActionBox({ id }) {
                   >
                     Book now
                   </Button>
-
+                }
                 {/* <div className="actionButton">
                   <ThemeProvider theme={theme}>
                     <Button

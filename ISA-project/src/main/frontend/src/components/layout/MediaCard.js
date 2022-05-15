@@ -53,7 +53,6 @@ export default function MediaCard({ offer, offerT}) {
       if(childData.photos.length != 0){
         imag = "data:image/jpg;base64," + childData.photos[0];
       }
-      console.log("BEFORE SET DATA");
       setOfferData(prevState => ({
         ...prevState,
         ["offerName"]: childData.offerName,
