@@ -8,33 +8,39 @@ public class AdditionalService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private Double price;
+    @Column(name = "name" ,nullable = false)
+    private String serviceName;
+    @Column(name = "price", nullable = false)
+    private Double servicePrice;
 
-    public AdditionalService(String name, Double price) {
-        this.name = name;
-        this.price = price;
+    public AdditionalService() {}
+
+    public AdditionalService(String serviceName, Double servicePrice) {
+        this.serviceName = serviceName;
+        this.servicePrice = servicePrice;
     }
 
-    public AdditionalService() {
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
-        return name;
+        return serviceName;
     }
 
     public Double getPrice() {
-        return price;
+        return servicePrice;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setPrice(Double servicePrice) {
+        this.servicePrice = servicePrice;
     }
 }

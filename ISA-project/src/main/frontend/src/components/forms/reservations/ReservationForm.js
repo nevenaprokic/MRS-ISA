@@ -5,17 +5,15 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from "@mui/material";
 import { useEffect } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import "../../../style/ReservationForm.scss"
 import BoyIcon from '@mui/icons-material/Boy';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
+import EuroIcon from '@mui/icons-material/Euro';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -23,16 +21,24 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
-import CommentIcon from '@mui/icons-material/Comment';
-import { intervalToDuration } from 'date-fns';
+import { calculatePrice } from '../../../services/ReservationService';
+import { makeReservation } from '../../../services/ReservationService';
+import ClearIcon from '@mui/icons-material/Clear';
 
 export default function ReservationForm({ offer, close }) {
-    const { register, handleSubmit, formState: { errors } } = useForm({});
+    const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
     const [value, setValue] = React.useState(new Date());
     const [checked, setChecked] = React.useState([]);
+    const [total, setTotal] = React.useState(0);
 
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
+
+    const recalculate = (services) => {
+      services = (services != null) ? services : checked;        
+      let newPrice = calculatePrice(getValues("days"), offer.price, services);
+      setTotal(newPrice);
+    };
 
     const handleToggle = (value) => () => {
       const currentIndex = checked.indexOf(value);
@@ -43,8 +49,8 @@ export default function ReservationForm({ offer, close }) {
       } else {
         newChecked.splice(currentIndex, 1);
       }
-      
       setChecked(newChecked);
+      recalculate(newChecked);
     };
 
     const handleChange = (newValue) => {
@@ -52,19 +58,24 @@ export default function ReservationForm({ offer, close }) {
     };
 
     const onSubmit = (e) => {
-      close();
       var date = new Date(e.date);
       let next_date = new Date(date.setDate(date.getDate() + parseInt(e.days)));
-      console.log({...e, "services":checked, "endingDate":next_date.toISOString().split('T')[0] });
+      let params = {...e, "offerId": offer.id, "services":checked, "endingDate":next_date.toISOString().split('T')[0], "total": total };
+      makeReservation(params, close);
     };
 
     useEffect(() => {
-        console.log(offer);
+        const subscription = watch((data) => {
+          recalculate();
+        });
+        return () => {
+          subscription.unsubscribe();
+        }
     }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="formContainer" component="form" noValidate onSubmit={handleSubmit(onSubmit)} >
+      <div className="formContainer">
         <Typography variant="h6" gutterBottom>
             Standard reservation
         </Typography>
@@ -78,7 +89,6 @@ export default function ReservationForm({ offer, close }) {
                     inputFormat="yyyy-MM-dd"
                     value={value}
                     onChange={handleChange}
-                    
                     renderInput={(params) => <TextField {...params} />}
                     {...register("date", {required: true})}
                     />
@@ -87,8 +97,8 @@ export default function ReservationForm({ offer, close }) {
 
                 <Grid item xs={12} sm={4} >
                 <TextField
-                    
                     id="days"
+                    name= 'second'
                     label="Number of days"
                     type="number"
                     InputLabelProps={{
@@ -120,20 +130,25 @@ export default function ReservationForm({ offer, close }) {
                 />
                 {errors.guests && <label className="requiredLabel">Required! Only positive numbers are allowed.</label>}
                 </Grid>
-              
                 <Grid item xs={12}>
-                <Typography variant="h7" gutterBottom>
-                Additional services <AddCircleIcon style={{ verticalAlign: '-6' }}/>
-              </Typography>
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                {(offer.additionalServices.length == 0) ? (
+                  <Typography variant="h6" gutterBottom>
+                    No additional services <ClearIcon style={{ verticalAlign: '-6' }}/>
+                  </Typography>
+                  ) : (
+                  <>
+                    <Typography variant="h7" gutterBottom>
+                    Additional services <AddCircleIcon style={{ verticalAlign: '-6' }}/>
+                  </Typography>
+                    
+                <List sx={{ width: '60%', bgcolor: 'background.paper' }}>
                   {offer.additionalServices.map((value) => {
                     const labelId = `checkbox-list-label-${value}`;
                     return (
                       <ListItem
-                        key={value.serviceName + offer.id}
+                        key={value.name + offer.id}
                         secondaryAction={
                           <IconButton edge="end" aria-label="comments">
-                            {/* <AddIcon /> */}
                           </IconButton>
                         }
                         disablePadding
@@ -154,6 +169,8 @@ export default function ReservationForm({ offer, close }) {
                     );
                   })}
                 </List>
+                  </>
+                )}
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{marginLeft:"35%"}}>
                     <br/>
@@ -168,6 +185,9 @@ export default function ReservationForm({ offer, close }) {
                     Confirm 
                     </Button>
                 </Grid>
+                <Typography variant="h7" gutterBottom>
+                    Total Price: {total} <EuroIcon  style={{ verticalAlign: '-6' }}/>
+                </Typography>
             </Grid>
         </div>
     </LocalizationProvider>
