@@ -57,4 +57,5 @@ public class Client extends MyUser {
     public void setSubscribedOffers(List<Offer> subscribedOffers) {
         this.subscribedOffers = subscribedOffers;
     }
+
 }

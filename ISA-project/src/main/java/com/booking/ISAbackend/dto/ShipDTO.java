@@ -87,7 +87,7 @@ public class ShipDTO {
         List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
         for (AdditionalService service: s.getAdditionalServices()
         ) {
-            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getName(), service.getPrice());
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getId(), service.getName(), service.getPrice());
             additionalServiceDTOList.add(dto);
         }
         return  additionalServiceDTOList;

@@ -160,7 +160,7 @@ export default function ClientFilter({
         <Grid item>
           <FormControl style={{ minWidth: 120 }}>
             <InputLabel id="demo-simple-select-label">
-              Sorting criteria
+              Sorting
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"

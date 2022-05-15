@@ -24,16 +24,22 @@ $paleGreen: #dae0d2;
 
 }
 
+.bookingButton{
+    float: right;
+    margin-right: 3% !important;
+}
+
 .specialOffersContainer{
+    height: 37vh !important;
     border: solid medium $darkGreen;
     border-radius: 25px;
-    max-width: 90%;
+    max-width: 80%;
     margin-left: 5%;
     background-color: white;
 }
 
 .headerContainer{
-    margin-bottom: -4% ;
+    margin-bottom: -4%;
 }
 
 .adventureTittle{
@@ -79,20 +85,19 @@ $paleGreen: #dae0d2;
     width: 90%;
     margin-left: 5%;
     padding: 1%;
-    max-height: 160px;
+    max-height: 360px;
     overflow: auto;
 }
 
 .scolledItemsContainer{
-    max-height: 200px;
+    height: 400px !important;
+    // max-height: 300px !important;
     scroll-behavior: auto;
-    width: 100%;
-
-    
+    width: 100%;   
 }
 
 .specialOffersTitle{
-    margin-left: 5%;
+    margin-left: 9% !important;
     min-width: 150px;
     margin-bottom: 1%;
     margin-top: 3%;

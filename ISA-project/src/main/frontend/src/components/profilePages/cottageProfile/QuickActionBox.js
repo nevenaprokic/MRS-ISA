@@ -1,10 +1,13 @@
 import { Button } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { ThemeProvider } from "@emotion/react";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import "./CottageProfilePage.scss";
+import { userType, offerType} from "../../../app/Enum";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import getQuickActionByOfferId from "../../../services/QuickActionService";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { makeReservation, convertParams } from '../../../services/ReservationService';
 
 const theme = createTheme({
   palette: {
@@ -21,6 +24,10 @@ function QuickActionBox({ id }) {
   const [quickActionData, setQuickActionsData] = useState();
 
 
+  const handleReservation = (action) => {
+    makeReservation(convertParams(action));
+  };
+
   useEffect(() => {
     async function setData() {
       let quickActions = await getQuickActionByOfferId(id);
@@ -34,7 +41,7 @@ function QuickActionBox({ id }) {
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">
-          <label className="tittle">! Special offers:</label>
+          <label className="tittle">Special offers:</label>
           <hr className="tittleLine"></hr>
         </div>
 
@@ -51,24 +58,36 @@ function QuickActionBox({ id }) {
                 </h3>
                 <div>
                   <label className="stayDate">
-                    Maximum number of people: {action.numberOfPerson}
+                    Maximum number of people: {action.numberOfPerson} 
                   </label>
 
                 <div>
-                  <label>Additional services: {action.additionalServices}</label>
+                  { (action.additionalServices.length == 0) ? <label>No additional services for this offer</label> :
+                   <label>Additional services: {action.additionalServices}</label>}
                 </div>
                 <br/>
                 <div className="availableDate">
-                    <label> {" !!! "}Action available: </label>
+                    <label> <CalendarMonthIcon style={{ verticalAlign: '-6' }}/> Action available: </label>
                     <label>
-                      {startDateAction} {" - "} {endDateAction} {" !!! "}
+                      {startDateAction} {" - "} {endDateAction}
                     </label>
                   </div>
                 </div>
                 <br></br>
                 <label className="priceItem">Price: {action.price} €</label>
-
-                <div className="actionButton">
+                { (getRoleFromToken() == userType.CLIENT) && 
+                  <Button
+                    className="bookingButton"
+                    size="small"
+                    variant="contained"
+                    bgcolor="secondary"
+                    color="primary"
+                    onClick={() => handleReservation(action) }
+                  >
+                    Book now
+                  </Button>
+                }
+                {/* <div className="actionButton">
                   <ThemeProvider theme={theme}>
                     <Button
                       variant="contained"
@@ -79,7 +98,7 @@ function QuickActionBox({ id }) {
                       get
                     </Button>
                   </ThemeProvider>
-                </div>
+                </div> */}
 
                 <hr className="line"></hr>
               </div>

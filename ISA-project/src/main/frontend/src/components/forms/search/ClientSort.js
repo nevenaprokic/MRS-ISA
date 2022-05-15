@@ -44,47 +44,41 @@ export default function ClientSort({offers, setOffers, type}) {
     };
 
   return (
-    <Grid item xs={12} sm={12} component={Paper} elevation={10} square >
-    <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+    <Grid item>
+          <FormControl style={{ minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-label">
+              Sorting
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={criteria}
+              label="Criteria"
+              onChange={criteriaChanged}
+            >
+              <MenuItem value={1}>Name</MenuItem>
+              <MenuItem value={2}>Street</MenuItem>
+              <MenuItem value={3}>City</MenuItem>
+              <MenuItem value={4}>Rating</MenuItem>
+              <MenuItem value={5}>Price</MenuItem>
+              {type == offerType.SHIP && <MenuItem value={6}>Size</MenuItem>}
+              {type == offerType.SHIP && (
+                <MenuItem value={7}>Max speed</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+          <Button
+            onClick={() => {
+              orderChanged();
+            }}
           >
-            <Typography><SortByAlphaTwoToneIcon/></Typography>
-          </AccordionSummary>
-          <AccordionDetails>                 
-            <Typography>
-            
-            <Box>
-                <FormControl style={{minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-label">Criteria</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={criteria}
-                    label="Criteria"
-                    onChange={criteriaChanged}
-                    >
-                    <MenuItem value={1}>Name</MenuItem>
-                    <MenuItem value={2}>Street</MenuItem>
-                    <MenuItem value={3}>City</MenuItem>
-                    <MenuItem value={4}>Rating</MenuItem>
-                    <MenuItem value={5}>Price</MenuItem>
-                    { type == offerType.SHIP && 
-                        <MenuItem value={6}>Size</MenuItem>
-                    }
-                    { type == offerType.SHIP && 
-                        <MenuItem value={7}>Max speed</MenuItem>
-                    }
-                    </Select>
-                </FormControl>
-                <Button onClick={ () => { orderChanged(); }}> { (sortAsc) ? (<ArrowUpwardTwoToneIcon fontSize="large"/>) : (<ArrowDownwardTwoToneIcon fontSize="large"/>) } </Button>
-            </Box>
-            
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-    </Grid>
-  )
+            {" "}
+            {sortAsc ? (
+              <ArrowUpwardTwoToneIcon fontSize="large" />
+            ) : (
+              <ArrowDownwardTwoToneIcon fontSize="large" />
+            )}{" "}
+          </Button>
+        </Grid>
+  );
 }

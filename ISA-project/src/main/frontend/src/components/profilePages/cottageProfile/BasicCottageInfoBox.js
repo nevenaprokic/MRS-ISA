@@ -8,6 +8,7 @@ import ShowMoreText from "react-show-more-text";
 import { getAddressByCottageId } from "../../../services/AddressService";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import PersonIcon from "@mui/icons-material/Person";
 
 const theme = createTheme({
   palette: {
@@ -48,7 +49,7 @@ function BasicAdventureInfiBox({ basicInfo }) {
         </div>
         <div>
           <div className="basicBoxItem">
-            <MeetingRoom color="action" />
+            <PersonIcon color="action" />
           </div>
           <label className="basicBoxItemTitle">
             Maximum number of people:{" "}

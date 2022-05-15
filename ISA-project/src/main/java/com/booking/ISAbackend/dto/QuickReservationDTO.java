@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuickReservationDTO {
+    private Integer id;
     private LocalDate startDate;
     private LocalDate endDateAction;
     private LocalDate startDateAction;
@@ -15,7 +16,9 @@ public class QuickReservationDTO {
     private List<String> additionalServices;
     private Double price;
     private Integer numberOfPerson;
+
     public QuickReservationDTO(){}
+
     public QuickReservationDTO(LocalDate startDate, LocalDate endDateAction, LocalDate startDateAction, LocalDate endDate, List<String> additionalServices, Double price, Integer numberOfPerson) {
         this.startDate = startDate;
         this.endDateAction = endDateAction;
@@ -26,6 +29,7 @@ public class QuickReservationDTO {
         this.numberOfPerson = numberOfPerson;
     }
     public QuickReservationDTO(QuickReservation res) {
+        this.id = res.getId();
         this.startDate = res.getStartDate();
         this.endDateAction = res.getEndDateAction();
         this.startDateAction = res.getStartDateAction();
@@ -39,7 +43,7 @@ public class QuickReservationDTO {
         for(AdditionalService ad: services){
             additionalServices.add(ad.getName());
         }
-        return  additionalServices;
+        return additionalServices;
     }
 
     public LocalDate getStartDate() {
@@ -70,4 +74,39 @@ public class QuickReservationDTO {
         return numberOfPerson;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDateAction(LocalDate endDateAction) {
+        this.endDateAction = endDateAction;
+    }
+
+    public void setStartDateAction(LocalDate startDateAction) {
+        this.startDateAction = startDateAction;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setAdditionalServices(List<String> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setNumberOfPerson(Integer numberOfPerson) {
+        this.numberOfPerson = numberOfPerson;
+    }
 }
