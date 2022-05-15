@@ -24,6 +24,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { calculatePrice } from '../../../services/ReservationService';
 import { makeReservation } from '../../../services/ReservationService';
 import ClearIcon from '@mui/icons-material/Clear';
+import { addDaysToDate } from '../../../services/UtilService';
 
 export default function ReservationForm({ offer, close }) {
     const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
@@ -58,8 +59,7 @@ export default function ReservationForm({ offer, close }) {
     };
 
     const onSubmit = (e) => {
-      var date = new Date(e.date);
-      let next_date = new Date(date.setDate(date.getDate() + parseInt(e.days)));
+      let next_date = addDaysToDate(e.date, e.days);
       let params = {...e, "offerId": offer.id, "services":checked, "endingDate":next_date.toISOString().split('T')[0], "total": total };
       makeReservation(params, close);
     };

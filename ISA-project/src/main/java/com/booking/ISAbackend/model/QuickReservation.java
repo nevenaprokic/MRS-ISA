@@ -60,4 +60,8 @@ public class QuickReservation {
 	public Offer getOffer() {
 		return offer;
 	}
+
+	public Integer getId() {
+		return id;
+	}
 }

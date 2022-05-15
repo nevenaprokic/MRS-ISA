@@ -153,7 +153,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
               color="primary"
               onClick={handleOpenReserve}
             >
-              Reserve
+              Book now
             </Button>
             }
             <Modal

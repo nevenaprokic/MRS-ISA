@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
+import { arrayToDateString } from "./UtilService";
 
 export function calculatePrice(days, price, additionalServices){
     days = (days == "") ? 0 : days;
@@ -26,5 +27,16 @@ export function makeReservation(params, close){
         close();
 })
     .catch((err) => alert(err.data));
+}
+
+export function convertParams(action){
+    return {
+        services: action.additionalServices,
+        total: action.price,
+        guests: action.numberOfPerson,
+        date: arrayToDateString(action.startDate),
+        endingDate: arrayToDateString(action.endDate),
+        offerId: action.id
+    };
 }
 
