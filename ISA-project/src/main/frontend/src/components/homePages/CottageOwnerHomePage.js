@@ -173,7 +173,7 @@ export default function CottageOwnerHomePage() {
             <AddCottagePage />
           </TabPanel>
           <TabPanel value={value} index={12}>
-            <WorkingCalendar />
+            <WorkingCalendar offers={offers} setOffers={setOffers}/>
           </TabPanel>
         </Box>
       </Container>

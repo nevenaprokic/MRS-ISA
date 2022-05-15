@@ -7,28 +7,38 @@ import CalendarSidebar from './CalendarSidebar';
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import { useEffect, useState } from 'react';
+import { getUsernameFromToken } from "../../app/jwtTokenUtils";
+import { getAdventureByInstructorEmail } from '../../services/AdventureService';
 
 
-export default function WorkingCalendar(){
+export default function WorkingCalendar({offers, setOffers}){
 
 
   const [state, setState] = useState();
+  const [offersName, setOffersName] = useState();
 
   useEffect(() => {
-    // async function setData() {
-    //   const offersData = await getOffers[type]();
-    //   setOffers(offersData ? offersData.data : {});
-    //   if(setLastSearchedOffers)  
-    //     setLastSearchedOffers(offersData ? offersData.data : {});
-
-    // return offersData;    
-    // }
-    // setData();
     let s = {
       weekendsVisible: true,
       currentEvents: []
     }
     setState(s);
+
+    async function setData() {
+      let username = getUsernameFromToken();
+      const offersData = await getAdventureByInstructorEmail(username);
+      setOffers(!!offersData ? offersData.data : {});     
+
+      const offersNameList = []
+      offers.forEach(offer => {
+        let name = offer.name ? offer.name : offer.offerName;
+        offersNameList.push({ label: name, id: offer.id});
+      });
+      setOffersName(offersNameList);
+    return offersData;    
+    }
+    setData();
+  
 }, [])
 
   const handleDateSelect = (selectInfo) => {
@@ -73,8 +83,9 @@ export default function WorkingCalendar(){
     
 
     return (
+      offers &&
       <div className='demo-app'>
-        <CalendarSidebar state={state}/>
+        <CalendarSidebar state={state} offers={offersName}/>
         <div className='demo-app-main'>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

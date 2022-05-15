@@ -166,7 +166,7 @@ function a11yProps(index) {
                     Item 10
                 </TabPanel>
                 <TabPanel value={value} index={12}>
-                    <WorkingCalendar/>
+                    <WorkingCalendar offers={offers} setOffers={setOffers}/>
                 </TabPanel>
                 <TabPanel value={value} index={14}>
                     Item 14

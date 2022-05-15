@@ -3,8 +3,9 @@ import { formatDate } from '@fullcalendar/react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+import { getCalendarEvents } from '../../services/CalendarService';
 
-export default function CalendarSidebar({state}) {
+export default function CalendarSidebar({state, offers}) {
 
   console.log(state)
     const handleWeekendsToggle = () => {
@@ -24,16 +25,11 @@ export default function CalendarSidebar({state}) {
         )
       }
 
-      let top100Films = [
-        { label: 'The Shawshank Redemption', year: 1994 },
-        { label: 'The Godfather', year: 1972 },
-        { label: 'The Godfather: Part II', year: 1974 },
-        { label: 'The Dark Knight', year: 2008 },
-        { label: '12 Angry Men', year: 1957 },
-        { label: "Schindler's List", year: 1993 },
-        { label: 'Pulp Fiction', year: 1994 },
-      ];
+    const handlerOfferChange = (event, selectedOffer) =>{
+        getCalendarEvents(selectedOffer.id);
+    }
 
+  
     return (
       !!state &&
       <div className='demo-app-sidebar'>
@@ -45,14 +41,15 @@ export default function CalendarSidebar({state}) {
           <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={top100Films}
+              options={offers}
               sx={{ width: 250 }}
+              onChange={(event, newValue) => {handlerOfferChange(event, newValue)}}
               renderInput={(params) => <TextField {...params} label="Offer" />}
             />
           <br/>
           <h2>Instructions</h2>
           <ul>
-            <li>Select dates and you will be enabled to definebe able to define unavailable dates for the selected offer </li>
+            <li>Select dates and you will be abled to definebe able to define unavailable dates for the selected offer </li>
             <li>Click an event to see the details</li>
             
           </ul>

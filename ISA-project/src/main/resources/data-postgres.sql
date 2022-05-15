@@ -203,8 +203,10 @@ insert into registration_request(deleted, description, email,first_name,last_nam
 
 /*RESERVATION REPORT*/
 -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
-
-
+ /*UNAVAILABLE OFFER DATES*/
+insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-15', '2022-06-20');
+insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-27', '2022-06-29');
+insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-10', '2022-06-16');
 
 /*RESERVATION*/
 -- insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,6000,'2022-04-17',1,6);
