@@ -5,10 +5,12 @@ import Grid from '@mui/material/Grid';
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import CalendarSidebar from './CalendarSidebar';
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import {createEventId, getReservationDetails} from '../../services/CalendarService';
 import { useEffect, useState } from 'react';
 import { getUsernameFromToken } from "../../app/jwtTokenUtils";
 import { getAdventureByInstructorEmail } from '../../services/AdventureService';
+import ReservationDetails from './ReservationDetails';
+import Modal from '@mui/material/Modal';
 
 
 export default function WorkingCalendar({offers, setOffers}){
@@ -16,6 +18,27 @@ export default function WorkingCalendar({offers, setOffers}){
 
   const [state, setState] = useState();
   const [offersName, setOffersName] = useState();
+  const [events, setEvents] = useState();
+  const [openChangeForm, setOpenForm] = useState(false);
+  const [reservationId, setReservationId] = useState();
+
+  function handleOpenForm(){setOpenForm(true)}
+  function handleCloseForm(){
+      setOpenForm(false);
+  }
+
+
+  function findEvent(id){
+    let foundedEvent = {}
+    events.forEach(element => {
+      console.log(element["id"]);
+        if(element["id"] == id){
+          foundedEvent = element;
+          
+        }
+    });
+    return foundedEvent;
+  }
 
   useEffect(() => {
     let s = {
@@ -28,7 +51,7 @@ export default function WorkingCalendar({offers, setOffers}){
       let username = getUsernameFromToken();
       const offersData = await getAdventureByInstructorEmail(username);
       setOffers(!!offersData ? offersData.data : {});     
-
+      setEvents([]);
       const offersNameList = []
       offers.forEach(offer => {
         let name = offer.name ? offer.name : offer.offerName;
@@ -67,11 +90,22 @@ export default function WorkingCalendar({offers, setOffers}){
     }
   }
 
-
   const handleEventClick = (clickInfo) => {
     if (true) {//dodati popup za da li ste sigurni
-      console.log("aaaa",clickInfo);//currentViewType
-      alert(clickInfo);
+      async function set(){
+        let id = clickInfo.event.id;//currentViewType
+        let event = findEvent(id);
+        console.log("eee", event.isReservation);
+        console.log(event.application_id);
+        if(event.isReservation){
+          
+          setReservationId(event.application_id);
+          handleOpenForm();
+        }
+                
+      }
+      set();
+      
     }
   }
 
@@ -83,9 +117,10 @@ export default function WorkingCalendar({offers, setOffers}){
     
 
     return (
-      offers &&
+      !!offers && !!events &&
       <div className='demo-app'>
-        <CalendarSidebar state={state} offers={offersName}/>
+        {console.log("events", events)}
+        <CalendarSidebar state={state} offers={offersName} event={events} setEvents={setEvents}/>
         <div className='demo-app-main'>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -101,23 +136,24 @@ export default function WorkingCalendar({offers, setOffers}){
             selectMirror={true}
             dayMaxEvents={true}
             weekends={true}
-            
-            //eventBackgroundColor={ "#CC7351"}
-            
-            initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+            events={events} 
             select={handleDateSelect}
-            eventContent={renderEventContent} // custom render function
+            eventContent={renderEventContent} 
             eventClick={handleEventClick}
-            eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-            /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-            */
-
+            eventsSet={handleEvents} 
           />
           
         </div>
+        <Modal
+            open={openChangeForm}
+            onClose={handleCloseForm}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+        >
+                <ReservationDetails reservationId={reservationId} setReservationId={setReservationId} close={handleCloseForm}/>
+            
+        </Modal>
       </div>
     )
   }

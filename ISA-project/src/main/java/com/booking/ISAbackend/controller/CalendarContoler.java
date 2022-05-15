@@ -2,6 +2,7 @@ package com.booking.ISAbackend.controller;
 
 
 import com.booking.ISAbackend.dto.CalendarItem;
+import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,16 @@ public class CalendarContoler {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
 
-
+    @GetMapping("reservation-info")
+    public ResponseEntity<ReservationDTO> getReservationDetails(@RequestParam int reservationId){
+        try{
+            ReservationDTO reservation = calendarService.getReservationDetails(reservationId);
+            return ResponseEntity.ok(reservation);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

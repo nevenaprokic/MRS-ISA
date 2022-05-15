@@ -1,19 +1,27 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.CalendarItem;
+import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.model.*;
+import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.repository.UnavailabelOfferDatesRepository;
 import com.booking.ISAbackend.repository.UserRepository;
+import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -26,6 +34,9 @@ public class CalendarServiceImpl implements CalendarService {
     @Autowired
     UnavailabelOfferDatesRepository unavailabelOfferDatesRepository;
 
+    @Autowired
+    AdditionalServiceService additionalServiceService;
+
     @Override
     @Transactional
     public List<CalendarItem> getCalendarInfo(String ownerEmail, int offerId) {
@@ -35,6 +46,35 @@ public class CalendarServiceImpl implements CalendarService {
         List<UnavailableOfferDates> unavailableOfferDates = unavailabelOfferDatesRepository.findByOfferId(offerId);
 
         return generateCalendarItems(reservations, unavailableOfferDates);
+    }
+
+    @Override
+    @Transactional
+    public ReservationDTO getReservationDetails(int reservationId) throws IOException {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if(reservation.isPresent()){
+            Reservation r = reservation.get();
+            Offer offer = r.getOffer();
+            Client client = r.getClient();
+            String clientName = client.getFirstName() + " " + client.getLastName();
+            String offerPhoto = getOfferPhoto(offer);
+
+            ReservationDTO reservationDTO = new ReservationDTO(r.getId(),
+                    localDateToString(r.getStartDate()),
+                    localDateToString(r.getEndDate()),
+                    additionalServiceService.getAdditionalServices(offer),
+                    r.getPrice(),
+                    r.getNumberOfPerson(),
+                    offer.getId(),
+                    offer.getName(),
+                    client.getId(),
+                    clientName,
+                    offerPhoto
+                    );
+            return  reservationDTO;
+        }
+        return null;
+
     }
 
     @Transactional
@@ -58,8 +98,23 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     private String localDateToString(LocalDate date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-mm-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         return formatter.format(date);
+    }
+
+    private String getOfferPhoto(Offer offer) throws IOException {
+        String photoName = "no-image.png";
+        if(!offer.getPhotos().isEmpty()) {
+            photoName = offer.getPhotos().get(0).getPath();
+        }
+        return convertPhoto(photoName);
+    }
+
+    private String convertPhoto(String photoName) throws IOException {
+        String pathFile = "./src/main/frontend/src/components/images/" + photoName;
+        byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
+        String photoData = Base64.getEncoder().encodeToString(bytes);
+        return photoData;
     }
 
 

@@ -3,9 +3,13 @@ import { formatDate } from '@fullcalendar/react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
-import { getCalendarEvents } from '../../services/CalendarService';
+import { getCalendarEvents, generateCalendarEvents, createEventId } from '../../services/CalendarService';
 
-export default function CalendarSidebar({state, offers}) {
+
+export default function CalendarSidebar({state, offers, events, setEvents}) {
+
+
+  let eventId = 0;
 
   console.log(state)
     const handleWeekendsToggle = () => {
@@ -25,8 +29,17 @@ export default function CalendarSidebar({state, offers}) {
         )
       }
 
+    
     const handlerOfferChange = (event, selectedOffer) =>{
-        getCalendarEvents(selectedOffer.id);
+      async function set(){
+        console.log("evoo");
+        const eventsData = await getCalendarEvents(selectedOffer.id, setEvents);
+        console.log(eventsData.data);
+        let calendarItems = generateCalendarEvents(eventsData.data);
+        setEvents(calendarItems);
+        return eventsData;
+      }
+      set();
     }
 
   
