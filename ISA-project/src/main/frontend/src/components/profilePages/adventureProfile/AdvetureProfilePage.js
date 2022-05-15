@@ -10,14 +10,12 @@ import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
 import { getAdventureById, checkUpdateAllowed } from "../../../services/AdventureService";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
-import { test } from "../../../services/AdventureService";
 import { toast } from "react-toastify";
 import { getMarkByOfferId } from "../../../services/MarkService";
-import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
 import Rating from "@mui/material/Rating";
+import MapBox from "../cottageProfile/MapBox";
 
 
 const theme = createTheme({
@@ -161,6 +159,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 
                 <ImagesBox images={images}/>
                 <QuickActionBox id={adventureData.id}/>
+                <MapBox street={adventureData.street} city={adventureData.city} state={adventureData.state}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >
                         <BasicAdventureInfiBox basicInfo={adventureData}/>

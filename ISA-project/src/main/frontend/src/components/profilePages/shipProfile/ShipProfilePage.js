@@ -18,6 +18,7 @@ import { userType } from "../../../app/Enum";
 import Modal from "@mui/material/Modal";
 import DeleteShip from "../../forms/ship/DeleteShip";
 import { toast } from "react-toastify";
+import MapBox from "../cottageProfile/MapBox";
 
 
 
@@ -132,6 +133,7 @@ function ShipProfilePage({ id, close }) {
 
             <ImagesBox images={photos} />
             <QuickActionBox id={shipData.id} />
+            <MapBox street={shipData.street} city={shipData.city} state={shipData.state}/>
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
                 <BasicShipInfoBox basicInfo={shipData} />

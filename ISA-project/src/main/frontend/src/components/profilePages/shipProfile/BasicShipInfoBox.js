@@ -39,13 +39,13 @@ function BasicShipInfoBox({ basicInfo }) {
     return (
       <div className="basicInfoContainer">
         <div>
-          <div className="basicBoxItem">
+          {/* <div className="basicBoxItem">
             <HomeIcon color="action" />
           </div>
           <label className="basicBoxItemTitle">Address: </label>
           <label className="basicBoxItemText">
             {addressData.street}, {addressData.city}, {addressData.state}
-          </label>
+          </label> */}
         </div>
         <div>
           <div className="basicBoxItem">

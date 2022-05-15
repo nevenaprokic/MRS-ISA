@@ -17,6 +17,7 @@ import { userType } from "../../../app/Enum";
 import DeleteCottage from "../../forms/cottage/DeleteCottage";
 import Modal from "@mui/material/Modal";
 import { toast } from "react-toastify";
+import MapBox from "./MapBox";
 
 const theme = createTheme({
   palette: {
@@ -143,6 +144,7 @@ function CottageProfilePage({ id, close }) {
             <ImagesBox images={images} />
             
             <QuickActionBox id={cottageData.id} />
+            <MapBox street={cottageData.street} city={cottageData.city} state={cottageData.state}/>
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
                 <BasicCottageInfoBox basicInfo={cottageData} />
