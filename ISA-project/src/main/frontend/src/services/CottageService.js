@@ -261,6 +261,7 @@ export function deleteCottage(cottageId) {
     });
 }
 export function updateCottage(cottageData, additionalServices){
+  console.log(cottageData);
   api
   .post("/cottage/update", cottageData)
   .then((responseData) => {

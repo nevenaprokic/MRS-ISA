@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.CottageDTO;
 import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewCottageDTO;
@@ -157,6 +158,30 @@ public class CottageController {
         }catch(Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+    }
+    @PostMapping("update")
+    public ResponseEntity<String> changeCottageData(@RequestBody CottageDTO newCottageData){
+        try{
+            cottageService.updateCottage(newCottageData, newCottageData.getId());
+            return ResponseEntity.ok().body("Successfully update cottage.");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("update-cittage-services")
+    public ResponseEntity<String> changeAdventrueAdditionalServices(@RequestBody Map<String, Object> data){
+        try{
+            HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
+            int id = Integer.parseInt(paramsMap.get("offerId").toString());
+            List<HashMap<String, String>> additionalServiceDTOS = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTOS");
+
+            cottageService.updateCottageAdditionalServices(additionalServiceDTOS, id);
+            return ResponseEntity.ok().body("Successfully change cottage");
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }

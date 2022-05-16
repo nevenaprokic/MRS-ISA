@@ -65,7 +65,7 @@ export default function MediaCard({ offer, offerT}) {
     else{
       setOfferData(prevState => ({
         ...prevState,
-        ["name"]: childData.offerName,
+        ["name"]: childData.name,
         ["description"]: childData.description,
         ["photos"]:childData.photos,
 

@@ -74,7 +74,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   
     setCottageData(prevState => ({
         ...prevState,
-        ["offerName"]: childData.name,
+        ["name"]: childData.name,
         ["price"]: childData.price,
         ["id"]: childData.id,
         ["city"]: childData.city,
@@ -83,7 +83,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
         ["description"]: childData.description,
         ["rulesOfConduct"]: childData.rulesOfConduct,
         ["cancellationConditions"]: childData.cancellationConditions,
-        ["peopleNum"]: childData.numberOfPerson,
+        ["numberOfPerson"]: childData.numberOfPerson,
         ["additionalServices"]: childData.additionalServices,
         ["photos"]:childData.photos,
         ["bedNumber"] :childData.bedNumber,
@@ -121,6 +121,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
       let imag = { image: "data:image/jpg;base64," + photo };
       images.push(imag);
     });
+    console.log(cottageData);
     return (
       <div className="changeDataContainer" id="changeDataContainer">
         <ThemeProvider theme={theme}>

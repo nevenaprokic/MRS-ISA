@@ -172,8 +172,8 @@ public class AdventureServiceImpl implements AdventureService {
         List<AdditionalService> currentAdditionalServices = adventure.getAdditionalServices();
         if(adventure != null && Validator.isValidAdditionalServices(newServices)){
             for(HashMap<String, String> newService:  newServices){
-                if(isAditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
-                    AdditionalService service = findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
+                if(additionalServiceService.isAdditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
+                    AdditionalService service = additionalServiceService.findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
                     service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice"))));
                     additionalServiceRepository.save(service);
                 }
@@ -183,21 +183,21 @@ public class AdventureServiceImpl implements AdventureService {
                     additionalServiceRepository.save(service);
                 }
             }
-            removeAdventureServices(currentAdditionalServices, newServices);
+            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
             adventure.setAdditionalServices(currentAdditionalServices);
             adventureRepository.save(adventure);
 
         }
     }
 
-    private AdditionalService findAdditionalService(List<AdditionalService> currentAdditionalServices, String serviceName) {
-        for(AdditionalService oldService : currentAdditionalServices){
-            if(oldService.getName().equals(serviceName)){
-                return oldService;
-            }
-        }
-        return null;
-    }
+//    private AdditionalService findAdditionalService(List<AdditionalService> currentAdditionalServices, String serviceName) {
+//        for(AdditionalService oldService : currentAdditionalServices){
+//            if(oldService.getName().equals(serviceName)){
+//                return oldService;
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
     @Transactional
@@ -239,37 +239,37 @@ public class AdventureServiceImpl implements AdventureService {
         return photosInBytes;
     }
 
-    private boolean isAditionalServiceExists(List<AdditionalService> currentAdditionalServices, String newServcename){
-        for(AdditionalService oldService : currentAdditionalServices){
-            if(oldService.getName().equals(newServcename)){
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isAditionalServiceExists(List<AdditionalService> currentAdditionalServices, String newServcename){
+//        for(AdditionalService oldService : currentAdditionalServices){
+//            if(oldService.getName().equals(newServcename)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
-    private boolean isAdditionalServiceRemoved(List<HashMap<String, String>> newServices, String oldServiceName){
-        for(HashMap<String, String> service: newServices){
-            if(service.get("serviceName").equals(oldServiceName)){
-                return false;
-            }
-        }
+//    private boolean isAdditionalServiceRemoved(List<HashMap<String, String>> newServices, String oldServiceName){
+//        for(HashMap<String, String> service: newServices){
+//            if(service.get("serviceName").equals(oldServiceName)){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
-        return true;
-    }
-
-    private void removeAdventureServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
-        Iterator<AdditionalService> iterator = oldServices.iterator();
-        //ArrayList<AdditionalService> toRemove = new ArrayList<AdditionalService>();
-        while(iterator.hasNext()){
-            AdditionalService service = iterator.next();
-            if(isAdditionalServiceRemoved(newServices, service.getName())){
-                iterator.remove();
-                additionalServiceRepository.delete(service);
-            }
-        }
-
-    }
+//    private void removeAdventureServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
+//        Iterator<AdditionalService> iterator = oldServices.iterator();
+//        //ArrayList<AdditionalService> toRemove = new ArrayList<AdditionalService>();
+//        while(iterator.hasNext()){
+//            AdditionalService service = iterator.next();
+//            if(isAdditionalServiceRemoved(newServices, service.getName())){
+//                iterator.remove();
+//                additionalServiceRepository.delete(service);
+//            }
+//        }
+//
+//    }
 
     private List<AdditionalServiceDTO> getAdditionalServices(Adventure a) {
         List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
@@ -358,43 +358,43 @@ public class AdventureServiceImpl implements AdventureService {
 
 
 
-    private List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
-        List<Photo> adventurePhotos = new ArrayList<Photo>();
-        int counter = 0;
-        for (String photoData: photos
-        ) {
-            byte[] bytes = DatatypeConverter.parseBase64Binary(photoData);
-            String photoName = photoService.savePhotoInFileSystem(bytes, email, counter);
-            Photo p = new Photo(photoName);
-            adventurePhotos.add(p);
-            photoRepositorys.save(p);
-            counter++;
-
-        }
-        return adventurePhotos;
-    }
+//    private List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
+//        List<Photo> adventurePhotos = new ArrayList<Photo>();
+//        int counter = 0;
+//        for (String photoData: photos
+//        ) {
+//            byte[] bytes = DatatypeConverter.parseBase64Binary(photoData);
+//            String photoName = photoService.savePhotoInFileSystem(bytes, email, counter);
+//            Photo p = new Photo(photoName);
+//            adventurePhotos.add(p);
+//            photoRepositorys.save(p);
+//            counter++;
+//
+//        }
+//        return adventurePhotos;
+//    }
 
 
 
     private List<Photo> updateAdventurePhotos(List<String> newPhotos, List<Photo> oldPhotos, String ownerEmail) throws IOException {
         //dobaviti stare slike, obrisati i postaviti nove
-        removeOldPhotos(oldPhotos);
-        return ConvertBase64Photo(newPhotos, ownerEmail);
+        photoService.removeOldPhotos(oldPhotos);
+        return photoService.ConvertBase64Photo(newPhotos, ownerEmail);
 
     }
 
-    private void removeOldPhotos(List<Photo> oldPhotos){
-        Iterator<Photo> iterator = oldPhotos.iterator();
-        while (iterator.hasNext()) {
-            Photo photo = iterator.next();
-            String folder = "./src/main/frontend/src/components/images/";
-            Path path = Paths.get(folder + photo.getPath());
-            File file = new File(path.toString());
-            iterator.remove();
-            photoRepositorys.delete(photo);
-            file.delete();
-        }
-    }
+//    private void removeOldPhotos(List<Photo> oldPhotos){
+//        Iterator<Photo> iterator = oldPhotos.iterator();
+//        while (iterator.hasNext()) {
+//            Photo photo = iterator.next();
+//            String folder = "./src/main/frontend/src/components/images/";
+//            Path path = Paths.get(folder + photo.getPath());
+//            File file = new File(path.toString());
+//            iterator.remove();
+//            photoRepositorys.delete(photo);
+//            file.delete();
+//        }
+//    }
 
     private Address updateAdventuerAddress(Address oldAddres, AddressDTO newAddress){
         if(!oldAddres.getStreet().equals(newAddress.getStreet()) |

@@ -44,7 +44,8 @@ function ChangeCottageForm({currentCottageData, closeForm, childToParent}){
       });
 
     const onSubmit = (data) => {
-        data["id"] = currentCottageData.id
+        data["id"] = currentCottageData.id;
+        data["name"] = currentCottageData.name;
         data["photos"] = images;
         data["additionalServices"] = additionalServicesInputList;
         updateCottage(data, additionalServicesInputList);
@@ -82,18 +83,18 @@ function ChangeCottageForm({currentCottageData, closeForm, childToParent}){
         <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{marginTop:"2%"}}>
                 <Grid item xs={12}>            
                     <TextField
-                        id="offerName"
-                        label="Offer name" 
+                        id="name"
+                        label="Offer name - can't change" 
+                        disabled
                         fullWidth 
                         defaultValue={currentCottageData.name}
-                        {...register("offerName", {required:true})} 
+                        {...register("name")} 
                     />
-                {errors.offerName && <label className="requiredLabel">Name can't be empty!</label>}
                 </Grid>
 
                 <Grid item xs={12} sm={6} >
                 <TextField
-                    id="peopleNum"
+                    id="numberOfPerson"
                     label="Maximum number of people"
                     type="number"
                     InputLabelProps={{
@@ -101,9 +102,9 @@ function ChangeCottageForm({currentCottageData, closeForm, childToParent}){
                     }}
                     fullWidth
                     defaultValue={currentCottageData.numberOfPerson}
-                    {...register("peopleNum", {required:true, pattern:/^[1-9]+[0-9]*$/})} 
+                    {...register("numberOfPerson", {required:true, pattern:/^[1-9]+[0-9]*$/})} 
                 />
-                {errors.peopleNum && <label className="requiredLabel">Only positive numbers are allowed</label>}
+                {errors.numberOfPerson && <label className="requiredLabel">Only positive numbers are allowed</label>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                 <TextField 
@@ -212,15 +213,15 @@ function ChangeCottageForm({currentCottageData, closeForm, childToParent}){
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                    id="cancelationConditions"
+                    id="cancellationConditions"
                     label="Cancellation conditions"
                     multiline
                     rows={3}
                     fullWidth
                     defaultValue={currentCottageData.cancellationConditions}
-                    {...register("cancelationConditions", {required:true})}
+                    {...register("cancellationConditions", {required:true})}
                     />
-                    {errors.cancelationConditions && <label className="requiredLabel">Cancellation conditions can't be empty</label>}
+                    {errors.cancellationConditions && <label className="requiredLabel">Cancellation conditions can't be empty</label>}
                 </Grid>
                 <Grid item xs={12} sm={4} sx={{marginLeft:"35%"}}>
                     <Button 

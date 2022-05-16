@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -30,4 +31,45 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         }
         return additionalServices;
     }
+
+    @Override
+    public boolean isAdditionalServiceExists(List<AdditionalService> currentAdditionalServices, String newServcename){
+        for(AdditionalService oldService : currentAdditionalServices){
+            if(oldService.getName().equals(newServcename)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public AdditionalService findAdditionalService(List<AdditionalService> currentAdditionalServices, String serviceName) {
+        for(AdditionalService oldService : currentAdditionalServices){
+            if(oldService.getName().equals(serviceName)){
+                return oldService;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void removeAdventureServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
+        Iterator<AdditionalService> iterator = oldServices.iterator();
+        while(iterator.hasNext()){
+            AdditionalService service = iterator.next();
+            if(isAdditionalServiceRemoved(newServices, service.getName())){
+                iterator.remove();
+                additionalServiceRepository.delete(service);
+            }
+        }
+    }
+    private boolean isAdditionalServiceRemoved(List<HashMap<String, String>> newServices, String oldServiceName){
+        for(HashMap<String, String> service: newServices){
+            if(service.get("serviceName").equals(oldServiceName)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
