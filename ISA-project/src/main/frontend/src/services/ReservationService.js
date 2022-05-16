@@ -15,7 +15,6 @@ export function calculatePrice(days, price, additionalServices){
 }
 
 export function makeReservation(params, close){
-    console.log(params);
     params = {...params, "email": getUsernameFromToken()};
     api
     .post("/reservation/make", params)
@@ -26,7 +25,7 @@ export function makeReservation(params, close){
                             });
         close();
 })
-    .catch((err) => alert(err.data));
+    .catch((err) => console.log(err.data));
 }
 
 export function convertParams(action, offer){
