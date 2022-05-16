@@ -235,3 +235,48 @@ export function sortShips(value, sortAsc, offers, setOffers) {
   }
   setOffers([...offers]);
 }
+
+export function checkReservation(shipData) {
+  return api
+    .get("/ship/allowed-operation", {
+      params: {
+        shipId: shipData.id,
+      },
+    })
+    .then((response) => response.data)
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
+export function deleteShip(shipId) {
+  return api
+    .get("/ship/delete", {
+      params: {
+        shipId: shipId,
+      },
+    })
+    .then((response) => {
+      toast.success(
+        "You successfully deleted the ship!",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    })
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
