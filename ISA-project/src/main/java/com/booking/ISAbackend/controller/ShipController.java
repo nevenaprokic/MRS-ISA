@@ -163,5 +163,29 @@ public class ShipController {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
+    @PostMapping("update")
+    public ResponseEntity<String> changeShipData(@RequestBody ShipDTO newShipData){
+        try{
+            shipService.updateShip(newShipData, newShipData.getId());
+            return ResponseEntity.ok().body("Successfully update ship.");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("update-ship-services")
+    public ResponseEntity<String> changeShipAdditionalServices(@RequestBody Map<String, Object> data){
+        try{
+            HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
+            int id = Integer.parseInt(paramsMap.get("offerId").toString());
+            List<HashMap<String, String>> additionalServiceDTOS = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTOS");
+
+            shipService.updateShipAdditionalServices(additionalServiceDTOS, id);
+            return ResponseEntity.ok().body("Successfully change ship");
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

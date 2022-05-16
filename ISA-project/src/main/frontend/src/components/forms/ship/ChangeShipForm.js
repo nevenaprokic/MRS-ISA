@@ -335,15 +335,15 @@ function ChangeShipForm({ currentShipData, closeForm, childToParent }) {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              id="cancelationConditions"
+              id="cancellationConditions"
               label="Cancellation conditions"
               multiline
               rows={3}
               fullWidth
               defaultValue={currentShipData.cancellationConditions}
-              {...register("cancelationConditions", { required: true })}
+              {...register("cancellationConditions", { required: true })}
             />
-            {errors.description && (
+            {errors.cancellationConditions && (
             <label className="requiredLabel">Required! </label>
           )}
           </Grid>

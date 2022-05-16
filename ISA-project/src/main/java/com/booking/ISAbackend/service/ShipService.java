@@ -22,5 +22,7 @@ public interface ShipService {
     List<ShipDTO> searchShipByShipOwner(String name, Integer maxPeople, String address, Double price, String email) throws IOException;
     int addShip(NewShipDTO shipDTO) throws InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException, InvalidPriceException, InvalidPeopleNumberException, ShipAlreadyExistsException, InvalidAddressException, IOException;
     void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, int offerId) throws InvalidPriceException, RequiredFiledException;
-//    Boolean checkOperationAllowed(int shipId);
+    void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException;
+    void updateShipAdditionalServices(List<HashMap<String, String>> newServices, Integer offerID) throws InvalidPriceException, RequiredFiledException;
+
 }

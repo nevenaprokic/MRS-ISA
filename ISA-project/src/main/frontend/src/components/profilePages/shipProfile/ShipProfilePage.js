@@ -104,6 +104,17 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
     setData();
   }, []);
 
+  function createServiceData() {
+    console.log("DA")
+    let rows = [];
+    shipData.additionalServices.forEach((data) => {
+      let name = data.serviceName;
+      let price = data.servicePrice;
+      rows.push({ name, price });
+    });
+    return rows;
+  }
+
   let photos = [];
   if (shipData) {
     shipData.photos.forEach((photo) => {
@@ -199,10 +210,10 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
                 <BasicShipInfoBox basicInfo={shipData} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <AdditionalDescriptionBox additionData={shipData} />
+                <AdditionalDescriptionBox additionData={shipData}  />
               </Grid>
             </Grid>
-            <PriceList offer={shipData} />
+            <PriceList offer={shipData} additionalServices={createServiceData()} />
           </div>
         </ThemeProvider>
       </div>
