@@ -79,7 +79,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.ADVENTURE:
         return ( <AdventureProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent} />);
       case offerType.COTTAGE: 
-        return ( <CottageProfilePage id={offerId} close={handleClose}/>);
+        return ( <CottageProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose}/>);
       case userType.INSTRUCTOR:
