@@ -20,6 +20,11 @@ public class AdditionalServiceDTO {
 
     public AdditionalServiceDTO(){}
 
+    public AdditionalServiceDTO(String name, Double price) {
+        this.serviceName = name;
+        this.servicePrice = price;
+    }
+
     public String getServiceName() {
         return serviceName;
     }

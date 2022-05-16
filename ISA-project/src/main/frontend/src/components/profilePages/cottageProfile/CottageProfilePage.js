@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import MapBox from "./MapBox";
 import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
 
+
 const theme = createTheme({
   palette: {
     primary: {

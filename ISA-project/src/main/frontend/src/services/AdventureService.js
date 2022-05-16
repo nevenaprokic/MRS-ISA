@@ -1,9 +1,7 @@
-import axios from "axios";
 import api from "../app/api";
 import {addAddtionalServices} from "./AdditionalServicesService";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
-import { responsiveFontSizes } from "@mui/material";
 
 export function getAdventureByInstructorEmail(username){
     return api

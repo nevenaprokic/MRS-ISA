@@ -2,6 +2,7 @@ package com.booking.ISAbackend.model;
 
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -38,6 +39,9 @@ public class Offer {
 	private List<QuickReservation> quickReservations;
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
+
+	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
+	private List<UnavailableOfferDates> unavailableDate;
 
 	@ManyToMany(mappedBy = "subscribedOffers")
 	private List<Client> subscribedClients;
