@@ -23,7 +23,6 @@ import { toast } from "react-toastify";
 import MapBox from "./MapBox";
 import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
 
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -57,44 +56,41 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   async function checkAllowed(operation) {
     let allowed = await checkReservation(cottageData);
     if (allowed) {
-      if(operation)
-        setOpenForm(true);
-      else
-        setOpenDialog(true);
+      if (operation) setOpenForm(true);
+      else setOpenDialog(true);
     } else {
-      let message = "Delete is not allowed because this cottage has reservations.";
-      if(operation)
-        message = "Update is not allowed because this cottage has reservations.";
+      let message =
+        "Delete is not allowed because this cottage has reservations.";
+      if (operation)
+        message =
+          "Update is not allowed because this cottage has reservations.";
       toast.error(message, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      });
     }
   }
   const childToParent = (childData) => {
-  
-    setCottageData(prevState => ({
-        ...prevState,
-        ["name"]: childData.name,
-        ["price"]: childData.price,
-        ["id"]: childData.id,
-        ["city"]: childData.city,
-        ["street"]: childData.street,
-        ["state"]: childData.state,
-        ["description"]: childData.description,
-        ["rulesOfConduct"]: childData.rulesOfConduct,
-        ["cancellationConditions"]: childData.cancellationConditions,
-        ["numberOfPerson"]: childData.numberOfPerson,
-        ["additionalServices"]: childData.additionalServices,
-        ["photos"]:childData.photos,
-        ["bedNumber"] :childData.bedNumber,
-        ["roomNumber"] : childData.roomNumber
-
-    })
-    ); 
+    setCottageData((prevState) => ({
+      ...prevState,
+      ["name"]: childData.name,
+      ["price"]: childData.price,
+      ["id"]: childData.id,
+      ["city"]: childData.city,
+      ["street"]: childData.street,
+      ["state"]: childData.state,
+      ["description"]: childData.description,
+      ["rulesOfConduct"]: childData.rulesOfConduct,
+      ["cancellationConditions"]: childData.cancellationConditions,
+      ["numberOfPerson"]: childData.numberOfPerson,
+      ["additionalServices"]: childData.additionalServices,
+      ["photos"]: childData.photos,
+      ["bedNumber"]: childData.bedNumber,
+      ["roomNumber"]: childData.roomNumber,
+    }));
 
     childToParentMediaCard(childData);
-}
+  };
 
   useEffect(() => {
     async function setcottageData() {
@@ -147,7 +143,11 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
               {getRoleFromToken() != null &&
               getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                  <Button style={{ marginLeft: "35%" }} variant="contained" onClick={handleOpenForm}>
+                  <Button
+                    style={{ marginLeft: "35%" }}
+                    variant="contained"
+                    onClick={handleOpenForm}
+                  >
                     Change info
                   </Button>
                   <Button
