@@ -25,7 +25,10 @@ export function makeReservation(params, close){
                             });
         close();
 })
-    .catch((err) => console.log(err.data));
+    .catch((err) => 
+        toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500, }));
 }
 
 export function convertParams(action, offer){

@@ -23,9 +23,9 @@ public class ReservationController {
             reservationService.makeReservation(params);
             return ResponseEntity.ok("Reservation was successful!");
         }catch (OfferNotAvailableException ex){
-            return ResponseEntity.ok(ex.getMessage());
+            return ResponseEntity.status(400).body("Offer is not available in that time period.");
         }catch(Exception ex){
-            return ResponseEntity.ok("Something went wrong. Try again.");
+            return ResponseEntity.status(400).body("Something went wrong. Try again.");
         }
 
     }
