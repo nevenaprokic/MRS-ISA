@@ -22,6 +22,7 @@ import AdminProfile from './components/profilePages/userProfile/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
 import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
+import WorkingCalendar from './components/calendar/WorkingCalendar'
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
           <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
           <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
+          <Route path='/owner/calendar' element={<WorkingCalendar/>} />
         </Routes>
     </div>
   );

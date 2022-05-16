@@ -7,10 +7,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {deleteCottage } from "../../../services/CottageService";
 
+
 export default function DeleteCottage({closeDialog, open, name, id}) {
     const handleClose = () => {
         closeDialog();
-
     }
     const handleDelete = () => {
         async function isDeleted(){
@@ -18,7 +18,6 @@ export default function DeleteCottage({closeDialog, open, name, id}) {
         }
         isDeleted();
         window.location = "/user-profile/cottage-owner";
-
     }
 
   return (

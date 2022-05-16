@@ -17,6 +17,7 @@ import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
 import { offerType } from "../../app/Enum";
 import { useState } from "react";
 import AddShipPage from "../forms/ship/AddShipPage";
+import WorkingCalendar from "../calendar/WorkingCalendar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -172,8 +173,8 @@ export default function ShipOwnerHomePage() {
           <TabPanel value={value} index={6}>
             Item Six
           </TabPanel>
-          <TabPanel value={value} index={7}>
-            Item Seven
+          <TabPanel value={value} index={12}>
+              <WorkingCalendar offers={offers} setOffers={setOffers}/>
           </TabPanel>
         </Box>
       </Container>
