@@ -1,12 +1,10 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.dto.CottageDTO;
-import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.model.Client;
-import com.booking.ISAbackend.dto.NewShipDTO;
-import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
+import com.booking.ISAbackend.repository.AdditionalServiceRepository;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.repository.ShipRepository;
@@ -40,6 +38,8 @@ public class ShipServiceImpl implements ShipService {
     private MarkService markService;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private AdditionalServiceRepository additionalServiceRepository;
 
     @Override
     @Transactional
@@ -208,6 +208,81 @@ public class ShipServiceImpl implements ShipService {
             shipRepository.save(c);
         }
     }
+    @Override
+    @Transactional
+    public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException {
+        Ship ship = shipRepository.findShipById(shipId);
+        String shipOwnerEmail = ship.getShipOwner().getEmail();
+        System.out.println(shipDTO.getName());
+        if (ship != null && validateUpdateShip(shipDTO)){
+            ship.setName(ship.getName());
+            ship.setPrice(Double.valueOf(shipDTO.getPrice()));
+            ship.setNumberOfPerson(Integer.valueOf(shipDTO.getNumberOfPerson()));
+            ship.setDescription(shipDTO.getDescription());
+            ship.setRulesOfConduct(shipDTO.getRulesOfConduct());
+            ship.setCancellationConditions(shipDTO.getCancellationConditions());
+            ship.setPhotos(updateShipPhotos(shipDTO.getPhotos(), ship.getPhotos(), shipOwnerEmail));
+
+            updateShipAddress(ship.getAddress(), new AddressDTO(shipDTO.getStreet(), shipDTO.getCity(), shipDTO.getState()));
+            shipRepository.save(ship);
+        }
+    }
+    private boolean validateUpdateShip(ShipDTO shipDTO) throws InvalidPriceException, InvalidAddressException, InvalidPeopleNumberException, InvalidSizeException, InvalidMotorNumberException, InvalidMotorPowerException, InvalidMaxSpeedException {
+        boolean validationResult = Validator.isValidPrice(String.valueOf(shipDTO.getPrice())) &&
+                Validator.isValidAdress(shipDTO.getStreet(), shipDTO.getCity(), shipDTO.getState()) &&
+                Validator.isValidPeopleNumber(String.valueOf(shipDTO.getNumberOfPerson())) &&
+                Validator.isValidSize(String.valueOf(shipDTO.getSize())) &&
+                Validator.isValidMotorNumber(String.valueOf(shipDTO.getMotorNumber())) &&
+                Validator.isValidMotorPower(String.valueOf(shipDTO.getMotorPower())) &&
+                Validator.isValidMaxSpeed(String.valueOf(shipDTO.getMaxSpeed())) &&
+                (!shipDTO.getType().isEmpty()) &&
+                (!shipDTO.getCancellationConditions().isEmpty()) &&
+                (!shipDTO.getDescription().isEmpty());
+        return validationResult;
+    }
+    private List<Photo> updateShipPhotos(List<String> newPhotos, List<Photo> oldPhotos, String ownerEmail) throws IOException {
+        //dobaviti stare slike, obrisati i postaviti nove
+        photoService.removeOldPhotos(oldPhotos);
+        return photoService.ConvertBase64Photo(newPhotos, ownerEmail);
+
+    }
+    private Address updateShipAddress(Address oldAddress, AddressDTO newAddress){
+        if(!oldAddress.getStreet().equals(newAddress.getStreet()) |
+                !oldAddress.getCity().equals(newAddress.getCity()) |
+                !oldAddress.getState().equals(newAddress.getState())){
+            Address address = new Address(newAddress.getStreet(), newAddress.getCity(), newAddress.getState());
+            addressRepository.save(address);
+            return address;
+        }
+        return oldAddress;
+
+    }
+
+    @Override
+    @Transactional
+    public void updateShipAdditionalServices(List<HashMap<String, String>> newServices, Integer offerID) throws InvalidPriceException, RequiredFiledException {
+        Ship ship = shipRepository.findShipById(offerID);
+        List<AdditionalService> currentAdditionalServices = ship.getAdditionalServices();
+        if(ship != null && Validator.isValidAdditionalServices(newServices)){
+            for(HashMap<String, String> newService:  newServices){
+                if(additionalServiceService.isAdditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
+                    AdditionalService service = additionalServiceService.findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
+                    service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice"))));
+                    additionalServiceRepository.save(service);
+                }
+                else if(!newService.get("serviceName").equals("")){
+                    AdditionalService service = new AdditionalService(newService.get("serviceName"), Double.valueOf(String.valueOf(newService.get("servicePrice"))));
+                    currentAdditionalServices.add(service);
+                    additionalServiceRepository.save(service);
+                }
+            }
+            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
+            ship.setAdditionalServices(currentAdditionalServices);
+            shipRepository.save(ship);
+
+        }
+    }
+
 
 
 }

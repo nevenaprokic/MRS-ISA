@@ -19,9 +19,7 @@ import Modal from "@mui/material/Modal";
 import DeleteShip from "../../forms/ship/DeleteShip";
 import { toast } from "react-toastify";
 import MapBox from "../cottageProfile/MapBox";
-
-
-
+import ChangeShipForm from "../../forms/ship/ChangeShipForm";
 
 const theme = createTheme({
   palette: {
@@ -34,9 +32,18 @@ const theme = createTheme({
   },
 });
 
-function ShipProfilePage({ id, close }) {
+function ShipProfilePage({ id, close, childToParentMediaCard }) {
   const [shipData, setShipData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openChangeForm, setOpenForm] = useState(false);
+
+  const handleOpenForm = () => {
+    checkAllowed(true);
+  };
+
+  const handleCloseForm = () => {
+    setOpenForm(false);
+  };
 
   const handleOpenDeleteDialog = () => {
     checkAllowed(false);
@@ -45,23 +52,47 @@ function ShipProfilePage({ id, close }) {
     setOpenDialog(false);
   };
 
-  async function checkAllowed({operation}) {
+  async function checkAllowed(operation) {
     let allowed = await checkReservation(shipData);
-    let message = "Delete is not allowed because this ship has reservations.";
-    if(operation)
-      message = "Update is not allowed because this ship has reservations.";
     if (allowed) {
-      setOpenDialog(true);
+      if (operation) setOpenForm(true);
+      else setOpenDialog(true);
     } else {
-      toast.error(
-        message,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 1500,
-        }
-      );
+      let message = "Delete is not allowed because this ship has reservations.";
+      if (operation)
+        message = "Update is not allowed because this ship has reservations.";
+      toast.error(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      });
     }
   }
+  const childToParent = (childData) => {
+    setShipData((prevState) => ({
+      ...prevState,
+      ["name"]: childData.name,
+      ["price"]: childData.price,
+      ["id"]: childData.id,
+      ["city"]: childData.city,
+      ["street"]: childData.street,
+      ["state"]: childData.state,
+      ["description"]: childData.description,
+      ["rulesOfConduct"]: childData.rulesOfConduct,
+      ["cancellationConditions"]: childData.cancellationConditions,
+      ["numberOfPerson"]: childData.numberOfPerson,
+      ["additionalServices"]: childData.additionalServices,
+      ["photos"]: childData.photos,
+      ["type"]: childData.type,
+      ["size"]: childData.size,
+      ["motorNumber"]: childData.motorNumber,
+      ["motorPower"]: childData.motorPower,
+      ["maxSpeed"]: childData.maxSpeed,
+      ["navigationEquipment"]: childData.navigationEquipment,
+      ["additionalEquipment"]: childData.additionalEquipment,
+    }));
+
+    childToParentMediaCard(childData);
+  };
 
   useEffect(() => {
     async function setData() {
@@ -72,6 +103,17 @@ function ShipProfilePage({ id, close }) {
     }
     setData();
   }, []);
+
+  function createServiceData() {
+    console.log("DA")
+    let rows = [];
+    shipData.additionalServices.forEach((data) => {
+      let name = data.serviceName;
+      let price = data.servicePrice;
+      rows.push({ name, price });
+    });
+    return rows;
+  }
 
   let photos = [];
   if (shipData) {
@@ -92,13 +134,22 @@ function ShipProfilePage({ id, close }) {
               <h2 className="adventureTittle">{shipData.name}</h2>
               <Divider />
               <div className="mark">
-                <Rating name="half-rating-read" precision={0.5} value={shipData.mark} readOnly />
+                <Rating
+                  name="half-rating-read"
+                  precision={0.5}
+                  value={shipData.mark}
+                  readOnly
+                />
               </div>
-          
-            {getRoleFromToken() != null &&
+
+              {getRoleFromToken() != null &&
               getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                  <Button style={{ marginLeft: "35%" }} variant="contained">
+                  <Button
+                    style={{ marginLeft: "35%" }}
+                    variant="contained"
+                    onClick={handleOpenForm}
+                  >
                     Change info
                   </Button>
                   <Button
@@ -113,6 +164,22 @@ function ShipProfilePage({ id, close }) {
                 <></>
               )}
             </div>
+            <Modal
+              open={openChangeForm}
+              onClose={handleCloseForm}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                backgroundColor: "rgb(218, 224, 210, 0.6)",
+                overflow: "auto",
+              }}
+            >
+              <ChangeShipForm
+                currentShipData={shipData}
+                closeForm={handleCloseForm}
+                childToParent={childToParent}
+              />
+            </Modal>
             <Modal
               open={openDialog}
               onClose={handleCloseDeleteDialog}
@@ -133,16 +200,20 @@ function ShipProfilePage({ id, close }) {
 
             <ImagesBox images={photos} />
             <QuickActionBox id={shipData.id} />
-            <MapBox street={shipData.street} city={shipData.city} state={shipData.state}/>
+            <MapBox
+              street={shipData.street}
+              city={shipData.city}
+              state={shipData.state}
+            />
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
                 <BasicShipInfoBox basicInfo={shipData} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <AdditionalDescriptionBox additionData={shipData} />
+                <AdditionalDescriptionBox additionData={shipData}  />
               </Grid>
             </Grid>
-            <PriceList offer={shipData} />
+            <PriceList offer={shipData} additionalServices={createServiceData()} />
           </div>
         </ThemeProvider>
       </div>

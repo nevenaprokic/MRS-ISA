@@ -81,7 +81,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.COTTAGE: 
         return ( <CottageProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case offerType.SHIP:
-        return ( <ShipProfilePage id={offerId} close={handleClose}/>);
+        return ( <ShipProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case userType.INSTRUCTOR:
         return (<OwnerProfile instructor={offer} close={handleClose} />);
       default:

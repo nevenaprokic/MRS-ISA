@@ -280,3 +280,36 @@ export function deleteShip(shipId) {
       );
     });
 }
+export function updateShip(shipData, additionalServices){
+  console.log(shipData);
+  api
+  .post("/ship/update", shipData)
+  .then((responseData) => {
+       updateAdditionalServices(shipData.id, additionalServices);
+  })
+  .catch((err) => {toast.error(err.response.data, {
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 1500,
+              });
+          });
+}
+function updateAdditionalServices(offerId, additionalServiceDTOS){
+  api
+  .post("/ship/update-ship-services",  {
+      params:{
+          offerId : offerId,
+          additionalServiceDTOS : additionalServiceDTOS
+      }
+  })
+  .then((responseData) => {
+                      toast.success(responseData.data, {
+                          position: toast.POSITION.BOTTOM_RIGHT,
+                          autoClose: 1500,
+                      });
+                  })
+  .catch((errMessage) => {toast.error(errMessage.response.data, {
+                          position: toast.POSITION.BOTTOM_RIGHT,
+                          autoClose: 1500,
+                      });
+                  });
+}
