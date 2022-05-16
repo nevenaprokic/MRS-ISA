@@ -223,7 +223,7 @@ export function checkReservation(cottageData) {
         cottageId: cottageData.id,
       },
     })
-    .then((response) => response.data)
+    .then((response) => {console.log(response.data);  return response.data;})
     .catch((err) => {
       toast.error(
         "Somethnig went wrong. Please wait a fiew seconds and try again.",
@@ -259,4 +259,38 @@ export function deleteCottage(cottageId) {
         }
       );
     });
+}
+export function updateCottage(cottageData, additionalServices){
+  console.log(cottageData);
+  api
+  .post("/cottage/update", cottageData)
+  .then((responseData) => {
+       updateAdditionalServices(cottageData.id, additionalServices);
+  })
+  .catch((err) => {toast.error(err.response.data, {
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 1500,
+              });
+          });
+}
+function updateAdditionalServices(offerId, additionalServiceDTOS){
+  console.log(additionalServiceDTOS);
+  api
+  .post("/cottage/update-cottage-services",  {
+      params:{
+          offerId : offerId,
+          additionalServiceDTOS : additionalServiceDTOS
+      }
+  })
+  .then((responseData) => {
+                      toast.success(responseData.data, {
+                          position: toast.POSITION.BOTTOM_RIGHT,
+                          autoClose: 1500,
+                      });
+                  })
+  .catch((errMessage) => {toast.error(errMessage.response.data, {
+                          position: toast.POSITION.BOTTOM_RIGHT,
+                          autoClose: 1500,
+                      });
+                  });
 }

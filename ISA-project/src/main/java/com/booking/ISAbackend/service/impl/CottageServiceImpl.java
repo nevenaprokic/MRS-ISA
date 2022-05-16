@@ -1,11 +1,10 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.model.Client;
-import com.booking.ISAbackend.dto.CottageDTO;
-import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
-import com.booking.ISAbackend.dto.NewCottageDTO;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
+import com.booking.ISAbackend.repository.AdditionalServiceRepository;
 import com.booking.ISAbackend.repository.AddressRepository;
 import com.booking.ISAbackend.repository.CottageRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -39,6 +38,8 @@ public class CottageServiceImpl implements CottageService {
     private MarkService markService;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private AdditionalServiceRepository additionalServiceRepository;
 
 
     @Override
@@ -160,6 +161,7 @@ public class CottageServiceImpl implements CottageService {
                 (!cottage.getDescription().isEmpty());
         return validationResult;
     }
+
     private Cottage saveCottage(NewCottageDTO cottage, CottageOwner cottageOwner) throws IOException {
         List<QuickReservation> quickReservations = new ArrayList<QuickReservation>();
         List<Reservation> reservations = new ArrayList<Reservation>();
@@ -201,16 +203,77 @@ public class CottageServiceImpl implements CottageService {
         }
 
     }
-//    @Override
-//    public Boolean checkOperationAllowed(int cottageId) {
-//        List<Reservation> reservations = reservationRepository.findAllByOfferId(cottageId);
-//        LocalDate today = LocalDate.now();
-//        for(Reservation r:reservations){
-//            if((today.compareTo(r.getEndDate())<0)){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+
+    @Override
+    @Transactional
+    public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException {
+        Cottage cottage = cottageRepository.findCottageById(cottageId);
+        String cottageOwnerEmail = cottage.getCottageOwner().getEmail();
+        System.out.println(cottageDTO.getName());
+        if (cottage != null && validateUpdateCottage(cottageDTO)){
+            cottage.setName(cottage.getName());
+            cottage.setPrice(Double.valueOf(cottageDTO.getPrice()));
+            cottage.setNumberOfPerson(Integer.valueOf(cottageDTO.getNumberOfPerson()));
+            cottage.setDescription(cottageDTO.getDescription());
+            cottage.setRulesOfConduct(cottageDTO.getRulesOfConduct());
+            cottage.setCancellationConditions(cottageDTO.getCancellationConditions());
+            cottage.setPhotos(updateCottagePhotos(cottageDTO.getPhotos(), cottage.getPhotos(), cottageOwnerEmail));
+
+            updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
+            cottageRepository.save(cottage);
+        }
+    }
+    private boolean validateUpdateCottage(CottageDTO cottageDTO) throws InvalidPriceException, InvalidAddressException, InvalidPeopleNumberException, InvalidBedNumberException, InvalidRoomNumberException {
+        boolean validationResult = Validator.isValidPrice(String.valueOf(cottageDTO.getPrice())) &&
+                Validator.isValidAdress(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()) &&
+                Validator.isValidPeopleNumber(String.valueOf(cottageDTO.getNumberOfPerson())) &&
+                Validator.isValidBedNumber(String.valueOf(cottageDTO.getBedNumber())) &&
+                Validator.isValidRoomNumber(String.valueOf(cottageDTO.getRoomNumber()))&&
+                (!cottageDTO.getCancellationConditions().isEmpty()) &&
+                (!cottageDTO.getDescription().isEmpty());
+        return validationResult;
+    }
+    private List<Photo> updateCottagePhotos(List<String> newPhotos, List<Photo> oldPhotos, String ownerEmail) throws IOException {
+        //dobaviti stare slike, obrisati i postaviti nove
+        photoService.removeOldPhotos(oldPhotos);
+        return photoService.ConvertBase64Photo(newPhotos, ownerEmail);
+
+    }
+    private Address updateCottageAddress(Address oldAddress, AddressDTO newAddress){
+        if(!oldAddress.getStreet().equals(newAddress.getStreet()) |
+                !oldAddress.getCity().equals(newAddress.getCity()) |
+                !oldAddress.getState().equals(newAddress.getState())){
+            Address address = new Address(newAddress.getStreet(), newAddress.getCity(), newAddress.getState());
+            addressRepository.save(address);
+            return address;
+        }
+        return oldAddress;
+
+    }
+
+    @Override
+    @Transactional
+    public void updateCottageAdditionalServices(List<HashMap<String, String>> newServices, Integer offerID) throws InvalidPriceException, RequiredFiledException {
+        Cottage cottage = cottageRepository.findCottageById(offerID);
+        List<AdditionalService> currentAdditionalServices = cottage.getAdditionalServices();
+        if(cottage != null && Validator.isValidAdditionalServices(newServices)){
+            for(HashMap<String, String> newService:  newServices){
+                if(additionalServiceService.isAdditionalServiceExists(currentAdditionalServices, newService.get("serviceName"))){
+                    AdditionalService service = additionalServiceService.findAdditionalService(currentAdditionalServices, newService.get("serviceName"));
+                    service.setPrice(Double.valueOf(String.valueOf(newService.get("servicePrice"))));
+                    additionalServiceRepository.save(service);
+                }
+                else if(!newService.get("serviceName").equals("")){
+                    AdditionalService service = new AdditionalService(newService.get("serviceName"), Double.valueOf(String.valueOf(newService.get("servicePrice"))));
+                    currentAdditionalServices.add(service);
+                    additionalServiceRepository.save(service);
+                }
+            }
+            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
+            cottage.setAdditionalServices(currentAdditionalServices);
+            cottageRepository.save(cottage);
+
+        }
+    }
 
 }

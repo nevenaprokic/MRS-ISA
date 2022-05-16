@@ -3,7 +3,10 @@ import { Grid, Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import * as React from "react";
-import { getCottageById, checkReservation } from "../../../services/CottageService";
+import {
+  getCottageById,
+  checkReservation,
+} from "../../../services/CottageService";
 import { useState, useEffect } from "react";
 import QuickActionBox from "./QuickActionBox";
 import BasicCottageInfoBox from "../cottageProfile/BasicCottageInfoBox";
@@ -18,6 +21,7 @@ import DeleteCottage from "../../forms/cottage/DeleteCottage";
 import Modal from "@mui/material/Modal";
 import { toast } from "react-toastify";
 import MapBox from "./MapBox";
+import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
 
 
 const theme = createTheme({
@@ -31,9 +35,18 @@ const theme = createTheme({
   },
 });
 
-function CottageProfilePage({ id, close }) {
+function CottageProfilePage({ id, close, childToParentMediaCard }) {
   const [cottageData, setCottageData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openChangeForm, setOpenForm] = useState(false);
+
+  const handleOpenForm = () => {
+    checkAllowed(true);
+  };
+
+  const handleCloseForm = () => {
+    setOpenForm(false);
+  };
 
   const handleOpenDeleteDialog = () => {
     checkAllowed(false);
@@ -41,29 +54,52 @@ function CottageProfilePage({ id, close }) {
   const handleCloseDeleteDialog = () => {
     setOpenDialog(false);
   };
-  async function checkAllowed({operation}) {
+  async function checkAllowed(operation) {
     let allowed = await checkReservation(cottageData);
-    let message = "Delete is not allowed because this cottage has reservations.";
-    if(operation)
-      message = "Update is not allowed because this cottage has reservations.";
     if (allowed) {
-      setOpenDialog(true);
+      if(operation)
+        setOpenForm(true);
+      else
+        setOpenDialog(true);
     } else {
-      toast.error(
-        message,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 1500,
-        }
-      );
+      let message = "Delete is not allowed because this cottage has reservations.";
+      if(operation)
+        message = "Update is not allowed because this cottage has reservations.";
+      toast.error(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
     }
   }
+  const childToParent = (childData) => {
+  
+    setCottageData(prevState => ({
+        ...prevState,
+        ["name"]: childData.name,
+        ["price"]: childData.price,
+        ["id"]: childData.id,
+        ["city"]: childData.city,
+        ["street"]: childData.street,
+        ["state"]: childData.state,
+        ["description"]: childData.description,
+        ["rulesOfConduct"]: childData.rulesOfConduct,
+        ["cancellationConditions"]: childData.cancellationConditions,
+        ["numberOfPerson"]: childData.numberOfPerson,
+        ["additionalServices"]: childData.additionalServices,
+        ["photos"]:childData.photos,
+        ["bedNumber"] :childData.bedNumber,
+        ["roomNumber"] : childData.roomNumber
+
+    })
+    ); 
+
+    childToParentMediaCard(childData);
+}
 
   useEffect(() => {
     async function setcottageData() {
       let cottage = await getCottageById(id);
       setCottageData(!!cottage ? cottage.data : {});
-
       return cottage;
     }
     setcottageData();
@@ -86,6 +122,7 @@ function CottageProfilePage({ id, close }) {
       let imag = { image: "data:image/jpg;base64," + photo };
       images.push(imag);
     });
+    console.log(cottageData);
     return (
       <div className="changeDataContainer" id="changeDataContainer">
         <ThemeProvider theme={theme}>
@@ -110,7 +147,7 @@ function CottageProfilePage({ id, close }) {
               {getRoleFromToken() != null &&
               getRoleFromToken() != userType.CLIENT ? (
                 <div className="changeBtn">
-                  <Button style={{ marginLeft: "35%" }} variant="contained">
+                  <Button style={{ marginLeft: "35%" }} variant="contained" onClick={handleOpenForm}>
                     Change info
                   </Button>
                   <Button
@@ -125,6 +162,22 @@ function CottageProfilePage({ id, close }) {
                 <></>
               )}
             </div>
+            <Modal
+              open={openChangeForm}
+              onClose={handleCloseForm}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                backgroundColor: "rgb(218, 224, 210, 0.6)",
+                overflow: "auto",
+              }}
+            >
+              <ChangeCottageForm
+                currentCottageData={cottageData}
+                closeForm={handleCloseForm}
+                childToParent={childToParent}
+              />
+            </Modal>
             <Modal
               open={openDialog}
               onClose={handleCloseDeleteDialog}
@@ -143,9 +196,13 @@ function CottageProfilePage({ id, close }) {
               />
             </Modal>
             <ImagesBox images={images} />
-            
+
             <QuickActionBox id={cottageData.id} />
-            <MapBox street={cottageData.street} city={cottageData.city} state={cottageData.state}/>
+            <MapBox
+              street={cottageData.street}
+              city={cottageData.city}
+              state={cottageData.state}
+            />
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
                 <BasicCottageInfoBox basicInfo={cottageData} />

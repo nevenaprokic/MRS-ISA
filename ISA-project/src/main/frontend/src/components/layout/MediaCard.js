@@ -65,7 +65,7 @@ export default function MediaCard({ offer, offerT}) {
     else{
       setOfferData(prevState => ({
         ...prevState,
-        ["name"]: childData.offerName,
+        ["name"]: childData.name,
         ["description"]: childData.description,
         ["photos"]:childData.photos,
 
@@ -79,7 +79,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.ADVENTURE:
         return ( <AdventureProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent} />);
       case offerType.COTTAGE: 
-        return ( <CottageProfilePage id={offerId} close={handleClose}/>);
+        return ( <CottageProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose}/>);
       case userType.INSTRUCTOR:
