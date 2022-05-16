@@ -40,7 +40,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   const [openChangeForm, setOpenForm] = useState(false);
 
   const handleOpenForm = () => {
-    setOpenForm(true);
+    checkAllowed(true);
   };
 
   const handleCloseForm = () => {
@@ -53,19 +53,21 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   const handleCloseDeleteDialog = () => {
     setOpenDialog(false);
   };
-  async function checkAllowed({ operation }) {
+  async function checkAllowed(operation) {
     let allowed = await checkReservation(cottageData);
-    let message =
-      "Delete is not allowed because this cottage has reservations.";
-    if (operation)
-      message = "Update is not allowed because this cottage has reservations.";
     if (allowed) {
-      setOpenDialog(true);
+      if(operation)
+        setOpenForm(true);
+      else
+        setOpenDialog(true);
     } else {
+      let message = "Delete is not allowed because this cottage has reservations.";
+      if(operation)
+        message = "Update is not allowed because this cottage has reservations.";
       toast.error(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 1500,
-      });
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
     }
   }
   const childToParent = (childData) => {
@@ -97,7 +99,6 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
     async function setcottageData() {
       let cottage = await getCottageById(id);
       setCottageData(!!cottage ? cottage.data : {});
-      console.log(cottage);
       return cottage;
     }
     setcottageData();
