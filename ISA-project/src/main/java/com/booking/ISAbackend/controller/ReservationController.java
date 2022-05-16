@@ -2,6 +2,7 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.ReservationParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
+import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
 import com.booking.ISAbackend.service.ReservationService;
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,10 @@ public class ReservationController {
         try{
             reservationService.makeReservation(params);
             return ResponseEntity.ok("Reservation was successful!");
-        }catch (Exception ex){
-            return ResponseEntity.ok("Something went wrong, reservation failed.");
+        }catch (OfferNotAvailableException ex){
+            return ResponseEntity.ok(ex.getMessage());
+        }catch(Exception ex){
+            return ResponseEntity.ok("Something went wrong. Try again.");
         }
 
     }
