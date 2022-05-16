@@ -14,6 +14,7 @@ public class ReservationParamsDTO {
     private List<AdditionalService> services;
     private Double total;
     private Integer offerId;
+    private Integer actionId;
 
     public ReservationParamsDTO() {}
 
@@ -80,5 +81,13 @@ public class ReservationParamsDTO {
 
     public void setOfferId(Integer offerId) {
         this.offerId = offerId;
+    }
+
+    public Integer getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(Integer actionId) {
+        this.actionId = actionId;
     }
 }

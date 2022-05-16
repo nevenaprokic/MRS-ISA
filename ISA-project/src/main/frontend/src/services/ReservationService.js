@@ -29,14 +29,15 @@ export function makeReservation(params, close){
     .catch((err) => alert(err.data));
 }
 
-export function convertParams(action){
+export function convertParams(action, offer){
     return {
         services: action.additionalServices,
         total: action.price,
         guests: action.numberOfPerson,
         date: arrayToDateString(action.startDate),
         endingDate: arrayToDateString(action.endDate),
-        offerId: action.id
+        offerId: offer,
+        actionId: action.id
     };
 }
 
