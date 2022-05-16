@@ -38,7 +38,7 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
   const [openChangeForm, setOpenForm] = useState(false);
 
   const handleOpenForm = () => {
-    setOpenForm(true);
+    checkAllowed(true);
   };
 
   const handleCloseForm = () => {
@@ -52,14 +52,15 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
     setOpenDialog(false);
   };
 
-  async function checkAllowed({ operation }) {
+  async function checkAllowed(operation) {
     let allowed = await checkReservation(shipData);
-    let message = "Delete is not allowed because this ship has reservations.";
-    if (operation)
-      message = "Update is not allowed because this ship has reservations.";
     if (allowed) {
-      setOpenDialog(true);
+      if (operation) setOpenForm(true);
+      else setOpenDialog(true);
     } else {
+      let message = "Delete is not allowed because this ship has reservations.";
+      if (operation)
+        message = "Update is not allowed because this ship has reservations.";
       toast.error(message, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 1500,
