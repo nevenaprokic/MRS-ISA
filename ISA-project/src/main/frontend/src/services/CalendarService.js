@@ -63,4 +63,27 @@ export function getReservationDetails(reservationId){
                 });
 }
 
+export function addOffersUnavailableDates(offerId, startDate, endDate){
+    let  data = {
+        offerId: offerId, 
+        startDate: startDate, 
+        endDate: endDate
+    }
+
+    api
+    .post("/calendar/add-unavailable-dates", data)
+    .then(
+        (responseData) => {toast.success("Successfully added new unavailable interval", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                })
+    .catch((err) => { 
+            toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            } )
+}
+
 

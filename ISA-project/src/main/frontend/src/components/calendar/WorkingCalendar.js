@@ -33,8 +33,7 @@ export default function WorkingCalendar({offers, setOffers}){
       setOpenForm(false);
   }
 
-  function handleOpenUnavailableDatesForm(dates) {
-    /*prosleditini izabranu ponudu ili samo njen id i name pa za to poznati set*/
+  function handleOpenUnavailableDatesForm() {
     setUnavailableDatesForm(true)
   }
   function handleCLoseUnavailableDatesForm() {setUnavailableDatesForm(false)}

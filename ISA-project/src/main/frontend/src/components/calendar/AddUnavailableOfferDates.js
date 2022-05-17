@@ -11,13 +11,14 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
+import { addOffersUnavailableDates } from '../../services/CalendarService';
 
 
 
 function AddUnavailableOfferDates({offerId, offerName, selectedDates, close}){
     console.log(selectedDates.start);
 
-    const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
+    //const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
     const [startValue, setStartValue] = React.useState(selectedDates.start);
     const [endValue, setEndValue] = React.useState(selectedDates.end);
 
@@ -43,9 +44,9 @@ function AddUnavailableOfferDates({offerId, offerName, selectedDates, close}){
         setEndValue(newValue);
     };
     
-    const onSubmit = (e) => {
-       let params = {...e, "offerId": offerId};
-       console.log(params);
+    const handleSubmit = (e) => {
+       //let params = {...e, "offerId": offerId};
+       addOffersUnavailableDates(offerId, selectedDates.startStr, selectedDates.endStr);
        close();
       };
 
@@ -57,7 +58,7 @@ function AddUnavailableOfferDates({offerId, offerName, selectedDates, close}){
             <Typography variant="h6" gutterBottom>
                 Add new unavailabel dates for "{offerName}"
             </Typography>
-            <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{marginTop:"2%" }}>
+            <Grid container spacing={3} component="form" noValidate sx={{marginTop:"2%" }}> {/*onSubmit={handleSubmit(onSubmit)} */}
                 <Grid item xs={12} sm={6}>  
                     <div className='dateItem'>
                         <Typography variant="body1" gutterBottom sx={{color: "#99A799"}}>

@@ -11,6 +11,10 @@ public class UnavailableDateDTO {
         this.endDate = endDate;
     }
 
+    public UnavailableDateDTO(){
+
+    }
+
     public int getOfferId() {
         return offerId;
     }
