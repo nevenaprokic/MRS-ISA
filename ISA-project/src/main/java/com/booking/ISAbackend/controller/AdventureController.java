@@ -4,6 +4,7 @@ import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.service.AdventureService;
+import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class AdventureController {
 
     @Autowired
     private AdventureService adventureService;
+
+    @Autowired
+    private OfferService offerService;
 
     @PostMapping(value = "add-adventure" )
     public ResponseEntity<String> addAdventure(@RequestParam("email") String ownerEmail,
@@ -142,5 +146,31 @@ public class AdventureController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @GetMapping("allowed-operation")
+    public ResponseEntity<Boolean> isAllowedAdventureOperation(@RequestParam Integer adventureId){
+        try{
+            Boolean allowedOperation = offerService.checkOperationAllowed(adventureId);
+            return ResponseEntity.ok(allowedOperation);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("delete")
+    public ResponseEntity<String> deleteAdventure(@RequestParam Integer adventureId){
+        try{
+            offerService.delete(adventureId);
+            return ResponseEntity.ok().body("Successfully delete adventure");
+        }catch (OfferNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
     }
 }
