@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -183,7 +182,7 @@ public class AdventureServiceImpl implements AdventureService {
                     additionalServiceRepository.save(service);
                 }
             }
-            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
+            additionalServiceService.removeOfferServices(currentAdditionalServices, newServices);
             adventure.setAdditionalServices(currentAdditionalServices);
             adventureRepository.save(adventure);
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -269,7 +268,7 @@ public class CottageServiceImpl implements CottageService {
                     additionalServiceRepository.save(service);
                 }
             }
-            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
+            additionalServiceService.removeOfferServices(currentAdditionalServices, newServices);
             cottage.setAdditionalServices(currentAdditionalServices);
             cottageRepository.save(cottage);
 

@@ -10,7 +10,10 @@ import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
+import com.booking.ISAbackend.service.AdditionalServiceService;
+import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.service.OfferService;
+import com.booking.ISAbackend.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,12 @@ public class OfferServiceImpl implements OfferService {
     private ReservationRepository reservationRepository;
     @Autowired
     private QuickReservationRepository quickReservationRepository;
+    @Autowired
+    private PhotoService photoService;
+    @Autowired
+    private AdditionalServiceService additionalServiceService;
+    @Autowired
+    private ClientService clientService;
 
     @Override
     @Transactional
@@ -52,11 +61,16 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public void delete(Integer offerId) throws OfferNotFoundException {//slike, sub, additional
+    public void delete(Integer offerId) throws OfferNotFoundException {
         Offer offer = offerRepository.findOfferById(offerId);
         if (offer == null)
             throw new OfferNotFoundException("Offer not found");
-
+        if(offer.getSubscribedClients().size()!= 0)
+            clientService.removeSubscribedClients(offer.getSubscribedClients());
+        if(offer.getPhotos().size() != 0)
+            photoService.removeOldPhotos(offer.getPhotos());
+        if(offer.getAdditionalServices().size() != 0)
+            additionalServiceService.removeAdditionalServices(offer.getAdditionalServices());
         if(offer.getQuickReservations().size() != 0)
             quickReservationRepository.deleteByOfferId(offerId);
         if(offer.getReservations().size() != 0)

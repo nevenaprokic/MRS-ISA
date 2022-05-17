@@ -55,7 +55,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     @Override
-    public void removeAdventureServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
+    public void removeOfferServices(List<AdditionalService> oldServices, List<HashMap<String, String>> newServices){
         Iterator<AdditionalService> iterator = oldServices.iterator();
         while(iterator.hasNext()){
             AdditionalService service = iterator.next();
@@ -84,4 +84,14 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         return  additionalServiceDTOList;
     }
 
+    @Override
+    public void removeAdditionalServices(List<AdditionalService> services){
+        Iterator<AdditionalService> iterator = services.iterator();
+        while(iterator.hasNext()){
+            AdditionalService service = iterator.next();
+            iterator.remove();
+            additionalServiceRepository.delete(service);
+
+        }
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -148,6 +149,15 @@ public class ClientServiceImpl implements ClientService {
         MyUser user = clientRepository.findByEmail(email);
         Optional<DeleteRequest> request = Optional.ofNullable(deleteRequestRepository.alreadyExists(user.getId()));
         return request.isPresent();
+    }
+
+    @Override
+    public void removeSubscribedClients(List<Client> services){
+        Iterator<Client> iterator = services.iterator();
+        while(iterator.hasNext()){
+            iterator.remove();
+
+        }
     }
 
 }

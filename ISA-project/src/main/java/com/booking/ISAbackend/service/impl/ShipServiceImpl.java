@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -276,7 +275,7 @@ public class ShipServiceImpl implements ShipService {
                     additionalServiceRepository.save(service);
                 }
             }
-            additionalServiceService.removeAdventureServices(currentAdditionalServices, newServices);
+            additionalServiceService.removeOfferServices(currentAdditionalServices, newServices);
             ship.setAdditionalServices(currentAdditionalServices);
             shipRepository.save(ship);
 
