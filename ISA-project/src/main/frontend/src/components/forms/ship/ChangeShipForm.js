@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
 import {updateShip} from "../../../services/ShipService";
+import ship from '../../../ship.png';
 
 function ChangeShipForm({ currentShipData, closeForm, childToParent }) {
   const {
@@ -76,7 +77,8 @@ function ChangeShipForm({ currentShipData, closeForm, childToParent }) {
         </div>
         <div>
           <Typography variant="h6" gutterBottom>
-            Change ship
+          <img src={ship} />
+            {"\t\tChange ship"}
           </Typography>
         </div>
 

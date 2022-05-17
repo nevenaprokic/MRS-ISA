@@ -41,7 +41,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")
     void deleteByOfferId(Integer id);
 
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> findPastReservationByCottageOwnerEmail(String email, LocalDate today);
+
     @Query("SELECT r FROM Reservation r INNER JOIN Offer o ON r.offer.id = o.id WHERE" +
             " (r.startDate >= ?1 AND r.endDate <= ?2)")
     List<Reservation> findByOfferIdAndDates(LocalDate from, LocalDate to);
+
 }
