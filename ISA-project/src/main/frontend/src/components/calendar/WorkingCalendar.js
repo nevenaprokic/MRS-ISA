@@ -11,6 +11,8 @@ import { getUsernameFromToken } from "../../app/jwtTokenUtils";
 import { getAdventureByInstructorEmail } from '../../services/AdventureService';
 import ReservationDetails from './ReservationDetails';
 import Modal from '@mui/material/Modal';
+import AddUnavailableOfferDates from './AddUnavailableOfferDates';
+import { OfflinePinRounded } from '@mui/icons-material';
 
 
 export default function WorkingCalendar({offers, setOffers}){
@@ -20,18 +22,27 @@ export default function WorkingCalendar({offers, setOffers}){
   const [offersName, setOffersName] = useState();
   const [events, setEvents] = useState();
   const [openChangeForm, setOpenForm] = useState(false);
+  const [openUnavailableDatesForm, setUnavailableDatesForm] = useState(false);
   const [reservationId, setReservationId] = useState();
+  const [offerName, setOfferName] = useState();
+  const [offerId, setOfferId] = useState();
+  const [selectedDates, setSelectedDates] = useState();
 
   function handleOpenForm(){setOpenForm(true)}
   function handleCloseForm(){
       setOpenForm(false);
   }
 
+  function handleOpenUnavailableDatesForm() {
+    setUnavailableDatesForm(true)
+  }
+  function handleCLoseUnavailableDatesForm() {setUnavailableDatesForm(false)}
+
+
 
   function findEvent(id){
     let foundedEvent = {}
     events.forEach(element => {
-      console.log(element["id"]);
         if(element["id"] == id){
           foundedEvent = element;
           
@@ -73,21 +84,11 @@ export default function WorkingCalendar({offers, setOffers}){
 
     }
     else{
-      let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
+      console.log("select", selectInfo);
+      setSelectedDates(selectInfo);
+      handleOpenUnavailableDatesForm(selectInfo);
 
-      calendarApi.unselect() // clear date selection
-    
-      if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
-      }
-    }
+     }
   }
 
   const handleEventClick = (clickInfo) => {
@@ -95,8 +96,6 @@ export default function WorkingCalendar({offers, setOffers}){
       async function set(){
         let id = clickInfo.event.id;//currentViewType
         let event = findEvent(id);
-        console.log("eee", event.isReservation);
-        console.log(event.application_id);
         if(event.isReservation){
           
           setReservationId(event.application_id);
@@ -120,7 +119,7 @@ export default function WorkingCalendar({offers, setOffers}){
       !!offers && !!events &&
       <div className='demo-app'>
         {console.log("events", events)}
-        <CalendarSidebar state={state} offers={offersName} event={events} setEvents={setEvents}/>
+        <CalendarSidebar state={state} offers={offersName} event={events} setEvents={setEvents} setOfferId={setOfferId} setOfferName={setOfferName}/>
         <div className='demo-app-main'>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -152,6 +151,16 @@ export default function WorkingCalendar({offers, setOffers}){
             sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
         >
                 <ReservationDetails reservationId={reservationId} setReservationId={setReservationId} close={handleCloseForm}/>
+            
+        </Modal>
+        <Modal
+            open={openUnavailableDatesForm}
+            onClose={handleCLoseUnavailableDatesForm}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+        >
+                <AddUnavailableOfferDates offerId={offerId} offerName={offerName} close={handleCLoseUnavailableDatesForm} selectedDates={selectedDates}/>
             
         </Modal>
       </div>

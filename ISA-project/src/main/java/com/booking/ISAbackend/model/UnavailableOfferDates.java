@@ -33,4 +33,14 @@ public class UnavailableOfferDates {
     public LocalDate getEndDate() {
         return endDate;
     }
+
+    public UnavailableOfferDates(Offer offer, LocalDate startDate, LocalDate endDate) {
+        this.offer = offer;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public UnavailableOfferDates(){
+
+    }
 }

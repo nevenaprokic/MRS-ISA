@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Cottage;
+import com.booking.ISAbackend.model.Offer;
 import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.model.Ship;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +40,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Modifying
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")
     void deleteByOfferId(Integer id);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Offer o ON r.offer.id = o.id WHERE" +
+            " (r.startDate >= ?1 AND r.endDate <= ?2)")
+    List<Reservation> findByOfferIdAndDates(LocalDate from, LocalDate to);
 }
