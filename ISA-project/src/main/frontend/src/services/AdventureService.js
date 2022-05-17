@@ -119,4 +119,50 @@ export function searchAdventureByInstructor(params, setOffers){
     
 }
 
+export function checkReservation(adventureData) {
+     return true;
+    // api
+    //   .get("/adventure/allowed-operation", {
+    //     params: {
+    //         adventureId: adventureData.id,
+    //     },
+    //   })
+    //   .then((response) => {console.log(response.data);  return response.data;})
+    //   .catch((err) => {
+    //     toast.error(
+    //       "Somethnig went wrong. Please wait a fiew seconds and try again.",
+    //       {
+    //         position: toast.POSITION.BOTTOM_RIGHT,
+    //         autoClose: 1500,
+    //       }
+    //     );
+    //   });
+  }
+  export function deleteAdventure(adventureId) {
+    return api
+      .get("/adventure/delete", {
+        params: {
+            adventureId: adventureId,
+        },
+      })
+      .then((response) => {
+        toast.success(
+          "You successfully deleted the cottage!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      })
+      .catch((err) => {
+        toast.error(
+          "Somethnig went wrong. Please wait a fiew seconds and try again.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
+  }
+
 

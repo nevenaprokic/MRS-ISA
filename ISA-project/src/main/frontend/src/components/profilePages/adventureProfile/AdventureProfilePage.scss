@@ -40,12 +40,19 @@ $paleGreen: #dae0d2;
     margin-left: 5%;
     display: inline-block;
     vertical-align: middle;
-    width: 65%;
+    width: 45%;
     font-size: 30px;
     color: $orange;
 }
 
 .changeBtn{
+    display: inline-block;
+    vertical-align: middle;
+    width: 20%;
+    margin-left: 5%;
+}
+
+.deleteBtn{
     display: inline-block;
     vertical-align: middle;
     width: 20%;
