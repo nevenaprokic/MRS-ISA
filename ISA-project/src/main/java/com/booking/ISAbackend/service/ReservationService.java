@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ReservationService {
 
-    void makeReservation(ReservationParamsDTO params);
     List<ReservationDTO> getAllReservation(String ownerId) throws IOException;
     void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException;
 
