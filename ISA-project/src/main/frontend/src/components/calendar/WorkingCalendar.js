@@ -88,20 +88,6 @@ export default function WorkingCalendar({offers, setOffers}){
       setSelectedDates(selectInfo);
       handleOpenUnavailableDatesForm(selectInfo);
 
-    //   let title = prompt('Please enter a new title for your event')
-    //   let calendarApi = selectInfo.view.calendar
-
-    //   calendarApi.unselect() // clear date selection
-    
-    //   if (title) {
-    //     calendarApi.addEvent({
-    //       id: createEventId(),
-    //       title,
-    //       start: selectInfo.startStr,
-    //       end: selectInfo.endStr,
-    //       allDay: selectInfo.allDay
-    //     })
-    //   }
      }
   }
 

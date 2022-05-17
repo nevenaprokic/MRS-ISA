@@ -19,8 +19,8 @@ export default function CalendarSidebar({state, offers, events, setEvents, setOf
       }
 
     function renderSidebarEvent(event) {
-        return (
-          <li key={event.id}>
+        return (   
+          <li key={event.id}> {console.log(event)}
             <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
             <label> - </label>
             <b>{formatDate(event.end, {year: 'numeric', month: 'short', day: 'numeric'})}</b>

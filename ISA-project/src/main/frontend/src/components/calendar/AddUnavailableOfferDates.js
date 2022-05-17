@@ -46,7 +46,7 @@ function AddUnavailableOfferDates({offerId, offerName, selectedDates, close}){
     
     const handleSubmit = (e) => {
        //let params = {...e, "offerId": offerId};
-       addOffersUnavailableDates(offerId, selectedDates.startStr, selectedDates.endStr);
+       let success = addOffersUnavailableDates(offerId, selectedDates);
        close();
       };
 
