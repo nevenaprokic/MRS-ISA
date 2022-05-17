@@ -59,8 +59,8 @@ export default function ReservationForm({ offer, close }) {
     };
 
     const onSubmit = (e) => {
-      let next_date = addDaysToDate(e.date, e.days);
-      let params = {...e, "offerId": offer.id, "services":checked, "endingDate":next_date.toISOString().split('T')[0], "total": total };
+      let next_date = addDaysToDate(value, e.days);
+      let params = {...e, "offerId": offer.id, "services":checked, "endingDate":next_date.toISOString().split('T')[0], "total": total, "date": value };
       makeReservation(params, close);
     };
 
@@ -90,7 +90,7 @@ export default function ReservationForm({ offer, close }) {
                     value={value}
                     onChange={handleChange}
                     renderInput={(params) => <TextField {...params} />}
-                    {...register("date", {required: true})}
+                    // {...register("date", {required: true})}
                     />
                 {errors.offerName && <label className="requiredLabel">Required! </label>}
                 </Grid>
@@ -193,3 +193,4 @@ export default function ReservationForm({ offer, close }) {
     </LocalizationProvider>
   )
 }
+

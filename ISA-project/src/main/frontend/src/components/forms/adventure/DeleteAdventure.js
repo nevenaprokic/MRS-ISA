@@ -14,11 +14,12 @@ export default function DeleteAdventure({closeDialog, open, name, id}) {
     }
     const handleDelete = () => {
         console.log("tu");
-        // async function isDeleted(){
-        //     await  DeleteAdventure(id);
-        // }
-        // isDeleted();
-        // window.location = "/user-profile/cottage-owner";
+        async function isDeleted(){
+            await  deleteAdventure(id);
+            window.location = "/user-home-page/instructor";
+        }
+        isDeleted();
+        
     }
 
   return (

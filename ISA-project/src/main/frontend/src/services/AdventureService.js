@@ -120,25 +120,26 @@ export function searchAdventureByInstructor(params, setOffers){
 }
 
 export function checkReservation(adventureData) {
-     return true;
-    // api
-    //   .get("/adventure/allowed-operation", {
-    //     params: {
-    //         adventureId: adventureData.id,
-    //     },
-    //   })
-    //   .then((response) => {console.log(response.data);  return response.data;})
-    //   .catch((err) => {
-    //     toast.error(
-    //       "Somethnig went wrong. Please wait a fiew seconds and try again.",
-    //       {
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //         autoClose: 1500,
-    //       }
-    //     );
-    //   });
+    console.log("tu", );
+     return api
+      .get("/adventure/allowed-operation", {
+        params: {
+            adventureId: adventureData.id,
+        },
+      })
+      .then((response) => {console.log(response.data);  return response.data;})
+      .catch((err) => {
+        toast.error(
+          "Somethnig went wrong. Please wait a fiew seconds and try again.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
   }
   export function deleteAdventure(adventureId) {
+      console.log("id", adventureId);
     return api
       .get("/adventure/delete", {
         params: {
