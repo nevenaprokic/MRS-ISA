@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {deleteAdventure } from "../../../services/AdventureService";
+import adventure from '../../../adventure.png';
 
 
 export default function DeleteAdventure({closeDialog, open, name, id}) {
@@ -31,7 +32,8 @@ export default function DeleteAdventure({closeDialog, open, name, id}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"DELETE"}
+        <img src={adventure} />
+          {"\t\tDELETE"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

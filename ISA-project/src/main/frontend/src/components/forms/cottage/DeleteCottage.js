@@ -8,7 +8,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {deleteCottage } from "../../../services/CottageService";
 import cottage from '../../../cottage.png';
 
-
 export default function DeleteCottage({closeDialog, open, name, id}) {
     const handleClose = () => {
         closeDialog();
