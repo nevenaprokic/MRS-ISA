@@ -15,7 +15,6 @@ export function calculatePrice(days, price, additionalServices){
 }
 
 export function makeReservation(params, close){
-    console.log(params);
     params = {...params, "email": getUsernameFromToken()};
     api
     .post("/reservation/make", params)
@@ -26,17 +25,21 @@ export function makeReservation(params, close){
                             });
         close();
 })
-    .catch((err) => alert(err.data));
+    .catch((err) => 
+        toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500, }));
 }
 
-export function convertParams(action){
+export function convertParams(action, offer){
     return {
         services: action.additionalServices,
         total: action.price,
         guests: action.numberOfPerson,
         date: arrayToDateString(action.startDate),
         endingDate: arrayToDateString(action.endDate),
-        offerId: action.id
+        offerId: offer,
+        actionId: action.id
     };
 }
 

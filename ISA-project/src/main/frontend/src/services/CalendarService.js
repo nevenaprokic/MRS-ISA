@@ -63,4 +63,45 @@ export function getReservationDetails(reservationId){
                 });
 }
 
+export function addOffersUnavailableDates(offerId, selectInfo){
+    let  data = {
+        offerId: offerId, 
+        startDate: selectInfo.startStr, 
+        endDate: selectInfo.endStr
+    }
+
+    return api
+    .post("/calendar/add-unavailable-dates", data)
+    .then(
+        (responseData) => {
+                        renderEvent(selectInfo)
+                        toast.success("Successfully added new unavailable interval", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                    return true;
+                })
+    .catch((err) => { 
+            toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+                return false;
+            } )
+}
+
+function renderEvent(selectInfo){
+    let calendarApi = selectInfo.view.calendar
+
+    calendarApi.unselect() // clear date selection
+    let title = "Unavailable";
+
+    calendarApi.addEvent({
+    id: createEventId(),
+    title,
+    start: selectInfo.startStr,
+    end: selectInfo.endStr,
+    allDay: selectInfo.allDay
+    })
+}
 

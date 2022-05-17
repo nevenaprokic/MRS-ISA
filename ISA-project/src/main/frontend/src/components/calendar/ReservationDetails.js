@@ -16,7 +16,6 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 function ReservationDetails({reservationId, setReservationId, close}){
     
-    console.log("data", reservationId);
     const theme = createTheme({
         palette: {
           primary: {

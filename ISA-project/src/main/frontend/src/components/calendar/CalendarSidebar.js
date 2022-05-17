@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { getCalendarEvents, generateCalendarEvents, createEventId } from '../../services/CalendarService';
 
 
-export default function CalendarSidebar({state, offers, events, setEvents}) {
+export default function CalendarSidebar({state, offers, events, setEvents, setOfferId, setOfferName}) {
 
 
   let eventId = 0;
@@ -19,8 +19,8 @@ export default function CalendarSidebar({state, offers, events, setEvents}) {
       }
 
     function renderSidebarEvent(event) {
-        return (
-          <li key={event.id}>
+        return (   
+          <li key={event.id}> {console.log(event)}
             <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
             <label> - </label>
             <b>{formatDate(event.end, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
@@ -32,11 +32,12 @@ export default function CalendarSidebar({state, offers, events, setEvents}) {
     
     const handlerOfferChange = (event, selectedOffer) =>{
       async function set(){
-        console.log("evoo");
+        console.log("naziv",selectedOffer.label);
         const eventsData = await getCalendarEvents(selectedOffer.id, setEvents);
-        console.log(eventsData.data);
         let calendarItems = generateCalendarEvents(eventsData.data);
         setEvents(calendarItems);
+        setOfferId(selectedOffer.id);
+        setOfferName(selectedOffer.label);
         return eventsData;
       }
       set();

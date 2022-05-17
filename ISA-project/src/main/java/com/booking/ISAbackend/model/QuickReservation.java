@@ -1,11 +1,16 @@
 package com.booking.ISAbackend.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 
 @Entity
+@SQLDelete(sql = "UPDATE quick_reservation SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class QuickReservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +29,8 @@ public class QuickReservation {
 	private Double price;
 	@Column(nullable = false)
 	private Integer numberOfPerson;
+
+	private boolean deleted = Boolean.FALSE;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "offer_id")
@@ -63,5 +70,13 @@ public class QuickReservation {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

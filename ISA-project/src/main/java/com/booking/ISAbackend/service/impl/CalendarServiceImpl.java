@@ -2,6 +2,10 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.CalendarItem;
 import com.booking.ISAbackend.dto.ReservationDTO;
+import com.booking.ISAbackend.dto.UnavailableDateDTO;
+import com.booking.ISAbackend.exceptions.BusyDateIntervalException;
+import com.booking.ISAbackend.exceptions.InvalidDateInterval;
+import com.booking.ISAbackend.exceptions.UnavailableDatesAlreadyDefine;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -36,6 +40,9 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Autowired
     AdditionalServiceService additionalServiceService;
+
+    @Autowired
+    OfferRepository offerRepository;
 
     @Override
     @Transactional
@@ -76,6 +83,20 @@ public class CalendarServiceImpl implements CalendarService {
         return null;
 
     }
+    @Override
+    public void addOffersUnavailableDates(UnavailableDateDTO unavailableDates) throws BusyDateIntervalException, InvalidDateInterval, UnavailableDatesAlreadyDefine {
+        Offer offer = offerRepository.getById(unavailableDates.getOfferId());
+        LocalDate start = revertToDate(unavailableDates.getStartDate());
+        LocalDate end = revertToDate(unavailableDates.getEndDate());
+        List<Reservation> reservationsInSelectedInterval = reservationRepository.findByOfferIdAndDates(start, end);
+        if (!reservationsInSelectedInterval.isEmpty()) throw new BusyDateIntervalException();
+        if(!checkDateInterval(start, end)) throw  new InvalidDateInterval();
+        List<UnavailableOfferDates> exitingUnavailableDatesInInterval = unavailabelOfferDatesRepository.findDatesByOfferInInterval(start, end,unavailableDates.getOfferId());
+        if(!exitingUnavailableDatesInInterval.isEmpty()) throw  new UnavailableDatesAlreadyDefine();
+        UnavailableOfferDates dates = new UnavailableOfferDates(offer, start, end);
+        unavailabelOfferDatesRepository.save(dates);
+    }
+
 
     @Transactional
     public List<CalendarItem> generateCalendarItems(List<Reservation> reservations, List<UnavailableOfferDates> unavailableOfferDates){
@@ -117,6 +138,14 @@ public class CalendarServiceImpl implements CalendarService {
         return photoData;
     }
 
+    private LocalDate revertToDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter);
+    }
 
+    private boolean checkDateInterval(LocalDate start, LocalDate end){
+        if(start == end) return true;
+        return end.isAfter(start);
+    }
 
 }

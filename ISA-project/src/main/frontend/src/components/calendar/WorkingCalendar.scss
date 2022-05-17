@@ -6,19 +6,14 @@ $accept: #ADC2A9;
 $orange :#CC7351;
 $paleGreen: #dae0d2;
 
-html,
-body,
-body > div { /* the react root */
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
 h2 {
   margin: 0;
   font-size: 16px;
   color:#CC7351
+}
+.dateItem{
+  padding-left: 25%;
+  width: 100%;
 }
 
 ul {

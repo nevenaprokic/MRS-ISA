@@ -5,9 +5,11 @@ import "./CottageProfilePage.scss";
 import { userType, offerType} from "../../../app/Enum";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import Modal from '@mui/material/Modal';
 import getQuickActionByOfferId from "../../../services/QuickActionService";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { makeReservation, convertParams } from '../../../services/ReservationService';
+import ConfirmDialog from "../../layout/ConfirmDialog";
 
 const theme = createTheme({
   palette: {
@@ -23,9 +25,13 @@ const theme = createTheme({
 function QuickActionBox({ id }) {
   const [quickActionData, setQuickActionsData] = useState();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
 
   const handleReservation = (action) => {
-    makeReservation(convertParams(action));
+    makeReservation(convertParams(action, id));
   };
 
   useEffect(() => {
@@ -47,6 +53,7 @@ function QuickActionBox({ id }) {
 
         <div className="specialOfferSrollBox">
           {quickActionData?.map((action) => {
+              console.log(action);
               let startDate = " " + action.startDate[2] + "." + action.startDate[1] + "." + action.startDate[0]+".";
               let endDate = " " + action.endDate[2] + "." + action.endDate[1] + "." + action.endDate[0]+".";
               let startDateAction = " " + action.startDateAction[2] + "." + action.startDateAction[1] + "." + action.startDateAction[0]+".";
@@ -82,23 +89,22 @@ function QuickActionBox({ id }) {
                     variant="contained"
                     bgcolor="secondary"
                     color="primary"
-                    onClick={() => handleReservation(action) }
+                    onClick={() => handleOpen() }
                   >
                     Book now
                   </Button>
                 }
-                {/* <div className="actionButton">
-                  <ThemeProvider theme={theme}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="primary"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      get
-                    </Button>
-                  </ThemeProvider>
-                </div> */}
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                >
+                        <ConfirmDialog close={handleClose} cb={() => handleReservation(action)} ></ConfirmDialog>
+                        {/* <ChangeClientData currentClientData={clientData} close={handleClose} childToParent={childToParent} /> */}
+                    
+                </Modal>
 
                 <hr className="line"></hr>
               </div>
