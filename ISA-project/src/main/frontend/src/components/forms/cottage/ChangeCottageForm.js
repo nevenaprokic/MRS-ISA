@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
 import {updateCottage} from "../../../services/CottageService";
+import cottage from '../../../cottage.png';
 
 
 
@@ -76,7 +77,8 @@ function ChangeCottageForm({currentCottageData, closeForm, childToParent}){
         </div>
         <div>
             <Typography variant="h6" gutterBottom>
-                Change cottage
+            <img src={cottage} />
+                {"\t\tChange cottage"}
             </Typography>
         </div>
        

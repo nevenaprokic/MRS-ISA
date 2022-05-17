@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {deleteCottage } from "../../../services/CottageService";
+import cottage from '../../../cottage.png';
 
 
 export default function DeleteCottage({closeDialog, open, name, id}) {
@@ -29,7 +30,8 @@ export default function DeleteCottage({closeDialog, open, name, id}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"DELETE"}
+        <img src={cottage} />
+          {"\t\tDELETE"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

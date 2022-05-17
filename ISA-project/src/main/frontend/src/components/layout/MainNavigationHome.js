@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import classes from './MainNavigation.module.css';
 import React from 'react';
-import logo from '../../logo.png';
+import logo from '../../logo2.png';
 import { getRoleFromToken } from '../../app/jwtTokenUtils';
 import LogoutIcon from '@mui/icons-material/Logout';
 

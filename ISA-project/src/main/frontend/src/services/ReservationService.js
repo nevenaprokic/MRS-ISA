@@ -40,3 +40,21 @@ export function convertParams(action){
     };
 }
 
+export function getAllReservation(){
+    let email = getUsernameFromToken();
+    console.log(email);
+    return api
+    .get("/reservation/get-all-by-cottage-owner", {
+        params: {
+            ownerId: email ,
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+
+}
+

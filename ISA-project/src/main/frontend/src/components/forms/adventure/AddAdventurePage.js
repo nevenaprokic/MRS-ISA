@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { addAdventure } from "../../../services/AdventureService";
 import { CssBaseline } from "@mui/material";
 import MainNavigationHome from "../../layout/MainNavigationHome";
+import adventure from '../../../adventure.png';
 
 
 function AddAdventurePage(){
@@ -50,10 +51,11 @@ function AddAdventurePage(){
 
     return (
     
-     <div className="formContainer">
+     <div className="formContainerAdd">
 
       <Typography variant="h6" gutterBottom>
-        Adding new advanture
+      <img src={adventure} />
+        {"\t\tAdding new advanture"}
       </Typography>
       <Typography gutterBottom>
         <label className="headerText">Fields marked with an asterisk (*) are required.</label>

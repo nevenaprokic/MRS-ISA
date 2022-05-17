@@ -10,6 +10,7 @@ import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
 import { addCottage } from "../../../services/CottageService";
+import cottage from '../../../cottage.png';
 
 function AddCottagePage() {
   const {
@@ -48,9 +49,10 @@ function AddCottagePage() {
   };
 
   return (
-    <div className="formContainer">
+    <div className="formContainerAdd">
       <Typography variant="h6" gutterBottom>
-        Adding new cottage
+        <img style={{ verticalAlign: '-10' }} src={cottage} />
+        {"\t\tAdding new cottage"}
       </Typography>
       <Typography gutterBottom>
         <label className="headerText">
