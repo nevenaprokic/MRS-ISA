@@ -2,6 +2,7 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.CalendarItem;
 import com.booking.ISAbackend.dto.ReservationDTO;
+import com.booking.ISAbackend.dto.UnavailableDateDTO;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -36,6 +37,9 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Autowired
     AdditionalServiceService additionalServiceService;
+
+    @Autowired
+    OfferRepository offerRepository;
 
     @Override
     @Transactional
@@ -76,6 +80,7 @@ public class CalendarServiceImpl implements CalendarService {
         return null;
 
     }
+
 
     @Transactional
     public List<CalendarItem> generateCalendarItems(List<Reservation> reservations, List<UnavailableOfferDates> unavailableOfferDates){

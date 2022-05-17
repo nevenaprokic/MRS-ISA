@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Cottage;
+import com.booking.ISAbackend.model.Offer;
 import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.model.Ship;
 import org.springframework.data.jpa.repository.JpaRepository;
