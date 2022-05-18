@@ -49,4 +49,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             " (r.startDate >= ?1 AND r.endDate <= ?2)")
     List<Reservation> findByOfferIdAndDates(LocalDate from, LocalDate to);
 
+    @Query("SELECT r FROM Reservation r INNER JOIN Ship s ON r.offer.id = s.id INNER JOIN Owner ow ON ow.id = s.shipOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> findPastReservationByShipOwnerEmail(String email, LocalDate today);
+
 }

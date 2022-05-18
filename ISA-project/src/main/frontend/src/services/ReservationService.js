@@ -1,6 +1,6 @@
 import axios from "axios";
 import api from "../app/api";
-import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import { getUsernameFromToken, getRoleFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
 import { arrayToDateString } from "./UtilService";
 
@@ -47,11 +47,32 @@ export function convertParams(action, offer){
 
 export function getAllReservation(){
     let email = getUsernameFromToken();
+    let role = getRoleFromToken();
     console.log(email);
     return api
     .get("/reservation/get-all-by-cottage-owner", {
         params: {
             ownerId: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+
+}
+export function getAllReservationShipOwner(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation/get-all-by-ship-owner", {
+        params: {
+            ownerId: email ,
+            role: role
         },
       })
     .then((responseData) => responseData)
