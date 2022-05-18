@@ -36,6 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationRepository reservationRepository;
     @Autowired
     private AdditionalServiceService additionalServiceService;
+    @Autowired
     private QuickReservationRepository quickReservationRepository;
     @Autowired
     private EmailSender emailSender;

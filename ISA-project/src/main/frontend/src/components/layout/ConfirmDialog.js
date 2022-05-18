@@ -24,7 +24,6 @@ export default function ConfirmDialog({ close, cb }) {
 
   const onConfirm = (data) => {
     cb();
-    close();
   };
 
   const onClose = (data) => {

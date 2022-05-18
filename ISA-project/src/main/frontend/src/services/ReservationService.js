@@ -19,20 +19,21 @@ export function makeReservation(params, close){
     api
     .post("/reservation/make", params)
     .then((responseData) => {
+        console.log(responseData.data);
         toast.success(responseData.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
                             });
+       
         close();
-})
-    .catch((err) => 
+    }).catch((err) => 
         toast.error(err.response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 1500, }));
 }
 
 export function convertParams(action, offer){
-    return {
+    let o = {
         services: action.additionalServices,
         total: action.price,
         guests: action.numberOfPerson,
@@ -41,6 +42,7 @@ export function convertParams(action, offer){
         offerId: offer,
         actionId: action.id
     };
+    return o;
 }
 
 export function getAllReservation(){

@@ -31,7 +31,7 @@ function QuickActionBox({ id }) {
 
 
   const handleReservation = (action) => {
-    makeReservation(convertParams(action, id));
+    makeReservation(convertParams(action, id), handleClose);
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function QuickActionBox({ id }) {
 
         <div className="specialOfferSrollBox">
           {quickActionData?.map((action) => {
-              console.log(action);
+              console.log(quickActionData);
               let startDate = " " + action.startDate[2] + "." + action.startDate[1] + "." + action.startDate[0]+".";
               let endDate = " " + action.endDate[2] + "." + action.endDate[1] + "." + action.endDate[0]+".";
               let startDateAction = " " + action.startDateAction[2] + "." + action.startDateAction[1] + "." + action.startDateAction[0]+".";

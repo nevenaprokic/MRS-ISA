@@ -13,7 +13,7 @@ export function addDaysToDate(date_string, days){
 export function arrayToDateString(arr){
     let d = new Date();
     d.setFullYear(arr[0]);
-    d.setMonth(arr[1]);
+    d.setMonth(arr[1]-1);
     d.setDate(arr[2]);
     return d;
 }
