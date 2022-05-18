@@ -22,7 +22,9 @@ import TablePagination from '@mui/material/TablePagination';
 import {getAllReservation} from "../../../services/ReservationService";
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import InfoIcon from '@mui/icons-material/Info';
+import {getAllReservationShipOwner} from "../../../services/ReservationService";
+import { userType } from "../../../app/Enum";
+import {getRoleFromToken} from "../../../app/jwtTokenUtils";
 
 
 function Row({row, setRequests}) {
@@ -135,9 +137,15 @@ function ReservationProfile(){
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    let getReservation = {
+      [userType.COTTAGE_OWNER]: getAllReservation,
+      [userType.SHIP_OWNER]: getAllReservationShipOwner,
+    };
+
     useEffect(() => {
         async function setData(){
-            const responseData = await getAllReservation();
+          let role = getRoleFromToken();
+            const responseData = await getReservation[role]();;
             console.log(responseData.data);
             setRequests(responseData.data ? responseData.data : {});
         }

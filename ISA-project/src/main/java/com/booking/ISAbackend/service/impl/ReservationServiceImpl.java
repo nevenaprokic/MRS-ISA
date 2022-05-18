@@ -70,10 +70,15 @@ public class ReservationServiceImpl implements ReservationService {
         emailSender.reservationConfirmation(params);
     }
 
+
     @Override
     @Transactional
-    public List<ReservationDTO> getAllReservation(String ownerId) throws IOException {
-        List<Reservation> reservations = reservationRepository.findPastReservationByCottageOwnerEmail(ownerId, LocalDate.now());
+    public List<ReservationDTO> getAllReservation(String ownerId, String role) throws IOException {
+        List<Reservation> reservations = new ArrayList<>();
+        if(role.equals(UserType.SHIP_OWNER.toString()))
+            reservations = reservationRepository.findPastReservationByShipOwnerEmail(ownerId, LocalDate.now());
+        else if(role.equals(UserType.COTTAGE_OWNER.toString()))
+            reservations = reservationRepository.findPastReservationByCottageOwnerEmail(ownerId, LocalDate.now());
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         for(Reservation r: reservations){
             reservationDTOS.add(new ReservationDTO(r.getId(),
