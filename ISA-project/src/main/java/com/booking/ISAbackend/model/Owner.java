@@ -9,12 +9,12 @@ public class Owner extends MyUser {
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Transaction> transaction;
 
-	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private OwnerCategory ownerCategory;
 
-	public Owner(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, int ownerCategory ) {
+	public Owner(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, OwnerCategory ownerCategory ) {
 		super(firstName, lastName, password, phoneNumber, email, deleted, role, address);
-		this.ownerCategory = OwnerCategory.fromInteger(ownerCategory);
+		this.ownerCategory = ownerCategory;
 	}
 
 	public Owner() {

@@ -30,7 +30,7 @@ public class ShipOwnerProfileInfoDTO {
         this.street = shipOwner.getAddress().getStreet();
         this.city = shipOwner.getAddress().getCity();
         this.state = shipOwner.getAddress().getState();
-        this.userCategory = shipOwner.getOwnerCategory().toString();
+        this.userCategory = shipOwner.getOwnerCategory().getName();
     }
     public ShipOwnerProfileInfoDTO(){}
 

@@ -30,7 +30,7 @@ public class CottageOwnerProfileInfoDTO {
         this.street = cottageOwner.getAddress().getStreet();
         this.city = cottageOwner.getAddress().getCity();
         this.state = cottageOwner.getAddress().getState();
-        this.userCategory = cottageOwner.getOwnerCategory().toString();
+        this.userCategory = cottageOwner.getOwnerCategory().getName();
     }
     public CottageOwnerProfileInfoDTO(){}
 

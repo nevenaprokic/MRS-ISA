@@ -21,7 +21,7 @@ public class Instructor extends Owner{
 		return biography;
 	}
 
-	public Instructor(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, int ownerCategory, String biography) {
+	public Instructor(String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, OwnerCategory ownerCategory, String biography) {
 		super(firstName, lastName, password, phoneNumber, email, deleted, role, address, ownerCategory);
 		this.biography = biography;
 	}

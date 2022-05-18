@@ -46,7 +46,7 @@ public class InstructorProfileData {
         this.street = i.getAddress().getStreet();
         this.city = i.getAddress().getCity();
         this.state = i.getAddress().getState();
-        this.userCategory = i.getOwnerCategory().toString();
+        this.userCategory = i.getOwnerCategory().getName();
         this.biography = i.getBiography();
     }
 
