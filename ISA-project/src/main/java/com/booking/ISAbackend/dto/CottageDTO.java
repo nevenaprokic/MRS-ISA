@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;;
 
+import com.booking.ISAbackend.model.AdditionalService;
+import com.booking.ISAbackend.model.Adventure;
 import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Photo;
 
@@ -21,6 +23,11 @@ public class CottageDTO {
     private String cancellationConditions;
     private Integer roomNumber;
     private Integer bedNumber;
+    private String street;
+    private String city;
+    private String state;
+    private List<AdditionalServiceDTO> additionalServices;
+    private Double mark;
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
@@ -51,6 +58,10 @@ public class CottageDTO {
         this.cancellationConditions = c.getCancellationConditions();
         this.roomNumber = c.getRoomNumber();
         this.bedNumber = c.getBedNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
+        this.additionalServices = getAdditionalServices(c);
     }
 
     private List<String> getPhoto(Cottage c) throws IOException {
@@ -62,6 +73,16 @@ public class CottageDTO {
             photos.add(photoData);
         }
         return photos;
+    }
+
+    private List<AdditionalServiceDTO> getAdditionalServices(Cottage c) {
+        List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
+        for (AdditionalService service: c.getAdditionalServices()
+        ) {
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getId(), service.getName(), service.getPrice());
+            additionalServiceDTOList.add(dto);
+        }
+        return  additionalServiceDTOList;
     }
 
     public Integer getId() {return  id;}
@@ -98,4 +119,26 @@ public class CottageDTO {
 
     public Integer getBedNumber() {return  bedNumber;}
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public Double getMark() {
+        return mark;
+    }
+    public void setMark(Double mark) {
+        this.mark = mark;
+    }
 }

@@ -1,9 +1,7 @@
-import axios from "axios";
 import api from "../app/api";
 import {addAddtionalServices} from "./AdditionalServicesService";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
-import { responsiveFontSizes } from "@mui/material";
 
 export function getAdventureByInstructorEmail(username){
     return api
@@ -94,7 +92,7 @@ export function addAdventure(adventureData, additionalServices){
     adventureData.append('email', email);
     console.log(adventureData.get("offerName"));
     api
-    .post("/adventure/addAdventure", adventureData)
+    .post("/adventure/add-adventure", adventureData)
     .then((responseData) => {
         let adventureId = responseData.data;
         addAddtionalServices(adventureId, additionalServices);
@@ -120,5 +118,52 @@ export function searchAdventureByInstructor(params, setOffers){
                     });
     
 }
+
+export function checkReservation(adventureData) {
+    console.log("tu", );
+     return api
+      .get("/adventure/allowed-operation", {
+        params: {
+            adventureId: adventureData.id,
+        },
+      })
+      .then((response) => {console.log(response.data);  return response.data;})
+      .catch((err) => {
+        toast.error(
+          "Somethnig went wrong. Please wait a fiew seconds and try again.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
+  }
+  export function deleteAdventure(adventureId) {
+      console.log("id", adventureId);
+    return api
+      .get("/adventure/delete", {
+        params: {
+            adventureId: adventureId,
+        },
+      })
+      .then((response) => {
+        toast.success(
+          "You successfully deleted the cottage!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      })
+      .catch((err) => {
+        toast.error(
+          "Somethnig went wrong. Please wait a fiew seconds and try again.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
+  }
 
 

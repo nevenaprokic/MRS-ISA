@@ -1,10 +1,12 @@
 package com.booking.ISAbackend.model;
 
-import com.booking.ISAbackend.client.Client;
+import com.booking.ISAbackend.model.Client;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.*;
 
 @Entity
@@ -44,7 +46,9 @@ public class Reservation {
 	@OneToOne
 	private ReservationReport report;
 
-	public Reservation(Integer id, LocalDate startDate, LocalDate endDate, List<AdditionalService> additionalServices, Double price, Integer numberOfPerson, Boolean deleted, Offer offer, Client client, List<Mark> marks, List<Complaint> complaints, ReservationReport report) {
+	public Reservation(){}
+
+	public Reservation(LocalDate startDate, LocalDate endDate, List<AdditionalService> additionalServices, Double price, Integer numberOfPerson, Boolean deleted, Offer offer, Client client, List<Mark> marks, List<Complaint> complaints, ReservationReport report) {
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -58,7 +62,18 @@ public class Reservation {
 		this.complaints = complaints;
 		this.report = report;
 	}
-	public Reservation(){}
+
+	public Reservation(LocalDate startDate, LocalDate endDate, List<AdditionalService> additionalServices, Double price, Integer numberOfPerson, Offer offer, Client client, Boolean deleted) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.additionalServices = additionalServices;
+		this.price = price;
+		this.numberOfPerson = numberOfPerson;
+		this.offer = offer;
+		this.client = client;
+		this.deleted = deleted;
+
+	}
 
 	public Integer getId() {
 		return id;

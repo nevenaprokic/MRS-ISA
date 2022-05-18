@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.email;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationToken;
+import com.booking.ISAbackend.dto.ReservationParamsDTO;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -39,4 +40,35 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
 
     }
+
+    @Async
+    public void sendConfirmationRegistrationRequest(String email) throws MailException, InterruptedException {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response for registration request");
+        mail.setText("Hello, your registration request has been accepted. You can use our application now. Good Luck!");
+        javaMailSender.send(mail);
+
+    }
+    @Async
+    public void sendRejectionRegistrationRequest(String email, String message) throws MailException, InterruptedException {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response for registration request");
+        mail.setText("Hello, your registration request has been denied with the following explanation.\n" + message);
+        javaMailSender.send(mail);
+    }
+
+    @Async
+    public void reservationConfirmation(ReservationParamsDTO params) throws MailException {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(params.getEmail());
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Reservation confrimation");
+        mail.setText("You have successfully made reservation.\n");
+        javaMailSender.send(mail);
+    }
+
 }

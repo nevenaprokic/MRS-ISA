@@ -1,7 +1,9 @@
 import {Link} from 'react-router-dom';
 import classes from './MainNavigation.module.css';
 import React from 'react';
-import logo from '../../logo.png';
+import logo from '../../logo2.png';
+import { getRoleFromToken } from '../../app/jwtTokenUtils';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function MainNavigationHome(){
@@ -9,7 +11,7 @@ function MainNavigationHome(){
         <div><img src={logo} /></div>
         <div className={classes.logo}></div>
         <div className='headerLine'></div> 
-        <Link to='/'>Log out</Link> 
+        {!!getRoleFromToken() && <Link to='/'><LogoutIcon style={{ verticalAlign: '-4' }} /> Log out</Link> }
     </header>
 }
 

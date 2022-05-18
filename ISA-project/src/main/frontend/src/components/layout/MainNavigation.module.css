@@ -9,6 +9,12 @@
     padding: 0 5%;
     border-bottom:solid thin #5f6d5f;
   }
+
+  .inline-icon {
+    vertical-align: -16px !important;
+    display: inline-flex;
+    vertical-align: top;
+ }
   
   .logo {
     font-size: 2rem;

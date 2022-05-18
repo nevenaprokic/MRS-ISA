@@ -35,11 +35,11 @@ function BasicAdventureInfiBox({basicInfo}){
             <div className="basicInfoContainer">
                  <div>
         
-                    <div className="basicBoxItem">
+                    {/* <div className="basicBoxItem">
                         <HomeIcon color="action"/>
                     </div>
                     <label className="basicBoxItemTitle">Address: </label>
-                    <label className="basicBoxItemText">{basicInfo.street}, {basicInfo.city}, {basicInfo.state}</label>
+                    <label className="basicBoxItemText">{basicInfo.street}, {basicInfo.city}, {basicInfo.state}</label> */}
                 </div>
                 <div>
         

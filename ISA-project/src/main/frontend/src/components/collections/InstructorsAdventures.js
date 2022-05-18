@@ -26,16 +26,16 @@ export default function InstructorsAdventures({adventures}) {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Typography>{adventure.offerName}</Typography>
+                    <Typography className="adventureTitle">{adventure.offerName}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     {(adventure.photos.length != 0) ? (<img src={ "data:image/jpg;base64," + adventure.photos[0]} width="60%"></img>) : (<img src={imag} width="60%"></img>)}                    
-                    <Typography>Description: {adventure.description}</Typography>
-                    <Typography>Price: {adventure.price}</Typography>
-                    <Typography>Number of people: {adventure.peopleNum}</Typography>
-                    <Typography>State: {adventure.state}</Typography>
-                    <Typography>City: {adventure.city}</Typography>
-                    <Typography>Street: {adventure.street}</Typography>
+                    <Typography><span className="adventureAttribute">Description:</span> {adventure.description}</Typography>
+                    <Typography><span className="adventureAttribute">Price:</span> {adventure.price}</Typography>
+                    <Typography><span className="adventureAttribute">Number of people:</span> {adventure.peopleNum}</Typography>
+                    <Typography><span className="adventureAttribute">State:</span> {adventure.state}</Typography>
+                    <Typography><span className="adventureAttribute">City:</span> {adventure.city}</Typography>
+                    <Typography><span className="adventureAttribute">Street:</span> {adventure.street}</Typography>
                   </AccordionDetails>
                 </Accordion>
                 ))}

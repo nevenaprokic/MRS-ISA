@@ -21,12 +21,14 @@ import AdminHomePage from './components/homePages/AdminHomePage';
 import AdminProfile from './components/profilePages/userProfile/AdminProfile';
 import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedUserHomePage';
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
+import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
+import WorkingCalendar from './components/calendar/WorkingCalendar'
 
 function App() {
   return (
     <div>
         <Routes>
-          <Route path="/" element={<MainNavigation />} />
+          <Route path="/" element={<UnauthenticatedUserHomePage />} />
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/registration" element={<Registration />} exact/>
           <Route path='/registration/registration-owner' element={<RegistrationOwner/>}/>
@@ -46,6 +48,8 @@ function App() {
           <Route path='/user-profile/admin' element={<AdminProfile />}/>
           <Route path='/home-page/unauth-user' element={<UnauthenticatedUserHomePage/>}/>
           <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
+          <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
+          <Route path='/owner/calendar' element={<WorkingCalendar/>} />
         </Routes>
     </div>
   );

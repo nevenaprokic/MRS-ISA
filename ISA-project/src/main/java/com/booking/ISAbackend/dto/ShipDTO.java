@@ -1,9 +1,7 @@
 package com.booking.ISAbackend.dto;
 
-import com.booking.ISAbackend.client.Client;
 import com.booking.ISAbackend.model.*;
 
-import javax.persistence.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,7 +18,6 @@ public class ShipDTO {
     private Integer numberOfPerson;
     private String rulesOfConduct;
     private String cancellationConditions;
-
     private String type;
     private String size;
     private Integer motorNumber;
@@ -28,7 +25,11 @@ public class ShipDTO {
     private Integer maxSpeed;
     private String navigationEquipment;
     private String additionalEquipment;
-
+    private List<AdditionalServiceDTO> additionalServices;
+    private Double mark;
+    private String street;
+    private String city;
+    private String state;
 
     public ShipDTO(Integer id, String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, String type, String size, Integer motorNumber, Integer motorPower, Integer maxSpeed, String navigationEquipment, String additionalEquipment) {
         this.id = id;
@@ -47,6 +48,7 @@ public class ShipDTO {
         this.navigationEquipment = navigationEquipment;
         this.additionalEquipment = additionalEquipment;
 
+
     }
     public ShipDTO(Ship s) throws IOException {
         this.id = s.getId();
@@ -64,8 +66,12 @@ public class ShipDTO {
         this.maxSpeed = s.getMaxSpeed();
         this.navigationEquipment = s.getNavigationEquipment();
         this.additionalEquipment = s.getAdditionalEquipment();
-
+        this.additionalServices = getAdditionalServices(s);
+        this.street = s.getAddress().getStreet();
+        this.city = s.getAddress().getCity();
+        this.state = s.getAddress().getState();
     }
+
     private List<String> getPhoto(Ship ship) throws IOException {
         List<String> photos = new ArrayList<>();
         for(Photo p: ship.getPhotos()){
@@ -76,6 +82,17 @@ public class ShipDTO {
         }
         return photos;
     }
+
+    private List<AdditionalServiceDTO> getAdditionalServices(Ship s) {
+        List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<AdditionalServiceDTO>();
+        for (AdditionalService service: s.getAdditionalServices()
+        ) {
+            AdditionalServiceDTO dto = new AdditionalServiceDTO(service.getId(), service.getName(), service.getPrice());
+            additionalServiceDTOList.add(dto);
+        }
+        return  additionalServiceDTOList;
+    }
+
 
     public ShipDTO() {
 
@@ -139,4 +156,26 @@ public class ShipDTO {
         return additionalEquipment;
     }
 
+    public List<AdditionalServiceDTO> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public Double getMark() {
+        return mark;
+    }
+    public void setMark(Double mark) {
+        this.mark = mark;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
 }

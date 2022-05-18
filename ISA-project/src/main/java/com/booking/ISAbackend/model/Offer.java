@@ -1,9 +1,10 @@
 package com.booking.ISAbackend.model;
 
-import com.booking.ISAbackend.client.Client;
+import org.hibernate.annotations.Where;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.*;
 
 @Entity
+@Where(clause = "deleted = false")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Offer {
 	@Id
@@ -38,8 +40,16 @@ public class Offer {
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 
+	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
+	private List<UnavailableOfferDates> unavailableDate;
+
 	@ManyToMany(mappedBy = "subscribedOffers")
 	private List<Client> subscribedClients;
+
+	@Version
+	@Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 
 	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
 		this.name = name;
@@ -59,6 +69,13 @@ public class Offer {
 
 	public Offer() {
 
+	}
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	public Integer getId() {return id;}
 
@@ -164,5 +181,18 @@ public class Offer {
 
 	public void setSubscribedClients(List<Client> subscribedClients) {
 		this.subscribedClients = subscribedClients;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Offer offer = (Offer) o;
+		return id.equals(offer.id) && Objects.equals(name, offer.name) && Objects.equals(description, offer.description);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, description);
 	}
 }

@@ -200,4 +200,5 @@ public class MyUser implements UserDetails{
 	public void setDeleteRequest(DeleteRequest deleteRequest) {
 		this.deleteRequest = deleteRequest;
 	}
+
 }

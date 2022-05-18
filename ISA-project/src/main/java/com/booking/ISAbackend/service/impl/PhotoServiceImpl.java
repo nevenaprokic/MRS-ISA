@@ -8,6 +8,8 @@ import com.booking.ISAbackend.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.bind.DatatypeConverter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -35,6 +38,7 @@ public class PhotoServiceImpl implements PhotoService {
         return photoRepository.findAll().stream();
     }
 
+    @Override
     public List<Photo> convertPhotosFromDTO(List<MultipartFile> photos, String email) throws IOException {
         List<Photo> adventurePhotos = new ArrayList<Photo>();
         if(photos == null){
@@ -52,6 +56,7 @@ public class PhotoServiceImpl implements PhotoService {
         }
         return adventurePhotos;
     }
+    @Override
     public String savePhotoInFileSystem(byte[] bytes, String ownerEmail, int counter) throws IOException {
         String folder = "./src/main/frontend/src/components/images/";
         LocalDateTime uniqueTime = LocalDateTime.now();
@@ -62,6 +67,36 @@ public class PhotoServiceImpl implements PhotoService {
             fos.write(bytes);
         }
         return photoName;
+    }
+
+    @Override
+    public void removeOldPhotos(List<Photo> oldPhotos){
+        Iterator<Photo> iterator = oldPhotos.iterator();
+        while (iterator.hasNext()) {
+            Photo photo = iterator.next();
+            String folder = "./src/main/frontend/src/components/images/";
+            Path path = Paths.get(folder + photo.getPath());
+            File file = new File(path.toString());
+            iterator.remove();
+            photoRepository.delete(photo);
+            file.delete();
+        }
+    }
+    @Override
+    public List<Photo> ConvertBase64Photo(List<String> photos, String email) throws IOException {
+        List<Photo> adventurePhotos = new ArrayList<Photo>();
+        int counter = 0;
+        for (String photoData: photos
+        ) {
+            byte[] bytes = DatatypeConverter.parseBase64Binary(photoData);
+            String photoName = savePhotoInFileSystem(bytes, email, counter);
+            Photo p = new Photo(photoName);
+            adventurePhotos.add(p);
+            photoRepository.save(p);
+            counter++;
+
+        }
+        return adventurePhotos;
     }
 
 

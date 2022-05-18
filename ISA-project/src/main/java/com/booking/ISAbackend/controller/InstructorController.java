@@ -1,12 +1,17 @@
 package com.booking.ISAbackend.controller;
 
 
+import com.booking.ISAbackend.dto.InstructorNewDataDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.dto.ShipDTO;
+import com.booking.ISAbackend.exceptions.InvalidAddressException;
+import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
+import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.Ship;
 import com.booking.ISAbackend.service.CottageService;
 import com.booking.ISAbackend.service.InstructorService;
+import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("instructor")
 public class InstructorController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private InstructorService instructorService;
 
-    @GetMapping("searchInstructors")
-    @Transactional
-    public ResponseEntity<List<InstructorProfileData>> searchShips(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String address, @RequestParam String phoneNumber){
+    @GetMapping("search")
+    public ResponseEntity<List<InstructorProfileData>> searchInstructors(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String address, @RequestParam String phoneNumber){
         try{
             List<InstructorProfileData> instructors  = instructorService.searchInstructors(firstName, lastName, address, phoneNumber);
             return ResponseEntity.ok(instructors);
@@ -35,8 +42,7 @@ public class InstructorController {
         }
     }
 
-    @GetMapping("getAllInstructors")
-    @Transactional
+    @GetMapping("get-all")
     public ResponseEntity<List<InstructorProfileData>> getAll(){
         try{
             List<InstructorProfileData> instructors  = instructorService.findAll();
@@ -45,8 +51,8 @@ public class InstructorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("instructor-delete-profile-request")
-    public ResponseEntity<String> sendDeleteRequestCottageOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+    @PostMapping("delete-profile-request")
+    public ResponseEntity<String> sendDeleteRequestInstructor(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(instructorService.sendDeleteRequest(email, data.get("reason")))
                 return ResponseEntity.ok("Successfully created request to delete the order.");
@@ -55,5 +61,28 @@ public class InstructorController {
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Unable to send request to delete the order.");
         }
+    }
+
+    @PostMapping("change-data")
+    public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
+        try{
+            userService.changeInstrctorData(newData);
+            return ResponseEntity.ok("Successfully changed your data");
+        } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+        catch (Exception  e) {
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+    }
+
+    @GetMapping("profile-info")
+    public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
+        //odraditi autentifikaciju i autorizaciju
+        InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
+        if(instructor != null){
+            return ResponseEntity.ok(instructor);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

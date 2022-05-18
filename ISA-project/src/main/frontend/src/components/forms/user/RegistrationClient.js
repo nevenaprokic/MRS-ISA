@@ -18,9 +18,15 @@ import { useRef } from "react";
 import Modal from '@mui/material/Modal';
 import api from '../../../app/api';
 import { toast } from "react-toastify";
-import SuccessfulRegistration from '../../notifications/SuccessfulRegistration'
+import SuccessfulRegistration from '../../notifications/SuccessfulRegistration';
+import Paper from '@mui/material/Paper';
+import MainNavigationHome from "../../layout/MainNavigation";
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: { main: "#9DAB86" },
+  },
+});
 export default function RegistrationClient() {
     
     const { register, handleSubmit, formState: { errors }, watch } = useForm({});
@@ -37,7 +43,7 @@ export default function RegistrationClient() {
       //const data = new FormData(event.currentTarget);
       console.log(data);
       api
-            .post("auth/client/registration", data)
+            .post("/client/registration", data)
             .then((res) => {
               handleOpen();
               // toast.success(res.data, {
@@ -56,8 +62,24 @@ export default function RegistrationClient() {
   
     return (<Card>
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+      <MainNavigationHome />
+      <Grid container component="main" sx={{ height: '100vh' }}>
           <CssBaseline />
+         <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
               marginTop: 8,
@@ -71,7 +93,7 @@ export default function RegistrationClient() {
               Sign up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} width={"70%"} marginLeft={"15%"}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="given-name"
@@ -85,7 +107,7 @@ export default function RegistrationClient() {
                   />
                   {errors.firstName && <p style={{color:'#ED6663'}}>Only letters and spaces are allowed!</p>}
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} >
                   <TextField
                     required
                     fullWidth
@@ -142,6 +164,11 @@ export default function RegistrationClient() {
                           value === password.current || "The passwords do not match!"
                       })}
                   />
+                  {errors.confirmPassword && (
+                    <p style={{ color: "#ED6663" }}>
+                      {errors.confirmPassword.message}
+                    </p>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -205,7 +232,7 @@ export default function RegistrationClient() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, width:"40%", marginLeft:"30%" }}
               >
                 Sign Up
               </Button>
@@ -229,7 +256,8 @@ export default function RegistrationClient() {
               <div><br/></div>
             </Box>
           </Box>
-        </Container>
+          </Grid>
+        </Grid>
       </ThemeProvider></Card>
     );
   }

@@ -8,14 +8,18 @@ import PriceList from "../cottageProfile/Pricelist";
 import { Grid, Box, Button} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
-import { getAdventureById, checkUpdateAllowed } from "../../../services/AdventureService";
+import { getAdventureById, checkUpdateAllowed, checkReservation } from "../../../services/AdventureService";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
-import { test } from "../../../services/AdventureService";
 import { toast } from "react-toastify";
-import {getAdditionalServiceByOffer} from '../../../services/AdditionalServicesService';
+import { getMarkByOfferId } from "../../../services/MarkService";
+import Rating from "@mui/material/Rating";
+import MapBox from "../cottageProfile/MapBox";
+import DeleteAdventure from "../../forms/adventure/DeleteAdventure";
+import Divider from "@mui/material/Divider";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
+import { userType } from "../../../app/Enum";
 
 
 const theme = createTheme({
@@ -37,6 +41,10 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
+
+    const [markData, setMarkData] = useState();
+
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleOpenForm = () => {
         console.log("TU");
@@ -94,6 +102,13 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
             return adventure;
         } 
         getAdventureData();
+
+        async function setData() {
+            const markData = await getMarkByOfferId(id);
+            setMarkData(markData.data ? markData.data : "0");
+            return markData.data;
+          }
+        setData();
     }, []);
 
     function createServiceData() {
@@ -115,6 +130,32 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
             images.push({image: img_src});
         });
     }
+
+    const handleOpenDeleteDialog = () => {
+        checkAllowed(false);
+    };
+    
+    const handleCloseDeleteDialog = () => {
+        setOpenDialog(false);
+    };
+
+    async function checkAllowed(operation) {
+        let allowed = await checkReservation(adventureData);
+        if (allowed) {
+          if (operation) setOpenForm(true);
+          else setOpenDialog(true);
+        } else {
+          let message =
+            "Delete is not allowed because this cottage has reservations.";
+          if (operation)
+            message =
+              "Update is not allowed because this cottage has reservations.";
+          toast.error(message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          });
+        }
+      }
  
     return( 
         !!adventureData && 
@@ -129,10 +170,55 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 </div>
                 <div className="headerContainer">
                     <h2 className="adventureTittle">{adventureData.offerName}</h2>
-                    <div className="changeBtn" >
-                        <Button variant="contained" onClick={handleOpenForm}>Change info</Button>
-                    </div>    
+                    
+                    <Divider />
+                    {!!markData && <div className="mark">
+                        <Rating
+                        name="half-rating-read"
+                        precision={0.5}
+                        value={markData}
+                        readOnly
+                        />
+                    </div>}
+                    {getRoleFromToken() != null &&
+                    getRoleFromToken() != userType.CLIENT ? (
+                        <div className="changeBtn">
+                        <Button
+                            variant="contained"
+                            onClick={handleOpenForm}
+                        >
+                            Change info
+                        </Button>
+                        <Button
+                            style={{ marginLeft: "5%" }}
+                            variant="contained"
+                            onClick={handleOpenDeleteDialog}
+                        >
+                            Delete
+                        </Button>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
                 </div>
+                {/* {!!markData && 
+                <div className="mark">
+                    <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
+                </div>
+                }
+                <div className="changeBtn" >
+                        <Button variant="contained" onClick={handleOpenForm} sx={{width:"20%"}}>Change info</Button>
+                        
+                    </div>    
+                    <div className="deleteBtn">
+                        <Button
+                            sx={{width:"20%"}}
+                            variant="contained"
+                            onClick={handleOpenDeleteDialog}
+                        >
+                            Delete
+                        </Button>
+                    </div> */}
                 <Modal
                     open={openChangeForm}
                     onClose={handleCloseForm}
@@ -143,9 +229,27 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         <ChangeAdventureForm currentAdventureData={adventureData} closeForm={handleCloseForm} childToParent={childToParent}/>
                     
                 </Modal>
+                <Modal
+                    open={openDialog}
+                    onClose={handleCloseDeleteDialog}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                        backgroundColor: "rgb(218, 224, 210, 0.6)",
+                        overflow: "auto",
+                    }}
+                    >
+                    <DeleteAdventure
+                        closeDialog={handleCloseDeleteDialog}
+                        open={openDialog}
+                        name={adventureData.offerName}
+                        id={adventureData.id}
+                    />
+                </Modal>    
                 
                 <ImagesBox images={images}/>
                 <QuickActionBox id={adventureData.id}/>
+                <MapBox street={adventureData.street} city={adventureData.city} state={adventureData.state}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >
                         <BasicAdventureInfiBox basicInfo={adventureData}/>

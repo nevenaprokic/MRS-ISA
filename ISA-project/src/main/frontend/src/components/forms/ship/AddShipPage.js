@@ -10,6 +10,7 @@ import { useState } from "react";
 import UploadPictureForm from "../imageUpload/UploadPictureForm";
 import { useForm } from "react-hook-form";
 import {addShip} from "../../../services/ShipService";
+import ship from '../../../ship.png';
 
 function AddShipPage() {
   const {
@@ -53,9 +54,10 @@ function AddShipPage() {
   };
 
   return (
-    <div className="formContainer">
+    <div className="formContainerAdd">
       <Typography variant="h6" gutterBottom>
-        Adding new ship
+      <img  src={ship} />
+        {"\t\tAdding new ship"}
       </Typography>
       <Typography gutterBottom>
         <label className="headerText">

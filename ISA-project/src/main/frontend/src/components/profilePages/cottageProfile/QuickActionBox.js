@@ -1,10 +1,15 @@
 import { Button } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { ThemeProvider } from "@emotion/react";
+import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import "./CottageProfilePage.scss";
+import { userType, offerType} from "../../../app/Enum";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import Modal from '@mui/material/Modal';
 import getQuickActionByOfferId from "../../../services/QuickActionService";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { makeReservation, convertParams } from '../../../services/ReservationService';
+import ConfirmDialog from "../../layout/ConfirmDialog";
 
 const theme = createTheme({
   palette: {
@@ -20,6 +25,14 @@ const theme = createTheme({
 function QuickActionBox({ id }) {
   const [quickActionData, setQuickActionsData] = useState();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
+  const handleReservation = (action) => {
+    makeReservation(convertParams(action, id), handleClose);
+  };
 
   useEffect(() => {
     async function setData() {
@@ -34,12 +47,13 @@ function QuickActionBox({ id }) {
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">
-          <label className="tittle">! Special offers:</label>
+          <label className="tittle">Special offers:</label>
           <hr className="tittleLine"></hr>
         </div>
 
         <div className="specialOfferSrollBox">
           {quickActionData?.map((action) => {
+              console.log(quickActionData);
               let startDate = " " + action.startDate[2] + "." + action.startDate[1] + "." + action.startDate[0]+".";
               let endDate = " " + action.endDate[2] + "." + action.endDate[1] + "." + action.endDate[0]+".";
               let startDateAction = " " + action.startDateAction[2] + "." + action.startDateAction[1] + "." + action.startDateAction[0]+".";
@@ -51,35 +65,46 @@ function QuickActionBox({ id }) {
                 </h3>
                 <div>
                   <label className="stayDate">
-                    Maximum number of people: {action.numberOfPerson}
+                    Maximum number of people: {action.numberOfPerson} 
                   </label>
 
                 <div>
-                  <label>Additional services: {action.additionalServices}</label>
+                  { (action.additionalServices.length == 0) ? <label>No additional services for this offer</label> :
+                   <label>Additional services: {action.additionalServices}</label>}
                 </div>
                 <br/>
                 <div className="availableDate">
-                    <label> {" !!! "}Action available: </label>
+                    <label> <CalendarMonthIcon style={{ verticalAlign: '-6' }}/> Action available: </label>
                     <label>
-                      {startDateAction} {" - "} {endDateAction} {" !!! "}
+                      {startDateAction} {" - "} {endDateAction}
                     </label>
                   </div>
                 </div>
                 <br></br>
                 <label className="priceItem">Price: {action.price} €</label>
-
-                <div className="actionButton">
-                  <ThemeProvider theme={theme}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="primary"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      get
-                    </Button>
-                  </ThemeProvider>
-                </div>
+                { (getRoleFromToken() == userType.CLIENT) && 
+                  <Button
+                    className="bookingButton"
+                    size="small"
+                    variant="contained"
+                    bgcolor="secondary"
+                    color="primary"
+                    onClick={() => handleOpen() }
+                  >
+                    Book now
+                  </Button>
+                }
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
+                >
+                        <ConfirmDialog close={handleClose} cb={() => handleReservation(action)} ></ConfirmDialog>
+                        {/* <ChangeClientData currentClientData={clientData} close={handleClose} childToParent={childToParent} /> */}
+                    
+                </Modal>
 
                 <hr className="line"></hr>
               </div>

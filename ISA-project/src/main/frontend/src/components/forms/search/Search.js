@@ -19,8 +19,8 @@ import { searchAdventureByInstructor } from "../../../services/AdventureService"
 export default function Search({ params, setParams, type, setOffers, setSearchMood }) {
   const [error, setError] = useState("");
 
+
   const handleChange = (event) => {
-    console.log("TU");
     let {
       target: { value },
     } = event;
@@ -31,10 +31,10 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
       setError("Wrong format for phone number");
     } else {
       setError("");
-      console.log("PARAMETRI", params);
       setParams({ ...params, phoneNumber: event.target.value });
     }
   };
+  
   let searchOffer = {
     [offerType.COTTAGE]: searchCottages,
     [offerType.SHIP]: searchShips,
@@ -92,7 +92,7 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
         ) : (
           <TextField
             fullWidth
-            label="Price"
+            label="Max Price"
             id="price"
             type="number"
             onChange={(event) => {
@@ -109,16 +109,16 @@ export default function Search({ params, setParams, type, setOffers, setSearchMo
         {type == offerType.ADVENTURE ? (
           <>
             <TextField
-              id="phone"
-              label="Phone number"
-              onChange={(event) => handleChange(event)}
+              id="phoneNumber"
+              label="Phone Number"
+              onChange={(event) => { setParams({ ...params, phoneNumber: event.target.value }); }}
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
             />
             {error != "" && (
-              <p style={{ color: "#ED6663" }}>Please check the Phone Number</p>
+              <p style={{ color: "#ED6663" }}>Please check the phone number</p>
             )}
           </>
         ) : (

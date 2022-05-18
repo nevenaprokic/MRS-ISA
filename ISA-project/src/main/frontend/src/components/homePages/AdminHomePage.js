@@ -16,6 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useState } from "react";
 import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import AdminProfile from '../profilePages/userProfile/AdminProfile';
+import RegistrationRequestsList from '../collections/RegistrationRequestsList';
 
 
 function TabPanel(props) {
@@ -115,7 +116,7 @@ export default function AdminHomePage() {
 
                 </TabPanel>
                 <TabPanel value={value} index={5}>
-
+                    <RegistrationRequestsList />
                 </TabPanel>
                 <TabPanel value={value} index={7}>
                   

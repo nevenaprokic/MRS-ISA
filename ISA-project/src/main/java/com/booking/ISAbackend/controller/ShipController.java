@@ -1,76 +1,65 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.dto.CottageDTO;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.NewShipDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.*;
-import com.booking.ISAbackend.model.Ship;
+import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/ship")
+@RequestMapping("ship")
 public class ShipController {
-    //provera da li je ulogovan i autorizacija
+
     @Autowired
     private ShipService shipService;
+    @Autowired
+    private OfferService offerService;
 
-
-    @GetMapping("getShips")
-    @Transactional
+    @GetMapping("get-all-by-owner")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
         try {
-            List<Ship> ships = shipService.findShipByShipOwnerEmail(email);
-            List<ShipDTO> dto = new ArrayList<>();
-            for (Ship ship : ships) {
-                ShipDTO shipDTO = new ShipDTO(ship);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.findShipByShipOwnerEmail(email);
+
+            return ResponseEntity.ok(ships);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("getShipInfo")
-    @Transactional
+    @GetMapping("get-info")
     public ResponseEntity<ShipDTO> getShipInfo(@RequestParam String idShip){
         try{
-            Ship ship = shipService.findShipById(Integer.parseInt(idShip));
+            ShipDTO ship = shipService.findShipById(Integer.parseInt(idShip));
 
             if(ship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
-            ShipDTO shipDTO = new ShipDTO(ship);
-            return  ResponseEntity.ok(shipDTO);
+            return  ResponseEntity.ok(ship);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
-    @GetMapping("searchShipByShipOwner")
-    @Transactional
+    @GetMapping("search-by-owner")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
         try{
-            List<Ship> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
+
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("addShip")
+    @PostMapping("add")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
                                           @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
@@ -104,34 +93,23 @@ public class ShipController {
         }
     }
 
-    @GetMapping("getAllShips")
-    @Transactional
+    @GetMapping("get-all")
     public ResponseEntity<List<ShipDTO>> getShips(){
         try{
-            List<Ship> ships = shipService.findAll();
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.findAll();
+
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("searchShips")
-    @Transactional
+    @GetMapping("search")
     public ResponseEntity<List<ShipDTO>> searchShips(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price){
 
         try{
-            List<Ship> ships = shipService.searchShips(name, maxPeople, address, price);
-            List<ShipDTO> dto = new ArrayList<>();
-            for(Ship s: ships){
-                ShipDTO shipDTO = new ShipDTO(s);
-                dto.add(shipDTO);
-            }
-            return ResponseEntity.ok(dto);
+            List<ShipDTO> ships = shipService.searchShips(name, maxPeople, address, price);
+            return ResponseEntity.ok(ships);
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -147,6 +125,65 @@ public class ShipController {
             return ResponseEntity.ok().body("Successfully added new ship");
         }catch (Exception e){
             e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("search-client")
+    public ResponseEntity<List<ShipDTO>> searchShipsClient(@RequestBody OfferSearchParamsDTO params){
+        try{
+            List<ShipDTO> ships = shipService.searchShipsClient(params);
+            return ResponseEntity.ok(ships);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("allowed-operation")
+    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer shipId){
+        try{
+            Boolean allowedOperation = offerService.checkOperationAllowed(shipId);
+            return ResponseEntity.ok(allowedOperation);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("delete")
+    public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
+        try{
+            offerService.delete(shipId);
+            return ResponseEntity.ok().body("Successfully delete ship");
+        }catch (OfferNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+    }
+    @PostMapping("update")
+    public ResponseEntity<String> changeShipData(@RequestBody ShipDTO newShipData){
+        try{
+            shipService.updateShip(newShipData, newShipData.getId());
+            return ResponseEntity.ok().body("Successfully update ship.");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("update-ship-services")
+    public ResponseEntity<String> changeShipAdditionalServices(@RequestBody Map<String, Object> data){
+        try{
+            HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
+            int id = Integer.parseInt(paramsMap.get("offerId").toString());
+            List<HashMap<String, String>> additionalServiceDTOS = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTOS");
+
+            shipService.updateShipAdditionalServices(additionalServiceDTOS, id);
+            return ResponseEntity.ok().body("Successfully change ship");
+        }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

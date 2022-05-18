@@ -18,6 +18,7 @@ import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
 import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
+import ReservationForm from "../forms/reservations/ReservationForm";
 
 const secondaryTheme = createTheme({
   palette: {
@@ -31,11 +32,20 @@ export default function MediaCard({ offer, offerT}) {
   const [offerData, setOfferData] = useState();
 
   const [open, setOpen] = useState(false);
+  const [openReserve, setOpenReserve] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleOpenReserve = () => setOpenReserve(true);
+  const handleCloseReserve = () => setOpenReserve(false);
+
   let imag = require("../images/no-image.png");
+  let imagHeight = 140;
+  if(offerT == userType.INSTRUCTOR){
+    imag = require("../images/profile.png");
+    imagHeight = 220;
+  }
 
   const childToParent = (childData) => {
     if(offerT === offerType.ADVENTURE){
@@ -43,7 +53,6 @@ export default function MediaCard({ offer, offerT}) {
       if(childData.photos.length != 0){
         imag = "data:image/jpg;base64," + childData.photos[0];
       }
-      console.log("BEFORE SET DATA");
       setOfferData(prevState => ({
         ...prevState,
         ["offerName"]: childData.offerName,
@@ -56,7 +65,7 @@ export default function MediaCard({ offer, offerT}) {
     else{
       setOfferData(prevState => ({
         ...prevState,
-        ["name"]: childData.offerName,
+        ["name"]: childData.name,
         ["description"]: childData.description,
         ["photos"]:childData.photos,
 
@@ -70,9 +79,9 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.ADVENTURE:
         return ( <AdventureProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent} />);
       case offerType.COTTAGE: 
-        return ( <CottageProfilePage id={offerId} close={handleClose}/>);
+        return ( <CottageProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case offerType.SHIP:
-        return ( <ShipProfilePage id={offerId} close={handleClose}/>);
+        return ( <ShipProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case userType.INSTRUCTOR:
         return (<OwnerProfile instructor={offer} close={handleClose} />);
       default:
@@ -81,13 +90,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
   }
 
   useEffect(() => {
-    console.log("tuuu");
   }, [offerData]);
 
   const [markData, setMarkData] = useState();
 
+  let minH = 400;
+  let maxH = 400;
   useEffect(() => {
-    console.log("eeeeee");
+    if(offerT == userType.INSTRUCTOR){
+      maxH = 315;
+      minH = 315;
+    }
     if(!offerData)
       setOfferData(offer);
     async function setData() {
@@ -98,17 +111,25 @@ const modalOfferComponent = (offerStr, offerId) =>{
     setData();
 
   }, []);
-  
+
+
   if(markData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
-        <Card sx={{ maxWidth: 345, maxHeight: 375, minHeight:375}}>
-          {console.log(offerData, offer)}
-          <CardMedia component="img" height="140" image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
+        <Card sx={{ maxWidth: 345, maxHeight: maxH, minHeight:minH }}>
+          <CardMedia component="img" height={imagHeight} image={offerData.photos ? (offerData.photos.length !=0 ? "data:image/jpg;base64," + offerData.photos[0] : imag) : imag} alt="slike" />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" color="primary">
               {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}
             </Typography>
+
+            {offerT != userType.INSTRUCTOR  && <Typography variant="body2" color="text.secondary">
+              <p>
+              <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
+              </p>
+              <p>Price: {offerData.price}€</p>
+          </Typography>}
+
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offerData.description : offerData.biography} </p>     
             </Typography>
@@ -123,6 +144,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
             >
               View
             </Button>
+            { (getRoleFromToken() == userType.CLIENT && offerT != userType.INSTRUCTOR) && 
+              <Button
+              size="small"
+              variant="contained"
+              bgcolor="secondary"
+              color="primary"
+              onClick={handleOpenReserve}
+            >
+              Book now
+            </Button>
+            }
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -131,6 +163,17 @@ const modalOfferComponent = (offerStr, offerId) =>{
                 sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
             >
                     {modalOfferComponent(offerT, offer.id)}
+
+            </Modal>
+
+            <Modal
+                open={openReserve}
+                onClose={handleCloseReserve}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+            >
+                    <ReservationForm offer={offer} close={handleCloseReserve} />
 
             </Modal>
           </CardActions>

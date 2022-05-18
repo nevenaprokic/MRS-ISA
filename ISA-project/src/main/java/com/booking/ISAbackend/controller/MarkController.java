@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("mark")
 public class MarkController {
     @Autowired
     private MarkService markService;
 
-    @GetMapping("getMark")
+    @GetMapping("get")
     public ResponseEntity<Double> getMark(@RequestParam String id){
         return ResponseEntity.ok(markService.getMark(Integer.parseInt(id)));
     }

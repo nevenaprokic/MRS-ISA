@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
 import { updateAdventure } from "../../../services/AdventureService";
+import adventure from '../../../adventure.png';
 
 //NAPRAVITI PRAZNE FORME ZA IZMENU SLIKA I ADITIONAL SERVICA ILI PROBATI POVEZATI SA POSTOJECIM
 
@@ -76,7 +77,8 @@ function ChangeAdventureForm({currentAdventureData, closeForm, childToParent}){
         </div>
         <div>
             <Typography variant="h6" gutterBottom>
-                Change adventure
+            <img src={adventure} />
+                {"\t\tChange adventure"}
             </Typography>
         </div>
        
