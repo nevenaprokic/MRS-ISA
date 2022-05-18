@@ -40,6 +40,9 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
     ShipOwnerRepository shipOwnerRepository;
     @Autowired
     EmailSender emailSender;
+    @Autowired
+    OwnerCategoryRepository ownerCategoryRepository;
+
 
     @Override
     public boolean save(OwnerRegistrationRequestDTO request) throws InvalidAddressException, InvalidEmail, InvalidCredential, InvalidPhoneNumber, InvalidPasswordException {
@@ -120,7 +123,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         instructor.setEmailVerified(true);
         instructor.setRole(roleRepository.findByName("INSTRUCTOR").get(0));
         instructor.setBiography("");
-        instructor.setOwnerCategory(OwnerCategory.REGULAR);
+        instructor.setOwnerCategory(ownerCategoryRepository.findByName("REGULAR").get(0));
         instructorRepository.save(instructor);
         emailSender.sendConfirmationRegistrationRequest(request.getEmail());
     }
@@ -137,7 +140,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         cottageOwner.setDeleted(false);
         cottageOwner.setEmailVerified(true);
         cottageOwner.setRole(roleRepository.findByName("COTTAGE_OWNER").get(0));
-        cottageOwner.setOwnerCategory(OwnerCategory.REGULAR);
+        cottageOwner.setOwnerCategory(ownerCategoryRepository.findByName("REGULAR").get(0));
         cottageOwnerRepository.save(cottageOwner);
         emailSender.sendConfirmationRegistrationRequest(request.getEmail());
     }
@@ -154,7 +157,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
         shipOwner.setDeleted(false);
         shipOwner.setEmailVerified(true);
         shipOwner.setRole(roleRepository.findByName("SHIP_OWNER").get(0));
-        shipOwner.setOwnerCategory(OwnerCategory.REGULAR);
+        shipOwner.setOwnerCategory(ownerCategoryRepository.findByName("REGULAR").get(0));
         shipOwnerRepository.save(shipOwner);
         emailSender.sendConfirmationRegistrationRequest(request.getEmail());
     }

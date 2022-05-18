@@ -3,17 +3,12 @@ package com.booking.ISAbackend.model;
 import com.booking.ISAbackend.model.*;
 
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 @Entity
 public class Client extends MyUser {
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private ClientCategory clientCategory;
 
     private Integer penal;

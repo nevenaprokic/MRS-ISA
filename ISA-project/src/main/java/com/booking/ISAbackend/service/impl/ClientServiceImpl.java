@@ -49,6 +49,9 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private EmailSender emailSender;
 
+    @Autowired
+    private ClientCategoryRepository clientCategoryRepository;
+
     @Override
     @Transactional
     public String save(ClientRequest cr) throws InterruptedException {
@@ -62,7 +65,7 @@ public class ClientServiceImpl implements ClientService {
         c.setAddress(a);
         c.setPhoneNumber(cr.getPhoneNumber());
         c.setDeleted(false);
-        c.setClientCategory(ClientCategory.BEST_CLIENT);
+        c.setClientCategory(clientCategoryRepository.findByName("CASUAL_CLIENT").get(0));
         c.setEmailVerified(false);
         c.setPenal(0);
         c.setRole(roleRepository.findByName("CLIENT").get(0));
@@ -87,7 +90,7 @@ public class ClientServiceImpl implements ClientService {
                 client.getAddress().getStreet(),
                 client.getAddress().getCity(),
                 client.getAddress().getState(),
-                client.getClientCategory().toString(),
+                client.getClientCategory().getName(),
                 client.getPenal()
         );
         return dto;
