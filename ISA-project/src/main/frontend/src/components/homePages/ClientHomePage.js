@@ -17,8 +17,7 @@ import Grid from '@mui/material/Grid';
 import OfferList from '../collections/OfferList';
 import { offerType } from "../../app/Enum";
 import ClientFilter from "../forms/search/ClientFilter"
-import ClientSort from "../forms/search/ClientSort"
-import { useEffect } from "react";
+import { userType } from '../../app/Enum';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -61,9 +60,7 @@ export default function ClientHomePage() {
     let tommorowDate = new Date();
     tommorowDate.setDate(tommorowDate.getDate() + 1)
 
-    const [lastSearchedOffers, setLastSearchedOffers] = useState();
-    const [allOffers, setAllOffers] = useState();
-    
+    const [lastSearchedOffers, setLastSearchedOffers] = useState();    
 
     const [params, setParams] = useState({
         name: "",
@@ -163,7 +160,6 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                               <br />
-                              {/* <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
@@ -179,10 +175,20 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
                               <br />
-                              {/* <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                </TabPanel>
+
+                <TabPanel value={value} index={10}>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                          </Grid>
+                        </Box>
+                      <OfferList type={userType.INSTRUCTOR} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
                 </Box>
             </Container>

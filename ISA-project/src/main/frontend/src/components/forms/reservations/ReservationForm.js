@@ -65,6 +65,7 @@ export default function ReservationForm({ offer, close }) {
     };
 
     useEffect(() => {
+        console.log(offer);
         const subscription = watch((data) => {
           recalculate();
         });

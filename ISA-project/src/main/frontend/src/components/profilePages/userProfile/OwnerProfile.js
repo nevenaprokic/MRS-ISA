@@ -27,6 +27,7 @@ import AdditionalInfoBox from "./AdditionalInfoBox";
 import HomeIcon from "@mui/icons-material/Home";
 import ChangePassword from "../../forms/user/ChangePassword";
 import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
+import AdventureDetails from "../../forms/adventure/AdventureDetails";
 
 
 function OwnerProfile({ instructor, close }) {
@@ -90,8 +91,12 @@ function OwnerProfile({ instructor, close }) {
     }
   };
 
+  let advs= null;
   useEffect(() => {
     instructor != null ? setIsUnauthUser(true) : setIsUnauthUser(false);
+    if(instructor != null){
+      advs = instructor.adventures;
+    }
   }, []);
 
   useEffect(() => {
@@ -259,6 +264,7 @@ function OwnerProfile({ instructor, close }) {
                   </div>
                 </Typography>
               </Grid>
+            
               <AdditionalInfoBox additionalDate={ownerData} />
             </>
           ) : (
@@ -269,10 +275,10 @@ function OwnerProfile({ instructor, close }) {
             </>
           )}
 
-          <Grid xs={12} sm={5} />
+          <Grid xs={8} sm={8} />
 
           {isUnauthUser ? (
-            <InstructorsAdventures adventures={instructor.adventures} />
+            instructor.adventures.map( (adventure) => {return <AdventureDetails key={adventure.id} adventure={adventure} /> })
           ) : (
             <></>
           )}
