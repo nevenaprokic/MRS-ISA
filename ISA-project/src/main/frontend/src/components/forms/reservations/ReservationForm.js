@@ -37,7 +37,7 @@ export default function ReservationForm({ offer, close }) {
 
     const recalculate = (services) => {
       services = (services != null) ? services : checked;        
-      let newPrice = calculatePrice(getValues("days"), offer.price, services);
+      let newPrice = calculatePrice(getValues("days"), offer.price, services, getValues("guests"));
       setTotal(newPrice);
     };
 
