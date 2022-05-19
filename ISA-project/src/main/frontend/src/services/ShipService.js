@@ -106,22 +106,21 @@ export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
 }
 
 export function filterShipsClient(params, setOffers, lastSearchedOffers) {
+  console.log("AAAAAAAAAAAAAA");
+  console.log(params);
   
   let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
   let maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
   let maxPeople = params.maxPeople == "" ? Infinity : params.maxPeople;
-  let maxSize = params.maxSize == "" ? Infinity : params.maxSize;
 
   let minRating = params.minRating == "" ? -1 : params.minRating;
   let minPrice = params.minPrice == "" ? -1 : params.minPrice;
   let minPeople = params.minPeople == "" ? -1 : params.minPeople;
-  let minSize = params.minSize == "" ? -1 : params.minSize;
 
   const filterOffers = (offer) => {
     return (offer.price <= maxPrice && offer.price >= minPrice)
       && (offer.numberOfPerson <= maxPeople && offer.numberOfPerson >= minPeople)
-      && (offer.mark <= maxRating && offer.mark >= minRating)
-      && (offer.size <= maxSize && offer.size >= minSize);
+      && (offer.mark <= maxRating && offer.mark >= minRating);
  }
   let filtered = lastSearchedOffers.filter(filterOffers);
   if(filtered.length == 0)

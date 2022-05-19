@@ -24,6 +24,7 @@ import ArrowUpwardTwoToneIcon from "@mui/icons-material/ArrowUpwardTwoTone";
 import ArrowDownwardTwoToneIcon from "@mui/icons-material/ArrowDownwardTwoTone";
 import Rating from "@mui/material/Rating";
 import { useEffect } from "react";
+import { filterInstructorsClient, sortInstructors } from "../../../services/InstructorService";
 
 
 function getValue(value) {
@@ -60,30 +61,13 @@ export default function ClientFilter({
   lastSearchedOffers,
   offers,
 }) {
-  let minPeople = 0;
-  let maxPeople = 50;
-
-  useEffect(() => {
-   
-    // console.log(offers);
-    // const people = offers.map((x) => x.numberOfPerson);
-    // const minPeople = Math.min(...people);
-    // const maxPeople = Math.max(...people);
-    // const price = offers.map((x) => x.price);
-    // const minPrice = Math.min(...price);
-    // const maxPrice = Math.max(...price);
-  }, [offers]);
   
   const [valueNumPeople, setValueNumPeople] = React.useState([
-    minPeople,
-    maxPeople,
+    0,
+    50,
   ]);
-  const [valuePrice, setValuePrice] = React.useState([20, 37]);
+  const [valuePrice, setValuePrice] = React.useState([20, 300]);
   const [valueStar, setValueStar] = React.useState();
- 
-  
-
-  
 
   const handleChangePeopleNumber = (event, newValue, activeThumb) => {
     setParams({ ...params, minPeople: newValue[0], maxPeople: newValue[1] });
@@ -100,11 +84,12 @@ export default function ClientFilter({
     setValuePrice(newValue);
   };
   const [sortAsc, setSortAsc] = useState(true);
-  const [criteria, setCriteria] = useState(1);
+  const [criteria, setCriteria] = useState(3);
 
   let sortOffers = {
     [offerType.COTTAGE]: sortCottages,
     [offerType.SHIP]: sortShips,
+    [offerType.ADVENTURE]: sortInstructors,
   };
 
   const criteriaChanged = (event) => {
@@ -121,6 +106,7 @@ export default function ClientFilter({
   let filterOffer = {
     [offerType.COTTAGE]: filterCottagesClient,
     [offerType.SHIP]: filterShipsClient,
+    [offerType.ADVENTURE]: filterInstructorsClient,
   };
 
   const resetFields = () => {
@@ -169,11 +155,15 @@ export default function ClientFilter({
               label="Criteria"
               onChange={criteriaChanged}
             >
-              <MenuItem value={1}>Name</MenuItem>
+              {type == offerType.ADVENTURE && <MenuItem value={8}>First Name</MenuItem>}
+              {type == offerType.ADVENTURE && (
+              <MenuItem value={9}>Last Name</MenuItem>
+              )}
+              {type != offerType.ADVENTURE &&  <MenuItem value={1}>Name</MenuItem> }
               <MenuItem value={2}>Street</MenuItem>
               <MenuItem value={3}>City</MenuItem>
-              <MenuItem value={4}>Rating</MenuItem>
-              <MenuItem value={5}>Price</MenuItem>
+              {type != offerType.ADVENTURE && <MenuItem value={4}>Rating</MenuItem> }
+              {type != offerType.ADVENTURE &&  <MenuItem value={5}>Price</MenuItem> }
               {type == offerType.SHIP && <MenuItem value={6}>Size</MenuItem>}
               {type == offerType.SHIP && (
                 <MenuItem value={7}>Max speed</MenuItem>

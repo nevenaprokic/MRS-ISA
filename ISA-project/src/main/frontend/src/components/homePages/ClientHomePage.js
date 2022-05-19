@@ -173,7 +173,7 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                               <br />
                           </Grid>
                         </Box>
@@ -186,6 +186,9 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
+                            <br/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
+                            <br />
                           </Grid>
                         </Box>
                       <OfferList type={userType.INSTRUCTOR} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />

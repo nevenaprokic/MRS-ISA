@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
+import {compareString} from './UtilService'
 
 export function getInstructorByUsername(username){
     return api
@@ -85,4 +86,39 @@ export function sendDeleteRequestInstructor(data){
         autoClose: 2000,
       });
     });
+}
+
+export function filterInstructorsClient(){
+
+}
+
+export function sortInstructors(value, sortAsc, offers, setOffers){
+  console.log(offers);
+  switch(value) {
+    case 8:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.firstName, b.firstName);
+    });
+      break;
+    case 9:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.street, b.street);
+      });
+      break;
+    case 3:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.city, b.city);
+      });
+      break;
+    case 9:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.lastName, b.lastName);
+      });
+      break;
+    default:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.firstName, b.firstName);
+    });
+  }
+  setOffers([...offers]);
 }

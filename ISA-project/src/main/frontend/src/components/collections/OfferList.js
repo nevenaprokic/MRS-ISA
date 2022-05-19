@@ -32,7 +32,7 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
       return(<Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {offers.map((offer) => (
-              <Grid item key={offer.name} xs={12} sm={6} md={4}>
+              <Grid item key={offer.id} xs={12} sm={6} md={4}>
                 <MediaCard offer={offer} offerT={type}></MediaCard>
               </Grid>
             ))}
