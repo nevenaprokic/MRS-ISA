@@ -126,6 +126,7 @@ export default function ClientFilter({
     setOffers(lastSearchedOffers);
     resetFields();
   };
+
   const sendParams = () => {
     if (valueStar !== undefined) {
       if (valueStar.length != 0) {
@@ -139,6 +140,9 @@ export default function ClientFilter({
     }
     filterOffer[type](params, setOffers, lastSearchedOffers);
   };
+
+  useEffect(() => {
+  }, [offers]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>

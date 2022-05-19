@@ -93,14 +93,13 @@ export function filterInstructorsClient(){
 }
 
 export function sortInstructors(value, sortAsc, offers, setOffers){
-  console.log(offers);
   switch(value) {
     case 8:
       offers.sort((a, b) => {
         return compareString(sortAsc, a.firstName, b.firstName);
     });
       break;
-    case 9:
+    case 2:
       offers.sort((a, b) => {
         return compareString(sortAsc, a.street, b.street);
       });

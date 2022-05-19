@@ -182,7 +182,6 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
 }
 
 export function sortCottages(value, sortAsc, offers, setOffers) {
-  console.log(offers);
   switch(value) {
     case 1:
       offers.sort((a, b) => {

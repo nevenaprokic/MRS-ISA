@@ -106,8 +106,6 @@ export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
 }
 
 export function filterShipsClient(params, setOffers, lastSearchedOffers) {
-  console.log("AAAAAAAAAAAAAA");
-  console.log(params);
   
   let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
   let maxPrice = params.maxPrice == "" ? Infinity : params.maxPrice;
@@ -190,7 +188,6 @@ function addAddtionalServices(offerId, additionalServiceDTO) {
 }
 
 export function sortShips(value, sortAsc, offers, setOffers) {
-  console.log(offers);
   switch(value) {
     case 1:
       offers.sort((a, b) => {
