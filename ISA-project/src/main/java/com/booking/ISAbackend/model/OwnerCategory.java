@@ -25,6 +25,9 @@ public class OwnerCategory {
     @Column
     Integer heighLimitPoints; //treba proveravati da se ne poklapa sa drugim kategorijama
 
+    @Column
+    String categoryColor;
+
     public OwnerCategory(Long id, String name, Double earningsPercent, Integer reservationPoints, Integer lowLimitPoints, Integer heighLimitPoints) {
         this.id = id;
         this.name = name;
@@ -32,6 +35,16 @@ public class OwnerCategory {
         this.reservationPoints = reservationPoints;
         this.lowLimitPoints = lowLimitPoints;
         this.heighLimitPoints = heighLimitPoints;
+    }
+
+    public OwnerCategory(Long id, String name, Double earningsPercent, Integer reservationPoints, Integer lowLimitPoints, Integer heighLimitPoints, String categoryColor) {
+        this.id = id;
+        this.name = name;
+        this.earningsPercent = earningsPercent;
+        this.reservationPoints = reservationPoints;
+        this.lowLimitPoints = lowLimitPoints;
+        this.heighLimitPoints = heighLimitPoints;
+        this.categoryColor = categoryColor;
     }
 
     public OwnerCategory() {
@@ -61,6 +74,8 @@ public class OwnerCategory {
     public Integer getHeighLimitPoints() {
         return heighLimitPoints;
     }
+
+    public String getCategoryColor() { return categoryColor; }
 
     //    REGULAR,
 //    SILVER,

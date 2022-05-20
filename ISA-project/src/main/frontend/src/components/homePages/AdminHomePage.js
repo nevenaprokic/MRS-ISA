@@ -17,6 +17,7 @@ import { useState } from "react";
 import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import AdminProfile from '../profilePages/userProfile/AdminProfile';
 import RegistrationRequestsList from '../collections/RegistrationRequestsList';
+import LoyalyProgeramPage from '../loyalty/LoyaltyProgramPage';
 
 
 function TabPanel(props) {
@@ -100,7 +101,9 @@ export default function AdminHomePage() {
                     <Tab label="Users" {...a11yProps(2)} />
                     <Tab label="Registration requests" {...a11yProps(3)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(4)} />
+                    <Tab label="Loyalty program" {...a11yProps(4)} />
+                    <Divider />
+                    <Tab label="Business reports" {...a11yProps(5)} />
                     
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -119,7 +122,7 @@ export default function AdminHomePage() {
                     <RegistrationRequestsList />
                 </TabPanel>
                 <TabPanel value={value} index={7}>
-                  
+                  <LoyalyProgeramPage/>
                 </TabPanel>
              
                 </Box>

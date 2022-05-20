@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ClientCategoryRepository extends JpaRepository<ClientCategory, Integer> {
     List<ClientCategory> findByName(String name);
+    List<ClientCategory> findAll();
 }

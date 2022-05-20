@@ -1,0 +1,30 @@
+$light: #FEF5ED;
+$middleGreen: hsl(110, 17%, 71%);
+$darkGrrenGray: #5f6d5f;
+$darkGreen: #99A799;
+$accept: #ADC2A9;
+$orange :#CC7351;
+$paleGreen: #dae0d2;
+
+.card{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5%;
+    border: solid thin $accept;
+    width: 45%;
+}
+
+.css-et1ao3-MuiTypography-root{
+    font-size: large !important;
+}
+
+.categoryBtn{
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    margin-left: 5px;
+}
+
+.categoriesContainer{
+    width: 120%;
+}

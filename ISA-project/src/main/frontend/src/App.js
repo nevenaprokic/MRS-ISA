@@ -23,6 +23,7 @@ import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedU
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
 import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
 import WorkingCalendar from './components/calendar/WorkingCalendar'
+import LoyalyProgeramPage from './components/loyalty/LoyaltyProgramPage';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
           <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
           <Route path='/owner/calendar' element={<WorkingCalendar/>} />
+          <Route path='/admin/loyalty-program' element={<LoyalyProgeramPage/>}/>
         </Routes>
     </div>
   );

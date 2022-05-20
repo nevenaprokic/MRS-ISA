@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface OwnerCategoryRepository extends JpaRepository<OwnerCategory, Integer> {
     List<OwnerCategory> findByName(String name);
+    List<OwnerCategory> findAll();
 }

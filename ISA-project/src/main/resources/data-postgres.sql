@@ -19,13 +19,14 @@ insert into role(name) values ('COTTAGE_OWNER');
 insert into role(name) values ('SHIP_OWNER');
 insert into role(name) values ('INSTRUCTOR');
 
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('CASUAL_CLIENT', 0.0 , 1 , 0, 5);
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('CLOSE_CLIENT', 5.0, 2, 6, 10);
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('BEST_CLIENT', 10.0, 3, 11, 100);
 
-insert into owner_category(name, earnings, reservation_points, low_limit_points, heigh_limit_points) values ('REGULAR', 70.0, 1, 0, 10);
-insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points) values ('SILVER', 80.0, 2, 11, 20 );
-insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points) values ('GOLD', 90.0, 3, 21, 100  );
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('CASUAL_CLIENT', 0.0 , 1 , 0, 5, '#444444');
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('CLOSE_CLIENT', 5.0, 2, 6, 10, '#7ca253');
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('BEST_CLIENT', 10.0, 3, 11, 100, '#CC7351');
+
+insert into owner_category(name, earnings, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('REGULAR', 70.0, 1, 0, 10, '#444444');
+insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points, category_color) values ('SILVER', 80.0, 2, 11, 20, '#BBBBBB' );
+insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points, category_color) values ('GOLD', 90.0, 3, 21, 100 , '#fcdc3c' );
 
 
 /*CLIENTS*/

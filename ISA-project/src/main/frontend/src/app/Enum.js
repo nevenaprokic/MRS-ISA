@@ -28,6 +28,15 @@ export const offerTypeByUserType = {
 
 Object.freeze(offerTypeByUserType);
 
+export const loyaltyCategory = {
+    REGULAR : "REGULAR",
+    SILVER: "SILVER",
+    GOLD: "GOLD",
+    CASUAL_CLIENT: "CASULA_CLIENT",
+    CLOSE_CLIENT: "CLOSE_CLIENT",
+    BEST_CLIENT: "BEST_CLIENT"
+}
+
 
 
 
