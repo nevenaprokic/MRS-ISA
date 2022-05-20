@@ -5,6 +5,7 @@ $darkGreen: #99A799;
 $accept: #ADC2A9;
 $orange :#CC7351;
 $paleGreen: #dae0d2;
+$changeFormWidth: 40%;
 
 .card{
     display: inline-block;
@@ -27,4 +28,37 @@ $paleGreen: #dae0d2;
 
 .categoriesContainer{
     width: 120%;
+}
+
+.changeContainer{
+    width: $changeFormWidth;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    margin-top: 7%;
+    border-radius: 20px;
+    border: solid medium $middleGreen;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
+}
+
+.close{
+    vertical-align: middle;
+    display: inline-block;
+    width: 10%;
+}
+
+.formTitle{
+    vertical-align: middle;
+    display: inline-block;
+    width: 65%;
+}
+
+.icon{
+    display: inline-block;
+    vertical-align: middle;
+    width: 15%;
+    margin-left: 0%;
 }

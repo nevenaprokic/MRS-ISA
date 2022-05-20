@@ -24,6 +24,7 @@ import InstructorsAdventures from './components/collections/InstructorsAdventure
 import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
 import WorkingCalendar from './components/calendar/WorkingCalendar'
 import LoyalyProgeramPage from './components/loyalty/LoyaltyProgramPage';
+import ChangeLoyaltyCategory from './components/forms/loyaltyCategory/ChangeLoyaltyCategory';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
           <Route path='/owner/calendar' element={<WorkingCalendar/>} />
           <Route path='/admin/loyalty-program' element={<LoyalyProgeramPage/>}/>
+          <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
         </Routes>
     </div>
   );
