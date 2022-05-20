@@ -100,8 +100,20 @@ public class InstructorServiceImpl implements InstructorService {
             List<AdventureDTO> adventures = adventureService.getInstructorAdventures(i.getEmail());
             InstructorProfileData dto = new InstructorProfileData(i);
             dto.setAdventures(adventures);
+            dto.setMark(calculateInstructorsRating(adventures));
             retList.add(dto);
         }
+    }
+
+    private double calculateInstructorsRating(List<AdventureDTO> adventures){
+        double total = 0;
+        int counter = 0;
+        for(AdventureDTO a : adventures){
+            total += a.getMark();
+            counter += 1;
+        }
+        if(counter == 0) return 0;
+        return total / counter;
     }
 
 }

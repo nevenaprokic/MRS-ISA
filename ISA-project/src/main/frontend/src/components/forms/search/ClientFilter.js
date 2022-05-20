@@ -216,7 +216,9 @@ export default function ClientFilter({
           </Typography>
         </Grid>
         <Grid item xs>
-          <Typography
+          { type != offerType.ADVENTURE && 
+              <>
+                  <Typography
             id="input-slider"
             gutterBottom
             style={{ textAlign: "center"}}
@@ -242,9 +244,13 @@ export default function ClientFilter({
           >
             {valueNumPeople[0] + " - " + valueNumPeople[1]}
           </Typography>
+              </>
+          }
         </Grid>
         <Grid item xs>
-          <Typography
+          { type != offerType.ADVENTURE && 
+            <>
+                <Typography
             id="input-slider"
             gutterBottom
             style={{ textAlign: "center" }}
@@ -270,6 +276,8 @@ export default function ClientFilter({
           >
             {valuePrice[0] + " - " + valuePrice[1]}
           </Typography>
+            </>
+          }
         </Grid>
         <Grid item xs>
           <Button size="large" sx={{}} onClick={() => sendParams()}>

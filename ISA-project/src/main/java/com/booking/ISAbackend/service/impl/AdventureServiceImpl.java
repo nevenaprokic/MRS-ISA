@@ -5,10 +5,7 @@ import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
-import com.booking.ISAbackend.service.AdditionalServiceService;
-import com.booking.ISAbackend.service.AdventureService;
-import com.booking.ISAbackend.service.PhotoService;
-import com.booking.ISAbackend.service.UserService;
+import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +38,8 @@ public class AdventureServiceImpl implements AdventureService {
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 
+    @Autowired
+    private MarkService markService;
     
     @Autowired
     private AdditionalServiceService additionalServiceService;
@@ -92,6 +91,7 @@ public class AdventureServiceImpl implements AdventureService {
                         a.getAddress().getState(),
                         a.getAdditionalEquipment());
 
+                dto.setMark(markService.getMark(a.getId()));
                 adventureDTOList.add(dto);
 
             }
@@ -132,6 +132,8 @@ public class AdventureServiceImpl implements AdventureService {
                     a.getAddress().getCity(),
                     a.getAddress().getState(),
                     a.getAdditionalEquipment());
+
+            dto.setMark(markService.getMark(a.getId()));
 
             return dto;
         }
@@ -209,6 +211,7 @@ public class AdventureServiceImpl implements AdventureService {
         for (Adventure a: matchingAdventures){
             //int id, String ownerEmail, String offerName, String description, String price
             AdventureDTO dto = new AdventureDTO(a.getId(), a.getInstructor().getEmail(), a.getName(), a.getDescription(), String.valueOf(a.getPrice()), getPhoto(a));
+            dto.setMark(markService.getMark(a.getId()));
             adventureDTOs.add(dto);
         }
         return adventureDTOs;

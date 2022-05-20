@@ -23,20 +23,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class CottageServiceImpl implements CottageService {
+
     @Autowired
     private CottageRepository cottageRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AddressRepository addressRepository;
+
     @Autowired
     private AdditionalServiceService additionalServiceService;
+
     @Autowired
     private PhotoService photoService;
+
     @Autowired
     private MarkService markService;
+
     @Autowired
     private ReservationRepository reservationRepository;
+
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 

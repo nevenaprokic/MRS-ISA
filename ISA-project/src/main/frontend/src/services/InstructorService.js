@@ -88,7 +88,21 @@ export function sendDeleteRequestInstructor(data){
     });
 }
 
-export function filterInstructorsClient(){
+export function filterInstructorsClient(params, setOffers, lastSearchedOffers){
+
+  let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  let minRating = params.minRating == "" ? -1 : params.minRating;
+
+  const filterOffers = (offer) => {
+    return (offer.mark <= maxRating && offer.mark >= minRating);
+ }
+  let filtered = lastSearchedOffers.filter(filterOffers);
+  if(filtered.length == 0)
+    toast.info("No offers that satisfy these filters.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
+  setOffers(filtered);
 
 }
 

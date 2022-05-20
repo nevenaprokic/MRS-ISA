@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { ThemeProvider } from '@emotion/react';
@@ -41,7 +40,7 @@ function AdventureDetails({adventure}){
       
     return(
         adventureData &&
-        <div className="reservationDetailsContainer"> //  TODO : NAPRAVI DRUGU KLASU SA MANJOM MARGINOM
+        <div className="adventureDetailsContainer">
             <ThemeProvider theme={theme}>
                 <Grid item xs={12} md={10}>
                     <Card sx={{ display: 'flex', minWidth:"30vw", border:"solid thin #CC7351" }}>

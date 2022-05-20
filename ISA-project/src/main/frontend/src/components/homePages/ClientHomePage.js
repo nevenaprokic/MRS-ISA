@@ -188,7 +188,7 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                             <br/>
-                              {/* <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/> */}
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                             <br />
                           </Grid>
                         </Box>

@@ -276,7 +276,9 @@ function OwnerProfile({ instructor, close }) {
           )}
 
           <Grid xs={8} sm={8} />
-
+          <Typography className="adventureListTitle">
+              <label>Adventures</label>
+          </Typography>
           {isUnauthUser ? (
             instructor.adventures.map( (adventure) => {return <AdventureDetails key={adventure.id} adventure={adventure} /> })
           ) : (
