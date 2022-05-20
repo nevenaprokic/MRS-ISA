@@ -71,11 +71,10 @@ export function searchCottages(params, setOffers) {
 }
 
 export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
-  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
+  if(params.date >= new Date()){
       return api
       .post("/cottage/search-client", {...params,
-        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
-        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
+        date:new Date(params.date).toISOString().split('T')[0]})
       .then((data) => {
         if (data.data.length == 0) {
           toast.info("There are no cottages that match the search parameters.", {
@@ -93,7 +92,7 @@ export function searchCottagesClient(params, setOffers, setLastSearchedOffers) {
         });
       });
   }else{
-      toast.error("Date periods are not correct.", {
+      toast.error("Entered date has passed.", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

@@ -104,9 +104,11 @@ const modalOfferComponent = (offerStr, offerId) =>{
     if(!offerData)
       setOfferData(offer);
     async function setData() {
-      const markData = await getMarkByOfferId(offer.id);
-      setMarkData(markData.data ? markData.data : "0");
-      return markData.data;
+     
+        const markData = await getMarkByOfferId(offer.id);
+        setMarkData(markData.data ? markData.data : "0");
+        return markData.data;
+      
     }
     setData();
 

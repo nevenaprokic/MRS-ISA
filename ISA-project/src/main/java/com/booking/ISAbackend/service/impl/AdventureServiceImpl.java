@@ -223,6 +223,11 @@ public class AdventureServiceImpl implements AdventureService {
         return true;
     }
 
+    @Override
+    public List<Adventure> nonAvailableAdventures(LocalDate date) {
+        return reservationRepository.nonAvailableAdventures(date);
+    }
+
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {
         List<byte[]> photosInBytes = new ArrayList<byte[]>();
         for (Photo p : photos) {

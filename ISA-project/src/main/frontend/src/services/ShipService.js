@@ -71,33 +71,28 @@ export function searchShips(params, setOffers) {
 }
 
 export function searchShipsClient(params, setOffers, setLastSearchedOffers) {
-  console.log(params);
-  console.log(params.dateFrom <= params.dateTo);
-  console.log(params.dateFrom > new Date());
-
-  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
+  if(params.date >= new Date()){
       return api
-      .post("/ship/search-client", {...params,
-        dateFrom:new Date(params.dateFrom).toISOString().split('T')[0],
-        dateTo:new Date(params.dateTo).toISOString().split('T')[0],})
-      .then((data) => {
-        if (data.data.length == 0) {
-          toast.info("There are no ships that match the search parameters.", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 2000,
+          .post("/ship/search-client", {...params,
+            date:new Date(params.date).toISOString().split('T')[0]})
+          .then((data) => {
+            if (data.data.length == 0) {
+              toast.info("There are no ships that match the search parameters.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+              });
+            }
+            setOffers(data.data);
+            setLastSearchedOffers(data.data);
+          })
+          .catch((err) => {
+              toast.error("Something went wrong.", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 2000,
+            });
           });
-        }
-        setOffers(data.data);
-        setLastSearchedOffers(data.data);
-      })
-      .catch((err) => {
-          toast.error("Something went wrong.", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-      });
-  }else{
-      toast.error("Date periods are not correct.", {
+    }else{
+      toast.error("Entered date has passed.", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

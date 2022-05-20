@@ -43,15 +43,15 @@ const stars = [
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-function getMinNumPeople(offers) {
-  console.log(offers);
-  const totals = offers.map((x) => x.numberOfPerson);
-  return Math.min(...totals);
-}
-function getMaxNumPeople(offers) {
-  const totals = offers.map((x) => x.numberOfPerson);
-  return Math.max(...totals);
-}
+// function getMinNumPeople(offers) {
+//   console.log(offers);
+//   const totals = offers.map((x) => x.numberOfPerson);
+//   return Math.min(...totals);
+// }
+// function getMaxNumPeople(offers) {
+//   const totals = offers.map((x) => x.numberOfPerson);
+//   return Math.max(...totals);
+// }
 
 export default function ClientFilter({
   params,
@@ -118,7 +118,9 @@ export default function ClientFilter({
     [offerType.ADVENTURE]: filterInstructorsClient,
   };
 
+  let resetCount = 0;
   const resetFields = () => {
+    resetCount += 1;
     setParams({
       maxRating: 5,
       maxPrice: 500,
@@ -193,6 +195,7 @@ export default function ClientFilter({
             Rating
           </Typography>
           <Slider
+            key={resetCount}
             getAriaLabel={() => "Minimum distance shift"}
             value={valueRating}
             onChange={handleChangeRating}
@@ -271,6 +274,9 @@ export default function ClientFilter({
         <Grid item xs>
           <Button size="large" sx={{}} onClick={() => sendParams()}>
             Filter
+          </Button>
+          <Button size="large" sx={{}} onClick={() => handleReset()}>
+            Reset
           </Button>
         </Grid>
       </Grid>

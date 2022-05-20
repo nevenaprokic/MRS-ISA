@@ -7,6 +7,7 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Adventure;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface AdventureService {
     List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) throws IOException;
 
     Boolean chechUpdateAllowed(int adventureId);
+
+    List<Adventure> nonAvailableAdventures(LocalDate date);
 }

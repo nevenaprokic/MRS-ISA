@@ -1,9 +1,6 @@
 package com.booking.ISAbackend.repository;
 
-import com.booking.ISAbackend.model.Cottage;
-import com.booking.ISAbackend.model.Offer;
-import com.booking.ISAbackend.model.Reservation;
-import com.booking.ISAbackend.model.Ship;
+import com.booking.ISAbackend.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,12 +27,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByInstructorEmail(String email);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
-    List<Cottage> nonAvailableCottages(LocalDate from, LocalDate to);
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Cottage> nonAvailableCottages(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Ship c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
-    List<Ship> nonAvailableShips(LocalDate from, LocalDate to);
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Ship> nonAvailableShips(LocalDate date);
+
+    @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Adventure c ON r.offer.id = c.id WHERE" +
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Adventure> nonAvailableAdventures(LocalDate date);
 
     @Modifying
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")

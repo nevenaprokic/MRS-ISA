@@ -18,19 +18,12 @@ export default function ClientSearch({
   setOffers,
   setLastSearchedOffers,
 }) {
-  const [valueFrom, setValueFrom] = React.useState();
-  const [valueTo, setValueTo] = React.useState();
+  const [valueDate, setValueDate] = React.useState();
 
-  const handleChangeFrom = (newValue) => {
+  const handleChangeDate = (newValue) => {
     // newValue = newValue.toLocaleDateString("en-US");
-    setValueFrom(newValue);
-    setParams({ ...params, dateFrom: newValue });
-  };
-
-  const handleChangeTo = (newValue) => {
-    // newValue = newValue.toLocaleDateString("en-US");
-    setValueTo(newValue);
-    setParams({ ...params, dateTo: newValue });
+    setValueDate(newValue);
+    setParams({ ...params, date: newValue });
   };
 
   const handleSubmit = () => {
@@ -46,8 +39,7 @@ export default function ClientSearch({
   useEffect(() => {
     let tommotowDate = new Date();
     tommotowDate.setDate(tommotowDate.getDate() + 1);
-    setValueFrom(tommotowDate);
-    setValueTo(tommotowDate);
+    setValueDate(tommotowDate);
   }, []);
 
   return (
@@ -124,14 +116,14 @@ export default function ClientSearch({
         </Grid>
         <Grid item>
           <DesktopDatePicker
-            label="From"
+            label="Date"
             inputFormat="dd/MM/yyyy"
-            value={valueFrom}
-            onChange={handleChangeFrom}
+            value={valueDate}
+            onChange={handleChangeDate}
             renderInput={(params) => <TextField {...params} />}
           />
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <DesktopDatePicker
             label="To"
             inputFormat="dd/MM/yyyy"
@@ -139,7 +131,7 @@ export default function ClientSearch({
             onChange={handleChangeTo}
             renderInput={(params) => <TextField {...params} />}
           />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs>
           <Button size="large" sx={{}} onClick={() => handleSubmit()}>

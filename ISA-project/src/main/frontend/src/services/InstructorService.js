@@ -124,31 +124,32 @@ export function sortInstructors(value, sortAsc, offers, setOffers){
 
 export function searchInstructorsClient(params, setOffers, setLastSearchedOffers){
   console.log(params);
-  if(params.dateFrom <= params.dateTo && params.dateFrom > new Date()){
-    return api
-        .get("/instructor/search-client",  {params})
-        .then((data) =>{
-          if (data.data.length == 0) {
-            toast.info(
-              "You don't have any instructors that match the search parameters.",
-              {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 2000,
-              }
-            );
-        }
-          setOffers(data.data);
-          setLastSearchedOffers(data.data);
-        })
-        .catch((err) => {
-            {toast.error("Something went wrong.", {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 1500,
+  if(params.date >= new Date()){
+      return api
+            .get("/instructor/search-client",  {...params,
+              date:new Date(params.date).toISOString().split('T')[0]})
+            .then((data) =>{
+              if (data.data.length == 0) {
+                toast.info(
+                  "You don't have any instructors that match the search parameters.",
+                  {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 2000,
+                  }
+                );
+            }
+              setOffers(data.data);
+              setLastSearchedOffers(data.data);
+            })
+            .catch((err) => {
+                {toast.error("Something went wrong.", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            }
             });
-        }
-        });
     }else{
-      toast.error("Date periods are not correct.", {
+      toast.error("Entered date has passed.", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

@@ -43,15 +43,15 @@ public class InstructorController {
         }
     }
 
-//    @GetMapping("search-client")
-//    public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
-//        try{
-//            List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
-//            return ResponseEntity.ok(instructors);
-//        }catch  (Exception e){
-//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @GetMapping("search-client")
+    public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
+        try{
+            List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
+            return ResponseEntity.ok(instructors);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("get-all")
     public ResponseEntity<List<InstructorProfileData>> getAll(){

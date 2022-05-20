@@ -2,11 +2,9 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.model.DeleteRequest;
-import com.booking.ISAbackend.model.Instructor;
-import com.booking.ISAbackend.model.MyUser;
-import com.booking.ISAbackend.model.Reservation;
+import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.DeleteRequestRepository;
 import com.booking.ISAbackend.repository.InstructorRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -23,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InstructorServiceImpl implements InstructorService {
@@ -76,6 +75,22 @@ public class InstructorServiceImpl implements InstructorService {
         DeleteRequest deleteRequest = new DeleteRequest(reason, user);
         deleteRequestRepository.save(deleteRequest);
         return true;
+    }
+
+    @Override
+    public List<InstructorProfileData> searchInstructorsClient(OfferSearchParamsDTO params) {
+        List<Instructor> instructors = instructorRepository.searchInstructorsClient(params.getFirstName(), params.getLastName(), params.getAddress());
+        List<Adventure> nonAvailable = adventureService.nonAvailableAdventures(params.getDate());
+        List<InstructorProfileData> availableInstructors = new ArrayList<>();
+
+        for(Instructor i : instructors){
+            List<Adventure> availableAdventures = i.getAdventures().stream()
+                    .filter(element -> !nonAvailable.contains(element))
+                    .collect(Collectors.toList());
+            if(availableAdventures.isEmpty())
+                availableInstructors.add(new InstructorProfileData(i));
+        }
+        return availableInstructors;
     }
 
     private void makeInstructorDTOs(List<InstructorProfileData> retList, List<Instructor> instructors) throws IOException {
