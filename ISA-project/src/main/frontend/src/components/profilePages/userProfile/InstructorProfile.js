@@ -30,7 +30,7 @@ import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
 import AdventureDetails from "../../forms/adventure/AdventureDetails";
 
 
-function OwnerProfile() {
+function InstructorProfile({ instructor, close }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -67,7 +67,7 @@ function OwnerProfile() {
   const handleClose = () => setOpen(false);
 
   const childToParent = (childData) => {
-    if (getRoleFromToken() === userType.INSTRUCTOR) {
+    if (!instructor && getRoleFromToken() === userType.INSTRUCTOR) {
       setOwnerData((prevState) => ({
         ...prevState,
         ["firstName"]: childData.firstName,
@@ -91,24 +91,42 @@ function OwnerProfile() {
     }
   };
 
+  let advs= null;
+  useEffect(() => {
+    instructor != null ? setIsUnauthUser(true) : setIsUnauthUser(false);
+    if(instructor != null){
+      advs = instructor.adventures;
+    }
+  }, []);
+
   useEffect(() => {
     async function setData() {
       let requestData = null;
-      let username = getUsernameFromToken();
-      let role = getRoleFromToken();
-      requestData = await getOfferByOwnerEmail[role](username);
-      setOwnerData(!!requestData ? requestData.data : {});
+      if (instructor != null) {
+        setOwnerData(instructor);
+      } else {
+        let username = getUsernameFromToken();
+        let role = getRoleFromToken();
+        requestData = await getOfferByOwnerEmail[role](username);
+        setOwnerData(!!requestData ? requestData.data : {});
+      }
 
       return requestData;
     }
     setData();
-  }, []);
+  }, [isUnauthUser]);
 
   if (ownerData) {
     return (
       <div
-        className={"ownerprofileContainer"}
+        className={"ownerprofileContainerUnauthUser"}
       >
+        <div className="closeProfileBtn">
+            <Button size="large" sx={{}} onClick={() => close()}>
+              x
+            </Button>
+          </div>
+
         <Grid
           container
           component="main"
@@ -118,98 +136,51 @@ function OwnerProfile() {
           <Grid item xs={12} sm={5}>
             <img src={profileIcon} width="60%"></img>
           </Grid>
+            <BasicInfoBox basicData={ownerData}></BasicInfoBox>
+       
+          
 
-          <BasicInfoBox basicData={ownerData}></BasicInfoBox>
-
-          <Grid item xs={12} sm={1}>
-                <EmailIcon />
-                <br />
-                <br />
-                <LockIcon />
-                <br />
-                <br />
-                <SettingsIcon />
-                <br />
-                <br />
-                <DeleteIcon />
-              </Grid>
-
-              <Grid item xs={12} sm={4}>
+          <Grid className="addressInfoNoBox" item xs={12} sm={5}>
                 <Typography>
-                  <label className="email">{ownerData.email}</label>
+                  <label className="boxTitle">Address</label>
                   <br />
                   <br />
-                  <Button
-                    size="small"
-                    sx={{ backgroundColor: "#99A799", color: "black" }}
-                    onClick={handleOpenPass}
-                  >
-                    {" "}
-                    Change password
-                  </Button>
-                  <br />
-                  <br />
-                  <Button
-                    size="small"
-                    sx={{ backgroundColor: "#99A799", color: "black" }}
-                    onClick={handleOpen}
-                  >
-                    {" "}
-                    Change private data
-                  </Button>
-                  <br />
-                  <br />
-                  <Button
-                    size="small"
-                    sx={{ backgroundColor: "#99A799", color: "black" }}
-                    onClick={handleOpenDelete}
-                  >
-                    {" "}
-                    Delete profile
-                  </Button>
+
+                  <div>
+                    <div className="boxItem">
+                      <HomeIcon color="action" />
+                    </div>
+                    <label className="boxItemTitle">Street: </label>
+                    <label className="boxItemText">{ownerData.street}</label>
+                  </div>
+                  <div>
+                    <div className="boxItem">
+                      <HomeIcon color="action" />
+                    </div>
+                    <label className="boxItemTitle">City: </label>
+                    <label className="boxItemText">{ownerData.city}</label>
+                  </div>
+                  <div>
+                    <div className="boxItem">
+                      <HomeIcon color="action" />
+                    </div>
+                    <label className="boxItemTitle">State: </label>
+                    <label className="boxItemText">{ownerData.state}</label>
+                  </div>
                 </Typography>
               </Grid>
-              <Modal
-                open={openPasswordManager}
-                onClose={handleClosePass}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
-              >
-                <ChangePassword close={handleClosePass}/>
-              </Modal>
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
-              >
-                <ChangeOwnerData
-                  currentOwnerData={ownerData}
-                  close={handleClose}
-                  childToParent={childToParent}
-                />
-              </Modal>
-              <Modal
-                open={openDeleteManager}
-                onClose={handleCloseDelete}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
-              >
-                <DeleteOrderOwner close={handleCloseDelete} />
-              </Modal>
-
-              <AddressInfoBox addressData={ownerData} />
-              <Grid xs={12} sm={5} />
+            
               <AdditionalInfoBox additionalDate={ownerData} />
 
           <Grid xs={8} sm={8} />
+          <Typography className="adventureListTitle">
+              <label>Adventures</label>
+          </Typography>
+          { instructor.adventures.map( (adventure) => {return <AdventureDetails key={adventure.id} adventure={adventure} /> }) }
         </Grid>
       </div>
     );
   }
 }
 
-export default OwnerProfile;
+export default InstructorProfile;

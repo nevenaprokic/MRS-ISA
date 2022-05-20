@@ -86,7 +86,7 @@ public class ShipServiceImpl implements ShipService {
     @Transactional
     public List<ShipDTO> searchShipsClient(OfferSearchParamsDTO params) throws IOException {
         List<Ship> ships = shipRepository.searchShipsClient(params.getName(), params.getDescription(), params.getDescription());
-        List<Ship> nonAvailableShips = reservationRepository.nonAvailableShips(params.getDateFrom(), params.getDateTo());
+        List<Ship> nonAvailableShips = reservationRepository.nonAvailableShips(params.getDate());
 
         List<Ship> availableShips = ships.stream()
                 .filter(element -> !nonAvailableShips.contains(element))

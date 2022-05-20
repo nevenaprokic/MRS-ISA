@@ -20,4 +20,12 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
             "AND (lower(c.phoneNumber) LIKE lower(concat('%', :phoneNumber, '%')) OR lower(:phoneNumber) LIKE lower(concat('%', c.phoneNumber, '%')))"
     )
     List<Instructor> searchInstructors(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("address")String address, @Param("phoneNumber") String phoneNumber);
+
+    @Query("SELECT c FROM Instructor c JOIN FETCH c.address WHERE (lower(c.address.city) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.city, '%'))" +
+            " OR lower(c.address.street) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.street, '%'))"+
+            " OR lower(c.address.state) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.state, '%')))" +
+            " AND (lower(c.firstName) LIKE lower(concat('%', :firstName, '%')) OR lower(:firstName) LIKE lower(concat('%', c.firstName, '%')))"+
+            "AND (lower(c.lastName) LIKE lower(concat('%', :lastName, '%')) OR lower(:lastName) LIKE lower(concat('%', c.lastName, '%')))"
+    )
+    List<Instructor> searchInstructorsClient(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("address")String address);
 }

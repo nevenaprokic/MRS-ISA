@@ -4,11 +4,11 @@ import { getUsernameFromToken, getRoleFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
 import { arrayToDateString } from "./UtilService";
 
-export function calculatePrice(days, price, additionalServices){
+export function calculatePrice(days, price, additionalServices, guests){
     days = (days == "") ? 0 : days;
     let total = 0;
     for(let service of additionalServices){
-        total += service.servicePrice;
+        total += days * guests * service.servicePrice;
     }
     total += days * price;
     return total;

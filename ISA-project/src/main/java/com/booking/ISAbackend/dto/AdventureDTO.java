@@ -20,6 +20,7 @@ public class AdventureDTO {
     private String city;
     private String state;
     private String additionalEquipment;
+    private Double mark;
 
 
     public int getId() {
@@ -140,5 +141,13 @@ public class AdventureDTO {
 
     public AdventureDTO() {
 
+    }
+
+    public Double getMark() {
+        return mark;
+    }
+
+    public void setMark(Double mark) {
+        this.mark = mark;
     }
 }

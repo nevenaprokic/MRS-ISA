@@ -138,6 +138,7 @@ public class CottageDTO {
     public Double getMark() {
         return mark;
     }
+
     public void setMark(Double mark) {
         this.mark = mark;
     }
