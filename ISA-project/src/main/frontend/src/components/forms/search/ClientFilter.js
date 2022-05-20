@@ -118,9 +118,7 @@ export default function ClientFilter({
     [offerType.ADVENTURE]: filterInstructorsClient,
   };
 
-  let resetCount = 0;
   const resetFields = () => {
-    resetCount += 1;
     setParams({
       maxRating: 5,
       maxPrice: 500,
@@ -132,6 +130,9 @@ export default function ClientFilter({
   };
 
   const handleReset = () => {
+    setValueRating([0, 5]);
+    setValueNumPeople([0, 50]);
+    setValuePrice([0, 500]);
     setOffers(lastSearchedOffers);
     resetFields();
   };
@@ -195,7 +196,6 @@ export default function ClientFilter({
             Rating
           </Typography>
           <Slider
-            key={resetCount}
             getAriaLabel={() => "Minimum distance shift"}
             value={valueRating}
             onChange={handleChangeRating}

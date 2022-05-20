@@ -17,7 +17,7 @@ import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
-import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
+import InstructorProfile from "../profilePages/userProfile/InstructorProfile";
 import ReservationForm from "../forms/reservations/ReservationForm";
 
 const secondaryTheme = createTheme({
@@ -83,7 +83,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case userType.INSTRUCTOR:
-        return (<OwnerProfile instructor={offer} close={handleClose} />);
+        return (<InstructorProfile instructor={offer} close={handleClose} />);
       default:
         return (<div>Undefined offer type</div>);
     }
