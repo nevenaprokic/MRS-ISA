@@ -43,7 +43,7 @@ public class InstructorController {
         }
     }
 
-    @GetMapping("search-client")
+    @PostMapping("search-client")
     public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);

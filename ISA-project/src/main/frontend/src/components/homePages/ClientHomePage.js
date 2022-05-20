@@ -63,11 +63,12 @@ export default function ClientHomePage() {
     const [lastSearchedOffers, setLastSearchedOffers] = useState();    
 
     const [params, setParams] = useState({
-        name: "",
-        description: "",
-        address: "",
-        dateFrom: tommorowDate,
-        dateTo: tommorowDate
+      name: "",
+      firstName: "",
+      lastName: "",
+      description: "",
+      address: "",
+      date: tommorowDate,
     });
 
     const [filter, setFilter] = useState({
@@ -82,10 +83,11 @@ export default function ClientHomePage() {
     const resetParams = () => {
       setParams({
         name: "",
+        firstName: "",
+        lastName: "",
         description: "",
         address: "",
-        dateFrom: tommorowDate,
-        dateTo: tommorowDate
+        date: tommorowDate,
     });
     }
 

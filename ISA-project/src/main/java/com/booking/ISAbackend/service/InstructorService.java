@@ -15,5 +15,5 @@ public interface InstructorService {
 
     boolean sendDeleteRequest(String email, String reason);
 
-    List<InstructorProfileData> searchInstructorsClient(OfferSearchParamsDTO params);
+    List<InstructorProfileData> searchInstructorsClient(OfferSearchParamsDTO params) throws IOException;
 }

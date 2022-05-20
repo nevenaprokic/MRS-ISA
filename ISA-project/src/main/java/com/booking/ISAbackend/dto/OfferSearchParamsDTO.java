@@ -24,6 +24,14 @@ public class OfferSearchParamsDTO {
         this.date = dateFrom;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public String getName() {
         return name;
     }
@@ -40,6 +48,14 @@ public class OfferSearchParamsDTO {
         return date;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -53,22 +69,6 @@ public class OfferSearchParamsDTO {
     }
 
     public void setDate(LocalDate date) {
-        this.date= date;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.date = date;
     }
 }

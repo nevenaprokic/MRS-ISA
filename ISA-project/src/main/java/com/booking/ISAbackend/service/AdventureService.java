@@ -31,4 +31,6 @@ public interface AdventureService {
     Boolean chechUpdateAllowed(int adventureId);
 
     List<Adventure> nonAvailableAdventures(LocalDate date);
+
+    List<Adventure> getInstructorsAdventuresById(Integer id) throws IOException;
 }

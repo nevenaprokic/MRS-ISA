@@ -78,17 +78,19 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public List<InstructorProfileData> searchInstructorsClient(OfferSearchParamsDTO params) {
+    public List<InstructorProfileData> searchInstructorsClient(OfferSearchParamsDTO params) throws IOException {
         List<Instructor> instructors = instructorRepository.searchInstructorsClient(params.getFirstName(), params.getLastName(), params.getAddress());
         List<Adventure> nonAvailable = adventureService.nonAvailableAdventures(params.getDate());
         List<InstructorProfileData> availableInstructors = new ArrayList<>();
 
         for(Instructor i : instructors){
-            List<Adventure> availableAdventures = i.getAdventures().stream()
-                    .filter(element -> !nonAvailable.contains(element))
+            List<Adventure> adv = adventureService.getInstructorsAdventuresById(i.getId());
+            List<Adventure> availableAdventures = adv.stream()
+                    .filter(element -> nonAvailable.contains(element))
                     .collect(Collectors.toList());
-            if(availableAdventures.isEmpty())
+            if(availableAdventures.size() == 0){
                 availableInstructors.add(new InstructorProfileData(i));
+            }
         }
         return availableInstructors;
     }

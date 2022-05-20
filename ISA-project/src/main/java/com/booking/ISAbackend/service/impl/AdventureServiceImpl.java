@@ -50,6 +50,9 @@ public class AdventureServiceImpl implements AdventureService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private InstructorRepository instructorRepository;
+
     @Override
     @Transactional
     public int addAdventure(NewAdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException {
@@ -226,6 +229,15 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     public List<Adventure> nonAvailableAdventures(LocalDate date) {
         return reservationRepository.nonAvailableAdventures(date);
+    }
+
+    @Override
+    public List<Adventure> getInstructorsAdventuresById(Integer id) throws IOException {
+        Optional<Instructor> i = instructorRepository.findById(id);
+        if(i.isPresent())
+            return adventureRepository.findAllByInstructor(i.get());
+        else
+            return new ArrayList<>();
     }
 
     private List<byte[]> convertPhotosToBytes(List<Photo> photos) throws IOException {

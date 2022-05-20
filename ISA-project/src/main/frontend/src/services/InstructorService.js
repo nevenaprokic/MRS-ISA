@@ -123,11 +123,10 @@ export function sortInstructors(value, sortAsc, offers, setOffers){
 }
 
 export function searchInstructorsClient(params, setOffers, setLastSearchedOffers){
-  console.log(params);
   if(params.date >= new Date()){
       return api
-            .get("/instructor/search-client",  {...params,
-              date:new Date(params.date).toISOString().split('T')[0]})
+        .post("/instructor/search-client", {...params,
+            date:new Date(params.date).toISOString().split('T')[0]})
             .then((data) =>{
               if (data.data.length == 0) {
                 toast.info(
