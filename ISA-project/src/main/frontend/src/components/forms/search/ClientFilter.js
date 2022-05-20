@@ -67,7 +67,7 @@ export default function ClientFilter({
     50,
   ]);
   const [valuePrice, setValuePrice] = React.useState([20, 300]);
-  const [valueStar, setValueStar] = React.useState();
+  const [valueRating, setValueRating] = React.useState([0, 5]);
 
   const handleChangePeopleNumber = (event, newValue, activeThumb) => {
     setParams({ ...params, minPeople: newValue[0], maxPeople: newValue[1] });
@@ -83,6 +83,15 @@ export default function ClientFilter({
     }
     setValuePrice(newValue);
   };
+
+  const handleChangeRating = (event, newValue, activeThumb) => {
+    setParams({ ...params, minRating: newValue[0], maxRating: newValue[1] });
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setValueRating(newValue);
+  };
+
   const [sortAsc, setSortAsc] = useState(true);
   const [criteria, setCriteria] = useState(3);
 
@@ -111,14 +120,12 @@ export default function ClientFilter({
 
   const resetFields = () => {
     setParams({
-      maxRating: "",
-      maxPrice: "",
-      maxPeople: "",
-      minPeople: "",
-      minPrice: "",
-      minRating: "",
-      minSize: "",
-      maxSize: "",
+      maxRating: 5,
+      maxPrice: 500,
+      maxPeople: 50,
+      minPeople: 0,
+      minPrice: 0,
+      minRating: 0
     });
   };
 
@@ -128,16 +135,6 @@ export default function ClientFilter({
   };
 
   const sendParams = () => {
-    if (valueStar !== undefined) {
-      if (valueStar.length != 0) {
-        const totals = valueStar.map((x) => x.star);
-        setParams({
-          ...params,
-          maxRating: Math.max(...totals),
-          minRating: Math.min(...totals),
-        });
-      }
-    }
     filterOffer[type](params, setOffers, lastSearchedOffers);
   };
 
@@ -188,38 +185,38 @@ export default function ClientFilter({
           </Button>
         </Grid>
         <Grid item xs>
-          <Autocomplete
-            multiple
-            id="checkboxes-tags-demo"
-            options={stars}
-            disableCloseOnSelect
-            value={valueStar}
-            onChange={(event, newValue) => {
-              setValueStar(newValue);
-            }}
-            getOptionLabel={(option) => option.title}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.title}
-              </li>
-            )}
-            style={{ width: 330 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Stars" placeholder="Rating" />
-            )}
+        <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center"}}
+          >
+            Rating
+          </Typography>
+          <Slider
+            getAriaLabel={() => "Minimum distance shift"}
+            value={valueRating}
+            onChange={handleChangeRating}
+            valueLabelDisplay="auto"
+            getAriaValueText={getValue}
+            disableSwap
+            style={{ width: 170 }}
+            defaultValue={[2, 20]}
+            max={5}
+            min={0}
           />
+          <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center"}}
+          >
+            {valueRating[0] + " - " + valueRating[1]}
+          </Typography>
         </Grid>
         <Grid item xs>
           <Typography
             id="input-slider"
             gutterBottom
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center"}}
           >
             Number of person
           </Typography>
@@ -238,7 +235,7 @@ export default function ClientFilter({
           <Typography
             id="input-slider"
             gutterBottom
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center"}}
           >
             {valueNumPeople[0] + " - " + valueNumPeople[1]}
           </Typography>

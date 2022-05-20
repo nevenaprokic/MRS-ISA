@@ -82,6 +82,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientDTO findByEmail(String email) {
         Client client = clientRepository.findByEmail(email);
+        if(client == null) return null;
         ClientDTO dto = new ClientDTO(
                 client.getEmail(),
                 client.getFirstName(),

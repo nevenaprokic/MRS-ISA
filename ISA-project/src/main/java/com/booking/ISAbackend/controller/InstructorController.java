@@ -3,6 +3,7 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.InstructorNewDataDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
@@ -41,6 +42,16 @@ public class InstructorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @GetMapping("search-client")
+//    public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
+//        try{
+//            List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
+//            return ResponseEntity.ok(instructors);
+//        }catch  (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @GetMapping("get-all")
     public ResponseEntity<List<InstructorProfileData>> getAll(){

@@ -9,7 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { searchCottagesClient } from "../../../services/CottageService";
 import { searchShipsClient } from "../../../services/ShipService";
 import { offerType } from "../../../app/Enum";
-import { searchInstructors } from "../../../services/InstructorService";
+import { searchInstructorsClient } from "../../../services/InstructorService";
 
 export default function ClientSearch({
   params,
@@ -40,7 +40,7 @@ export default function ClientSearch({
   let searchOffer = {
     [offerType.COTTAGE]: searchCottagesClient,
     [offerType.SHIP]: searchShipsClient,
-    [offerType.ADVENTURE]: searchInstructors,
+    [offerType.ADVENTURE]: searchInstructorsClient,
   };
 
   useEffect(() => {

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 public class OfferSearchParamsDTO {
 
+    private String firstName;
+    private String lastName;
     private String name;
     private String description;
     private String address;
@@ -63,5 +65,21 @@ public class OfferSearchParamsDTO {
 
     public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

@@ -41,12 +41,11 @@ function AdventureDetails({adventure}){
       
     return(
         adventureData &&
-        <div className="reservationDetailsContainer">
+        <div className="reservationDetailsContainer"> //  TODO : NAPRAVI DRUGU KLASU SA MANJOM MARGINOM
             <ThemeProvider theme={theme}>
                 <Grid item xs={12} md={10}>
-                <CardActionArea component="a">
-                    <Card sx={{ display: 'flex', minWidth:"30vw" }}>
-                    <CardContent sx={{ flex: 1 }}>
+                    <Card sx={{ display: 'flex', minWidth:"30vw", border:"solid thin #CC7351" }}>
+                    <CardContent sx={{ flex: 1, minWidth:"70%" }}>
                         <div>
                             <div className="headerItem">
                                 <Typography component="h2" variant="h5">
@@ -108,11 +107,10 @@ function AdventureDetails({adventure}){
                     </CardContent>
                     <CardMedia
                         component="img"
-                        sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ width: "35%", display: { xs: 'none', sm: 'block' } }}
                         image= { "data:image/jpg;base64," + adventure.photos[0]}
                     />
                     </Card>
-                </CardActionArea>
                 </Grid>
             </ThemeProvider>
             </div>

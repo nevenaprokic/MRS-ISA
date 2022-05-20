@@ -71,14 +71,12 @@ export default function ClientHomePage() {
     });
 
     const [filter, setFilter] = useState({
-      maxRating: "",
-      maxPrice: "",
-      maxPeople: "",
-      minPeople: "",
-      minPrice: "",
-      minRating: "",
-      minSize: "",
-      maxSize: "" 
+      maxRating: 5,
+      maxPrice: 500,
+      maxPeople: 50,
+      minPeople: 0,
+      minPrice: 0,
+      minRating: 0
   });
 
     const resetParams = () => {
@@ -186,8 +184,9 @@ export default function ClientHomePage() {
                     <br/><br/>
                       <Box sx={{ flexGrow: 1 }}>
                           <Grid  item xs={12}>
+                              <ClientSearch params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                             <br/>
-                              <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
+                              {/* <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/> */}
                             <br />
                           </Grid>
                         </Box>
