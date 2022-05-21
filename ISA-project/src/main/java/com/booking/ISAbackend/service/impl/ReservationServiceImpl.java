@@ -73,21 +73,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public List<ReservationDTO> getPastCottageReservationsByClient(String email) throws IOException {
-        List<Reservation> reservations = reservationRepository.getPastReservationsByClient(email, LocalDate.now());
+        List<Reservation> reservations = reservationRepository.getPastCottageReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
     }
 
     @Override
     @Transactional
     public List<ReservationDTO> getPastShipReservationsByClient(String email) throws IOException {
-        List<Reservation> reservations = reservationRepository.getPastReservationsByClient(email, LocalDate.now());
+        List<Reservation> reservations = reservationRepository.getPastShipReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
     }
 
     @Override
     @Transactional
     public List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException {
-        List<Reservation> reservations = reservationRepository.getPastReservationsByClient(email, LocalDate.now());
+        List<Reservation> reservations = reservationRepository.getPastAdventureReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
     }
 

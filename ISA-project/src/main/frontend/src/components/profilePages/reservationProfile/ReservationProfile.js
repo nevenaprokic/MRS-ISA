@@ -216,7 +216,7 @@ function ReservationProfile( {offerT} ){
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {requests.length == 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservation in past</Typography>}
+      {requests.length == 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservations in past</Typography>}
     </div>
     )
 }
