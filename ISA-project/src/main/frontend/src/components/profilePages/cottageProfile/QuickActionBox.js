@@ -6,7 +6,7 @@ import { userType, offerType} from "../../../app/Enum";
 import * as React from "react";
 import { useState, useEffect } from "react";
 import Modal from '@mui/material/Modal';
-import getQuickActionByOfferId from "../../../services/QuickActionService";
+import {getQuickActionByOfferId} from "../../../services/QuickActionService";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { makeReservation, convertParams } from '../../../services/ReservationService';
 import ConfirmDialog from "../../layout/ConfirmDialog";
@@ -44,6 +44,7 @@ function QuickActionBox({ id }) {
   }, []);
 
   if (quickActionData) {
+    console.log(quickActionData);
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">

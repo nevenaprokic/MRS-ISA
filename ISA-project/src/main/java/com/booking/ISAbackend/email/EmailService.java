@@ -70,5 +70,14 @@ public class EmailService implements EmailSender{
         mail.setText("You have successfully made reservation.\n");
         javaMailSender.send(mail);
     }
+    @Async
+    public void notifySubscribersNewQuickReservation(String email, String offerName, String date){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("New special offer!!!");
+        mail.setText("The new special offer will be valid from " + date +". Hurry up and book your favorite "+ offerName+"!\n");
+        javaMailSender.send(mail);
+    }
 
 }

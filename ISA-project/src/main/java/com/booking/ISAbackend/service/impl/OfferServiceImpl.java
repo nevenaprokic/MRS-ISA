@@ -3,10 +3,7 @@ package com.booking.ISAbackend.service.impl;
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.AddressDTO;
 import com.booking.ISAbackend.exceptions.OfferNotFoundException;
-import com.booking.ISAbackend.model.AdditionalService;
-import com.booking.ISAbackend.model.Address;
-import com.booking.ISAbackend.model.Offer;
-import com.booking.ISAbackend.model.Reservation;
+import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +83,22 @@ public class OfferServiceImpl implements OfferService {
             if((today.compareTo(r.getEndDate())<0)){
                 return false;
             }
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean checkUnavailableDate(Integer offerId, String startDate, Integer dateNumber) {
+        Offer offer = offerRepository.findOfferById(offerId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateAction = LocalDate.parse(startDate, formatter);
+        LocalDate endDateAction = startDateAction.plusDays(dateNumber);
+        for(UnavailableOfferDates u: offer.getUnavailableDate()){
+            if((u.getStartDate().compareTo(startDateAction) <= 0) && (startDateAction.compareTo(u.getEndDate()) <= 0))
+                return false;
+            if((u.getStartDate().compareTo(endDateAction) <= 0) && (endDateAction.compareTo(u.getEndDate()) <= 0))
+                return false;
         }
         return true;
     }

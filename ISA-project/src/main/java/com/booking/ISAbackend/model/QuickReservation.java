@@ -79,4 +79,21 @@ public class QuickReservation {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
+	public QuickReservation( LocalDate startDate, LocalDate endDateAction, LocalDate startDateAction, LocalDate endDate,  Double price, Integer numberOfPerson, boolean deleted, Offer offer) {
+		this.startDate = startDate;
+		this.endDateAction = endDateAction;
+		this.startDateAction = startDateAction;
+		this.endDate = endDate;
+		this.price = price;
+		this.numberOfPerson = numberOfPerson;
+		this.deleted = deleted;
+		this.offer = offer;
+	}
+
+	public void setAdditionalServices(List<AdditionalService> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+
+	public QuickReservation(){}
 }

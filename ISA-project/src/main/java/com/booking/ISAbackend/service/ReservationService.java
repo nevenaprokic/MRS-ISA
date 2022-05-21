@@ -12,5 +12,6 @@ public interface ReservationService {
 
     List<ReservationDTO> getAllReservation(String ownerId, String role) throws IOException;
     void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException;
+    Boolean isAvailableOffer(Integer offerId,String startDate, Integer dayNum);
 
 }

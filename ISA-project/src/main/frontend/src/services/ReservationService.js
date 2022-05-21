@@ -83,4 +83,19 @@ export function getAllReservationShipOwner(){
         )
 
 }
+export function isAvailableOffer(data){
+    return api
+        .get("reservation/available-offer", {
+            params:{
+                offerId:data.offerId,
+                startDate:data.startDateReservation,
+                dayNum: data.daysReservation
+            }
+        })
+        .then((data) => {console.log("DA LI JE DOZVOLJENO"); console.log(data.data); return data.data;})
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}
 
