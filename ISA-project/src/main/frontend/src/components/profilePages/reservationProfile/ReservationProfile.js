@@ -133,7 +133,7 @@ function Row({row, setRequests}) {
   }
 
 
-function ReservationProfile(){
+function ReservationProfile( {offerT} ){
     const [requests, setRequests] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -149,9 +149,10 @@ function ReservationProfile(){
     useEffect(() => {
         async function setData(){
           let role = getRoleFromToken();
-            const responseData = await getReservation[role]();;
-            console.log(responseData.data);
-            setRequests(responseData.data ? responseData.data : {});
+          if(role == userType.CLIENT) role = offerT;
+          const responseData = await getReservation[role]();;
+          console.log(responseData.data);
+          setRequests(responseData.data ? responseData.data : {});
         }
         setData();
 

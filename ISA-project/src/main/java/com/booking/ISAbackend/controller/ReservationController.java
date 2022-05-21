@@ -54,10 +54,30 @@ public class ReservationController {
 
     }
 
-    @GetMapping("get-all-by-client")
-    public ResponseEntity<List<ReservationDTO>> getPastReservationsByClient(@RequestParam String email){
+    @GetMapping("get-cottage-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email){
         try{
-            List<ReservationDTO> reservations = reservationService.getPastReservationsByClient(email);
+            List<ReservationDTO> reservations = reservationService.getPastCottageReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-ship-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastShipReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastShipReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-adventure-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastAdventureReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastAdventureReservationsByClient(email);
             return ResponseEntity.ok().body(reservations);
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

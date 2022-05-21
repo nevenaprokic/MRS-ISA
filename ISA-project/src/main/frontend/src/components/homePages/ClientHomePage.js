@@ -156,17 +156,17 @@ export default function ClientHomePage() {
                       <CottageIcon fontSize="large" style={{ verticalAlign: '-6' }} />
                         {"\t\tCottages"}
                       </Typography>
-                      <ReservationProfile />
+                      <ReservationProfile offerT={offerType.COTTAGE}/>
                       <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                       <SailingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
                         {"\t\Ships"}
                       </Typography>
-                      <ReservationProfile />
+                      <ReservationProfile offerT={offerType.SHIP}/>
                       <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                       <KayakingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
                         {"\t\tAdventures"}
                       </Typography>
-                      <ReservationProfile />
+                      <ReservationProfile offerT={offerType.ADVENTURE}/>
                 </TabPanel>
                 <TabPanel value={value} index={6}>
                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
