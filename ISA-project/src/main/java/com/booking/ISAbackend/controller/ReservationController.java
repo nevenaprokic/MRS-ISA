@@ -53,4 +53,15 @@ public class ReservationController {
         }
 
     }
+
+    @GetMapping("get-all-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastReservationsByClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

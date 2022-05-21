@@ -23,8 +23,9 @@ import {getAllReservation} from "../../../services/ReservationService";
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {getAllReservationShipOwner} from "../../../services/ReservationService";
-import { userType } from "../../../app/Enum";
+import { userType, offerType } from "../../../app/Enum";
 import {getRoleFromToken} from "../../../app/jwtTokenUtils";
+import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAdventureReservationsClient } from "../../../services/ClientService";
 
 
 function Row({row, setRequests}) {
@@ -140,6 +141,9 @@ function ReservationProfile(){
     let getReservation = {
       [userType.COTTAGE_OWNER]: getAllReservation,
       [userType.SHIP_OWNER]: getAllReservationShipOwner,
+      [offerType.COTTAGE]: getAllCottageReservationsClient,
+      [offerType.SHIP]: getAllShipReservationsClient,
+      [offerType.ADVENTURE]: getAllAdventureReservationsClient,
     };
 
     useEffect(() => {

@@ -70,6 +70,30 @@ public class ReservationServiceImpl implements ReservationService {
         emailSender.reservationConfirmation(params);
     }
 
+    @Override
+    @Transactional
+    public List<ReservationDTO> getPastReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getPastReservationsByClient(email, LocalDate.now());
+        List<ReservationDTO> reservationDTOS = new ArrayList<>();
+        for(Reservation r: reservations){
+            reservationDTOS.add(new ReservationDTO(r.getId(),
+                    localDateToString(r.getStartDate()),
+                    localDateToString(r.getEndDate()),
+                    additionalServiceService.getAdditionalServices(r.getOffer()),
+                    r.getPrice(),
+                    r.getNumberOfPerson(),
+                    r.getOffer().getId(),
+                    r.getOffer().getName(),
+                    r.getClient().getId(),
+                    r.getClient().getFirstName(),
+                    r.getClient().getLastName(),
+                    getOfferPhoto(r.getOffer()),
+                    r.getClient().getPhoneNumber(),
+                    r.getClient().getEmail()));
+        }
+        return reservationDTOS;
+    }
+
 
     @Override
     @Transactional
