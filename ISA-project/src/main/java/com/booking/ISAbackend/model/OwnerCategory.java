@@ -77,6 +77,14 @@ public class OwnerCategory {
 
     public String getCategoryColor() { return categoryColor; }
 
+    public void setHeighLimitPoints(int points) {
+        this.heighLimitPoints = points;
+    }
+
+    public void setLowLimitPoints(int points){
+        this.lowLimitPoints = points;
+    }
+
     //    REGULAR,
 //    SILVER,
 //    GOLD;

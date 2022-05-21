@@ -1,5 +1,8 @@
 package com.booking.ISAbackend.controller;
 
+import com.booking.ISAbackend.exceptions.AutomaticallyChangesCategoryIntervalException;
+import com.booking.ISAbackend.exceptions.ExistingCategoryNameException;
+import com.booking.ISAbackend.exceptions.OverlappingCategoryBoundaryException;
 import com.booking.ISAbackend.model.ClientCategory;
 import com.booking.ISAbackend.model.OwnerCategory;
 import com.booking.ISAbackend.service.ClientCategoryService;
@@ -7,9 +10,7 @@ import com.booking.ISAbackend.service.OwnerCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,6 +41,40 @@ public class LoyaltyProgramController {
         }catch (Exception e){
             e.printStackTrace();;
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("update-client-category")
+    public ResponseEntity<String> updateLoyaltyClientCategory(@RequestBody ClientCategory updateCategory){
+        try {
+            clientCategoryService.updateClientCategory(updateCategory);
+            return ResponseEntity.ok("Successfully update client category");
+        } catch (AutomaticallyChangesCategoryIntervalException e) {
+                return ResponseEntity.status(200).body("Successfully update client category, but other boundaries have been moved so that there is no gap between categories .");
+        } catch (ExistingCategoryNameException e) {
+            return ResponseEntity.status(400).body("Category with the same name already exits");
+        } catch (OverlappingCategoryBoundaryException e) {
+            return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong.");
+        }
+    }
+
+    @PostMapping("update-owner-category")
+    public ResponseEntity<String> updateLoyaltyOwnerCategory(@RequestBody OwnerCategory updateCategory){
+        try {
+            ownerCategoryService.updateOwnerCategory(updateCategory);
+            return ResponseEntity.ok("Successfully update client category");
+        } catch (AutomaticallyChangesCategoryIntervalException e) {
+            return ResponseEntity.status(200).body("Successfully update client category, but other boundaries have been moved so that there is no gap between categories .");
+        } catch (ExistingCategoryNameException e) {
+            return ResponseEntity.status(400).body("Category with the same name already exits");
+        } catch (OverlappingCategoryBoundaryException e) {
+            return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong.");
         }
     }
 }

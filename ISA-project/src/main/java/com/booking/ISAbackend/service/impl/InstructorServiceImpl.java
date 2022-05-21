@@ -3,16 +3,14 @@ package com.booking.ISAbackend.service.impl;
 import com.booking.ISAbackend.dto.AdventureDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.model.DeleteRequest;
-import com.booking.ISAbackend.model.Instructor;
-import com.booking.ISAbackend.model.MyUser;
-import com.booking.ISAbackend.model.Reservation;
+import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.DeleteRequestRepository;
 import com.booking.ISAbackend.repository.InstructorRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.repository.UserRepository;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.service.InstructorService;
+import com.booking.ISAbackend.service.OwnerCategoryService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +39,9 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Autowired
     private DeleteRequestRepository deleteRequestRepository;
+
+    @Autowired
+    private OwnerCategoryService ownerCategoryService;
 
     @Override
     @Transactional
@@ -81,7 +82,8 @@ public class InstructorServiceImpl implements InstructorService {
     private void makeInstructorDTOs(List<InstructorProfileData> retList, List<Instructor> instructors) throws IOException {
         for (Instructor i : instructors) {
             List<AdventureDTO> adventures = adventureService.getInstructorAdventures(i.getEmail());
-            InstructorProfileData dto = new InstructorProfileData(i);
+            OwnerCategory category = ownerCategoryService.findByReservationpoints(i.getPoints()).get(0);
+            InstructorProfileData dto = new InstructorProfileData(i, category);
             dto.setAdventures(adventures);
             retList.add(dto);
         }

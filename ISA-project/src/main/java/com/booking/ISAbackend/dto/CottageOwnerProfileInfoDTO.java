@@ -1,6 +1,8 @@
 package com.booking.ISAbackend.dto;
 
 import com.booking.ISAbackend.model.CottageOwner;
+import com.booking.ISAbackend.model.Owner;
+import com.booking.ISAbackend.model.OwnerCategory;
 
 public class CottageOwnerProfileInfoDTO {
     private String email;
@@ -22,7 +24,7 @@ public class CottageOwnerProfileInfoDTO {
         this.state = state;
         this.userCategory = userCategory;
     }
-    public CottageOwnerProfileInfoDTO(CottageOwner cottageOwner) {
+    public CottageOwnerProfileInfoDTO(CottageOwner cottageOwner, OwnerCategory category) {
         this.email = cottageOwner.getEmail();
         this.firstName = cottageOwner.getFirstName();
         this.lastName = cottageOwner.getLastName();
@@ -30,7 +32,7 @@ public class CottageOwnerProfileInfoDTO {
         this.street = cottageOwner.getAddress().getStreet();
         this.city = cottageOwner.getAddress().getCity();
         this.state = cottageOwner.getAddress().getState();
-        this.userCategory = cottageOwner.getOwnerCategory().getName();
+        this.userCategory = category.getName();
     }
     public CottageOwnerProfileInfoDTO(){}
 

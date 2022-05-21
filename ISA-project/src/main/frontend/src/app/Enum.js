@@ -4,7 +4,8 @@ export const userType = {
     INSTRUCTOR: "INSTRUCTOR",
     COTTAGE_OWNER:"COTTAGE_OWNER" ,
     SHIP_OWNER: "SHIP_OWNER",
-    ADMIN : "ADMIN"
+    ADMIN : "ADMIN",
+    OWNER : "OWNER"
 }
 
 Object.freeze(userType);

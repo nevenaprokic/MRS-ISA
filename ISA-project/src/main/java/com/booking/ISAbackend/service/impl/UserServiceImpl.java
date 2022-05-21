@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private OwnerCategoryServiceImpl ownerCategoryService;
 
 	@Autowired
 	private AddressRepository addressRepository;
@@ -74,7 +76,8 @@ public class UserServiceImpl implements UserService{
 		InstructorProfileData dto = null;
 		Instructor i = findInstructorByEmail(email);
 		if(i != null){
-			dto = new InstructorProfileData(i);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(i.getPoints()).get(0);
+			dto = new InstructorProfileData(i, category);
 			return dto;
 		}
 		return dto;
@@ -86,7 +89,8 @@ public class UserServiceImpl implements UserService{
 		CottageOwnerProfileInfoDTO dto = null;
 		CottageOwner cottageOwner = findCottageOwnerByEmail(email);
 		if(cottageOwner != null){
-			dto = new CottageOwnerProfileInfoDTO(cottageOwner);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(cottageOwner.getPoints()).get(0);
+			dto = new CottageOwnerProfileInfoDTO(cottageOwner, category);
 			return dto;
 		}
 		return dto;
@@ -106,7 +110,8 @@ public class UserServiceImpl implements UserService{
 		ShipOwnerProfileInfoDTO dto = null;
 		ShipOwner shipOwner = findShipOwnerByEmail(email);
 		if(shipOwner != null){
-			dto = new ShipOwnerProfileInfoDTO(shipOwner);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(shipOwner.getPoints()).get(0);
+			dto = new ShipOwnerProfileInfoDTO(shipOwner, category);
 			return dto;
 		}
 		return dto;

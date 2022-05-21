@@ -37,10 +37,10 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
 
-insert into client (client_category_id, penal, id) values (1, 3, 1);
-insert into client (client_category_id, penal, id) values (1, 0, 2);
-insert into client (client_category_id, penal, id) values (2, 1, 3);
-insert into client (client_category_id, penal, id) values (3, 0, 4);
+insert into client (points, penal, id) values (0, 3, 1);
+insert into client (points, penal, id) values (2, 0, 2);
+insert into client (points, penal, id) values (7, 1, 3);
+insert into client (points, penal, id) values (15, 0, 4);
 
 /*COTTAGE OWNERS*/
 
@@ -48,8 +48,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mara@gmail.com', 'Mara', 'Dabovic', '$2a$10$ZFhTzzIdX6.j47kW/wCaA.xIJjpt6LCq4ASEa/iUr78LTGIfJSsEC', '063-211-1166', 6, false);/*vlasnik2*/
 
 
-insert  into owner(owner_category_id, id) values (1, 5);
-insert  into owner(owner_category_id, id) values (2, 6);
+insert  into owner(points, id) values (1, 5);
+insert  into owner(points, id) values (6, 6);
 
 insert into cottage_owner(id) values (5);
 insert into cottage_owner(id) values (6);
@@ -59,8 +59,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '063-222-1113', 8, false);/*vlasnik4*/
 
 
-insert  into owner(owner_category_id, id) values (1, 7);
-insert  into owner(owner_category_id, id) values (3, 8);
+insert  into owner(points, id) values (8, 7);
+insert  into owner(points, id) values (3, 8);
 
 insert into ship_owner(id) values (7);
 insert into ship_owner(id) values (8);
@@ -71,8 +71,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milica@gmail.com', 'Milica', 'Matic', '$2a$10$UwJxipMMlAZZRwxyEMuk/.2wn2UuFt.quxqu0Gj6vnGC.3goMKCu.', '063-111-1212', 10, false);/*instr2*/
 
 
-insert  into owner(owner_category_id, id) values (3, 9);
-insert  into owner(owner_category_id,  id) values (1, 10);
+insert  into owner(points, id) values (11, 9);
+insert  into owner(points,  id) values (0, 10);
 
 insert into instructor(biography, id) values ('Pecanjem se bavim od svoje 5 godine. Povedite drustvo i idemo na zabavu!',9);
 insert into instructor(biography, id) values ('Svaki dan je nova avantura, pridruzi se mojoj!',10);

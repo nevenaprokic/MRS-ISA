@@ -78,4 +78,28 @@ public class ClientCategory {
     }
 
     public String getCategoryColor() { return categoryColor; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public void setReservationPoints(Integer reservationPoints) {
+        this.reservationPoints = reservationPoints;
+    }
+
+    public void setLowLimitPoints(Integer lowLimitPoints) {
+        this.lowLimitPoints = lowLimitPoints;
+    }
+
+    public void setHeighLimitPoints(Integer heighLimitPoints) {
+        this.heighLimitPoints = heighLimitPoints;
+    }
+
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
+    }
 }

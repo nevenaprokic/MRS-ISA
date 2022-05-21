@@ -22,7 +22,8 @@ import { userType } from "../../app/Enum";
 import ChangeLoyaltyCategory from "../forms/loyaltyCategory/ChangeLoyaltyCategory";
 import Modal from '@mui/material/Modal';
 
-function LoyaltyCard({category, type}){
+function LoyaltyCard({category, type, setLoyaltyCategories}){
+    console.log("aaaaaaaaaaaaaaaa", setLoyaltyCategories)
 
     let color = category.categoryColor;
     console.log(category);
@@ -84,7 +85,7 @@ function LoyaltyCard({category, type}){
             aria-describedby="modal-modal-description"
             sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
         >
-                        <ChangeLoyaltyCategory close={handleCloseForm} loyaltyCategory={category} categoryType={type}/>
+                        <ChangeLoyaltyCategory close={handleCloseForm} loyaltyCategory={category} categoryType={type} setLoyaltyCategories={setLoyaltyCategories}/>
                     
         </Modal>
       </Card>

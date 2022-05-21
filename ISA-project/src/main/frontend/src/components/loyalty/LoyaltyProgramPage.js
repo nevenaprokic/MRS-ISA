@@ -16,6 +16,7 @@ function LoyalyProgeramPage(){
 
     const [loyaltyCategories, setLoyaltyCategories] = useState();
     const [categoryType, setCategorType] = useState();
+    console.log("aaadadassafasfafs", setLoyaltyCategories);
 
 
     function handleClientCategory(){
@@ -29,8 +30,10 @@ function LoyalyProgeramPage(){
     function handleOwnerCategory(){
         async function getData(){
                 const responseData = await getAllOwnerCategories();
+                console.log(responseData.data);
                 setLoyaltyCategories(responseData.data ? responseData.data : {});
-                setCategorType(userType.INSTRUCTOR);
+                setCategorType(userType.OWNER);
+                console.log("qqqq", categoryType);
             }
             
         getData();
@@ -71,12 +74,12 @@ function LoyalyProgeramPage(){
                     
             </div>
             </div>
-            {!!loyaltyCategories &&
+            {!!loyaltyCategories && !!setLoyaltyCategories &&
             <Container sx={{ py: 8}} >
                 <Grid container spacing={5}> 
                     {loyaltyCategories.map((category) => (
                     <Grid item key={category.name} xs={15} sm={4}>
-                        <LoyaltyCard type={categoryType} category={category}/>           
+                        <LoyaltyCard type={categoryType} category={category} setLoyaltyCategories={setLoyaltyCategories}/>           
                     </Grid>
                     ))}
                 </Grid>
