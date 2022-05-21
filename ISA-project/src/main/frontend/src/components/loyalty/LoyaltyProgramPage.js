@@ -10,14 +10,25 @@ import TextField from '@mui/material/TextField';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Divider from '@mui/material/Divider';
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, IconButton } from "@mui/material";
+import AddLoyaltyCategory from "../forms/loyaltyCategory/AddLoyaltyCategory";
+import Modal from '@mui/material/Modal';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function LoyalyProgeramPage(){
 
     const [loyaltyCategories, setLoyaltyCategories] = useState();
     const [categoryType, setCategorType] = useState();
-    console.log("aaadadassafasfafs", setLoyaltyCategories);
+    const [openAddForm, setOpenAddForm] = useState(false);
 
+    function handleOpenAddForm(){
+        setOpenAddForm(true);
+    }
+
+    function handleCloseAddForm(){
+        setOpenAddForm(false);
+    }
+     
 
     function handleClientCategory(){
         async function getData(){      
@@ -73,6 +84,18 @@ function LoyalyProgeramPage(){
                         </Button>
                     
             </div>
+            <div className="addBtn">
+                    <IconButton
+                        size="midle"
+                        variant="outlined"
+                        bgcolor="secondary"
+                        color="primary"
+                        onClick={handleOpenAddForm}
+                    >
+                            <AddBoxIcon/> New
+                        </IconButton>
+
+            </div>
             </div>
             {!!loyaltyCategories && !!setLoyaltyCategories &&
             <Container sx={{ py: 8}} >
@@ -85,6 +108,17 @@ function LoyalyProgeramPage(){
                 </Grid>
             </Container>
             }
+
+        <Modal
+            open={openAddForm}
+            onClose={handleCloseAddForm}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+        >
+                        <AddLoyaltyCategory close={handleCloseAddForm} setLoyaltyCategories={setLoyaltyCategories}/>
+                    
+        </Modal>
             
         </div>
         

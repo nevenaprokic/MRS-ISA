@@ -18,12 +18,15 @@ import Avatar from '@mui/material/Avatar';
 import categoryIcon from '../../images/laurel.png';
 import { BlockPicker } from 'react-color';
 import { useState } from "react";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import { updateClientCategory, updateOwnerCategory } from "../../../services/LoyaltyService";
 
-
-
-function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyaltyCategories}){
-    const [color, setColor] = useState(loyaltyCategory.categoryColor);
+function AddLoyaltyCategory({close, setLoyaltyCategories}){
+    const [color, setColor] = useState("#000000");
+    const [categoryType, setCategorType] = useState(userType.CLIENT);
 
     const updateFunction = {
       [userType.CLIENT] : updateClientCategory,
@@ -48,19 +51,22 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
         watch,
       } = useForm({});
 
+      function handleCategoryChange(event){
+        setCategorType(event.target.value);
+      }
 
     const onSubmit = (data) => {
-        console.log(data);
+
         data.categoryColor = color;
-        data.id = loyaltyCategory.id;
         if(categoryType == userType.CLIENT){
           data.discount = data.percent;
         }
         else{
           data.earningsPercent = data.percent;
         }
-        updateFunction[categoryType](data, setLoyaltyCategories);
-         close();
+        console.log("aaaa",data);
+        //updateFunction[categoryType](data, setLoyaltyCategories);
+        close();
     };
 
     return (
@@ -92,7 +98,7 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   variant="h5"
                   sx={{ color: "#CC7351" }}
                 >
-                  Change loyalty category
+                  Add loyalty category
                 </Typography>
             </div>
             <div className="close">
@@ -108,7 +114,21 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
               onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 3 }}
             >
-              <Grid container spacing={2}>
+              <Grid container spacing={2}><FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ mt: 3 }}>Category type</FormLabel>
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        required
+                        onChange={handleCategoryChange}
+                        defaultValue={userType.CLIENT}
+                    >
+                        <FormControlLabel value={userType.CLIENT} control={<Radio  color="secondary" sx={{fontSize:"12px"}}/>} label="Client category" />
+                        <FormControlLabel value={userType.INSTRUCTOR} control={<Radio  color="secondary" sx={{fontSize:"12px"}}/>} label="Owner category" />
+                    </RadioGroup>
+                </FormControl>
+
                 <FormControl
                   variant="standard"
                   sx={{ m: 1, mt: 3, width: "25ch" }}
@@ -116,12 +136,17 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   <Input
                     name="name"
                     id="name"
-                    defaultValue={loyaltyCategory.name}
-                    {...register("name")}
+                    required
+                    {...register("name", {required: true})}
                   />
                   <FormHelperText id="standard-weight-helper-text">
                     Name
                   </FormHelperText>
+                  {errors.name && (
+                    <label className="errorLabel">
+                      Required!
+                    </label>
+                  )}
                 </FormControl>
 
                 <FormControl
@@ -132,15 +157,15 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                     name="reservationPoints"
                     id="reservationPoints"
                     type="number"
-                    defaultValue={loyaltyCategory.reservationPoints}
-                    {...register("reservationPoints")}
+                    required
+                    {...register("reservationPoints", {required: true, pattern:/^[1-9]+[0-9]*$/})}
                   />
                   <FormHelperText id="standard-weight-helper-text">
                     Points for successful reservation
                   </FormHelperText>
                   {errors.reservationPoints && (
                     <label className="errorLabel">
-                      Only numbers are allowed!
+                      Only positive numbers are allowed!
                     </label>
                   )}
                 </FormControl>
@@ -153,16 +178,16 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   <Input
                     name="lowerLimit"
                     id="lowerLimit"
-                    defaultValue={loyaltyCategory.lowLimitPoints}
                     type="number"
-                    {...register("lowLimitPoints")}
+                    required
+                    {...register("lowLimitPoints", {required: true, pattern:/^[1-9]+[0-9]*$/})}
                   />
                   <FormHelperText id="standard-weight-helper-text">
                     Lower limit of points
                   </FormHelperText>
                   {errors.lowerLimit && (
                     <label className="errorlowerLimitLabel">
-                      Only numbers are allowed!
+                      Only positive numbers are allowed!
                     </label>
                   )}
                 </FormControl>
@@ -173,16 +198,16 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   <Input
                     name="upperLimit"
                     id="upperLimit"
-                    defaultValue={loyaltyCategory.heighLimitPoints}
                     type="number"
-                    {...register("heighLimitPoints")}
+                    required
+                    {...register("heighLimitPoints", {required: true, pattern:/^[1-9]+[0-9]*$/})}
                   />
                   <FormHelperText id="standard-weight-helper-text">
                     Upper limit of points
                   </FormHelperText>
                   {errors.heighLimitPoints && (
                     <label className="errorLabel">
-                      Only number are allowed!
+                      Only positive number are allowed!
                     </label>
                   )}
                 </FormControl>
@@ -193,11 +218,11 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   <Input
                     name="percent"
                     id="percent"
+                    required
                     endAdornment={<InputAdornment position="end">%</InputAdornment>}
-                    defaultValue={categoryType == userType.CLIENT ? loyaltyCategory.discount : loyaltyCategory.earningsPercent}
-                    
                   {...register("percent", {
                         pattern:/^100$|^\d{0,2}(\.\d{1,2})? *%?$/,
+                        required: true,
                     })}
                   />
                   <FormHelperText id="standard-weight-helper-text">
@@ -205,15 +230,22 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                   </FormHelperText>
                   {errors.percent && (
                     <p className="errorLabel">
-                      Only numbers with a maximum of two decimal places are allowed
+                      Only numbers between 0 and 100 with a maximum of two decimal places are allowed!
                     </p>
                   )}
                 </FormControl>
-                <div className="colorPicker">
-                    <BlockPicker
-                      color={color}
-                      onChange={(color) => {setColor(color.hex)}}
-                  />
+
+                <div className="colorPickerContainer"> 
+                    <label className="chooseColor">Choose category color</label>
+                    <br/>
+                    <div className="colorPicker">
+
+                        <BlockPicker
+                        color={color}
+                        onChange={(color) => {setColor(color.hex)}}
+                        />
+                    </div>
+                  
                 </div>
 
                
@@ -223,7 +255,7 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
                 variant="contained"
                 sx={{ mt: 3, mb: 2, width:"40%", marginLeft:"30%", minWidth:"100px"}}
               >
-                Confirm changes
+                Confirm
               </Button>
 
               <div>
@@ -238,4 +270,4 @@ function ChangeLoyaltyCategory({loyaltyCategory, close, categoryType, setLoyalty
     );
 }
 
-export default ChangeLoyaltyCategory;
+export default AddLoyaltyCategory;

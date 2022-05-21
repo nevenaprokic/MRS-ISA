@@ -23,7 +23,6 @@ import ChangeLoyaltyCategory from "../forms/loyaltyCategory/ChangeLoyaltyCategor
 import Modal from '@mui/material/Modal';
 
 function LoyaltyCard({category, type, setLoyaltyCategories}){
-    console.log("aaaaaaaaaaaaaaaa", setLoyaltyCategories)
 
     let color = category.categoryColor;
     console.log(category);

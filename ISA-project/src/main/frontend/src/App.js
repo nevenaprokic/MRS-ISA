@@ -25,6 +25,7 @@ import RegistrationRequestsList from './components/collections/RegistrationReque
 import WorkingCalendar from './components/calendar/WorkingCalendar'
 import LoyalyProgeramPage from './components/loyalty/LoyaltyProgramPage';
 import ChangeLoyaltyCategory from './components/forms/loyaltyCategory/ChangeLoyaltyCategory';
+import AddLoyaltyCategory from './components/forms/loyaltyCategory/AddLoyaltyCategory';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route path='/owner/calendar' element={<WorkingCalendar/>} />
           <Route path='/admin/loyalty-program' element={<LoyalyProgeramPage/>}/>
           <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
+          <Route path='/admin/loyalty-program/add-category' element={<LoyalyProgeramPage/>}/>
         </Routes>
     </div>
   );

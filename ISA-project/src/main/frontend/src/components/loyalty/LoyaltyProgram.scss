@@ -22,7 +22,7 @@ $changeFormWidth: 40%;
 .categoryBtn{
     display: inline-block;
     vertical-align: top;
-    width: 30%;
+    width: 200px;
     margin-left: 5px;
 }
 
@@ -68,4 +68,22 @@ $changeFormWidth: 40%;
     margin-top: 5%;
     margin-left: 5%;
     height: 50%;
+}
+.colorPickerContainer{
+    width: 55%;
+    margin-top: 10%;
+    margin-left: 5%;
+    height: 50%;
+}
+.chooseColor{
+    font-size: 14px;
+    color: gray;
+}
+
+.addBtn{
+    // display: inline-block;
+    // vertical-align: top;
+    float: right;
+    width: 100px;
+    margin-right: 0px;
 }
