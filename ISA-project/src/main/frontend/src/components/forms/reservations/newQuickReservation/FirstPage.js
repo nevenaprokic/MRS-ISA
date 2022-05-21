@@ -10,15 +10,17 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import InputAdornment from "@mui/material/InputAdornment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { userType } from "../../../../app/Enum";
 
 
-export default function FirstPage({offers, setOffer }) {
+export default function FirstPage({offers, setOffer, role }) {
   const [valueAction, setValueAction] = React.useState(new Date());
   const [valueReservation, setValueReservation] = React.useState(new Date());
-  console.log(offers);
 
   const handlerOfferChange = (event, selectedOffer) => {
     let currentOffer = offers.find((offer)=> offer.name === selectedOffer);
+    if(role === userType.INSTRUCTOR)
+       currentOffer = offers.find((offer)=> offer.offerName === selectedOffer);
       setOffer(prevState => {
         return{...prevState, offerId:currentOffer.id}
       })
@@ -77,7 +79,7 @@ export default function FirstPage({offers, setOffer }) {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={offers.map((offer)=> offer.name)}
+              options={userType.INSTRUCTOR == role ? offers.map((offer)=> offer.offerName): offers.map((offer)=> offer.name)}
               required
               sx={{ width: 300, marginLeft: "22%", marginTop:"4%" }}
               onChange={(event, newValue) => {

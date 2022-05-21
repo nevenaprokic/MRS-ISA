@@ -44,6 +44,7 @@ function QuickActionBox({ id }) {
   }, []);
 
   if (quickActionData) {
+    console.log(quickActionData);
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">

@@ -14,12 +14,21 @@ import Review from "./Review";
 import { userType } from "../../../../app/Enum";
 import { useEffect, useState } from "react";
 import { getCottageByCottageOwnerEmail } from "../../../../services/CottageService";
-import { getRoleFromToken, getUsernameFromToken } from "../../../../app/jwtTokenUtils";
+import {
+  getRoleFromToken,
+  getUsernameFromToken,
+} from "../../../../app/jwtTokenUtils";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import {addDays} from '../../../../services/UtilService';
-import {alreadyExistQuickReservationForOffer, isAvailablePeriod} from '../../../../services/QuickActionService';
-import {isAvailableOffer} from '../../../../services/ReservationService';
+import { addDays } from "../../../../services/UtilService";
+import {
+  alreadyExistQuickReservationForOffer,
+  isAvailablePeriod,
+  makeQuickReservation
+} from "../../../../services/QuickActionService";
+import { isAvailableOffer } from "../../../../services/ReservationService";
+import {getAdventureByInstructorEmail} from '../../../../services/AdventureService';
+import {getShipByShipOwnerEmail} from '../../../../services/ShipService';
 
 const steps = [
   "Selection of offers",
@@ -33,50 +42,58 @@ const theme = createTheme({
     secondary: { main: "#ffffff" },
   },
 });
-const regex = new RegExp('^[1-9]+[0-9]*$');   
-function checkFirstPage(offer){
+const regex = new RegExp("^[1-9]+[0-9]*$");
+function checkFirstPage(offer) {
   let startDateAction = new Date(offer.startDateAction);
   let startDateReservation = new Date(offer.startDateReservation);
-  let endDateAction = addDays(new Date(offer.startDateAction), offer.daysAction);
+  let endDateAction = addDays(
+    new Date(offer.startDateAction),
+    offer.daysAction
+  );
   const currentDate = new Date();
 
-
-  if(offer.name == undefined){
+  if (offer.name == undefined) {
     toast.error("Offer name is required", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if(!regex.test(offer.daysAction)){
-    toast.error("The number of days for the action are required and must be a number!", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
+  if (!regex.test(offer.daysAction)) {
+    toast.error(
+      "The number of days for the action are required and must be a number!",
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      }
+    );
     return false;
   }
-  if(!regex.test(offer.daysReservation)){
-    toast.error("The number of days for the reservation are required and must be a number!", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
+  if (!regex.test(offer.daysReservation)) {
+    toast.error(
+      "The number of days for the reservation are required and must be a number!",
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      }
+    );
     return false;
   }
-  if(startDateAction < currentDate || startDateReservation <= currentDate){
+  if (startDateAction < currentDate || startDateReservation <= currentDate) {
     toast.error("Invalide date", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if(startDateAction >= startDateReservation){
+  if (startDateAction >= startDateReservation) {
     toast.error("Invalide date", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if(endDateAction >= startDateReservation >= startDateAction){
+  if (endDateAction >= startDateReservation >= startDateAction) {
     toast.error("Invalide date", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
@@ -86,15 +103,15 @@ function checkFirstPage(offer){
   return true;
 }
 
-function checkSecondPage(offer){
-  if(!regex.test(offer.peopleNum)){
+function checkSecondPage(offer) {
+  if (!regex.test(offer.peopleNum)) {
     toast.error("The number of people are required and must be a number!", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if(!regex.test(offer.price)){
+  if (!regex.test(offer.price)) {
     toast.error("Price is required and must be a number!", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
@@ -104,38 +121,57 @@ function checkSecondPage(offer){
   return true;
 }
 
-
 export default function Checkout({ offers, setOffers }) {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [offer, setOffer] = React.useState({name:'', offerId:0, daysAction: 0, daysReservation:0, startDateAction: '', startDateReservation: '', peopleNum:0, price:0});
-  const [additionalServicesInputList, setInputList] = useState([{ serviceName: "", servicePrice: "" }]);
-  const { register, handleSubmit, formState: { errors }, watch } = useForm({});
-    // const [offers, setOffers] = useState();
+  const [offer, setOffer] = React.useState({
+    name: "",
+    offerId: 0,
+    daysAction: 0,
+    daysReservation: 0,
+    startDateAction: "",
+    startDateReservation: "",
+    peopleNum: 0,
+    price: 0,
 
+  });
+  const [additionalServicesInputList, setInputList] = useState([
+    { serviceName: "", servicePrice: "" },
+  ]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({});
 
-
-  function checkDateFromBack(){
+  function checkDateFromBack() {
     async function setCheck() {
       let checkExist = await alreadyExistQuickReservationForOffer(offer);
       let checkAvailble = await isAvailableOffer(offer);
       let checkPeriod = await isAvailablePeriod(offer);
-      
-      if(checkExist && checkAvailble && checkPeriod){
+
+      if (checkExist && checkAvailble && checkPeriod) {
         setActiveStep(activeStep + 1);
-      } 
-      if(!checkExist){
-        toast.error("A quick reservation for the selected offer in the selected period already exists!", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 1500,
-        });
       }
-      if(!checkAvailble){
-        toast.error("The reservation for the selected offer in the selected period already exists!", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 1500,
-        });
+      if (!checkExist) {
+        toast.error(
+          "A quick reservation for the selected offer in the selected period already exists!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
       }
-      if(!checkPeriod){
+      if (!checkAvailble) {
+        toast.error(
+          "The reservation for the selected offer in the selected period already exists!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      }
+      if (!checkPeriod) {
         toast.error("Offer in the selected period is unavailable!", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,
@@ -147,19 +183,20 @@ export default function Checkout({ offers, setOffers }) {
 
   const handleNext = () => {
     console.log(offer);
-    if(activeStep == 0){
-      if(checkFirstPage(offer)){
+    console.log(activeStep);
+    if (activeStep == 0) {
+      if (checkFirstPage(offer)) {
         checkDateFromBack();
       }
-    }else if(activeStep == 1){
+    } else if (activeStep == 1) {
       handleSubmit();
-      if(checkSecondPage(offer)){
+      if (checkSecondPage(offer)) {
         setActiveStep(activeStep + 1);
       }
-    }else{
+    } else if (activeStep == 2) {
       setActiveStep(activeStep + 1);
-    }
-   
+      makeQuickReservation(offer, additionalServicesInputList);
+    } 
   };
 
   const handleBack = () => {
@@ -167,9 +204,11 @@ export default function Checkout({ offers, setOffers }) {
   };
 
   let getOffer = {
-    [userType.COTTAGE_OWNER]: getCottageByCottageOwnerEmail
+    [userType.COTTAGE_OWNER]: getCottageByCottageOwnerEmail,
+    [userType.SHIP_OWNER] : getShipByShipOwnerEmail,
+    [userType.INSTRUCTOR] : getAdventureByInstructorEmail
   };
-
+  let role = getRoleFromToken();
   useEffect(() => {
     async function setDataOffer() {
       let role = getRoleFromToken();
@@ -177,28 +216,41 @@ export default function Checkout({ offers, setOffers }) {
       let username = getUsernameFromToken();
       console.log(username);
       const offersData = await getOffer[role](username);
+      console.log(offersData);
       setOffers(offersData ? offersData.data : {});
 
       return offersData;
     }
-      setDataOffer();
-   
+    setDataOffer();
   }, []);
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <FirstPage offers ={offers}  setOffer={setOffer}/>;
+        return <FirstPage offers={offers} setOffer={setOffer} role={role}/>;
       case 1:
-        return <SecondPage  setOffer={setOffer} additionalServicesInputList={additionalServicesInputList} setInputList={setInputList} register={register} errors={errors}/>;
+        return (
+          <SecondPage
+            setOffer={setOffer}
+            additionalServicesInputList={additionalServicesInputList}
+            setInputList={setInputList}
+            register={register}
+            errors={errors}
+          />
+        );
       case 2:
-        return <Review offer={offer} additionalServicesInputList={additionalServicesInputList} />;
+        return (
+          <Review
+            offer={offer}
+            additionalServicesInputList={additionalServicesInputList}
+          />
+        );
       default:
         throw new Error("Unknown step");
     }
   }
-    return (
-      !!offers &&
+  return (
+    !!offers && (
       <div style={{ width: "70vw" }}>
         <ThemeProvider theme={theme}>
           <Container
@@ -227,7 +279,9 @@ export default function Checkout({ offers, setOffers }) {
                       Thank you for your new quick reservation.
                     </Typography>
                     <Typography variant="subtitle1">
-                      {"The new quick reservation will be presented with the '"+ offer.name +"' offer. All subscribed users will be notified of the new action."}
+                      {"The new quick reservation will be presented with the '" +
+                        offer.name +
+                        "' offer. All subscribed users will be notified of the new action."}
                     </Typography>
                   </React.Fragment>
                 ) : (
@@ -245,9 +299,7 @@ export default function Checkout({ offers, setOffers }) {
                         onClick={handleNext}
                         sx={{ mt: 3, ml: 1 }}
                       >
-                        {activeStep === steps.length - 1
-                          ? "Create"
-                          : "Next"}
+                        {activeStep === steps.length - 1 ? "Create" : "Next"}
                       </Button>
                     </Box>
                   </React.Fragment>
@@ -257,6 +309,6 @@ export default function Checkout({ offers, setOffers }) {
           </Container>
         </ThemeProvider>
       </div>
-    );
-  
+    )
+  );
 }
