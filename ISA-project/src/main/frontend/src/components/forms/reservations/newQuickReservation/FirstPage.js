@@ -11,27 +11,62 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-export default function AddressForm() {
-  const [value, setValue] = React.useState(new Date());
+
+export default function FirstPage({offers, setOffer }) {
+  const [valueAction, setValueAction] = React.useState(new Date());
+  const [valueReservation, setValueReservation] = React.useState(new Date());
+  console.log(offers);
 
   const handlerOfferChange = (event, selectedOffer) => {
-    // async function set(){
-    //   console.log("naziv",selectedOffer.label);
-    //   const eventsData = await getCalendarEvents(selectedOffer.id, setEvents);
-    //   let calendarItems = generateCalendarEvents(eventsData.data);
-    //   setEvents(calendarItems);
-    //   setOfferId(selectedOffer.id);
-    //   setOfferName(selectedOffer.label);
-    //   return eventsData;
-    // }
-    // set();
+    let currentOffer = offers.find((offer)=> offer.name === selectedOffer);
+      setOffer(prevState => {
+        return{...prevState, offerId:currentOffer.id}
+      })
+    setOffer(prevState => {
+      return{...prevState, name:selectedOffer}
+    })
   };
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
+  const handleChangeActionDate = (newValue) => {
+    setValueAction(newValue);
+    let month = (newValue.getMonth()+1);
+    let day = newValue.getDate();
+    if(month.toString().length === 1)
+      month = "0"+month;
+    if(day.toString().length === 1)
+      day = "0"+day;
+    let date = newValue.getFullYear()+ "-" +month + "-" +day;
+    setOffer(prevState => {
+      return{...prevState, startDateAction:date}
+    })
+  };
+  const handleChangeReservationDate = (newValue) => {
+    let month = (newValue.getMonth()+1);
+    let day = newValue.getDate();
+    if(month.toString().length === 1)
+      month = "0" + month;
+    if(day.toString().length === 1)
+      day = "0"+day;
+    let date =newValue.getFullYear() + "-" +month + "-" +day;
+    setValueReservation(newValue);
+    setOffer(prevState => {
+      return{...prevState, startDateReservation:date}
+    })
+  };
+  const handleChangeNumberAction = (e) => {
+    setOffer(prevState => {
+      return{...prevState, daysAction:e.target.value}
+    })
+  };
+  const handleChangeNumberReservation = (e) => {
+    setOffer(prevState => {
+      return{...prevState, daysReservation:e.target.value}
+    })
+    
   };
 
   return (
+    !!offers && 
     <React.Fragment>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid item xs={12}>
@@ -42,7 +77,7 @@ export default function AddressForm() {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={["neka", "naka"]}
+              options={offers.map((offer)=> offer.name)}
               required
               sx={{ width: 300, marginLeft: "22%", marginTop:"4%" }}
               onChange={(event, newValue) => {
@@ -58,17 +93,17 @@ export default function AddressForm() {
             <DesktopDatePicker
               label="Starting date*"
               inputFormat="yyyy-MM-dd"
-              value={value}
+              value={valueAction}
               required
-              onChange={handleChange}
+              onChange={handleChangeActionDate}
               renderInput={(params) => <TextField {...params} />}
             />
           </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField
-              id="days"
-              name="second"
+              id="daysAction"
+              name="secondAction"
               label="Number of days"
               type="number"
               InputLabelProps={{
@@ -76,6 +111,7 @@ export default function AddressForm() {
               }}
               fullWidth
               required
+              onChange={handleChangeNumberAction}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -93,16 +129,16 @@ export default function AddressForm() {
           <DesktopDatePicker
             label="Starting date*"
             inputFormat="yyyy-MM-dd"
-            value={value}
+            value={valueReservation}
             required
-            onChange={handleChange}
+            onChange={handleChangeReservationDate}
             renderInput={(params) => <TextField {...params} />}
           />
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <TextField
-            id="days"
+            id="daysReservation"
             name="second"
             label="Number of days"
             type="number"
@@ -111,6 +147,7 @@ export default function AddressForm() {
             }}
             fullWidth
             required
+            onChange={handleChangeNumberReservation}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

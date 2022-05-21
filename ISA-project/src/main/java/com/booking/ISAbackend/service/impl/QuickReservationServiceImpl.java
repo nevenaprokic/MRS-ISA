@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class QuickReservationServiceImpl implements QuickReservationService {
@@ -37,5 +39,20 @@ public class QuickReservationServiceImpl implements QuickReservationService {
         }
         return dto;
 
+    }
+
+    @Override
+    public Boolean checkQuickReservationByOfferId(Integer offerId, String startDate, Integer dateNumber) {
+        List<QuickReservation> quickReservations = quickReservationRepository.findQuickReservationByOfferId(offerId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateAction = LocalDate.parse(startDate, formatter);
+        LocalDate endDateAction = startDateAction.plusDays(dateNumber);
+        for(QuickReservation q: quickReservations){
+            if((q.getStartDateAction().compareTo(startDateAction) <= 0) && (startDateAction.compareTo(q.getEndDateAction()) <= 0))
+                return false;
+            if((q.getStartDateAction().compareTo(endDateAction) <= 0) && (endDateAction.compareTo(q.getEndDateAction()) <= 0))
+                return false;
+        }
+        return true;
     }
 }

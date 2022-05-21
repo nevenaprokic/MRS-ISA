@@ -53,4 +53,13 @@ public class ReservationController {
         }
 
     }
+    @GetMapping("available-offer")
+    public ResponseEntity<Boolean> isAvailableOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dayNum){
+        try{
+            Boolean check = reservationService.isAvailableOffer(Integer.parseInt(offerId), startDate, Integer.parseInt(dayNum));
+            return ResponseEntity.ok().body(check);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

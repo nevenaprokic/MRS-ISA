@@ -184,7 +184,7 @@ export default function CottageOwnerHomePage() {
             Nove rezervacije
           </TabPanel>
           <TabPanel value={value} index={10}>
-            <Checkout/>
+            <Checkout offers={offers} setOffers={setOffers}/>
           </TabPanel>
           <TabPanel value={value} index={12}>
             <WorkingCalendar offers={offers} setOffers={setOffers}/>

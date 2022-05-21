@@ -183,6 +183,10 @@ public class Offer {
 		this.subscribedClients = subscribedClients;
 	}
 
+	public List<UnavailableOfferDates> getUnavailableDate() {
+		return unavailableDate;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

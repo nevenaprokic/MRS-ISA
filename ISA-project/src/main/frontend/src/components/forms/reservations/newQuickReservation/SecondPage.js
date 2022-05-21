@@ -8,19 +8,21 @@ import AdditionalServices from "../../addtitionaServices/AdditionalServices";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import '../../../../style/ReservationForm.scss';
-//dodatne usluge
 
-export default function PaymentForm() {
+export default function SecondPage({setOffer, additionalServicesInputList, setInputList, register, errors}) {
   const [value, setValue] = React.useState(new Date());
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({});
-  const [additionalServicesInputList, setInputList] = useState([
-    { serviceName: "", servicePrice: "" },
-  ]);
+
+  const handleChangePeopleNum = (e) => {
+    setOffer(prevState => {
+      return{...prevState, peopleNum:e.target.value}
+    })
+  };
+  const handleChangePrice = (e) => {
+    setOffer(prevState => {
+      return{...prevState, price:e.target.value}
+    })
+    
+  };
 
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -35,6 +37,7 @@ export default function PaymentForm() {
             id="guests"
             type="number"
             required
+            onChange={handleChangePeopleNum}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -51,6 +54,7 @@ export default function PaymentForm() {
             id="price"
             type="number"
             required
+            onChange={handleChangePrice}
             InputProps={{
               startAdornment: <InputAdornment position="end">€</InputAdornment>,
             }}
