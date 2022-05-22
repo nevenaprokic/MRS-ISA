@@ -71,6 +71,25 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
+    public List<ReservationDTO> getPastCottageReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getPastCottageReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getPastShipReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getPastShipReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getPastAdventureReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+      
     public Boolean isAvailableOffer(Integer offerId, String startDate, Integer dayNum) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(startDate, formatter);
@@ -94,42 +113,36 @@ public class ReservationServiceImpl implements ReservationService {
             reservations = reservationRepository.findPastReservationByShipOwnerEmail(ownerId, LocalDate.now());
         else if(role.equals(UserType.COTTAGE_OWNER.toString()))
             reservations = reservationRepository.findPastReservationByCottageOwnerEmail(ownerId, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    private List<ReservationDTO> getReservationDTOS(List<Reservation> reservations) throws IOException {
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         for(Reservation r: reservations){
-            reservationDTOS.add(new ReservationDTO(r.getId(),
-                    localDateToString(r.getStartDate()),
-                    localDateToString(r.getEndDate()),
-                    additionalServiceService.getAdditionalServices(r.getOffer()),
-                    r.getPrice(),
-                    r.getNumberOfPerson(),
-                    r.getOffer().getId(),
-                    r.getOffer().getName(),
-                    r.getClient().getId(),
-                    r.getClient().getFirstName(),
-                    r.getClient().getLastName(),
-                    getOfferPhoto(r.getOffer()),
-                    r.getClient().getPhoneNumber(),
-                    r.getClient().getEmail()));
+            ReservationDTO dto = new ReservationDTO(r);
+            dto.setAdditionalServices(additionalServiceService.getAdditionalServices(r.getOffer()));
+            reservationDTOS.add(dto);
         }
         return reservationDTOS;
     }
-    private String localDateToString(LocalDate date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-        return formatter.format(date);
-    }
 
-    private String getOfferPhoto(Offer offer) throws IOException {
-        String photoName = "no-image.png";
-        if(!offer.getPhotos().isEmpty()) {
-            photoName = offer.getPhotos().get(0).getPath();
-        }
-        return convertPhoto(photoName);
-    }
-
-    private String convertPhoto(String photoName) throws IOException {
-        String pathFile = "./src/main/frontend/src/components/images/" + photoName;
-        byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
-        String photoData = Base64.getEncoder().encodeToString(bytes);
-        return photoData;
-    }
+//    private String localDateToString(LocalDate date){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+//        return formatter.format(date);
+//    }
+//
+//    private String getOfferPhoto(Offer offer) throws IOException {
+//        String photoName = "no-image.png";
+//        if(!offer.getPhotos().isEmpty()) {
+//            photoName = offer.getPhotos().get(0).getPath();
+//        }
+//        return convertPhoto(photoName);
+//    }
+//
+//    private String convertPhoto(String photoName) throws IOException {
+//        String pathFile = "./src/main/frontend/src/components/images/" + photoName;
+//        byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
+//        String photoData = Base64.getEncoder().encodeToString(bytes);
+//        return photoData;
+//    }
 }
