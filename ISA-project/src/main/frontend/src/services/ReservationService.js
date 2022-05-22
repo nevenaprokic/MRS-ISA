@@ -98,4 +98,3 @@ export function isAvailableOffer(data){
             return err.message;
         });
 }
-

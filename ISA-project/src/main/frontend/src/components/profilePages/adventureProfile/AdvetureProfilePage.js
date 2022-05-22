@@ -239,7 +239,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 </Modal>    
                 
                 <ImagesBox images={images}/>
-                <QuickActionBox id={adventureData.id}/>
+                <QuickActionBox offer={adventureData}/>
                 <MapBox street={adventureData.street} city={adventureData.city} state={adventureData.state}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >

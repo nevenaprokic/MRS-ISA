@@ -22,7 +22,7 @@ const theme = createTheme({
   },
 });
 
-function QuickActionBox({ id }) {
+function QuickActionBox({ offer }) {
   const [quickActionData, setQuickActionsData] = useState();
 
   const [open, setOpen] = useState(false);
@@ -31,12 +31,14 @@ function QuickActionBox({ id }) {
 
 
   const handleReservation = (action) => {
-    makeReservation(convertParams(action, id), handleClose);
+    makeReservation(convertParams(action, offer.id), handleClose);
   };
 
   useEffect(() => {
+    console.log("Offer u quickActionBox");
+    console.log(offer);
     async function setData() {
-      let quickActions = await getQuickActionByOfferId(id);
+      let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       return quickActions;
     }
@@ -53,7 +55,7 @@ function QuickActionBox({ id }) {
         </div>
 
         <div className="specialOfferSrollBox">
-          {quickActionData?.map((action) => {
+          {(quickActionData.length != 0) ? <>{quickActionData.map((action) => {
               console.log(quickActionData);
               let startDate = " " + action.startDate[2] + "." + action.startDate[1] + "." + action.startDate[0]+".";
               let endDate = " " + action.endDate[2] + "." + action.endDate[1] + "." + action.endDate[0]+".";
@@ -102,7 +104,7 @@ function QuickActionBox({ id }) {
                     aria-describedby="modal-modal-description"
                     sx={{backgroundColor:"rgb(218, 224, 210, 0.6)"}}
                 >
-                        <ConfirmDialog close={handleClose} cb={() => handleReservation(action)} ></ConfirmDialog>
+                        <ConfirmDialog close={handleClose} cb={() => handleReservation(action)} actionData={quickActionData[0]} offerData={offer}></ConfirmDialog>
                         {/* <ChangeClientData currentClientData={clientData} close={handleClose} childToParent={childToParent} /> */}
                     
                 </Modal>
@@ -110,7 +112,7 @@ function QuickActionBox({ id }) {
                 <hr className="line"></hr>
               </div>
             );
-          })}
+          })}</> : <h3 className="actionTittle"> There are no special offers. </h3>}
         </div>
       </div>
     );
