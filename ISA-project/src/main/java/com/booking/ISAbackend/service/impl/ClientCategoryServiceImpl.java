@@ -1,11 +1,11 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.exceptions.AutomaticallyChangesCategoryIntervalException;
-import com.booking.ISAbackend.exceptions.ExistingCategoryNameException;
-import com.booking.ISAbackend.exceptions.OverlappingCategoryBoundaryException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.ClientCategory;
+import com.booking.ISAbackend.model.OwnerCategory;
 import com.booking.ISAbackend.repository.ClientCategoryRepository;
 import com.booking.ISAbackend.service.ClientCategoryService;
+import com.booking.ISAbackend.validation.Validator;
 import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -28,21 +28,35 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
     }
 
     @Override
-    public void updateClientCategory(ClientCategory clientCategoryData) throws OverlappingCategoryBoundaryException, ExistingCategoryNameException, AutomaticallyChangesCategoryIntervalException {
+    public void updateClientCategory(ClientCategory clientCategoryData) throws OverlappingCategoryBoundaryException, ExistingCategoryNameException, AutomaticallyChangesCategoryIntervalException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException {
         ClientCategory category = clientCategoryRepository.findById(clientCategoryData.getId());
         if(checkUniqueCategoryName(clientCategoryData)){
-            if(checkIntervalOverlaping(clientCategoryData)){
-                clientCategoryRepository.save(clientCategoryData);
-                checkDistanceBetweenCategoryIntervals(category);
+            if(categoryValidation(clientCategoryData)){
+                if(checkIntervalOverlaping(clientCategoryData)){
+                    clientCategoryRepository.save(clientCategoryData);
+                    checkDistanceBetweenCategoryIntervals(category);
+                }
             }
+
         }
-
-
     }
 
     @Override
     public List<ClientCategory> findCategoryByReservationPoints(Integer points) {
         return clientCategoryRepository.findByMatchingInterval(points);
+    }
+
+    @Override
+    public void addClientCategory(ClientCategory clientCategoryData) throws ExistingCategoryNameException, OverlappingCategoryBoundaryException, AutomaticallyChangesCategoryIntervalException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException {
+        if(checkUniqueCategoryName(clientCategoryData)) {
+            if(categoryValidation(clientCategoryData)){
+                if (checkIntervalOverlaping(clientCategoryData)) {
+                    ClientCategory category = clientCategoryRepository.save(clientCategoryData);
+                    checkDistanceBetweenCategoryIntervals(category);
+                }
+            }
+
+        }
     }
 
     public boolean checkUniqueCategoryName(ClientCategory category) throws ExistingCategoryNameException {
@@ -51,6 +65,15 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
         else if (categories.size() == 1 && categories.get(0).getId() != category.getId()) throw new ExistingCategoryNameException();
         return true;
     }
+
+    public boolean categoryValidation(ClientCategory category) throws InvalidPercentException, InvalidPointsNumberException, InvalidBoundaryException {
+        return Validator.isValidPercentNum(category.getDiscount())
+                && Validator.isValidBoundaryNum(category.getLowLimitPoints())
+                && Validator.isValidBoundaryNum(category.getHeighLimitPoints())
+                && Validator.isValidReservationPointsNum(category.getReservationPoints())
+                && (category.getLowLimitPoints() <= category.getHeighLimitPoints());
+    }
+
 
     private boolean checkIntervalOverlaping(ClientCategory category) throws OverlappingCategoryBoundaryException {
         int start = category.getLowLimitPoints();
@@ -61,7 +84,7 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
         {
             throw new OverlappingCategoryBoundaryException();
         }
-        if (!overlapingIntervals.get(0).getId().equals(category.getId()))
+        if (overlapingIntervals.size() == 1 && !overlapingIntervals.get(0).getId().equals(category.getId()))
         {
             throw new OverlappingCategoryBoundaryException();
         }

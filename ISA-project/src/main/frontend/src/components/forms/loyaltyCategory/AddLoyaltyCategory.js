@@ -22,16 +22,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
-import { updateClientCategory, updateOwnerCategory } from "../../../services/LoyaltyService";
+import { updateClientCategory, updateOwnerCategory, addClientCategory, addOwnerCategory } from "../../../services/LoyaltyService";
 
 function AddLoyaltyCategory({close, setLoyaltyCategories}){
     const [color, setColor] = useState("#000000");
     const [categoryType, setCategorType] = useState(userType.CLIENT);
-
-    const updateFunction = {
-      [userType.CLIENT] : updateClientCategory,
-      [userType.OWNER] : updateOwnerCategory
-    }
 
     const theme = createTheme({
         palette: {
@@ -60,16 +55,20 @@ function AddLoyaltyCategory({close, setLoyaltyCategories}){
         data.categoryColor = color;
         if(categoryType == userType.CLIENT){
           data.discount = data.percent;
+          delete data.percent;
+          addClientCategory(data, setLoyaltyCategories);
         }
         else{
           data.earningsPercent = data.percent;
+          delete data.percent;
+          addOwnerCategory(data, setLoyaltyCategories);
         }
         console.log("aaaa",data);
-        //updateFunction[categoryType](data, setLoyaltyCategories);
         close();
     };
 
     return (
+      !!setLoyaltyCategories &&
     <div className="changeContainer" >
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">

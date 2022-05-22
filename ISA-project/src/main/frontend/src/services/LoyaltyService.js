@@ -37,7 +37,6 @@ export function updateClientCategory(updateData,setLoyaltyCategories){
                         });
                     })
     .catch((err) => {
-                    console.log("aaaaa");
                     toast.error(err.response.data, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 1500,
@@ -57,7 +56,6 @@ export function updateOwnerCategory(updateData, setLoyaltyCategories ){
                         });
                     })
     .catch((err) => {
-                    console.log("aaaaa");
                     toast.error(err.response.data, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 1500,
@@ -90,4 +88,42 @@ function updateLoyaltyClientCategories(setLoyaltyCategories){
                         autoClose: 1500,
                     });
                 })
+}
+
+export function addClientCategory(categoryData, setLoyaltyCategories){
+    api
+    .post("/loyalty/add-client-category", categoryData)
+    .then((responseData) => {
+                            updateLoyaltyClientCategories(setLoyaltyCategories);
+        
+                            toast.success(responseData.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    })
+    .catch((err) => {
+                    toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            })
+}
+
+export function addOwnerCategory(categoryData, setLoyaltyCategories ){
+    api
+    .post("/loyalty/add-owner-category", categoryData)
+    .then((responseData) => {
+                            updateLoyaltyOwnerCategories(setLoyaltyCategories);
+                            
+                            toast.success(responseData.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    })
+    .catch((err) => {
+                    toast.error(err.response.data, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            })
 }

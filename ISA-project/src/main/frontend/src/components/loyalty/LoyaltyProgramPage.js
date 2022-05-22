@@ -101,7 +101,7 @@ function LoyalyProgeramPage(){
             <Container sx={{ py: 8}} >
                 <Grid container spacing={5}> 
                     {loyaltyCategories.map((category) => (
-                    <Grid item key={category.name} xs={15} sm={4}>
+                    <Grid item key={category.name} sx={{width: "330px"}}>
                         <LoyaltyCard type={categoryType} category={category} setLoyaltyCategories={setLoyaltyCategories}/>           
                     </Grid>
                     ))}

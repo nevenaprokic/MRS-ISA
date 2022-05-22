@@ -1,8 +1,6 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.exceptions.AutomaticallyChangesCategoryIntervalException;
-import com.booking.ISAbackend.exceptions.ExistingCategoryNameException;
-import com.booking.ISAbackend.exceptions.OverlappingCategoryBoundaryException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.ClientCategory;
 import com.booking.ISAbackend.model.OwnerCategory;
 import com.booking.ISAbackend.service.ClientCategoryService;
@@ -55,9 +53,14 @@ public class LoyaltyProgramController {
             return ResponseEntity.status(400).body("Category with the same name already exits");
         } catch (OverlappingCategoryBoundaryException e) {
             return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
-        }
-        catch (Exception e){
-            return ResponseEntity.status(400).body("Something went wrong.");
+        }catch (InvalidBoundaryException e) {
+            return ResponseEntity.status(400).body("Limit values must be positive hole numbers");
+        } catch (InvalidPercentException e) {
+            return ResponseEntity.status(400).body("Percent must be number between 0 and 100 with maximum of 2 decimal places are allowed");
+        } catch (InvalidPointsNumberException e) {
+            return ResponseEntity.status(400).body("Points number must be positive hole number");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong");
         }
     }
 
@@ -65,6 +68,28 @@ public class LoyaltyProgramController {
     public ResponseEntity<String> updateLoyaltyOwnerCategory(@RequestBody OwnerCategory updateCategory){
         try {
             ownerCategoryService.updateOwnerCategory(updateCategory);
+            return ResponseEntity.ok("Successfully update owner category");
+        } catch (AutomaticallyChangesCategoryIntervalException e) {
+            return ResponseEntity.status(200).body("Successfully update owner category, but other boundaries have been moved so that there is no gap between categories .");
+        } catch (ExistingCategoryNameException e) {
+            return ResponseEntity.status(400).body("Category with the same name already exits");
+        } catch (OverlappingCategoryBoundaryException e) {
+            return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
+        }catch (InvalidBoundaryException e) {
+            return ResponseEntity.status(400).body("Limit values must be positive hole numbers");
+        } catch (InvalidPercentException e) {
+            return ResponseEntity.status(400).body("Percent must be number between 0 and 100 with maximum of 2 decimal places are allowed");
+        } catch (InvalidPointsNumberException e) {
+            return ResponseEntity.status(400).body("Points number must be positive hole number");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong");
+        }
+    }
+
+    @PostMapping("add-client-category")
+    public ResponseEntity<String> addClientCategory(@RequestBody ClientCategory clientCategoryData){
+        try {
+            clientCategoryService.addClientCategory(clientCategoryData);
             return ResponseEntity.ok("Successfully update client category");
         } catch (AutomaticallyChangesCategoryIntervalException e) {
             return ResponseEntity.status(200).body("Successfully update client category, but other boundaries have been moved so that there is no gap between categories .");
@@ -72,9 +97,37 @@ public class LoyaltyProgramController {
             return ResponseEntity.status(400).body("Category with the same name already exits");
         } catch (OverlappingCategoryBoundaryException e) {
             return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
+        }catch (InvalidBoundaryException e) {
+            return ResponseEntity.status(400).body("Limit values must be positive hole numbers");
+        } catch (InvalidPercentException e) {
+            return ResponseEntity.status(400).body("Percent must be number between 0 and 100 with maximum of 2 decimal places are allowed");
+        } catch (InvalidPointsNumberException e) {
+            return ResponseEntity.status(400).body("Points number must be positive hole number");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong");
         }
-        catch (Exception e){
-            return ResponseEntity.status(400).body("Something went wrong.");
+    }
+
+    @PostMapping("add-owner-category")
+    public ResponseEntity<String> addOwnerCategory(@RequestBody OwnerCategory ownerCategoryData){
+        try {
+            ownerCategoryService.addOwnerCategory(ownerCategoryData);
+            return ResponseEntity.ok("Successfully update owner category");
+        } catch (AutomaticallyChangesCategoryIntervalException e) {
+            return ResponseEntity.status(200).body("Successfully update owner category, but other boundaries have been moved so that there is no gap between categories .");
+        } catch (ExistingCategoryNameException e) {
+            return ResponseEntity.status(400).body("Category with the same name already exits");
+        } catch (OverlappingCategoryBoundaryException e) {
+            return ResponseEntity.status(400).body("The new limit values overlap with the existing ones.");
+        } catch (InvalidBoundaryException e) {
+            return ResponseEntity.status(400).body("Limit values must be positive hole numbers");
+        } catch (InvalidPercentException e) {
+            return ResponseEntity.status(400).body("Percent must be number between 0 and 100 with maximum of 2 decimal places are allowed");
+        } catch (InvalidPointsNumberException e) {
+            return ResponseEntity.status(400).body("Points number must be positive hole number");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong");
         }
+
     }
 }

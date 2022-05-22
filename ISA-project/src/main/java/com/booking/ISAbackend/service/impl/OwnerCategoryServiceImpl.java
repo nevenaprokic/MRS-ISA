@@ -1,12 +1,11 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.exceptions.AutomaticallyChangesCategoryIntervalException;
-import com.booking.ISAbackend.exceptions.ExistingCategoryNameException;
-import com.booking.ISAbackend.exceptions.OverlappingCategoryBoundaryException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.ClientCategory;
 import com.booking.ISAbackend.model.OwnerCategory;
 import com.booking.ISAbackend.repository.OwnerCategoryRepository;
 import com.booking.ISAbackend.service.OwnerCategoryService;
+import com.booking.ISAbackend.validation.Validator;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -21,7 +20,8 @@ public class OwnerCategoryServiceImpl implements OwnerCategoryService {
 
     @Override
     public List<OwnerCategory> findAll() {
-        return ownerCategoryRepository.findAll();
+
+        return ownerCategoryRepository.findAll(Sort.by(Sort.Direction.ASC, "lowLimitPoints"));
     }
 
     @Override
@@ -30,14 +30,36 @@ public class OwnerCategoryServiceImpl implements OwnerCategoryService {
     }
 
     @Override
-    public void updateOwnerCategory(OwnerCategory ownerCategoryData) throws OverlappingCategoryBoundaryException, ExistingCategoryNameException, AutomaticallyChangesCategoryIntervalException {
+    public void updateOwnerCategory(OwnerCategory ownerCategoryData) throws OverlappingCategoryBoundaryException, ExistingCategoryNameException, AutomaticallyChangesCategoryIntervalException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException {
         OwnerCategory category = ownerCategoryRepository.findById(ownerCategoryData.getId());
         if(checkUniqueCategoryName(ownerCategoryData)){
-            if(checkIntervalOverlaping(ownerCategoryData)){
-                ownerCategoryRepository.save(ownerCategoryData);
-                checkDistanceBetweenCategoryIntervals(category);
+            if(categoryValidation(ownerCategoryData)) {
+                if(checkIntervalOverlaping(ownerCategoryData)){
+                    ownerCategoryRepository.save(ownerCategoryData);
+                    checkDistanceBetweenCategoryIntervals(category);
+                }
             }
         }
+    }
+
+    @Override
+    public void addOwnerCategory(OwnerCategory ownerCategoryData) throws AutomaticallyChangesCategoryIntervalException, OverlappingCategoryBoundaryException, ExistingCategoryNameException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException {
+        if(checkUniqueCategoryName(ownerCategoryData)){
+            if(categoryValidation(ownerCategoryData)){
+                if(checkIntervalOverlaping(ownerCategoryData)){
+                    OwnerCategory category = ownerCategoryRepository.save(ownerCategoryData);
+                    checkDistanceBetweenCategoryIntervals(category);
+                }
+            }
+        }
+    }
+
+    public boolean categoryValidation(OwnerCategory category) throws InvalidPercentException, InvalidPointsNumberException, InvalidBoundaryException {
+        return Validator.isValidPercentNum(category.getEarningsPercent())
+                && Validator.isValidBoundaryNum(category.getLowLimitPoints())
+                && Validator.isValidBoundaryNum(category.getHeighLimitPoints())
+                && Validator.isValidReservationPointsNum(category.getReservationPoints())
+                && (category.getLowLimitPoints() <= category.getHeighLimitPoints());
     }
 
     public boolean checkUniqueCategoryName(OwnerCategory category) throws ExistingCategoryNameException {
