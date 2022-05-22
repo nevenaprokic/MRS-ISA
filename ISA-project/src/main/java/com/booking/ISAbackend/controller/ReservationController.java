@@ -55,10 +55,15 @@ public class ReservationController {
     }
 
     @GetMapping("get-cottage-reservations-by-client")
-    public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email){
-        try{
+    public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email) {
+        try {
             List<ReservationDTO> reservations = reservationService.getPastCottageReservationsByClient(email);
             return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("available-offer")
     public ResponseEntity<Boolean> isAvailableOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dayNum){
         try{

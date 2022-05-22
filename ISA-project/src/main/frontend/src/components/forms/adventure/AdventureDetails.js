@@ -14,6 +14,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { getRoleFromToken } from '../../../app/jwtTokenUtils';
 import ReservationForm from '../reservations/ReservationForm';
 import Modal from '@mui/material/Modal';
+import QuickActionBox from '../../profilePages/cottageProfile/QuickActionBox';
 
 function AdventureDetails({adventure}){
     
@@ -34,7 +35,15 @@ function AdventureDetails({adventure}){
     const handleOpenReserve = () => setOpenReserve(true);
     const handleCloseReserve = () => setOpenReserve(false);
 
+    const [openActions, setOpenActions] = useState(false);
+
+    const handleOpenActions = () => setOpenActions(true);
+    const handleCloseActions = () => setOpenActions(false);
+
+
     useEffect(() => {
+        console.log("AVAnturica");
+        console.log(adventure);
         setAdventureData(adventure);
     }, [])
       
@@ -79,10 +88,11 @@ function AdventureDetails({adventure}){
                         
                         <Typography variant="subtitle1" color="secondary" sx={{fontWeight: "bold"}}>
                             <br></br>
-                            Price: {adventure.price}€
+                            <div style={{ marginBottom: '1vh' }}>Price: {adventure.price}€</div>
+                            <br></br>
                         { getRoleFromToken() != null && 
+                        <>                           
                             <Button
-                                className="bookingButton"
                                 size="small"
                                 variant="contained"
                                 bgcolor="secondary"
@@ -91,6 +101,18 @@ function AdventureDetails({adventure}){
                             >
                                 Book now
                             </Button>
+
+                            <Button
+                                className="bookingButton"
+                                size="small"
+                                variant="contained"
+                                bgcolor="secondary"
+                                color="secondary"
+                                onClick={() => handleOpenActions() }
+                                >
+                                Special offers
+                            </Button>
+                            </>
                         }
                         <Modal
                             open={openReserve}
@@ -102,6 +124,20 @@ function AdventureDetails({adventure}){
                                 <ReservationForm offer={adventure} close={handleCloseReserve} />
 
                         </Modal>
+
+                        <Modal
+                            open={openActions}
+                            onClose={handleCloseActions}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                        >
+                                 <div className="formContainer">
+                                    <QuickActionBox offer={adventure}/>
+                                 </div>
+
+                        </Modal>
+
                         </Typography>
                     </CardContent>
                     <CardMedia

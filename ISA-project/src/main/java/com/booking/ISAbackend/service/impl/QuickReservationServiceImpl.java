@@ -34,7 +34,7 @@ public class QuickReservationServiceImpl implements QuickReservationService {
     @Override
     @Transactional
     public List<QuickReservationDTO> findQuickReservationByOfferId(Integer id){
-        List<QuickReservation> listOfAllQuickReservation = quickReservationRepository.findQuickReservationByOfferId(id);
+        List<QuickReservation> listOfAllQuickReservation = quickReservationRepository.findQuickReservationsByOfferId(id);
         List<QuickReservation> listOfCurrentQuickReservation = new ArrayList<>();
         LocalDate today = LocalDate.now();
 
@@ -54,7 +54,7 @@ public class QuickReservationServiceImpl implements QuickReservationService {
 
     @Override
     public Boolean checkQuickReservationByOfferId(Integer offerId, String startDate, Integer dateNumber) {
-        List<QuickReservation> quickReservations = quickReservationRepository.findQuickReservationByOfferId(offerId);
+        List<QuickReservation> quickReservations = quickReservationRepository.findQuickReservationsByOfferId(offerId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateAction = LocalDate.parse(startDate, formatter);
         LocalDate endDateAction = startDateAction.plusDays(dateNumber);

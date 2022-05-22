@@ -35,8 +35,6 @@ function QuickActionBox({ offer }) {
   };
 
   useEffect(() => {
-    console.log("Offer u quickActionBox");
-    console.log(offer);
     async function setData() {
       let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
@@ -46,6 +44,7 @@ function QuickActionBox({ offer }) {
   }, []);
 
   if (quickActionData) {
+    console.log("AKCIJE");
     console.log(quickActionData);
     return (
       <div className="specialOffersContainer">

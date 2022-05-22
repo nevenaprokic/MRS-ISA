@@ -57,6 +57,12 @@ public class ReservationServiceImpl implements ReservationService {
                 throw new OfferNotAvailableException("Offer is not available in that period.");
         }
 
+        for(UnavailableOfferDates ofd : offer.getUnavailableDate()){
+            // (StartA <= EndB) and (EndA >= StartB)
+            if(ofd.getEndDate().isAfter(params.getDate()) && ofd.getStartDate().isBefore(params.getEndingDate()))
+                throw new OfferNotAvailableException("Offer is not available in that period.");
+        }
+
         if(params.getActionId() != null)
             quickReservationRepository.deleteById(params.getActionId());
 
@@ -89,7 +95,10 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException {
         List<Reservation> reservations = reservationRepository.getPastAdventureReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
-      
+    }
+
+    @Override
+    @Transactional
     public Boolean isAvailableOffer(Integer offerId, String startDate, Integer dayNum) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(startDate, formatter);

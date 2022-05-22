@@ -195,8 +195,8 @@ insert into delete_request(description, my_user_id) values('Ne zelim vise da pos
 
 /*QUICK RESERVATION*/
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',6, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-05-01',10,1000,'2022-05-08','2022-04-25',8, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-17',2,255,'2022-05-23','2022-05-02',1, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-05-01',10,1000,'2022-05-08','2022-04-25',7, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-07-26','2022-07-17',2,255,'2022-07-23','2022-07-02',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-18','2022-05-10',10,1000,'2022-05-15','2022-05-02',2, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-06-26','2022-05-25',2,257,'2022-06-23','2022-05-15',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',5, false);
@@ -211,7 +211,7 @@ insert into registration_request(deleted, description, email,first_name,last_nam
 /*RESERVATION REPORT*/
 -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
  /*UNAVAILABLE OFFER DATES*/
-insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-15', '2022-06-20');
+insert into unavailable_offer_dates(offer_id, start_date, end_date) values (1, '2022-06-15', '2022-06-20');
 insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-27', '2022-06-29');
 insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-10', '2022-06-16');
 
