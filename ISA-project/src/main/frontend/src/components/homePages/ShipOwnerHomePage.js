@@ -19,6 +19,7 @@ import { useState } from "react";
 import AddShipPage from "../forms/ship/AddShipPage";
 import WorkingCalendar from "../calendar/WorkingCalendar";
 import ReservationProfile from "../profilePages/reservationProfile/ReservationProfile";
+import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -173,6 +174,9 @@ export default function ShipOwnerHomePage() {
           </TabPanel>
           <TabPanel value={value} index={7}>
             <ReservationProfile />
+          </TabPanel>
+          <TabPanel value={value} index={10}>
+            <Checkout offers={offers} setOffers={setOffers}/>
           </TabPanel>
           <TabPanel value={value} index={12}>
               <WorkingCalendar offers={offers} setOffers={setOffers}/>

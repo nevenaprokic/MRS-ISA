@@ -89,6 +89,19 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException {
         List<Reservation> reservations = reservationRepository.getPastAdventureReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
+      
+    public Boolean isAvailableOffer(Integer offerId, String startDate, Integer dayNum) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateReservation = LocalDate.parse(startDate, formatter);
+        LocalDate endDateReservation = startDateReservation.plusDays(dayNum);
+        List<Reservation> reservations = reservationRepository.findAllByOfferId(offerId);
+        for(Reservation q: reservations){
+            if((q.getStartDate().compareTo(startDateReservation) <= 0) && (startDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+            if((q.getStartDate().compareTo(endDateReservation) <= 0) && (endDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+        }
+        return true;
     }
 
 

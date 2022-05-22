@@ -1,22 +1,35 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.NewQuickReservationDTO;
 import com.booking.ISAbackend.dto.QuickReservationDTO;
-import com.booking.ISAbackend.model.QuickReservation;
+import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.InvalidPriceException;
+import com.booking.ISAbackend.exceptions.RequiredFiledException;
+import com.booking.ISAbackend.model.*;
+import com.booking.ISAbackend.repository.OfferRepository;
 import com.booking.ISAbackend.repository.QuickReservationRepository;
+import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.QuickReservationService;
+import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class QuickReservationServiceImpl implements QuickReservationService {
 
     @Autowired
     private QuickReservationRepository quickReservationRepository;
+    @Autowired
+    private OfferRepository offerRepository;
+    @Autowired
+    private AdditionalServiceService additionalServiceService;
+    @Autowired
+    private EmailSender emailSender;
 
     @Override
     @Transactional
@@ -36,6 +49,55 @@ public class QuickReservationServiceImpl implements QuickReservationService {
             dto.add(quickActionDTO);
         }
         return dto;
+
+    }
+
+    @Override
+    public Boolean checkQuickReservationByOfferId(Integer offerId, String startDate, Integer dateNumber) {
+        List<QuickReservation> quickReservations = quickReservationRepository.findQuickReservationByOfferId(offerId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateAction = LocalDate.parse(startDate, formatter);
+        LocalDate endDateAction = startDateAction.plusDays(dateNumber);
+        for(QuickReservation q: quickReservations){
+            if((q.getStartDateAction().compareTo(startDateAction) <= 0) && (startDateAction.compareTo(q.getEndDateAction()) <= 0))
+                return false;
+            if((q.getStartDateAction().compareTo(endDateAction) <= 0) && (endDateAction.compareTo(q.getEndDateAction()) <= 0))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Integer addNewQuickReservation(NewQuickReservationDTO dto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateAction = LocalDate.parse(dto.getStartDateAction(), formatter);
+        LocalDate endDateAction = startDateAction.plusDays(dto.getDaysAction());
+        LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
+        LocalDate endDateReservation = startDateReservation.plusDays(dto.getDaysReservation());
+        Offer offer = offerRepository.findOfferById(dto.getOfferId());
+        QuickReservation quickReservation = new QuickReservation(startDateReservation, endDateAction, startDateAction, endDateReservation, dto.getPrice(), dto.getPeopleNum(), false, offer);
+        QuickReservation newQuickReservation = quickReservationRepository.save(quickReservation);
+        offer.getQuickReservations().add(newQuickReservation);
+        offerRepository.save(offer);
+        sendEmail(offer, dto.getStartDateAction());
+        return newQuickReservation.getId();
+    }
+    @Transactional
+    void sendEmail(Offer offer, String date){ //treba uraditi pretplacene
+//        for(MyUser u : offer.getSubscribedClients())
+        emailSender.notifySubscribersNewQuickReservation("natasha.lakovic@gmail.com", offer.getName(), date);
+    }
+
+    @Override
+    public void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, Integer quickId) throws InvalidPriceException, RequiredFiledException {
+        Optional<QuickReservation> quickReservation = quickReservationRepository.findById(quickId);
+        if(quickReservation.isPresent() && Validator.isValidAdditionalServices(additionalServiceDTOs)){
+            QuickReservation q = quickReservation.get();
+            List<AdditionalService> additionalServices = additionalServiceService.convertServicesFromDTO(additionalServiceDTOs);
+            q.setAdditionalServices(additionalServices);
+            quickReservationRepository.save(q);
+        }
 
     }
 }
