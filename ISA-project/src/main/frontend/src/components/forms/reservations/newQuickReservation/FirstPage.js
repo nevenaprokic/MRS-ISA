@@ -72,7 +72,7 @@ export default function FirstPage({offers, setOffer, role }) {
     <React.Fragment>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid item xs={12}>
-                <label style={{ marginLeft: "35%", color:"#CC7351" }}>Special offer</label>
+                <label style={{ marginLeft: "35%", color:"#CC7351" , fontSize:"22px" }}>Special offer</label>
             </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -81,7 +81,7 @@ export default function FirstPage({offers, setOffer, role }) {
               id="combo-box-demo"
               options={userType.INSTRUCTOR == role ? offers.map((offer)=> offer.offerName): offers.map((offer)=> offer.name)}
               required
-              sx={{ width: 300, marginLeft: "22%", marginTop:"4%" }}
+              sx={{ width: 300, marginLeft: "25%", marginTop:"2%" }}
               onChange={(event, newValue) => {
                 handlerOfferChange(event, newValue);
               }}
@@ -89,20 +89,23 @@ export default function FirstPage({offers, setOffer, role }) {
             />
           </Grid>
           <Grid item xs={12}>
-                <label style={{ marginLeft: "35%" , color:"#CC7351"}}> Period of action</label>
+                <label style={{ marginLeft: "35%" , color:"#CC7351", fontSize:"22px" }}> Period of action</label>
             </Grid>
           <Grid item xs={12} sm={6}>
+          <div style={{ marginLeft: "15%" }}>
             <DesktopDatePicker
               label="Starting date*"
               inputFormat="yyyy-MM-dd"
               value={valueAction}
               required
+              fullWidth
               onChange={handleChangeActionDate}
               renderInput={(params) => <TextField {...params} />}
             />
+            </div>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={5}>
             <TextField
               id="daysAction"
               name="secondAction"
@@ -124,21 +127,25 @@ export default function FirstPage({offers, setOffer, role }) {
             />
           </Grid>
           <Grid item xs={12}>
-                <label style={{ marginLeft: "35%", color:"#CC7351" }}>  Reservation period</label>
+                <label style={{ marginLeft: "35%", color:"#CC7351" , fontSize:"22px" }}>  Reservation period</label>
             </Grid>
-          
+        
         <Grid item xs={12} sm={6}>
+        <div style={{ marginLeft: "15%" }}>
           <DesktopDatePicker
             label="Starting date*"
             inputFormat="yyyy-MM-dd"
             value={valueReservation}
             required
+            fullWidth
             onChange={handleChangeReservationDate}
             renderInput={(params) => <TextField {...params} />}
           />
+          </div>
         </Grid>
+        
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={5}>
           <TextField
             id="daysReservation"
             name="second"

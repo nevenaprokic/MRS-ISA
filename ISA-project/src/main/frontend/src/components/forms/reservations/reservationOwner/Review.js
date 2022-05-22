@@ -4,49 +4,39 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import {addDays} from '../../../../services/UtilService';
 
+const additionalServices = [
+  { serviceName: 'Klima ', servicePrice: '10' },
+  { serviceName: 'Dorucak', servicePrice: '4' },
+  { serviceName: 'Vecera', servicePrice: '5'},
+  { serviceName: 'Rucak', servicePrice: '7'},
+]
 
+export default function Review() {
 
-export default function Review({offer, additionalServicesInputList}) {
-
-  let price = offer.price + '€';
-  let totalPrice = parseInt(offer.price);
-  console.log(additionalServicesInputList);
-  if(additionalServicesInputList.length != 1 && additionalServicesInputList[0].servicePrice !== ''){
-    additionalServicesInputList.map((additional) => {totalPrice+= parseInt(additional.servicePrice)});
+  let price = "100" + '€';
+  let totalPrice = parseInt(100);
+  console.log(additionalServices);
+  if(additionalServices.length != 1 && additionalServices[0].servicePrice !== ''){
+    additionalServices.map((additional) => {totalPrice+= parseInt(additional.servicePrice)});
   }
   
-
-  let startDateAction = new Date(offer.startDateAction);
-  let startDateReservation = new Date(offer.startDateReservation);
-  let endDateAction = addDays(new Date(offer.startDateAction), offer.daysAction);
-  let endDateReservation = addDays(new Date(offer.startDateReservation), offer.daysReservation);
-
-
-  let startDateActionString = startDateAction.getDate() + "/" + (startDateAction.getMonth()+1) + "/" +startDateAction.getFullYear();
-  let endDateActionString = endDateAction.getDate() + "/" + (endDateAction.getMonth()+1) + "/" +endDateAction.getFullYear();
-  let startDateReservationString = startDateReservation.getDate() + "/" + (startDateReservation.getMonth()+1) + "/" +startDateReservation.getFullYear();
-  let endDateReservationString = endDateReservation.getDate() + "/" + (endDateReservation.getMonth()+1) + "/" +endDateReservation.getFullYear();
-  
   const payments = [
-    { name: 'Start date action: ', detail: startDateActionString },
-    { name: 'End date action: ', detail: endDateActionString },
-    { name: 'Start date reservation: ', detail: startDateReservationString},
-    { name: 'End date reservation: ', detail: endDateReservationString},
+    { name: 'Start date reservation: ', detail: "25/05/2022"},
+    { name: 'End date reservation: ', detail: "29/05/2022"},
   ];
   
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom color={"#CC7351"}>
-        Quick reservation summary
+        Reservation summary
       </Typography>
       <List disablePadding>
           <ListItem key={"Offer price"} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={"Offer price"} />
             <Typography variant="body2">{price}</Typography>
           </ListItem>
-          {(additionalServicesInputList.length != 0) && (additionalServicesInputList[0].servicePrice !== '') ? (additionalServicesInputList.map((product) => (
+          {(additionalServices.length != 0) && (additionalServices[0].servicePrice !== '') ? (additionalServices.map((product) => (
           <ListItem key={product.serviceName} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={product.serviceName} />
             <Typography variant="body2">{product.servicePrice + "€"}</Typography>
@@ -63,12 +53,19 @@ export default function Review({offer, additionalServicesInputList}) {
         </ListItem>
       </List>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={7}>
+        <Grid item xs={12} sm={3}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }} color={"#CC7351"}>
             Offer
           </Typography>
-          <Typography gutterBottom>{'Name: ' + offer.name}</Typography>
-          <Typography gutterBottom>{'Number of guests: ' + offer.peopleNum}</Typography>
+          <Typography gutterBottom>{'Name: ' + 'Sumska vila'}</Typography>
+          <Typography gutterBottom>{'Number of guests: ' + '2'}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} color={"#CC7351"}>
+            Client
+          </Typography>
+          <Typography gutterBottom>{'Name and surname: ' + 'Pera Peric'}</Typography>
+          <Typography gutterBottom>{'User name: ' + 'pera@gmail.com'}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={5}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }} color={"#CC7351"}>
