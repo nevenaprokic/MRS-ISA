@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.dto.ReservationParamsDTO;
 import com.booking.ISAbackend.email.EmailSender;
@@ -83,6 +84,19 @@ public class ReservationServiceImpl implements ReservationService {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    @Transactional
+    public List<ClientDTO> getClientByCottageOwnerEmail(String email){
+        LocalDate today = LocalDate.now();
+        List<Reservation> currentReservation = reservationRepository.findCurrentByOwnerEmail(email, today);
+        List<ClientDTO> clients = new ArrayList<>();
+        for(Reservation r: currentReservation){
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            clients.add(dto);
+        }
+        return clients;
     }
 
 

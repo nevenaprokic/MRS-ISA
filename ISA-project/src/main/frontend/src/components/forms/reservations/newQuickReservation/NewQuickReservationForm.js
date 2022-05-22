@@ -52,7 +52,7 @@ function checkFirstPage(offer) {
   );
   const currentDate = new Date();
 
-  if (offer.name == undefined) {
+  if (offer.name === '') {
     toast.error("Offer name is required", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
@@ -182,14 +182,11 @@ export default function Checkout({ offers, setOffers }) {
   }
 
   const handleNext = () => {
-    console.log(offer);
-    console.log(activeStep);
     if (activeStep == 0) {
       if (checkFirstPage(offer)) {
         checkDateFromBack();
       }
     } else if (activeStep == 1) {
-      handleSubmit();
       if (checkSecondPage(offer)) {
         setActiveStep(activeStep + 1);
       }
@@ -212,11 +209,8 @@ export default function Checkout({ offers, setOffers }) {
   useEffect(() => {
     async function setDataOffer() {
       let role = getRoleFromToken();
-      console.log(role);
       let username = getUsernameFromToken();
-      console.log(username);
       const offersData = await getOffer[role](username);
-      console.log(offersData);
       setOffers(offersData ? offersData.data : {});
 
       return offersData;

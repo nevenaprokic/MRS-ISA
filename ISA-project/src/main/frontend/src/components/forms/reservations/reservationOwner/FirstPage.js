@@ -2,14 +2,30 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { userType } from "../../../../app/Enum";
 
 
-export default function FirstPage() {
+export default function FirstPage({clients, setReservation, offers, role}) {
 
   const handlerOfferChange = (event, selectedOffer) => {
-    console.log(selectedOffer);
-  };
+    let email = selectedOffer.split("-")[0];
+    let currentClient = clients.find((client) => client.email === email);
+    setReservation(prevState => {
+        return{...prevState, clientUserName:currentClient.email, clientName: currentClient.firstName, clientLastName:currentClient.lastName}
+      })
+    let currentOffer = offers.find((offer) => offer.id === currentClient.offerId);
+   
+    if(role === userType.INSTRUCTOR)
+     setReservation(prevState => {
+        return{...prevState, offerName:currentOffer.offerName, offerId: currentOffer.id}
+      })
+    else{
+      setReservation(prevState => {
+        return{...prevState, offerName:currentOffer.name, offerId: currentOffer.id, price:currentOffer.price}
+      })
+    }
 
+  };
   
   return (
     <React.Fragment>
@@ -23,7 +39,7 @@ export default function FirstPage() {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={["korisnik1", "korisnik2"]}
+              options={clients.map((client) => client.email + "-" +client.firstName + " "+ client.lastName)}
               required
               sx={{ width: 300, marginLeft: "30%", marginTop:"4%" }}
               onChange={(event, newValue) => {

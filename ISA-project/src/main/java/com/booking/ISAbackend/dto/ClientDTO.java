@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.Client;
+
 public class ClientDTO {
 
     private String email;
@@ -11,6 +13,7 @@ public class ClientDTO {
     private String state;
     private String clientCategory;
     private Integer penal;
+    private Integer offerId;
 
     public ClientDTO() {}
 
@@ -24,6 +27,20 @@ public class ClientDTO {
         this.state = state;
         this.clientCategory = clientCategory;
         this.penal = penal;
+        this.offerId = 0;
+    }
+
+    public ClientDTO(Client c, Integer id) {
+        this.email = c.getEmail();
+        this.firstName = c.getFirstName();
+        this.lastName = c.getLastName();
+        this.phoneNumber = c.getPhoneNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
+        this.clientCategory = c.getClientCategory().getName();
+        this.penal = c.getPenal();
+        this.offerId = id;
     }
 
     public String getEmail() {
@@ -97,4 +114,9 @@ public class ClientDTO {
     public void setPenal(Integer penal) {
         this.penal = penal;
     }
+
+    public Integer getOfferId() {
+        return offerId;
+    }
+
 }

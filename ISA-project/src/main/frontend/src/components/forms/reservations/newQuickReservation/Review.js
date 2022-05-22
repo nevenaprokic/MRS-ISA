@@ -11,7 +11,7 @@ import {addDays} from '../../../../services/UtilService';
 export default function Review({offer, additionalServicesInputList}) {
 
   let price = offer.price + '€';
-  let totalPrice = parseInt(offer.price);
+  let totalPrice = parseInt(offer.price) * parseInt(offer.daysReservation);
   console.log(additionalServicesInputList);
   if(additionalServicesInputList.length != 1 && additionalServicesInputList[0].servicePrice !== ''){
     additionalServicesInputList.map((additional) => {totalPrice+= parseInt(additional.servicePrice)});
@@ -44,7 +44,7 @@ export default function Review({offer, additionalServicesInputList}) {
       <List disablePadding>
           <ListItem key={"Offer price"} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={"Offer price"} />
-            <Typography variant="body2">{price}</Typography>
+            <Typography variant="body2">{offer.daysReservation + "x" + offer.price + "€"}</Typography>
           </ListItem>
           {(additionalServicesInputList.length != 0) && (additionalServicesInputList[0].servicePrice !== '') ? (additionalServicesInputList.map((product) => (
           <ListItem key={product.serviceName} sx={{ py: 1, px: 0 }}>

@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import {getAdventureByInstructorEmail} from '../../../../services/AdventureService';
 import {getShipByShipOwnerEmail} from '../../../../services/ShipService';
+import {getClientByCottageOwnerEmail} from '../../../../services/ClientService';
 
 const steps = [
   "Selection of clients",
@@ -36,6 +37,53 @@ const theme = createTheme({
   },
 });
 
+const regex = new RegExp("^[1-9]+[0-9]*$");
+function checkFirstPage(reservation) {
+  if (reservation.clientUserName === '') {
+    toast.error("Client email is required", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+    return false;
+  }
+  return true;
+}
+function checkSecondPage(reservation, num){
+  let startDateReservation = new Date(reservation.startDateReservation);
+  const currentDate = new Date();
+  if ( startDateReservation <= currentDate) {
+    toast.error("Invalide date", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+    return false;
+  }
+  if(reservation.peopleNum > num){
+    toast.error(("The number of guests must be less than expected (" + num + ")."), {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+    return false;
+  }
+  if (!regex.test(reservation.daysReservation)) {
+    toast.error(
+      "The number of days for the reservation are required and must be a number!",
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      }
+    );
+    return false;
+  }
+  if (!regex.test(reservation.peopleNum)) {
+    toast.error("The number of people are required and must be a number!", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+    return false;
+  }
+  return true;
+}
 
 
 
@@ -53,6 +101,8 @@ export default function NewReservationForm({ offers, setOffers }) {
     price: 0,
 
   });
+  const [client, setClient] = React.useState();
+  const [checked, setChecked] = React.useState([]);
   const [additionalServicesInputList, setInputList] = useState([
     { serviceName: "", servicePrice: "" },
   ]);
@@ -66,7 +116,19 @@ export default function NewReservationForm({ offers, setOffers }) {
   
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if (activeStep == 0) {
+      if (checkFirstPage(reservation)) {
+        setActiveStep(activeStep + 1);
+      }
+    } else if (activeStep == 1) {
+      let currentOffer = offers.find((offer) => offer.id === reservation.offerId);
+      if (checkSecondPage(reservation, currentOffer.numberOfPerson)) {
+        setActiveStep(activeStep + 1);
+      }
+
+    } else if (activeStep == 2) {
+      setActiveStep(activeStep + 1);
+    } 
   };
 
   const handleBack = () => {
@@ -78,37 +140,47 @@ export default function NewReservationForm({ offers, setOffers }) {
     [userType.SHIP_OWNER] : getShipByShipOwnerEmail,
     [userType.INSTRUCTOR] : getAdventureByInstructorEmail
   };
-
+  let getClient = {
+    [userType.COTTAGE_OWNER]: getClientByCottageOwnerEmail
+  };
+  let role = getRoleFromToken();
   useEffect(() => {
     async function setDataOffer() {
       let role = getRoleFromToken();
       let username = getUsernameFromToken();
       const offersData = await getOffer[role](username);
       setOffers(offersData ? offersData.data : {});
-
       return offersData;
     }
+    async function setDataClient(){
+      let role = getRoleFromToken();
+      let username = getUsernameFromToken();
+      const clientsData = await getClient[role](username);
+      setClient(clientsData ? clientsData : {});
+      return clientsData;
+    }
+    setDataClient();
     setDataOffer();
   }, []);
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <FirstPage />;
+        return <FirstPage clients={client} setReservation={setReservation} offers={offers} role={role}/>;
       case 1:
         return (
-          <SecondPage />
+          <SecondPage setReservation={setReservation} reservation={reservation} offers={offers} checked={checked} setChecked={setChecked}/>
         );
       case 2:
         return (
-          <Review />
+          <Review reservation={reservation} checked={checked}/>
         );
       default:
         throw new Error("Unknown step");
     }
   }
   return (
-    !!offers && (
+    (!!client && !!offers) && (
       <div style={{ width: "70vw" }}>
         <ThemeProvider theme={theme}>
           <Container

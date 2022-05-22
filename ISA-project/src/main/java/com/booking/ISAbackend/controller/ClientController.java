@@ -8,6 +8,7 @@ import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Client;
+import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("client")
@@ -23,6 +25,8 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private ReservationService reservationService;
 
     @PostMapping("registration")
     public ResponseEntity<String> addClient(@RequestBody ClientRequest request, UriComponentsBuilder ucBuilder) throws InterruptedException {
@@ -68,6 +72,17 @@ public class ClientController {
     @GetMapping("deletion-requested")
     public ResponseEntity<Boolean> alreadyRequestedDeletion(@RequestParam String email){
         return ResponseEntity.ok(clientService.alreadyRequestedDeletion(email));
+    }
+
+    @GetMapping("get-by-reservation")
+    public ResponseEntity<List<ClientDTO>> getClientByCottageOwnerEmail(@RequestParam String ownerEmail){
+        try{
+            List<ClientDTO> clients = reservationService.getClientByCottageOwnerEmail(ownerEmail);
+//            clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
+            return ResponseEntity.ok(clients);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
     }
 
 
