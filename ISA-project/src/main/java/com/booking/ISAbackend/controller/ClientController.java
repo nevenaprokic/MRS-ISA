@@ -74,11 +74,30 @@ public class ClientController {
         return ResponseEntity.ok(clientService.alreadyRequestedDeletion(email));
     }
 
-    @GetMapping("get-by-reservation")
+    @GetMapping("get-by-reservation-cottage")
     public ResponseEntity<List<ClientDTO>> getClientByCottageOwnerEmail(@RequestParam String ownerEmail){
         try{
             List<ClientDTO> clients = reservationService.getClientByCottageOwnerEmail(ownerEmail);
-//            clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
+            return ResponseEntity.ok(clients);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @GetMapping("get-by-reservation-ship")
+    public ResponseEntity<List<ClientDTO>> getClientByShipOwnerEmail(@RequestParam String ownerEmail){
+        try{
+            List<ClientDTO> clients = reservationService.getClientByShipOwnerEmail(ownerEmail);
+            return ResponseEntity.ok(clients);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @GetMapping("get-by-reservation-adventure")
+    public ResponseEntity<List<ClientDTO>> getClientByInstructorEmail(@RequestParam String ownerEmail){
+        try{
+            List<ClientDTO> clients = reservationService.getClientByInstructorEmail(ownerEmail);
             return ResponseEntity.ok(clients);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(null);

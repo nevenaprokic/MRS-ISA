@@ -92,10 +92,27 @@ export function isAvailableOffer(data){
                 dayNum: data.daysReservation
             }
         })
-        .then((data) => {console.log("DA LI JE DOZVOLJENO"); console.log(data.data); return data.data;})
+        .then((data) => {return data.data;})
         .catch((err) => {
             console.log("Nije uspesno dobavljeno");
             return err.message;
         });
 }
+export function makeReservationOwner(reservation){
+    api
+    .post("/reservation/make-by-owner", reservation)
+    .then((responseData) => {
+      toast.success("You successfully added a new quick resrevation.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    })
+    .catch((err) => {
+      toast.error("You made a mistake, try again.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    });
+}
+
 

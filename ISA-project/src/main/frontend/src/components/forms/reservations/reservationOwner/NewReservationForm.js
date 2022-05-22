@@ -22,7 +22,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import {getAdventureByInstructorEmail} from '../../../../services/AdventureService';
 import {getShipByShipOwnerEmail} from '../../../../services/ShipService';
-import {getClientByCottageOwnerEmail} from '../../../../services/ClientService';
+import {getClientByCottageOwnerEmail, getClientByShipOwnerEmail, getClientByInstructorEmail} from '../../../../services/ClientService';
+import {makeReservationOwner} from '../../../../services/ReservationService';
+import {
+  isAvailablePeriod
+} from "../../../../services/QuickActionService";
+import { isAvailableOffer } from "../../../../services/ReservationService";
 
 const steps = [
   "Selection of clients",
@@ -102,18 +107,7 @@ export default function NewReservationForm({ offers, setOffers }) {
 
   });
   const [client, setClient] = React.useState();
-  const [checked, setChecked] = React.useState([]);
-  const [additionalServicesInputList, setInputList] = useState([
-    { serviceName: "", servicePrice: "" },
-  ]);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({});
-
-  
+  const [checked, setChecked] = React.useState([]);  
 
   const handleNext = () => {
     if (activeStep == 0) {
@@ -123,17 +117,45 @@ export default function NewReservationForm({ offers, setOffers }) {
     } else if (activeStep == 1) {
       let currentOffer = offers.find((offer) => offer.id === reservation.offerId);
       if (checkSecondPage(reservation, currentOffer.numberOfPerson)) {
-        setActiveStep(activeStep + 1);
+        checkDateFromBack();
       }
 
     } else if (activeStep == 2) {
       setActiveStep(activeStep + 1);
+      let params = {...reservation, "services":checked, };
+      makeReservationOwner(params);
     } 
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+  function checkDateFromBack() {
+    async function setCheck() {
+      let checkAvailble = await isAvailableOffer(reservation);
+      let checkPeriod = await isAvailablePeriod(reservation);
+
+      if (checkAvailble && checkPeriod) {
+        setActiveStep(activeStep + 1);
+      }
+      if (!checkAvailble) {
+        toast.error(
+          "The reservation for the selected offer in the selected period already exists!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      }
+      if (!checkPeriod) {
+        toast.error("Offer in the selected period is unavailable!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        });
+      }
+    }
+    setCheck();
+  }
 
   let getOffer = {
     [userType.COTTAGE_OWNER]: getCottageByCottageOwnerEmail,
@@ -141,7 +163,9 @@ export default function NewReservationForm({ offers, setOffers }) {
     [userType.INSTRUCTOR] : getAdventureByInstructorEmail
   };
   let getClient = {
-    [userType.COTTAGE_OWNER]: getClientByCottageOwnerEmail
+    [userType.COTTAGE_OWNER]: getClientByCottageOwnerEmail,
+    [userType.SHIP_OWNER]: getClientByShipOwnerEmail,
+    [userType.INSTRUCTOR]: getClientByInstructorEmail
   };
   let role = getRoleFromToken();
   useEffect(() => {
@@ -210,7 +234,7 @@ export default function NewReservationForm({ offers, setOffers }) {
                     </Typography>
                     <Typography variant="subtitle1">
                       {"The new reservation will be presented with the '" +
-                        reservation.name +
+                        reservation.offerName +
                         "' offer. The client " + reservation.clientName + " "+ reservation.clientLastName +" will be notified of the new reservation."}
                     </Typography>
                   </React.Fragment>
