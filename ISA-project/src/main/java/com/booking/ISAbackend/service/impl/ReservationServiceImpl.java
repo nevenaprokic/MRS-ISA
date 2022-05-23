@@ -38,6 +38,8 @@ public class ReservationServiceImpl implements ReservationService {
     private QuickReservationRepository quickReservationRepository;
     @Autowired
     private EmailSender emailSender;
+    @Autowired
+    private ClientCategoryRepository clientCategoryRepository;
 
     @Override
     @Transactional
@@ -181,7 +183,8 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> currentReservation = reservationRepository.findCurrentByOwnerEmail(email, today);
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
             clients.add(dto);
         }
         return clients;
@@ -193,7 +196,8 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> currentReservation = reservationRepository.findCurrentByShipOwnerEmail(email, today);
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
             clients.add(dto);
         }
         return clients;
@@ -205,7 +209,8 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> currentReservation = reservationRepository.findCurrentByInstructorEmail(email, today);
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
             clients.add(dto);
         }
         return clients;

@@ -108,6 +108,7 @@ export function isAvailableClient(emailClient, startDateReservation, endDateRese
       console.log("Nije uspesno dobavljeno");
       return err.message;
     });
+  }
 
 export function getAllCottageReservationsClient(){
   let email = getUsernameFromToken();

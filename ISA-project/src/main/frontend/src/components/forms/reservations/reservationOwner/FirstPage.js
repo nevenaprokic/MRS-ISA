@@ -28,6 +28,7 @@ export default function FirstPage({clients, setReservation, offers, role}) {
   };
   
   return (
+    !!clients &&
     <React.Fragment>
       <Grid item xs={12}>
                 <label style={{ marginLeft:"15%", color:"#CC7351", fontSize:"25px" }}>Clients who currently have a reservation with you.</label>

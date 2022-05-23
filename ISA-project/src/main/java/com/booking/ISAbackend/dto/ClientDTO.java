@@ -33,7 +33,7 @@ public class ClientDTO {
         this.points = points;
     }
 
-    public ClientDTO(Client c, Integer id) {
+    public ClientDTO(Client c, Integer id, String category) {
         this.email = c.getEmail();
         this.firstName = c.getFirstName();
         this.lastName = c.getLastName();
@@ -41,9 +41,10 @@ public class ClientDTO {
         this.street = c.getAddress().getStreet();
         this.city = c.getAddress().getCity();
         this.state = c.getAddress().getState();
-        this.clientCategory = c.getClientCategory().getName();
+        this.clientCategory = category;
         this.penal = c.getPenal();
         this.offerId = id;
+        this.points = c.getPoints();
         
     }
 
