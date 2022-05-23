@@ -2,6 +2,7 @@ package com.booking.ISAbackend.email;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationToken;
 import com.booking.ISAbackend.dto.ReservationParamsDTO;
+import com.booking.ISAbackend.model.Reservation;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -77,6 +78,16 @@ public class EmailService implements EmailSender{
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
         mail.setSubject("New special offer!!!");
         mail.setText("The new special offer will be valid from " + date +". Hurry up and book your favorite "+ offerName+"!\n");
+        javaMailSender.send(mail);
+    }
+
+    @Override
+    public void notifyClientNewReservation(String email, Reservation reservation) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Successful reservation!!!");
+        mail.setText("A new reservation has been made for you! Reservation starts from " + reservation.getStartDate().toString() + " and lasting up to " + reservation.getEndDate().toString() + " for offer " + reservation.getOffer().getName() +".\n");
         javaMailSender.send(mail);
     }
 

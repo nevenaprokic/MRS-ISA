@@ -94,3 +94,13 @@ $darkGrrenGray: #5f6d5f;
     margin-left: 35%;
     color:#CC7351;
 }
+.MuiContainer-root MuiContainer-maxWidthSm css-91ge7k-MuiContainer-root{
+    width: 80vw !important;
+}
+
+@media (min-width: 600px){
+.css-91ge7k-MuiContainer-root {
+    max-width: 900px !important;
+}
+}
+  

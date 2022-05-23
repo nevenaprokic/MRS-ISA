@@ -20,6 +20,7 @@ import AddCottagePage from "../forms/cottage/AddCottagePage";
 import WorkingCalendar from "../calendar/WorkingCalendar";
 import ReservationProfile from "../profilePages/reservationProfile/ReservationProfile";
 import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
+import NewReservationForm from '../forms/reservations/reservationOwner/NewReservationForm';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -181,7 +182,7 @@ export default function CottageOwnerHomePage() {
             Izvestaji
           </TabPanel>
           <TabPanel value={value} index={9}>
-            Nove rezervacije
+            <NewReservationForm offers={offers} setOffers={setOffers}/>
           </TabPanel>
           <TabPanel value={value} index={10}>
             <Checkout offers={offers} setOffers={setOffers}/>

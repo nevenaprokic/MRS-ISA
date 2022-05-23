@@ -1,13 +1,15 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.dto.ReservationDTO;
-import com.booking.ISAbackend.dto.ReservationParamsDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.InvalidPriceException;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
+import com.booking.ISAbackend.exceptions.RequiredFiledException;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
+import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +20,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -111,6 +109,106 @@ public class ReservationServiceImpl implements ReservationService {
                 return false;
         }
         return true;
+    }
+    @Override
+    public Boolean isAvailableClient(String emailClient, String startReservation, String endReservation){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateReservation = LocalDate.parse(startReservation, formatter);
+        LocalDate endDateReservation = LocalDate.parse(endReservation, formatter);
+        List<Reservation> reservations = reservationRepository.findByClientEmail(emailClient);
+        for(Reservation q: reservations){
+            if((q.getStartDate().compareTo(startDateReservation) <= 0) && (startDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+            if((q.getStartDate().compareTo(endDateReservation) <= 0) && (endDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+        }
+        return true;
+    }
+    @Override
+    @Transactional
+    public Integer makeReservationOwner(NewReservationDTO dto){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
+        LocalDate endDateReservation = startDateReservation.plusDays(dto.getDaysReservation());
+        Offer offer = offerRepository.findOfferById(dto.getOfferId());
+        Client client = clientRepository.findByEmail(dto.getClientUserName());
+
+        List<AdditionalService> newAdditionalService = new ArrayList<>();
+        for(AdditionalService a: dto.getServices()){
+            AdditionalService additionalService = additionalServiceRepository.save(new AdditionalService(a.getName(),a.getPrice()));
+            newAdditionalService.add(additionalService);
+        }
+
+        Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
+        Reservation newReservation = reservationRepository.save(reservation);
+        offer.getReservations().add(newReservation);
+        offerRepository.save(offer);
+        sendEmail(client.getEmail(), reservation);
+        return newReservation.getId();
+    }
+
+    @Transactional
+    void sendEmail(String client, Reservation reservation){
+        emailSender.notifyClientNewReservation("markoooperic123+++fdf@gmail.com", reservation);
+
+    }
+//    @Override
+//    public void addAdditionalServices(List<AdditionalServiceDTO> additionalServiceDTOs, Integer reservationId) {
+//
+//        List<Optional<AdditionalService>> services = new ArrayList<>();
+//        for(AdditionalServiceDTO s : additionalServiceDTOs){
+//            services.add(additionalServiceRepository.findById(s.getId()));
+//        }
+//        List<AdditionalService> additionalServices = new ArrayList<>();
+//        for (Optional<AdditionalService> x : services) {
+//            x.ifPresent(additionalServices::add);
+//        }
+//        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+//
+//        if(reservation.isPresent()){
+//            Reservation r = reservation.get();
+//            r.setAdditionalServices(additionalServices);
+//            reservationRepository.save(r);
+//        }
+//
+//    }
+
+    @Override
+    @Transactional
+    public List<ClientDTO> getClientByCottageOwnerEmail(String email){
+        LocalDate today = LocalDate.now();
+        List<Reservation> currentReservation = reservationRepository.findCurrentByOwnerEmail(email, today);
+        List<ClientDTO> clients = new ArrayList<>();
+        for(Reservation r: currentReservation){
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            clients.add(dto);
+        }
+        return clients;
+    }
+    @Override
+    @Transactional
+    public List<ClientDTO> getClientByShipOwnerEmail(String email){
+        LocalDate today = LocalDate.now();
+        List<Reservation> currentReservation = reservationRepository.findCurrentByShipOwnerEmail(email, today);
+        List<ClientDTO> clients = new ArrayList<>();
+        for(Reservation r: currentReservation){
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            clients.add(dto);
+        }
+        return clients;
+    }
+    @Override
+    @Transactional
+    public List<ClientDTO> getClientByInstructorEmail(String email){
+        LocalDate today = LocalDate.now();
+        List<Reservation> currentReservation = reservationRepository.findCurrentByInstructorEmail(email, today);
+        List<ClientDTO> clients = new ArrayList<>();
+        for(Reservation r: currentReservation){
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId());
+            clients.add(dto);
+        }
+        return clients;
     }
 
 

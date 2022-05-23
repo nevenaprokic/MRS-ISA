@@ -20,20 +20,20 @@ import {
 } from "../../../../app/jwtTokenUtils";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { addDays } from "../../../../services/UtilService";
-import {
-  alreadyExistQuickReservationForOffer,
-  isAvailablePeriod,
-  makeQuickReservation
-} from "../../../../services/QuickActionService";
-import { isAvailableOffer } from "../../../../services/ReservationService";
 import {getAdventureByInstructorEmail} from '../../../../services/AdventureService';
 import {getShipByShipOwnerEmail} from '../../../../services/ShipService';
+import {getClientByCottageOwnerEmail, getClientByShipOwnerEmail, getClientByInstructorEmail, isAvailableClient} from '../../../../services/ClientService';
+import {makeReservationOwner} from '../../../../services/ReservationService';
+import {
+  isAvailablePeriod
+} from "../../../../services/QuickActionService";
+import { isAvailableOffer } from "../../../../services/ReservationService";
+import { addDaysToLocalDate} from '../../../../services/UtilService';
 
 const steps = [
-  "Selection of offers",
+  "Selection of clients",
   "Selection of additional attributes",
-  "Review your quick action",
+  "Review your reservation",
 ];
 
 const theme = createTheme({
@@ -42,34 +42,36 @@ const theme = createTheme({
     secondary: { main: "#ffffff" },
   },
 });
-const regex = new RegExp("^[1-9]+[0-9]*$");
-function checkFirstPage(offer) {
-  let startDateAction = new Date(offer.startDateAction);
-  let startDateReservation = new Date(offer.startDateReservation);
-  let endDateAction = addDays(
-    new Date(offer.startDateAction),
-    offer.daysAction
-  );
-  const currentDate = new Date();
 
-  if (offer.name === '') {
-    toast.error("Offer name is required", {
+const regex = new RegExp("^[1-9]+[0-9]*$");
+function checkFirstPage(reservation) {
+  if (reservation.clientUserName === '') {
+    toast.error("Client email is required", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if (!regex.test(offer.daysAction)) {
-    toast.error(
-      "The number of days for the action are required and must be a number!",
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 1500,
-      }
-    );
+  return true;
+}
+function checkSecondPage(reservation, num){
+  let startDateReservation = new Date(reservation.startDateReservation);
+  const currentDate = new Date();
+  if ( startDateReservation <= currentDate) {
+    toast.error("Invalide date", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
     return false;
   }
-  if (!regex.test(offer.daysReservation)) {
+  if(reservation.peopleNum > num){
+    toast.error(("The number of guests must be less than expected (" + num + ")."), {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+    return false;
+  }
+  if (!regex.test(reservation.daysReservation)) {
     toast.error(
       "The number of days for the reservation are required and must be a number!",
       {
@@ -79,83 +81,68 @@ function checkFirstPage(offer) {
     );
     return false;
   }
-  if (startDateAction < currentDate || startDateReservation <= currentDate) {
-    toast.error("Invalide date", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
-    return false;
-  }
-  if (startDateAction >= startDateReservation) {
-    toast.error("Invalide date", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
-    return false;
-  }
-  if (endDateAction >= startDateReservation >= startDateAction) {
-    toast.error("Invalide date", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
-    return false;
-  }
-  return true;
-}
-
-function checkSecondPage(offer) {
-  if (!regex.test(offer.peopleNum)) {
+  if (!regex.test(reservation.peopleNum)) {
     toast.error("The number of people are required and must be a number!", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
     return false;
   }
-  if (!regex.test(offer.price)) {
-    toast.error("Price is required and must be a number!", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1500,
-    });
-    return false;
-  }
   return true;
 }
 
-export default function Checkout({ offers, setOffers }) {
+
+
+export default function NewReservationForm({ offers, setOffers }) {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [offer, setOffer] = React.useState({
-    name: "",
+  const [reservation, setReservation] = React.useState({
+    clientUserName: "",
+    clientName:"",
+    clientLastName:"",
+    offerName: "",
     offerId: 0,
-    daysAction: 0,
     daysReservation: 0,
-    startDateAction: "",
     startDateReservation: "",
     peopleNum: 0,
     price: 0,
 
   });
-  const [additionalServicesInputList, setInputList] = useState([
-    { serviceName: "", servicePrice: "" },
-  ]);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({});
+  const [client, setClient] = React.useState();
+  const [checked, setChecked] = React.useState([]);  
 
-  function checkDateFromBack() {
-    async function setCheck() {
-      let checkExist = await alreadyExistQuickReservationForOffer(offer);
-      let checkAvailble = await isAvailableOffer(offer);
-      let checkPeriod = await isAvailablePeriod(offer);
-
-      if (checkExist && checkAvailble && checkPeriod) {
+  const handleNext = () => {
+    if (activeStep == 0) {
+      if (checkFirstPage(reservation)) {
         setActiveStep(activeStep + 1);
       }
-      if (!checkExist) {
+    } else if (activeStep == 1) {
+      let currentOffer = offers.find((offer) => offer.id === reservation.offerId);
+      if (checkSecondPage(reservation, currentOffer.numberOfPerson)) {
+        checkDateFromBack();
+      }
+
+    } else if (activeStep == 2) {
+      setActiveStep(activeStep + 1);
+      let params = {...reservation, "services":checked, };
+      makeReservationOwner(params);
+    } 
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+  function checkDateFromBack() {
+    async function setCheck() {
+      let checkAvailble = await isAvailableOffer(reservation);
+      let checkPeriod = await isAvailablePeriod(reservation);
+      let checkClient = await isAvailableClient(reservation.clientUserName, new Date(reservation.startDateReservation).toISOString().split('T')[0], addDaysToLocalDate(reservation.startDateReservation, reservation.daysReservation));
+
+      if (checkAvailble && checkPeriod && checkClient) {
+        setActiveStep(activeStep + 1);
+      }
+      if (!checkClient) {
         toast.error(
-          "A quick reservation for the selected offer in the selected period already exists!",
+          "In the selected period the client already has a reservation!",
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: 1500,
@@ -181,29 +168,15 @@ export default function Checkout({ offers, setOffers }) {
     setCheck();
   }
 
-  const handleNext = () => {
-    if (activeStep == 0) {
-      if (checkFirstPage(offer)) {
-        checkDateFromBack();
-      }
-    } else if (activeStep == 1) {
-      if (checkSecondPage(offer)) {
-        setActiveStep(activeStep + 1);
-      }
-    } else if (activeStep == 2) {
-      setActiveStep(activeStep + 1);
-      makeQuickReservation(offer, additionalServicesInputList);
-    } 
-  };
-
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
-
   let getOffer = {
     [userType.COTTAGE_OWNER]: getCottageByCottageOwnerEmail,
     [userType.SHIP_OWNER] : getShipByShipOwnerEmail,
     [userType.INSTRUCTOR] : getAdventureByInstructorEmail
+  };
+  let getClient = {
+    [userType.COTTAGE_OWNER]: getClientByCottageOwnerEmail,
+    [userType.SHIP_OWNER]: getClientByShipOwnerEmail,
+    [userType.INSTRUCTOR]: getClientByInstructorEmail
   };
   let role = getRoleFromToken();
   useEffect(() => {
@@ -212,39 +185,37 @@ export default function Checkout({ offers, setOffers }) {
       let username = getUsernameFromToken();
       const offersData = await getOffer[role](username);
       setOffers(offersData ? offersData.data : {});
-
       return offersData;
     }
+    async function setDataClient(){
+      let role = getRoleFromToken();
+      let username = getUsernameFromToken();
+      const clientsData = await getClient[role](username);
+      setClient(clientsData ? clientsData : {});
+      return clientsData;
+    }
+    setDataClient();
     setDataOffer();
   }, []);
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <FirstPage offers={offers} setOffer={setOffer} role={role}/>;
+        return <FirstPage clients={client} setReservation={setReservation} offers={offers} role={role}/>;
       case 1:
         return (
-          <SecondPage
-            setOffer={setOffer}
-            additionalServicesInputList={additionalServicesInputList}
-            setInputList={setInputList}
-            register={register}
-            errors={errors}
-          />
+          <SecondPage setReservation={setReservation} reservation={reservation} offers={offers} checked={checked} setChecked={setChecked}/>
         );
       case 2:
         return (
-          <Review
-            offer={offer}
-            additionalServicesInputList={additionalServicesInputList}
-          />
+          <Review reservation={reservation} checked={checked}/>
         );
       default:
         throw new Error("Unknown step");
     }
   }
   return (
-    !!offers && (
+    (!!client && !!offers) && (
       <div style={{ width: "70vw" }}>
         <ThemeProvider theme={theme}>
           <Container
@@ -257,7 +228,7 @@ export default function Checkout({ offers, setOffers }) {
               sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
             >
               <Typography component="h1" variant="h4" align="center">
-                New quick reservation
+                New reservation for the client
               </Typography>
               <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                 {steps.map((label) => (
@@ -270,12 +241,12 @@ export default function Checkout({ offers, setOffers }) {
                 {activeStep === steps.length ? (
                   <React.Fragment>
                     <Typography variant="h5" gutterBottom>
-                      Thank you for your new quick reservation.
+                      Thank you for your new reservation.
                     </Typography>
                     <Typography variant="subtitle1">
-                      {"The new quick reservation will be presented with the '" +
-                        offer.name +
-                        "' offer. All subscribed users will be notified of the new action."}
+                      {"The new reservation will be presented with the '" +
+                        reservation.offerName +
+                        "' offer. The client " + reservation.clientName + " "+ reservation.clientLastName +" will be notified of the new reservation."}
                     </Typography>
                   </React.Fragment>
                 ) : (

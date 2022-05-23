@@ -1,11 +1,10 @@
 package com.booking.ISAbackend.service;
 
-import com.booking.ISAbackend.dto.ReservationDTO;
-import com.booking.ISAbackend.dto.ReservationParamsDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
-import com.booking.ISAbackend.model.Reservation;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationService {
@@ -14,10 +13,17 @@ public interface ReservationService {
 
     void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException;
     Boolean isAvailableOffer(Integer offerId,String startDate, Integer dayNum);
+    Boolean isAvailableClient(String emailClient, String startReservation, String endReservation);
+    List<ClientDTO> getClientByCottageOwnerEmail(String email);
+    List<ClientDTO> getClientByShipOwnerEmail(String email);
+    List<ClientDTO> getClientByInstructorEmail(String email);
+
+    Integer makeReservationOwner(NewReservationDTO dto);
 
     List<ReservationDTO> getPastCottageReservationsByClient(String email) throws IOException;
 
     List<ReservationDTO> getPastShipReservationsByClient(String email) throws IOException;
 
     List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException;
+
 }

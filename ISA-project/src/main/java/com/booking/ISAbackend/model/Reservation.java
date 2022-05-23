@@ -74,6 +74,16 @@ public class Reservation {
 		this.deleted = deleted;
 
 	}
+	public Reservation(LocalDate startDate, LocalDate endDate, Double price, Integer numberOfPerson, Offer offer, Client client, Boolean deleted) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.price = price;
+		this.numberOfPerson = numberOfPerson;
+		this.offer = offer;
+		this.client = client;
+		this.deleted = deleted;
+
+	}
 
 	public Integer getId() {
 		return id;
@@ -121,5 +131,9 @@ public class Reservation {
 
 	public ReservationReport getReport() {
 		return report;
+	}
+
+	public void setAdditionalServices(List<AdditionalService> additionalServices) {
+		this.additionalServices = additionalServices;
 	}
 }

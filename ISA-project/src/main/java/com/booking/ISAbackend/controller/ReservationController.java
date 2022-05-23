@@ -1,9 +1,8 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.dto.ReservationDTO;
-import com.booking.ISAbackend.dto.ReservationParamsDTO;
-import com.booking.ISAbackend.dto.ShipDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
+import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.service.ReservationService;
 import com.sun.mail.iap.Response;
@@ -12,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("reservation")
@@ -74,6 +75,17 @@ public class ReservationController {
         }
     }
 
+    @PostMapping("make-by-owner")
+    public ResponseEntity<Integer> makeReservationOwner(@RequestBody NewReservationDTO dto){
+        try{
+            Integer reservationId = reservationService.makeReservationOwner(dto);
+            return ResponseEntity.ok(reservationId);
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body(null);
+        }
+
+    }
+
     @GetMapping("get-ship-reservations-by-client")
     public ResponseEntity<List<ReservationDTO>> getPastShipReservationsClient(@RequestParam String email){
         try{
@@ -94,4 +106,5 @@ public class ReservationController {
         }
 
     }
+
 }

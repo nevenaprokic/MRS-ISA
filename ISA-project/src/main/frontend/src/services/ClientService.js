@@ -35,6 +35,80 @@ export const isDeletionRequested = (handleOpenDelete) => {
       });
 }
 
+
+export function getClientByCottageOwnerEmail(email){
+  return api
+    .get("/client/get-by-reservation-cottage", {
+      params: {
+        ownerEmail: email,
+      },
+    })
+    .then((response) => {console.log(response.data);  return response.data;})
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
+export function getClientByShipOwnerEmail(email){
+  return api
+    .get("/client/get-by-reservation-ship", {
+      params: {
+        ownerEmail: email,
+      },
+    })
+    .then((response) => {console.log(response.data);  return response.data;})
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
+export function getClientByInstructorEmail(email){
+  return api
+    .get("/client/get-by-reservation-adventure", {
+      params: {
+        ownerEmail: email,
+      },
+    })
+    .then((response) => {console.log(response.data);  return response.data;})
+    .catch((err) => {
+      toast.error(
+        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
+export function isAvailableClient(emailClient, startDateReservation, endDateReservation){
+  return api
+    .get("client/available-client", {
+      params: {
+        emailClient: emailClient,
+        startDateReservation: startDateReservation,
+        endDateReservation: endDateReservation,
+      },
+    })
+    .then((data) => {
+      console.log("DA LI JE DOZVOLJENO");
+      console.log(data.data);
+      return data.data;
+    })
+    .catch((err) => {
+      console.log("Nije uspesno dobavljeno");
+      return err.message;
+    });
+
 export function getAllCottageReservationsClient(){
   let email = getUsernameFromToken();
 
@@ -84,5 +158,6 @@ export function getAllAdventureReservationsClient(){
                       autoClose: 1500,
                   })}
       )
+
 }
 

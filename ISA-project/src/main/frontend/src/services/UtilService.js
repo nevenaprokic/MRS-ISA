@@ -13,6 +13,11 @@ export function addDays(date, days) {
   date.setDate(date. getDate() + parseInt(days));
   return date;
   }
+export function addDaysToLocalDate(date_string, days){
+  var date = new Date(date_string);
+  let next_date = new Date(date.setDate(date.getDate() + parseInt(days))).toISOString().split('T')[0];
+  return next_date;
+}
 
 export function arrayToDateString(arr){
     let d = new Date();
