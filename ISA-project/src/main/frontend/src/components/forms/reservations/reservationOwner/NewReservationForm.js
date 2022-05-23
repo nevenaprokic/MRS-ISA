@@ -22,12 +22,13 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import {getAdventureByInstructorEmail} from '../../../../services/AdventureService';
 import {getShipByShipOwnerEmail} from '../../../../services/ShipService';
-import {getClientByCottageOwnerEmail, getClientByShipOwnerEmail, getClientByInstructorEmail} from '../../../../services/ClientService';
+import {getClientByCottageOwnerEmail, getClientByShipOwnerEmail, getClientByInstructorEmail, isAvailableClient} from '../../../../services/ClientService';
 import {makeReservationOwner} from '../../../../services/ReservationService';
 import {
   isAvailablePeriod
 } from "../../../../services/QuickActionService";
 import { isAvailableOffer } from "../../../../services/ReservationService";
+import { addDaysToLocalDate} from '../../../../services/UtilService';
 
 const steps = [
   "Selection of clients",
@@ -134,9 +135,19 @@ export default function NewReservationForm({ offers, setOffers }) {
     async function setCheck() {
       let checkAvailble = await isAvailableOffer(reservation);
       let checkPeriod = await isAvailablePeriod(reservation);
+      let checkClient = await isAvailableClient(reservation.clientUserName, new Date(reservation.startDateReservation).toISOString().split('T')[0], addDaysToLocalDate(reservation.startDateReservation, reservation.daysReservation));
 
-      if (checkAvailble && checkPeriod) {
+      if (checkAvailble && checkPeriod && checkClient) {
         setActiveStep(activeStep + 1);
+      }
+      if (!checkClient) {
+        toast.error(
+          "In the selected period the client already has a reservation!",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
       }
       if (!checkAvailble) {
         toast.error(

@@ -83,22 +83,43 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
     @Override
+    public Boolean isAvailableClient(String emailClient, String startReservation, String endReservation){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateReservation = LocalDate.parse(startReservation, formatter);
+        LocalDate endDateReservation = LocalDate.parse(endReservation, formatter);
+        List<Reservation> reservations = reservationRepository.findByClientEmail(emailClient);
+        for(Reservation q: reservations){
+            if((q.getStartDate().compareTo(startDateReservation) <= 0) && (startDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+            if((q.getStartDate().compareTo(endDateReservation) <= 0) && (endDateReservation.compareTo(q.getEndDate()) <= 0))
+                return false;
+        }
+        return true;
+    }
+    @Override
     @Transactional
     public Integer makeReservationOwner(NewReservationDTO dto){
-        //treba dodati additional services
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
         LocalDate endDateReservation = startDateReservation.plusDays(dto.getDaysReservation());
         Offer offer = offerRepository.findOfferById(dto.getOfferId());
         Client client = clientRepository.findByEmail(dto.getClientUserName());
 
-        Reservation reservation = new Reservation(startDateReservation, endDateReservation, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
+        List<AdditionalService> newAdditionalService = new ArrayList<>();
+        for(AdditionalService a: dto.getServices()){
+            AdditionalService additionalService = additionalServiceRepository.save(new AdditionalService(a.getName(),a.getPrice()));
+            newAdditionalService.add(additionalService);
+        }
+
+        Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
         Reservation newReservation = reservationRepository.save(reservation);
         offer.getReservations().add(newReservation);
         offerRepository.save(offer);
         sendEmail(client.getEmail(), reservation);
         return newReservation.getId();
     }
+
     @Transactional
     void sendEmail(String client, Reservation reservation){
         emailSender.notifyClientNewReservation("markoooperic123+++fdf@gmail.com", reservation);

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,6 +100,16 @@ public class ClientController {
         try{
             List<ClientDTO> clients = reservationService.getClientByInstructorEmail(ownerEmail);
             return ResponseEntity.ok(clients);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @GetMapping("available-client")
+    public ResponseEntity<Boolean> isAvailableClient(@RequestParam String emailClient, @RequestParam String startDateReservation, @RequestParam String endDateReservation){
+        try{
+            Boolean check = reservationService.isAvailableClient(emailClient, startDateReservation, endDateReservation);
+            return ResponseEntity.ok(check);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(null);
         }

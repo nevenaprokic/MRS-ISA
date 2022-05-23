@@ -89,4 +89,23 @@ export function getClientByInstructorEmail(email){
       );
     });
 }
+export function isAvailableClient(emailClient, startDateReservation, endDateReservation){
+  return api
+    .get("client/available-client", {
+      params: {
+        emailClient: emailClient,
+        startDateReservation: startDateReservation,
+        endDateReservation: endDateReservation,
+      },
+    })
+    .then((data) => {
+      console.log("DA LI JE DOZVOLJENO");
+      console.log(data.data);
+      return data.data;
+    })
+    .catch((err) => {
+      console.log("Nije uspesno dobavljeno");
+      return err.message;
+    });
+}
 
