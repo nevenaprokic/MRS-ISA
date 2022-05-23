@@ -4,7 +4,8 @@ export const userType = {
     INSTRUCTOR: "INSTRUCTOR",
     COTTAGE_OWNER:"COTTAGE_OWNER" ,
     SHIP_OWNER: "SHIP_OWNER",
-    ADMIN : "ADMIN"
+    ADMIN : "ADMIN",
+    OWNER : "OWNER"
 }
 
 Object.freeze(userType);
@@ -27,6 +28,15 @@ export const offerTypeByUserType = {
 }
 
 Object.freeze(offerTypeByUserType);
+
+export const loyaltyCategory = {
+    REGULAR : "REGULAR",
+    SILVER: "SILVER",
+    GOLD: "GOLD",
+    CASUAL_CLIENT: "CASULA_CLIENT",
+    CLOSE_CLIENT: "CLOSE_CLIENT",
+    BEST_CLIENT: "BEST_CLIENT"
+}
 
 
 

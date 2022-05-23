@@ -19,13 +19,14 @@ insert into role(name) values ('COTTAGE_OWNER');
 insert into role(name) values ('SHIP_OWNER');
 insert into role(name) values ('INSTRUCTOR');
 
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('CASUAL_CLIENT', 0.0 , 1 , 0, 5);
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('CLOSE_CLIENT', 5.0, 2, 6, 10);
-insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points) values ('BEST_CLIENT', 10.0, 3, 11, 100);
 
-insert into owner_category(name, earnings, reservation_points, low_limit_points, heigh_limit_points) values ('REGULAR', 70.0, 1, 0, 10);
-insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points) values ('SILVER', 80.0, 2, 11, 20 );
-insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points) values ('GOLD', 90.0, 3, 21, 100  );
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('CASUAL_CLIENT', 0.0 , 1 , 0, 5, '#444444');
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('CLOSE_CLIENT', 5.0, 2, 6, 10, '#7ca253');
+insert into client_category (name, discount, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('BEST_CLIENT', 10.0, 3, 11, 100, '#CC7351');
+
+insert into owner_category(name, earnings, reservation_points, low_limit_points, heigh_limit_points, category_color) values ('REGULAR', 70.0, 1, 0, 10, '#444444');
+insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points, category_color) values ('SILVER', 80.0, 2, 11, 20, '#BBBBBB' );
+insert into owner_category(name, earnings,  reservation_points, low_limit_points, heigh_limit_points, category_color) values ('GOLD', 90.0, 3, 21, 100 , '#fcdc3c' );
 
 
 /*CLIENTS*/
@@ -36,10 +37,10 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
 
-insert into client (client_category_id, penal, id) values (1, 3, 1);
-insert into client (client_category_id, penal, id) values (1, 0, 2);
-insert into client (client_category_id, penal, id) values (2, 1, 3);
-insert into client (client_category_id, penal, id) values (3, 0, 4);
+insert into client (points, penal, id) values (0, 3, 1);
+insert into client (points, penal, id) values (2, 0, 2);
+insert into client (points, penal, id) values (7, 1, 3);
+insert into client (points, penal, id) values (15, 0, 4);
 
 /*COTTAGE OWNERS*/
 
@@ -47,8 +48,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (3, true, 'mara@gmail.com', 'Mara', 'Dabovic', '$2a$10$ZFhTzzIdX6.j47kW/wCaA.xIJjpt6LCq4ASEa/iUr78LTGIfJSsEC', '063-211-1166', 6, false);/*vlasnik2*/
 
 
-insert  into owner(owner_category_id, id) values (1, 5);
-insert  into owner(owner_category_id, id) values (2, 6);
+insert  into owner(points, id) values (1, 5);
+insert  into owner(points, id) values (6, 6);
 
 insert into cottage_owner(id) values (5);
 insert into cottage_owner(id) values (6);
@@ -58,8 +59,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (4, true, 'ksenija@gmail.com', 'Ksenija', 'Sega', '$2a$10$zhlst/yvb/vPF7DXbLB0YeqjV2.tGRIQR1wftPMRYNRaHaPXKY7WW', '063-222-1113', 8, false);/*vlasnik4*/
 
 
-insert  into owner(owner_category_id, id) values (1, 7);
-insert  into owner(owner_category_id, id) values (3, 8);
+insert  into owner(points, id) values (8, 7);
+insert  into owner(points, id) values (3, 8);
 
 insert into ship_owner(id) values (7);
 insert into ship_owner(id) values (8);
@@ -70,8 +71,8 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (5, true, 'milica@gmail.com', 'Milica', 'Matic', '$2a$10$UwJxipMMlAZZRwxyEMuk/.2wn2UuFt.quxqu0Gj6vnGC.3goMKCu.', '063-111-1212', 10, false);/*instr2*/
 
 
-insert  into owner(owner_category_id, id) values (3, 9);
-insert  into owner(owner_category_id,  id) values (1, 10);
+insert  into owner(points, id) values (11, 9);
+insert  into owner(points,  id) values (0, 10);
 
 insert into instructor(biography, id) values ('Pecanjem se bavim od svoje 5 godine. Povedite drustvo i idemo na zabavu!',9);
 insert into instructor(biography, id) values ('Svaki dan je nova avantura, pridruzi se mojoj!',10);
@@ -195,8 +196,8 @@ insert into delete_request(description, my_user_id) values('Ne zelim vise da pos
 
 /*QUICK RESERVATION*/
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',6, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-05-01',10,1000,'2022-05-08','2022-04-25',8, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-17',2,255,'2022-05-23','2022-05-02',1, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-05-01',10,1000,'2022-05-08','2022-04-25',7, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-07-26','2022-07-17',2,255,'2022-07-23','2022-07-02',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-18','2022-05-10',10,1000,'2022-05-15','2022-05-02',2, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-06-26','2022-05-25',2,257,'2022-06-23','2022-05-15',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',5, false);
@@ -211,7 +212,7 @@ insert into registration_request(deleted, description, email,first_name,last_nam
 /*RESERVATION REPORT*/
 -- insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,2);
  /*UNAVAILABLE OFFER DATES*/
-insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-15', '2022-06-20');
+insert into unavailable_offer_dates(offer_id, start_date, end_date) values (1, '2022-06-15', '2022-06-20');
 insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-27', '2022-06-29');
 insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '2022-06-10', '2022-06-16');
 

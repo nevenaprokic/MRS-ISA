@@ -10,6 +10,7 @@ import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
+import com.booking.ISAbackend.service.ClientCategoryService;
 import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientCategoryRepository clientCategoryRepository;
 
+    @Autowired
+    private ClientCategoryService clientCategoryService;
+
     @Override
     @Transactional
     public String save(ClientRequest cr) throws InterruptedException {
@@ -65,7 +69,7 @@ public class ClientServiceImpl implements ClientService {
         c.setAddress(a);
         c.setPhoneNumber(cr.getPhoneNumber());
         c.setDeleted(false);
-        c.setClientCategory(clientCategoryRepository.findByName("CASUAL_CLIENT").get(0));
+        c.setPoints(0);
         c.setEmailVerified(false);
         c.setPenal(0);
         c.setRole(roleRepository.findByName("CLIENT").get(0));
@@ -82,6 +86,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientDTO findByEmail(String email) {
         Client client = clientRepository.findByEmail(email);
+        ClientCategory category = clientCategoryService.findCategoryByReservationPoints(client.getPoints()).get(0);
         if(client == null) return null;
         ClientDTO dto = new ClientDTO(
                 client.getEmail(),
@@ -91,8 +96,9 @@ public class ClientServiceImpl implements ClientService {
                 client.getAddress().getStreet(),
                 client.getAddress().getCity(),
                 client.getAddress().getState(),
-                client.getClientCategory().getName(),
-                client.getPenal()
+                category.getName(),
+                client.getPenal(),
+                client.getPoints()
         );
         return dto;
     }

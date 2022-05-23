@@ -199,7 +199,7 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
             </Modal>
 
             <ImagesBox images={photos} />
-            <QuickActionBox id={shipData.id} />
+            <QuickActionBox offer={shipData} />
             <MapBox
               street={shipData.street}
               city={shipData.city}

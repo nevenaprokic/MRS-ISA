@@ -14,10 +14,12 @@ public class ClientDTO {
     private String clientCategory;
     private Integer penal;
     private Integer offerId;
+    private Integer points;
+
 
     public ClientDTO() {}
 
-    public ClientDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String clientCategory, Integer penal) {
+    public ClientDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String clientCategory, Integer penal, Integer points) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +30,7 @@ public class ClientDTO {
         this.clientCategory = clientCategory;
         this.penal = penal;
         this.offerId = 0;
+        this.points = points;
     }
 
     public ClientDTO(Client c, Integer id) {
@@ -41,6 +44,7 @@ public class ClientDTO {
         this.clientCategory = c.getClientCategory().getName();
         this.penal = c.getPenal();
         this.offerId = id;
+        
     }
 
     public String getEmail() {
@@ -70,6 +74,10 @@ public class ClientDTO {
     public String getState() {
         return state;
     }
+
+    public int getPoints() {return points; }
+
+    public void setPoints(int points) {this.points = points;}
 
     public String getClientCategory() {
         return clientCategory;

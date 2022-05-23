@@ -28,7 +28,7 @@ function PriceList({ offer, additionalServices }) {
           <label>Basic price: {offer.price} €</label>
         </div>
 
-        {additionalServices &&
+        { (additionalServices.length != 0) ?
         <div className="tableContainer">
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -61,7 +61,7 @@ function PriceList({ offer, additionalServices }) {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>}
+        </div> :  <h3 className="actionTittle"> There are no additional services for this offer. </h3> }
       </div>
     );
   }

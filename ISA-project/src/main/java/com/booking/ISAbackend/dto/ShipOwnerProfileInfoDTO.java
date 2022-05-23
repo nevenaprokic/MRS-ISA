@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.OwnerCategory;
 import com.booking.ISAbackend.model.ShipOwner;
 
 public class ShipOwnerProfileInfoDTO {
@@ -11,6 +12,7 @@ public class ShipOwnerProfileInfoDTO {
     private String city;
     private String state;
     private String userCategory;
+    private int points;
 
     public ShipOwnerProfileInfoDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory) {
         this.email = email;
@@ -22,7 +24,7 @@ public class ShipOwnerProfileInfoDTO {
         this.state = state;
         this.userCategory = userCategory;
     }
-    public ShipOwnerProfileInfoDTO(ShipOwner shipOwner) {
+    public ShipOwnerProfileInfoDTO(ShipOwner shipOwner, OwnerCategory category) {
         this.email = shipOwner.getEmail();
         this.firstName = shipOwner.getFirstName();
         this.lastName = shipOwner.getLastName();
@@ -30,7 +32,8 @@ public class ShipOwnerProfileInfoDTO {
         this.street = shipOwner.getAddress().getStreet();
         this.city = shipOwner.getAddress().getCity();
         this.state = shipOwner.getAddress().getState();
-        this.userCategory = shipOwner.getOwnerCategory().getName();
+        this.userCategory = category.getName();
+        this.points = shipOwner.getPoints();
     }
     public ShipOwnerProfileInfoDTO(){}
 
@@ -65,6 +68,8 @@ public class ShipOwnerProfileInfoDTO {
     public String getUserCategory() {
         return userCategory;
     }
+
+    public int getPoints() { return points;}
 
 
 }

@@ -54,6 +54,17 @@ public class ReservationController {
         }
 
     }
+
+    @GetMapping("get-cottage-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email) {
+        try {
+            List<ReservationDTO> reservations = reservationService.getPastCottageReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("available-offer")
     public ResponseEntity<Boolean> isAvailableOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dayNum){
         try{
@@ -63,6 +74,7 @@ public class ReservationController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("make-by-owner")
     public ResponseEntity<Integer> makeReservationOwner(@RequestBody NewReservationDTO dto){
         try{
@@ -73,18 +85,26 @@ public class ReservationController {
         }
 
     }
-//    @PostMapping("add-additional-services")
-//    public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
-//        try{
-//            HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");
-//            Integer id = Integer.parseInt(paramsMap.get("reservationId").toString());
-//            List<AdditionalServiceDTO> additionalServices = (List< AdditionalServiceDTO > ) paramsMap.get("additionalServiceDTO");
-//
-//            reservationService.addAdditionalServices(additionalServices, id);
-//            return ResponseEntity.ok().body("Successfully added new  reservation");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
+    @GetMapping("get-ship-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastShipReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastShipReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-adventure-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastAdventureReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastAdventureReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

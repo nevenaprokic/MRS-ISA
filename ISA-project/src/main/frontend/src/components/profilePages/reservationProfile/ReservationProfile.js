@@ -23,8 +23,9 @@ import {getAllReservation} from "../../../services/ReservationService";
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {getAllReservationShipOwner} from "../../../services/ReservationService";
-import { userType } from "../../../app/Enum";
+import { userType, offerType } from "../../../app/Enum";
 import {getRoleFromToken} from "../../../app/jwtTokenUtils";
+import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAdventureReservationsClient } from "../../../services/ClientService";
 
 
 function Row({row, setRequests}) {
@@ -132,7 +133,7 @@ function Row({row, setRequests}) {
   }
 
 
-function ReservationProfile(){
+function ReservationProfile( {offerT} ){
     const [requests, setRequests] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -140,14 +141,18 @@ function ReservationProfile(){
     let getReservation = {
       [userType.COTTAGE_OWNER]: getAllReservation,
       [userType.SHIP_OWNER]: getAllReservationShipOwner,
+      [offerType.COTTAGE]: getAllCottageReservationsClient,
+      [offerType.SHIP]: getAllShipReservationsClient,
+      [offerType.ADVENTURE]: getAllAdventureReservationsClient,
     };
 
     useEffect(() => {
         async function setData(){
           let role = getRoleFromToken();
-            const responseData = await getReservation[role]();;
-            console.log(responseData.data);
-            setRequests(responseData.data ? responseData.data : {});
+          if(role == userType.CLIENT) role = offerT;
+          const responseData = await getReservation[role]();;
+          console.log(responseData.data);
+          setRequests(responseData.data ? responseData.data : {});
         }
         setData();
 
@@ -211,7 +216,7 @@ function ReservationProfile(){
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {requests.length == 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservation in past</Typography>}
+      {requests.length == 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservations in past</Typography>}
     </div>
     )
 }

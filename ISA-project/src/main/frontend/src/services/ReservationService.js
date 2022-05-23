@@ -97,6 +97,7 @@ export function isAvailableOffer(data){
             console.log("Nije uspesno dobavljeno");
             return err.message;
         });
+
 }
 export function makeReservationOwner(reservation){
     api
@@ -114,5 +115,6 @@ export function makeReservationOwner(reservation){
       });
     });
 }
+
 
 

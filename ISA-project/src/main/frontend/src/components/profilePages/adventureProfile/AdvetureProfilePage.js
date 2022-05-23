@@ -192,24 +192,6 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         <></>
                     )}
                 </div>
-                {/* {!!markData && 
-                <div className="mark">
-                    <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
-                </div>
-                }
-                <div className="changeBtn" >
-                        <Button variant="contained" onClick={handleOpenForm} sx={{width:"20%"}}>Change info</Button>
-                        
-                    </div>    
-                    <div className="deleteBtn">
-                        <Button
-                            sx={{width:"20%"}}
-                            variant="contained"
-                            onClick={handleOpenDeleteDialog}
-                        >
-                            Delete
-                        </Button>
-                    </div> */}
                 <Modal
                     open={openChangeForm}
                     onClose={handleCloseForm}
@@ -239,7 +221,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 </Modal>    
                 
                 <ImagesBox images={images}/>
-                <QuickActionBox id={adventureData.id}/>
+                <QuickActionBox offer={adventureData}/>
                 <MapBox street={adventureData.street} city={adventureData.city} state={adventureData.state}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >

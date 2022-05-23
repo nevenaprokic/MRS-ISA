@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.dto;
 
 import com.booking.ISAbackend.model.Instructor;
+import com.booking.ISAbackend.model.OwnerCategory;
 
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class InstructorProfileData {
     private String userCategory;
 
     private String biography;
-
+    private int points;
     private Double mark;
 
     private List<AdventureDTO> adventures;
 
-    public InstructorProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory, String biography) {
+    public InstructorProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory, String biography, Integer points) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,6 +39,20 @@ public class InstructorProfileData {
         this.state = state;
         this.userCategory = userCategory;
         this.biography = biography;
+        this.points = points;
+    }
+
+    public InstructorProfileData(Instructor i, OwnerCategory category) {
+        this.email = i.getEmail();
+        this.firstName = i.getFirstName();
+        this.lastName = i.getLastName();
+        this.phoneNumber = i.getPhoneNumber();
+        this.street = i.getAddress().getStreet();
+        this.city = i.getAddress().getCity();
+        this.state = i.getAddress().getState();
+        this.userCategory = category.getName();
+        this.biography = i.getBiography();
+        this.points = i.getPoints();
     }
 
     public InstructorProfileData(Instructor i) {
@@ -48,8 +63,8 @@ public class InstructorProfileData {
         this.street = i.getAddress().getStreet();
         this.city = i.getAddress().getCity();
         this.state = i.getAddress().getState();
-        this.userCategory = i.getOwnerCategory().getName();
         this.biography = i.getBiography();
+        this.points = i.getPoints();
     }
 
     public String getEmail() {
@@ -95,6 +110,9 @@ public class InstructorProfileData {
     public void setAdventures(List<AdventureDTO> adventures) {
         this.adventures = adventures;
     }
+
+
+    public int getPoints() { return points;}
 
     public Double getMark() {
         return mark;
