@@ -11,4 +11,5 @@ public interface OwnerCategoryService {
     List<OwnerCategory> findByReservationpoints(int points);
     void updateOwnerCategory(OwnerCategory ownerCategoryData) throws OverlappingCategoryBoundaryException, ExistingCategoryNameException, AutomaticallyChangesCategoryIntervalException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException;
     void addOwnerCategory(OwnerCategory ownerCategoryData) throws AutomaticallyChangesCategoryIntervalException, OverlappingCategoryBoundaryException, ExistingCategoryNameException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException;
+    boolean delete(int id);
 }

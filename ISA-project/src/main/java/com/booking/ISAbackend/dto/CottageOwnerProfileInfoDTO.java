@@ -13,6 +13,7 @@ public class CottageOwnerProfileInfoDTO {
     private String city;
     private String state;
     private String userCategory;
+    private int points;
 
     public CottageOwnerProfileInfoDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String userCategory) {
         this.email = email;
@@ -33,6 +34,7 @@ public class CottageOwnerProfileInfoDTO {
         this.city = cottageOwner.getAddress().getCity();
         this.state = cottageOwner.getAddress().getState();
         this.userCategory = category.getName();
+        this.points = cottageOwner.getPoints();
     }
     public CottageOwnerProfileInfoDTO(){}
 
@@ -67,6 +69,7 @@ public class CottageOwnerProfileInfoDTO {
     public String getUserCategory() {
         return userCategory;
     }
+    public int getPoints() { return points;}
 
 
 }

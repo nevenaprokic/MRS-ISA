@@ -21,6 +21,7 @@ import ChangePassword from "../../forms/user/ChangePassword";
 import {toast} from 'react-toastify';
 import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
 import { isDeletionRequested } from "../../../services/ClientService";
+import { getClientCategoryInfo } from "../../../services/LoyaltyService";
 
 
 function ClientProfile(){
@@ -40,6 +41,7 @@ function ClientProfile(){
 
 
     const [clientData, setClientData] = useState();
+    const [categoryData, setCategoryData] = useState();
     const [open, setOpen] = useState(false);
 
     const [openDeleteManager, setDeleteManager] = useState(false);

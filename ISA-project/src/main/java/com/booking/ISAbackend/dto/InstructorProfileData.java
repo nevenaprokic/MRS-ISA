@@ -99,4 +99,5 @@ public class InstructorProfileData {
         this.adventures = adventures;
     }
 
+    public int getPoints() { return points;}
 }

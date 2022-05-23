@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class ClientCategoryServiceImpl implements ClientCategoryService {
@@ -59,6 +56,17 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
         }
     }
 
+    @Override
+    public boolean delete(int id) {
+        ClientCategory category = clientCategoryRepository.findById(id);
+        if(category != null) {
+            clientCategoryRepository.delete(category);
+            recalculateDistanceBetweenCategories();
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkUniqueCategoryName(ClientCategory category) throws ExistingCategoryNameException {
         List<ClientCategory> categories = clientCategoryRepository.findByName(category.getName());
         if (categories.size() >1 ) throw new ExistingCategoryNameException();
@@ -97,16 +105,10 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
         boolean changedHappend = false;
         for(int i=1; i< categories.size(); i++) {
             ClientCategory current = categories.get(i);
-            System.out.println("current " + current.getName()+ " " + current.getLowLimitPoints() + " -" + current.getHeighLimitPoints());
 
             ClientCategory previous = categories.get(i-1);
-            System.out.println("previous " + previous.getName()+ " " + previous.getLowLimitPoints() + " -" + previous.getHeighLimitPoints());
             if (current.getLowLimitPoints() - previous.getHeighLimitPoints() > 1) {
-                System.out.println("TUUUUU");
                 changedHappend = true;
-                //URADITI ISTO OVO ZA KATEGORIJE VLASNIKA
-                //SLATI PORUKU O AUTOMATKSOJ PROMENI VREDNOSTI KADA SE NADJE RAZMAK IZMEDJU INTERVALA
-                //CHILD TO PARENT DODATI
                 if(current.getId().equals(changedCategory.getId())){
                     previous.setHeighLimitPoints(current.getLowLimitPoints() - 1);
                     clientCategoryRepository.save(previous);
@@ -115,14 +117,24 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
                     current.setLowLimitPoints(previous.getHeighLimitPoints() + 1);
                     clientCategoryRepository.save(current);
                 }
-
-
             }
 
             if(changedHappend){
                 throw new AutomaticallyChangesCategoryIntervalException();
             }
         }
+    }
+
+    private void recalculateDistanceBetweenCategories(){
+        List<ClientCategory> categories = clientCategoryRepository.findAll(Sort.by(Sort.Direction.ASC, "lowLimitPoints"));
+        for(int i=1; i< categories.size(); i++) {
+            ClientCategory current = categories.get(i);
+            ClientCategory previous = categories.get(i-1);
+            if (current.getLowLimitPoints() - previous.getHeighLimitPoints() > 1) {
+                    previous.setHeighLimitPoints(current.getLowLimitPoints() - 1);
+                    clientCategoryRepository.save(previous);
+                }
+            }
     }
 
 

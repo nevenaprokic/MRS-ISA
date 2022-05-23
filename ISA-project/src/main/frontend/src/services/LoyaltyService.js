@@ -127,3 +127,91 @@ export function addOwnerCategory(categoryData, setLoyaltyCategories ){
                 });
             })
 }
+
+export function deleteClientCategory(id, setLoyaltyCategories){
+    api
+    .post("/loyalty/delete-client-category", id
+    //{
+    //     params: {
+    //         id : ids
+    //     }
+    // }
+    )
+    .then((responseMess) => {
+                            updateLoyaltyClientCategories(setLoyaltyCategories);
+                            toast.success(responseMess.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    })
+        .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                })
+}
+
+export function deleteOwnerCategory(id, setLoyaltyCategories){
+    api
+    .post("/loyalty/delete-owner-category", id
+    //{
+    //     params: {
+    //         id : ids
+    //     }
+    // }
+    )
+    .then((responseMess) => {
+                            updateLoyaltyOwnerCategories(setLoyaltyCategories);
+                            toast.success(responseMess.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                    })
+        .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                })
+}
+
+export function getClientCategoryInfo(categoryName){
+    api
+    .get("/loyalty/client-category-info", {
+        params: {
+            categoryName: categoryName
+        }
+    })
+    .then((responseData) => responseData)
+    .catch((err) =>  {toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+    });
+})
+}
+
+export function getOwnerCategoryInfo(categoryName){
+    api
+    .get("/loyalty/owner-category-info", {
+        params: {
+            categoryName: categoryName
+        }
+    })
+    .then((responseData) => responseData)
+    .catch((err) =>  {toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+    });
+})
+}
+
+// export function deleteCategory(id){
+// api
+// .delete("/loyalty/delete-client-category",{
+//     params: {
+//         id: id
+//     }
+// })
+// .then((responseData) => console.log(responseData))
+// .catch((err) => console.log(err) )
+
+// }

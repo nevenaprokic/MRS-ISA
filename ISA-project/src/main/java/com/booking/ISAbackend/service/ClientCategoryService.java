@@ -14,4 +14,6 @@ public interface ClientCategoryService {
 
     List<ClientCategory> findCategoryByReservationPoints(Integer points);
     void addClientCategory(ClientCategory clientCategoryData) throws ExistingCategoryNameException, OverlappingCategoryBoundaryException, AutomaticallyChangesCategoryIntervalException, InvalidBoundaryException, InvalidPercentException, InvalidPointsNumberException;
+
+    boolean delete(int id);
 }

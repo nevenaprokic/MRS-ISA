@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OwnerCategoryServiceImpl implements OwnerCategoryService {
@@ -52,6 +53,17 @@ public class OwnerCategoryServiceImpl implements OwnerCategoryService {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean delete(int id) {
+        OwnerCategory category = ownerCategoryRepository.findById(id);
+        if(category != null){
+            ownerCategoryRepository.delete(category);
+            recalculateDistanceBetweenCategories();
+            return true;
+        }
+        return false;
     }
 
     public boolean categoryValidation(OwnerCategory category) throws InvalidPercentException, InvalidPointsNumberException, InvalidBoundaryException {
@@ -113,6 +125,18 @@ public class OwnerCategoryServiceImpl implements OwnerCategoryService {
 
             if(changedHappend){
                 throw new AutomaticallyChangesCategoryIntervalException();
+            }
+        }
+    }
+
+    private void recalculateDistanceBetweenCategories(){
+        List<OwnerCategory> categories = ownerCategoryRepository.findAll(Sort.by(Sort.Direction.ASC, "lowLimitPoints"));
+        for(int i=1; i< categories.size(); i++) {
+            OwnerCategory current = categories.get(i);
+            OwnerCategory previous = categories.get(i-1);
+            if (current.getLowLimitPoints() - previous.getHeighLimitPoints() > 1) {
+                previous.setHeighLimitPoints(current.getLowLimitPoints() - 1);
+                ownerCategoryRepository.save(previous);
             }
         }
     }

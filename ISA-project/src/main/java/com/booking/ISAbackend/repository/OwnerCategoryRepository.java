@@ -19,5 +19,5 @@ public interface OwnerCategoryRepository extends JpaRepository<OwnerCategory, In
             " (?1 >= c.lowLimitPoints AND ?1 <= c.heighLimitPoints)  OR (?2 >= c.lowLimitPoints AND ?2 <= c.heighLimitPoints)")
     List<OwnerCategory> findByInterval(int start, int end);
 
-    OwnerCategory findById(Long id);
+    OwnerCategory findById(long id);
 }

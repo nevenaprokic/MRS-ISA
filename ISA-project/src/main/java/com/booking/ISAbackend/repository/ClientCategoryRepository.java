@@ -12,7 +12,7 @@ public interface ClientCategoryRepository extends JpaRepository<ClientCategory, 
     List<ClientCategory> findByName(String name);
     List<ClientCategory> findAll();
 
-    ClientCategory findById(Long id);
+    ClientCategory findById(long id);
 
     @Query("SELECT c FROM ClientCategory c WHERE" +
             " (?1 >= c.lowLimitPoints AND ?1 <= c.heighLimitPoints)  OR (?2 >= c.lowLimitPoints AND ?2 <= c.heighLimitPoints)")

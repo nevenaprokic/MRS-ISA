@@ -8,6 +8,7 @@ import com.booking.ISAbackend.service.OwnerCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,6 +129,30 @@ public class LoyaltyProgramController {
         }catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong");
         }
-
     }
+
+    @PostMapping(value = "/delete-client-category")
+    public ResponseEntity<String> deleteClientCategory(@RequestBody int id){
+
+            boolean deleted = clientCategoryService.delete(id);
+            if(deleted) return ResponseEntity.ok("Successfully deleted category");
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(value = "/delete-owner-category")
+    public ResponseEntity<String> deleteOwnerCategory(@RequestBody int id){
+
+        boolean deleted = ownerCategoryService.delete(id);
+        if(deleted) return ResponseEntity.ok("Successfully deleted category");
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+//    @DeleteMapping(value = "/delete-client-category/{id}")
+//    //@PreAuthorize()
+//    public ResponseEntity<String> deleteClientCategory(@PathVariable int id){
+//
+//        boolean deleted = clientCategoryService.delete(id);
+//        if(deleted) return ResponseEntity.ok("Successfully deleted category");
+//        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//    }
 }
