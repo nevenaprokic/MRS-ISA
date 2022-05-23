@@ -23,6 +23,10 @@ import UnauthenticatedUserHomePage from './components/homePages/UnauthenticatedU
 import InstructorsAdventures from './components/collections/InstructorsAdventures';
 import RegistrationRequestsList from './components/collections/RegistrationRequestsList';
 import WorkingCalendar from './components/calendar/WorkingCalendar'
+import LoyalyProgeramPage from './components/loyalty/LoyaltyProgramPage';
+import ChangeLoyaltyCategory from './components/forms/loyaltyCategory/ChangeLoyaltyCategory';
+import AddLoyaltyCategory from './components/forms/loyaltyCategory/AddLoyaltyCategory';
+import DeleteCategory from './components/forms/loyaltyCategory/DeleteCategory';
 
 function App() {
   return (
@@ -50,6 +54,10 @@ function App() {
           <Route path='/instructor/adventures' element={<InstructorsAdventures />}/>
           <Route path='/admin/registration-requests' element={<RegistrationRequestsList/>}/>
           <Route path='/owner/calendar' element={<WorkingCalendar/>} />
+          <Route path='/admin/loyalty-program' element={<LoyalyProgeramPage/>}/>
+          <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
+          <Route path='/admin/loyalty-program/add-category' element={<LoyalyProgeramPage/>}/>
+          <Route path='/admin/loyalty-program/delete-category' element={<DeleteCategory/>}/>
         </Routes>
     </div>
   );

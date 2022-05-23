@@ -201,4 +201,38 @@ public class Validator {
         return false;
     }
 
+    public static boolean isPositiveInteger(int number){
+        String regex = "^0|[1-9]+[0-9]*$";
+        Pattern numberPatern = Pattern.compile(regex);
+        Matcher matcher = numberPatern.matcher(String.valueOf(number));
+
+        if(matcher.matches()) return true;
+        return false;
+    }
+
+    public static boolean isValidReservationPointsNum(int number) throws InvalidPointsNumberException {
+        if(isPositiveInteger(number)) return true;
+        else {
+            throw new InvalidPointsNumberException();
+        }
+    }
+
+    public static boolean isValidBoundaryNum(int number) throws InvalidBoundaryException {
+        if(isPositiveInteger(number)) return true;
+        else {
+            throw new InvalidBoundaryException();
+        }
+    }
+
+    public static boolean isValidPercentNum(double number) throws InvalidPointsNumberException, InvalidPercentException {
+        String regex = "^100$|^\\d{0,2}(\\.\\d{1,2})? *%?$";
+        Pattern percentPatern = Pattern.compile(regex);
+        Matcher matcher = percentPatern.matcher(String.valueOf(number));
+
+        if(matcher.matches()) return true;
+        else{
+            throw new InvalidPercentException();
+        }
+    }
+
 }

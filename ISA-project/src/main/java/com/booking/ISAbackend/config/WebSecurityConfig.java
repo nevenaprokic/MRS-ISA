@@ -120,6 +120,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/ship/add-additional-services");
         web.ignoring().antMatchers(HttpMethod.POST, "/changeCottageOwnerData");
         web.ignoring().antMatchers(HttpMethod.POST, "/changeShipOwnerData");
+        web.ignoring().antMatchers(HttpMethod.POST, "/loyalty/update-client-category");
+        web.ignoring().antMatchers(HttpMethod.POST, "/loyalty/update-owner-category");
         // Ovim smo dozvolili pristup statickim resursima aplikacije
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");

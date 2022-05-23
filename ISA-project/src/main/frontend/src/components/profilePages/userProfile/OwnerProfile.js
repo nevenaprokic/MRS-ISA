@@ -27,6 +27,7 @@ import AdditionalInfoBox from "./AdditionalInfoBox";
 import HomeIcon from "@mui/icons-material/Home";
 import ChangePassword from "../../forms/user/ChangePassword";
 import DeleteOrderOwner from "../../forms/user/DeleteOrderOwner";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import AdventureDetails from "../../forms/adventure/AdventureDetails";
 
 
