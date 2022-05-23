@@ -89,11 +89,16 @@ public class InstructorServiceImpl implements InstructorService {
 
         for(Instructor i : instructors){
             List<Adventure> adv = adventureService.getInstructorsAdventuresById(i.getId());
+            OwnerCategory category = ownerCategoryService.findByReservationpoints(i.getPoints()).get(0);
             List<Adventure> availableAdventures = adv.stream()
                     .filter(element -> nonAvailable.contains(element))
                     .collect(Collectors.toList());
             if(availableAdventures.size() == 0){
-                availableInstructors.add(new InstructorProfileData(i));
+                List<AdventureDTO> adventures = adventureService.getInstructorAdventures(i.getEmail());
+                InstructorProfileData dto = new InstructorProfileData(i, category);
+                dto.setMark(calculateInstructorsRating(adventures));
+                dto.setAdventures(adventures);
+                availableInstructors.add(dto);
             }
         }
         return availableInstructors;
