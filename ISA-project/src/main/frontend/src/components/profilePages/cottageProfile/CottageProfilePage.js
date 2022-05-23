@@ -197,7 +197,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
             </Modal>
             <ImagesBox images={images} />
 
-            <QuickActionBox id={cottageData.id} />
+            <QuickActionBox offer={cottageData} />
             <MapBox
               street={cottageData.street}
               city={cottageData.city}

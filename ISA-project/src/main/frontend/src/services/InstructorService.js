@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
+import {compareString} from './UtilService'
 
 export function getInstructorByUsername(username){
     return api
@@ -62,7 +63,7 @@ export function searchInstructors(params, setOffers){
             );
         }})
         .catch((err) => {
-            {toast.error("Instructor doesn't exists", {
+            {toast.error("Something went wrong.", {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 1500,
             });
@@ -85,4 +86,86 @@ export function sendDeleteRequestInstructor(data){
         autoClose: 2000,
       });
     });
+}
+
+export function filterInstructorsClient(params, setOffers, lastSearchedOffers){
+
+  let maxRating = params.maxRating == "" ? Infinity : params.maxRating;
+  let minRating = params.minRating == "" ? -1 : params.minRating;
+
+  const filterOffers = (offer) => {
+    return (offer.mark <= maxRating && offer.mark >= minRating);
+ }
+  let filtered = lastSearchedOffers.filter(filterOffers);
+  if(filtered.length == 0)
+    toast.info("No offers that satisfy these filters.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
+  setOffers(filtered);
+
+}
+
+export function sortInstructors(value, sortAsc, offers, setOffers){
+  switch(value) {
+    case 8:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.firstName, b.firstName);
+    });
+      break;
+    case 2:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.street, b.street);
+      });
+      break;
+    case 3:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.city, b.city);
+      });
+      break;
+    case 9:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.lastName, b.lastName);
+      });
+      break;
+    default:
+      offers.sort((a, b) => {
+        return compareString(sortAsc, a.firstName, b.firstName);
+    });
+  }
+  setOffers([...offers]);
+}
+
+export function searchInstructorsClient(params, setOffers, setLastSearchedOffers){
+  if(params.date >= new Date()){
+      return api
+        .post("/instructor/search-client", {...params,
+            date:new Date(params.date).toISOString().split('T')[0]})
+            .then((data) =>{
+              if (data.data.length == 0) {
+                toast.info(
+                  "You don't have any instructors that match the search parameters.",
+                  {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 2000,
+                  }
+                );
+            }
+              setOffers(data.data);
+              setLastSearchedOffers(data.data);
+            })
+            .catch((err) => {
+                {toast.error("Something went wrong.", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            }
+            });
+    }else{
+      toast.error("Entered date has passed.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+      return;
+  }
 }

@@ -17,8 +17,11 @@ import Grid from '@mui/material/Grid';
 import OfferList from '../collections/OfferList';
 import { offerType } from "../../app/Enum";
 import ClientFilter from "../forms/search/ClientFilter"
-import ClientSort from "../forms/search/ClientSort"
-import { useEffect } from "react";
+import { userType } from '../../app/Enum';
+import ReservationProfile from '../profilePages/reservationProfile/ReservationProfile';
+import CottageIcon from '@mui/icons-material/Cottage';
+import SailingIcon from '@mui/icons-material/Sailing';
+import KayakingIcon from '@mui/icons-material/Kayaking';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -61,36 +64,34 @@ export default function ClientHomePage() {
     let tommorowDate = new Date();
     tommorowDate.setDate(tommorowDate.getDate() + 1)
 
-    const [lastSearchedOffers, setLastSearchedOffers] = useState();
-    const [allOffers, setAllOffers] = useState();
-    
+    const [lastSearchedOffers, setLastSearchedOffers] = useState();    
 
     const [params, setParams] = useState({
-        name: "",
-        description: "",
-        address: "",
-        dateFrom: tommorowDate,
-        dateTo: tommorowDate
+      name: "",
+      firstName: "",
+      lastName: "",
+      description: "",
+      address: "",
+      date: tommorowDate,
     });
 
     const [filter, setFilter] = useState({
-      maxRating: "",
-      maxPrice: "",
-      maxPeople: "",
-      minPeople: "",
-      minPrice: "",
-      minRating: "",
-      minSize: "",
-      maxSize: "" 
+      maxRating: 5,
+      maxPrice: 500,
+      maxPeople: 50,
+      minPeople: 0,
+      minPrice: 0,
+      minRating: 0
   });
 
     const resetParams = () => {
       setParams({
         name: "",
+        firstName: "",
+        lastName: "",
         description: "",
         address: "",
-        dateFrom: tommorowDate,
-        dateTo: tommorowDate
+        date: tommorowDate,
     });
     }
 
@@ -133,7 +134,7 @@ export default function ClientHomePage() {
                 >
                     <Tab label="Profile page" {...a11yProps(0)} />
                     <Divider />
-                    <Tab label="Subscriptions" {...a11yProps(1)} />
+                    <Tab label="Upcoming reservations" {...a11yProps(1)} />
                     <Divider />
                     <Tab label="Reservation history" {...a11yProps(2)} />
                     <Divider />
@@ -148,10 +149,24 @@ export default function ClientHomePage() {
                     <ClientProfile></ClientProfile>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  Subscriptions
+                  Upcoming reservations
                 </TabPanel>
                 <TabPanel value={value} index={4}>
-                    Reservation history
+                      <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <CottageIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\tCottages"}
+                      </Typography>
+                      <ReservationProfile offerT={offerType.COTTAGE}/>
+                      <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <SailingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\Ships"}
+                      </Typography>
+                      <ReservationProfile offerT={offerType.SHIP}/>
+                      <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <KayakingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\tAdventures"}
+                      </Typography>
+                      <ReservationProfile offerT={offerType.ADVENTURE}/>
                 </TabPanel>
                 <TabPanel value={value} index={6}>
                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
@@ -163,7 +178,6 @@ export default function ClientHomePage() {
                               <br/>
                               <ClientFilter params={filter} setParams={setFilter} type={offerType.COTTAGE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                               <br />
-                              {/* <ClientSort type={offerType.COTTAGE} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
@@ -177,12 +191,26 @@ export default function ClientHomePage() {
                           <Grid  item xs={12}>
                               <ClientSearch params={params} setParams={setParams} type={offerType.SHIP} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                               <br/>
-                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers}/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.SHIP} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
                               <br />
-                              {/* <ClientSort type={offerType.SHIP} offers={offers} setOffers={setOffers} /> */}
                           </Grid>
                         </Box>
                       <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                </TabPanel>
+
+                <TabPanel value={value} index={10}>
+                    <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
+                    <Divider/>
+                    <br/><br/>
+                      <Box sx={{ flexGrow: 1 }}>
+                          <Grid  item xs={12}>
+                              <ClientSearch params={params} setParams={setParams} type={offerType.ADVENTURE} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
+                            <br/>
+                              <ClientFilter params={filter} setParams={setFilter} type={offerType.ADVENTURE} lastSearchedOffers={lastSearchedOffers} setOffers={setOffers} offers={offers}/>
+                            <br />
+                          </Grid>
+                        </Box>
+                      <OfferList type={userType.INSTRUCTOR} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
                 </Box>
             </Container>

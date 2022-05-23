@@ -2,6 +2,7 @@ package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Adventure;
 import com.booking.ISAbackend.model.Cottage;
+import com.booking.ISAbackend.model.Instructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +20,7 @@ public interface AdventureReporitory extends JpaRepository<Adventure, Integer> {
             " AND (lower(a.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', a.name, '%')))"+
             " AND (a.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (a.price <= :price OR :price = -1) AND (a.instructor.email = :email) ")
     List<Adventure> searchAdventureByInstructorEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
+
+    List<Adventure> findAllByInstructor(Instructor i);
 
 }

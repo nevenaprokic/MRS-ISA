@@ -24,6 +24,7 @@ import ArrowUpwardTwoToneIcon from "@mui/icons-material/ArrowUpwardTwoTone";
 import ArrowDownwardTwoToneIcon from "@mui/icons-material/ArrowDownwardTwoTone";
 import Rating from "@mui/material/Rating";
 import { useEffect } from "react";
+import { filterInstructorsClient, sortInstructors } from "../../../services/InstructorService";
 
 
 function getValue(value) {
@@ -42,15 +43,15 @@ const stars = [
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-function getMinNumPeople(offers) {
-  console.log(offers);
-  const totals = offers.map((x) => x.numberOfPerson);
-  return Math.min(...totals);
-}
-function getMaxNumPeople(offers) {
-  const totals = offers.map((x) => x.numberOfPerson);
-  return Math.max(...totals);
-}
+// function getMinNumPeople(offers) {
+//   console.log(offers);
+//   const totals = offers.map((x) => x.numberOfPerson);
+//   return Math.min(...totals);
+// }
+// function getMaxNumPeople(offers) {
+//   const totals = offers.map((x) => x.numberOfPerson);
+//   return Math.max(...totals);
+// }
 
 export default function ClientFilter({
   params,
@@ -60,30 +61,13 @@ export default function ClientFilter({
   lastSearchedOffers,
   offers,
 }) {
-  let minPeople = 0;
-  let maxPeople = 50;
-
-  useEffect(() => {
-   
-    // console.log(offers);
-    // const people = offers.map((x) => x.numberOfPerson);
-    // const minPeople = Math.min(...people);
-    // const maxPeople = Math.max(...people);
-    // const price = offers.map((x) => x.price);
-    // const minPrice = Math.min(...price);
-    // const maxPrice = Math.max(...price);
-  }, [offers]);
   
   const [valueNumPeople, setValueNumPeople] = React.useState([
-    minPeople,
-    maxPeople,
+    0,
+    50,
   ]);
-  const [valuePrice, setValuePrice] = React.useState([20, 37]);
-  const [valueStar, setValueStar] = React.useState();
- 
-  
-
-  
+  const [valuePrice, setValuePrice] = React.useState([20, 300]);
+  const [valueRating, setValueRating] = React.useState([0, 5]);
 
   const handleChangePeopleNumber = (event, newValue, activeThumb) => {
     setParams({ ...params, minPeople: newValue[0], maxPeople: newValue[1] });
@@ -99,12 +83,22 @@ export default function ClientFilter({
     }
     setValuePrice(newValue);
   };
+
+  const handleChangeRating = (event, newValue, activeThumb) => {
+    setParams({ ...params, minRating: newValue[0], maxRating: newValue[1] });
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    setValueRating(newValue);
+  };
+
   const [sortAsc, setSortAsc] = useState(true);
-  const [criteria, setCriteria] = useState(1);
+  const [criteria, setCriteria] = useState(3);
 
   let sortOffers = {
     [offerType.COTTAGE]: sortCottages,
     [offerType.SHIP]: sortShips,
+    [offerType.ADVENTURE]: sortInstructors,
   };
 
   const criteriaChanged = (event) => {
@@ -121,38 +115,34 @@ export default function ClientFilter({
   let filterOffer = {
     [offerType.COTTAGE]: filterCottagesClient,
     [offerType.SHIP]: filterShipsClient,
+    [offerType.ADVENTURE]: filterInstructorsClient,
   };
 
   const resetFields = () => {
     setParams({
-      maxRating: "",
-      maxPrice: "",
-      maxPeople: "",
-      minPeople: "",
-      minPrice: "",
-      minRating: "",
-      minSize: "",
-      maxSize: "",
+      maxRating: 5,
+      maxPrice: 500,
+      maxPeople: 50,
+      minPeople: 0,
+      minPrice: 0,
+      minRating: 0
     });
   };
 
   const handleReset = () => {
+    setValueRating([0, 5]);
+    setValueNumPeople([0, 50]);
+    setValuePrice([0, 500]);
     setOffers(lastSearchedOffers);
     resetFields();
   };
+
   const sendParams = () => {
-    if (valueStar !== undefined) {
-      if (valueStar.length != 0) {
-        const totals = valueStar.map((x) => x.star);
-        setParams({
-          ...params,
-          maxRating: Math.max(...totals),
-          minRating: Math.min(...totals),
-        });
-      }
-    }
     filterOffer[type](params, setOffers, lastSearchedOffers);
   };
+
+  useEffect(() => {
+  }, [offers]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -169,11 +159,15 @@ export default function ClientFilter({
               label="Criteria"
               onChange={criteriaChanged}
             >
-              <MenuItem value={1}>Name</MenuItem>
+              {type == offerType.ADVENTURE && <MenuItem value={8}>First Name</MenuItem>}
+              {type == offerType.ADVENTURE && (
+              <MenuItem value={9}>Last Name</MenuItem>
+              )}
+              {type != offerType.ADVENTURE &&  <MenuItem value={1}>Name</MenuItem> }
               <MenuItem value={2}>Street</MenuItem>
               <MenuItem value={3}>City</MenuItem>
-              <MenuItem value={4}>Rating</MenuItem>
-              <MenuItem value={5}>Price</MenuItem>
+              {type != offerType.ADVENTURE && <MenuItem value={4}>Rating</MenuItem> }
+              {type != offerType.ADVENTURE &&  <MenuItem value={5}>Price</MenuItem> }
               {type == offerType.SHIP && <MenuItem value={6}>Size</MenuItem>}
               {type == offerType.SHIP && (
                 <MenuItem value={7}>Max speed</MenuItem>
@@ -194,38 +188,40 @@ export default function ClientFilter({
           </Button>
         </Grid>
         <Grid item xs>
-          <Autocomplete
-            multiple
-            id="checkboxes-tags-demo"
-            options={stars}
-            disableCloseOnSelect
-            value={valueStar}
-            onChange={(event, newValue) => {
-              setValueStar(newValue);
-            }}
-            getOptionLabel={(option) => option.title}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.title}
-              </li>
-            )}
-            style={{ width: 330 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Stars" placeholder="Rating" />
-            )}
+        <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center"}}
+          >
+            Rating
+          </Typography>
+          <Slider
+            getAriaLabel={() => "Minimum distance shift"}
+            value={valueRating}
+            onChange={handleChangeRating}
+            valueLabelDisplay="auto"
+            getAriaValueText={getValue}
+            disableSwap
+            style={{ width: 170 }}
+            defaultValue={[2, 20]}
+            max={5}
+            min={0}
           />
-        </Grid>
-        <Grid item xs>
           <Typography
             id="input-slider"
             gutterBottom
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center"}}
+          >
+            {valueRating[0] + " - " + valueRating[1]}
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          { type != offerType.ADVENTURE && 
+              <>
+                  <Typography
+            id="input-slider"
+            gutterBottom
+            style={{ textAlign: "center"}}
           >
             Number of person
           </Typography>
@@ -244,13 +240,17 @@ export default function ClientFilter({
           <Typography
             id="input-slider"
             gutterBottom
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center"}}
           >
             {valueNumPeople[0] + " - " + valueNumPeople[1]}
           </Typography>
+              </>
+          }
         </Grid>
         <Grid item xs>
-          <Typography
+          { type != offerType.ADVENTURE && 
+            <>
+                <Typography
             id="input-slider"
             gutterBottom
             style={{ textAlign: "center" }}
@@ -276,10 +276,15 @@ export default function ClientFilter({
           >
             {valuePrice[0] + " - " + valuePrice[1]}
           </Typography>
+            </>
+          }
         </Grid>
         <Grid item xs>
           <Button size="large" sx={{}} onClick={() => sendParams()}>
             Filter
+          </Button>
+          <Button size="large" sx={{}} onClick={() => handleReset()}>
+            Reset
           </Button>
         </Grid>
       </Grid>

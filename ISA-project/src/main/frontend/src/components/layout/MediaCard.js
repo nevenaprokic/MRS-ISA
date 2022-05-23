@@ -17,7 +17,7 @@ import Modal from '@mui/material/Modal';
 import { userType, offerTypeByUserType, offerType} from "../../app/Enum";
 import AdventureProfilePage from "../profilePages/adventureProfile/AdvetureProfilePage";
 import ShipProfilePage from "../profilePages/shipProfile/ShipProfilePage";
-import OwnerProfile from "../profilePages/userProfile/OwnerProfile";
+import InstructorProfile from "../profilePages/userProfile/InstructorProfile";
 import ReservationForm from "../forms/reservations/ReservationForm";
 
 const secondaryTheme = createTheme({
@@ -83,7 +83,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
       case offerType.SHIP:
         return ( <ShipProfilePage id={offerId} close={handleClose} childToParentMediaCard={childToParent}/>);
       case userType.INSTRUCTOR:
-        return (<OwnerProfile instructor={offer} close={handleClose} />);
+        return (<InstructorProfile instructor={offer} close={handleClose} />);
       default:
         return (<div>Undefined offer type</div>);
     }
@@ -92,28 +92,16 @@ const modalOfferComponent = (offerStr, offerId) =>{
   useEffect(() => {
   }, [offerData]);
 
-  const [markData, setMarkData] = useState();
-
-  let minH = 400;
-  let maxH = 400;
+  let minH = (offerT == userType.INSTRUCTOR) ? 450 : 400;
+  let maxH = (offerT == userType.INSTRUCTOR) ? 450 : 400;
+  
   useEffect(() => {
-    if(offerT == userType.INSTRUCTOR){
-      maxH = 315;
-      minH = 315;
-    }
     if(!offerData)
       setOfferData(offer);
-    async function setData() {
-      const markData = await getMarkByOfferId(offer.id);
-      setMarkData(markData.data ? markData.data : "0");
-      return markData.data;
-    }
-    setData();
-
   }, []);
 
 
-  if(markData) {
+  if(offerData) {
     return (
       <ThemeProvider theme={secondaryTheme}>
         <Card sx={{ maxWidth: 345, maxHeight: maxH, minHeight:minH }}>
@@ -123,12 +111,12 @@ const modalOfferComponent = (offerStr, offerId) =>{
               {offerT == userType.INSTRUCTOR ? offerData.firstName + " " + offerData.lastName : offerData.name && offerT != userType.INSTRUCTOR ? offerData.name : offerData.offerName}
             </Typography>
 
-            {offerT != userType.INSTRUCTOR  && <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary">
               <p>
-              <Rating name="half-rating-read" precision={0.5} value={markData} readOnly />
+              <Rating name="half-rating-read" precision={0.5} value={offerData.mark} readOnly />
               </p>
-              <p>Price: {offerData.price}€</p>
-          </Typography>}
+              {offerT != userType.INSTRUCTOR  && <p>Price: {offerData.price}€</p> }
+            </Typography>
 
             <Typography variant="body2" color="text.secondary">
               <p className="descriptionContainer"> {offerT != userType.INSTRUCTOR  ? offerData.description : offerData.biography} </p>     

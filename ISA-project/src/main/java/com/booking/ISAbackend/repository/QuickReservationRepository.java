@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface QuickReservationRepository extends JpaRepository<QuickReservation, Integer> {
-    List<QuickReservation> findQuickReservationByOfferId(Integer id);
+    List<QuickReservation> findQuickReservationsByOfferId(Integer id);
 
     @Modifying
     @Query("DELETE FROM QuickReservation q WHERE q.offer.id = ?1")

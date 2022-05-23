@@ -1,9 +1,6 @@
 package com.booking.ISAbackend.repository;
 
-import com.booking.ISAbackend.model.Cottage;
-import com.booking.ISAbackend.model.Offer;
-import com.booking.ISAbackend.model.Reservation;
-import com.booking.ISAbackend.model.Ship;
+import com.booking.ISAbackend.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,12 +27,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByInstructorEmail(String email);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
-    List<Cottage> nonAvailableCottages(LocalDate from, LocalDate to);
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Cottage> nonAvailableCottages(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Ship c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1) OR (r.startDate >= ?1 AND r.startDate <= ?2) ")
-    List<Ship> nonAvailableShips(LocalDate from, LocalDate to);
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Ship> nonAvailableShips(LocalDate date);
+
+    @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Adventure c ON r.offer.id = c.id WHERE" +
+            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+    List<Adventure> nonAvailableAdventures(LocalDate date);
 
     @Modifying
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")
@@ -49,4 +50,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             " (r.startDate >= ?1 AND r.endDate <= ?2)")
     List<Reservation> findByOfferIdAndDates(LocalDate from, LocalDate to);
 
+    @Query("SELECT r FROM Reservation r INNER JOIN Ship s ON r.offer.id = s.id INNER JOIN Owner ow ON ow.id = s.shipOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> findPastReservationByShipOwnerEmail(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Cottage ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> getPastCottageReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Ship ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> getPastShipReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> getPastAdventureReservationsByClient(String email, LocalDate today);
 }

@@ -9,6 +9,10 @@ export function addDaysToDate(date_string, days){
   let next_date = new Date(date.setDate(date.getDate() + parseInt(days)));
   return next_date;
 }
+export function addDays(date, days) {
+  date.setDate(date. getDate() + parseInt(days));
+  return date;
+  }
 
 export function arrayToDateString(arr){
     let d = new Date();

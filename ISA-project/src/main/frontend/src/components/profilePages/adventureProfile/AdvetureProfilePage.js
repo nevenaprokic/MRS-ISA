@@ -42,8 +42,6 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
 
     const [openChangeForm, setOpenForm] = useState(false);
 
-    const [markData, setMarkData] = useState();
-
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleOpenForm = () => {
@@ -98,17 +96,9 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
         async function getAdventureData(){
             let adventure = await getAdventureById(id);
             setAdventureData(!!adventure ? adventure.data : {});
-            
             return adventure;
         } 
         getAdventureData();
-
-        async function setData() {
-            const markData = await getMarkByOfferId(id);
-            setMarkData(markData.data ? markData.data : "0");
-            return markData.data;
-          }
-        setData();
     }, []);
 
     function createServiceData() {
@@ -172,14 +162,15 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                     <h2 className="adventureTittle">{adventureData.offerName}</h2>
                     
                     <Divider />
-                    {!!markData && <div className="mark">
+
+                    <div className="mark">
                         <Rating
                         name="half-rating-read"
                         precision={0.5}
-                        value={markData}
+                        value={adventureData.mark}
                         readOnly
                         />
-                    </div>}
+                    </div>
                     {getRoleFromToken() != null &&
                     getRoleFromToken() != userType.CLIENT ? (
                         <div className="changeBtn">
@@ -230,7 +221,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                 </Modal>    
                 
                 <ImagesBox images={images}/>
-                <QuickActionBox id={adventureData.id}/>
+                <QuickActionBox offer={adventureData}/>
                 <MapBox street={adventureData.street} city={adventureData.city} state={adventureData.state}/>
                 <Grid container xs={12}>
                     <Grid item xs={12} sm={6} >

@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import classes from './MainNavigation.module.css';
 import React from 'react';
-import logo from '../../logo.png';
+import logo from '../../logo2.png';
 import { useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import HowToRegIcon from '@mui/icons-material/HowToReg';

@@ -19,6 +19,7 @@ import { useState } from "react";
 import AddCottagePage from "../forms/cottage/AddCottagePage";
 import WorkingCalendar from "../calendar/WorkingCalendar";
 import ReservationProfile from "../profilePages/reservationProfile/ReservationProfile";
+import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -175,6 +176,15 @@ export default function CottageOwnerHomePage() {
           </TabPanel>
           <TabPanel value={value} index={7}>
             <ReservationProfile />
+          </TabPanel>
+          <TabPanel value={value} index={8}>
+            Izvestaji
+          </TabPanel>
+          <TabPanel value={value} index={9}>
+            Nove rezervacije
+          </TabPanel>
+          <TabPanel value={value} index={10}>
+            <Checkout offers={offers} setOffers={setOffers}/>
           </TabPanel>
           <TabPanel value={value} index={12}>
             <WorkingCalendar offers={offers} setOffers={setOffers}/>

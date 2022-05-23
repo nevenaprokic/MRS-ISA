@@ -23,20 +23,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class CottageServiceImpl implements CottageService {
+
     @Autowired
     private CottageRepository cottageRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AddressRepository addressRepository;
+
     @Autowired
     private AdditionalServiceService additionalServiceService;
+
     @Autowired
     private PhotoService photoService;
+
     @Autowired
     private MarkService markService;
+
     @Autowired
     private ReservationRepository reservationRepository;
+
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 
@@ -100,7 +108,7 @@ public class CottageServiceImpl implements CottageService {
     @Transactional
     public List<CottageDTO> searchCottagesClient(OfferSearchParamsDTO params) throws IOException {
         List<Cottage> cottages = cottageRepository.searchCottagesClient(params.getName(), params.getDescription(), params.getAddress());
-        List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDateFrom(), params.getDateTo());
+        List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDate());
 
         List<Cottage> availableCottages = cottages.stream()
                 .filter(element -> !nonAvailableCottages.contains(element))

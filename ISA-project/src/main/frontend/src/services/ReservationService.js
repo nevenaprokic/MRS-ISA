@@ -1,14 +1,14 @@
 import axios from "axios";
 import api from "../app/api";
-import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import { getUsernameFromToken, getRoleFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
 import { arrayToDateString } from "./UtilService";
 
-export function calculatePrice(days, price, additionalServices){
+export function calculatePrice(days, price, additionalServices, guests){
     days = (days == "") ? 0 : days;
     let total = 0;
     for(let service of additionalServices){
-        total += service.servicePrice;
+        total += days * guests * service.servicePrice;
     }
     total += days * price;
     return total;
@@ -47,11 +47,13 @@ export function convertParams(action, offer){
 
 export function getAllReservation(){
     let email = getUsernameFromToken();
+    let role = getRoleFromToken();
     console.log(email);
     return api
     .get("/reservation/get-all-by-cottage-owner", {
         params: {
             ownerId: email ,
+            role: role
         },
       })
     .then((responseData) => responseData)
@@ -62,4 +64,37 @@ export function getAllReservation(){
         )
 
 }
+export function getAllReservationShipOwner(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation/get-all-by-ship-owner", {
+        params: {
+            ownerId: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
 
+}
+export function isAvailableOffer(data){
+    return api
+        .get("reservation/available-offer", {
+            params:{
+                offerId:data.offerId,
+                startDate:data.startDateReservation,
+                dayNum: data.daysReservation
+            }
+        })
+        .then((data) => {console.log("DA LI JE DOZVOLJENO"); console.log(data.data); return data.data;})
+        .catch((err) => {
+            console.log("Nije uspesno dobavljeno");
+            return err.message;
+        });
+}

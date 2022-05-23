@@ -18,6 +18,7 @@ import AddAdventurePage from '../forms/adventure/AddAdventurePage';
 import WorkingCalendar from '../calendar/WorkingCalendar';
 import { useState } from 'react';
 import { offerType } from '../../app/Enum';
+import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -163,7 +164,7 @@ function a11yProps(index) {
                     Item 9
                 </TabPanel>
                 <TabPanel value={value} index={10}>
-                    Item 10
+                  <Checkout offers={offers} setOffers={setOffers}/>
                 </TabPanel>
                 <TabPanel value={value} index={12}>
                     <WorkingCalendar offers={offers} setOffers={setOffers}/>

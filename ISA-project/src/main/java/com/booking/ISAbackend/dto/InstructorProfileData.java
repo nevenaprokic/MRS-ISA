@@ -24,8 +24,8 @@ public class InstructorProfileData {
     private String userCategory;
 
     private String biography;
-
     private int points;
+    private Double mark;
 
     private List<AdventureDTO> adventures;
 
@@ -99,5 +99,14 @@ public class InstructorProfileData {
         this.adventures = adventures;
     }
 
+
     public int getPoints() { return points;}
+
+    public Double getMark() {
+        return mark;
+    }
+
+    public void setMark(Double mark) {
+        this.mark = mark;
+    }
 }

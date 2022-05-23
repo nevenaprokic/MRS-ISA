@@ -4,6 +4,7 @@ import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.dto.ReservationParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
+import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.service.ReservationService;
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,60 @@ public class ReservationController {
 
     }
     @GetMapping("get-all-by-cottage-owner")
-    public ResponseEntity<List<ReservationDTO>> getReservation(@RequestParam String ownerId){
+    public ResponseEntity<List<ReservationDTO>> getReservation(@RequestParam String ownerId,@RequestParam String role){
         try{
-            List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId);
+            List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("get-all-by-ship-owner")
+    public ResponseEntity<List<ReservationDTO>> getReservationByShipOwner(@RequestParam String ownerId,@RequestParam String role){
+        try{
+            List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("get-cottage-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email) {
+        try {
+            List<ReservationDTO> reservations = reservationService.getPastCottageReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("available-offer")
+    public ResponseEntity<Boolean> isAvailableOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dayNum){
+        try{
+            Boolean check = reservationService.isAvailableOffer(Integer.parseInt(offerId), startDate, Integer.parseInt(dayNum));
+            return ResponseEntity.ok().body(check);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-ship-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastShipReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastShipReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-adventure-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getPastAdventureReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getPastAdventureReservationsByClient(email);
             return ResponseEntity.ok().body(reservations);
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

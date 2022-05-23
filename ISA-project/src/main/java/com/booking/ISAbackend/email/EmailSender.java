@@ -9,4 +9,5 @@ public interface EmailSender {
     void sendConfirmationRegistrationRequest(String email) throws MailException, InterruptedException;
     void sendRejectionRegistrationRequest(String email, String message) throws MailException, InterruptedException;
     void reservationConfirmation(ReservationParamsDTO params) throws MailException;
+    void notifySubscribersNewQuickReservation(String email, String offerName, String date);
 }

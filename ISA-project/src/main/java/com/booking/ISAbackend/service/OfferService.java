@@ -13,4 +13,5 @@ public interface OfferService {
     List<AdditionalServiceDTO> findAdditionalServiceByOffer(Integer id);
     void delete(Integer offerId) throws OfferNotFoundException;
     Boolean checkOperationAllowed(Integer offerId);
+    Boolean checkUnavailableDate(Integer offerId,String startDate,Integer dateNumber);
 }

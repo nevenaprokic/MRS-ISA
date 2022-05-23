@@ -32,7 +32,7 @@ function AdditionalServices({inputList, setInputList, errors, registerForm}){
         <Grid container spacing={3} >
           
             <Grid item xs={12}>
-                <label>Additional services</label>
+                <label className="titleAdditional">Additional services</label>
             </Grid>
 
             {inputList?.map((x, i) => {
