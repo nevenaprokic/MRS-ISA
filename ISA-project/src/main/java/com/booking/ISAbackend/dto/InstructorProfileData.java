@@ -55,6 +55,18 @@ public class InstructorProfileData {
         this.points = i.getPoints();
     }
 
+    public InstructorProfileData(Instructor i) {
+        this.email = i.getEmail();
+        this.firstName = i.getFirstName();
+        this.lastName = i.getLastName();
+        this.phoneNumber = i.getPhoneNumber();
+        this.street = i.getAddress().getStreet();
+        this.city = i.getAddress().getCity();
+        this.state = i.getAddress().getState();
+        this.biography = i.getBiography();
+        this.points = i.getPoints();
+    }
+
     public String getEmail() {
         return email;
     }
