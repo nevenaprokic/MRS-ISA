@@ -273,7 +273,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void cancelReservation(Integer id) throws CancellingReservationException {
-       
+        Optional<Reservation> r = reservationRepository.findById(id);
+        LocalDate today = r.get().getStartDate();
+        LocalDate boundary = today.minusDays(3);
+        Optional<Integer> exists = Optional.ofNullable(reservationRepository.checkCancelCondition(id, boundary, LocalDate.now()));
+        if(exists.isPresent())
+            throw new CancellingReservationException("Cannot cancel reservation.");
         reservationRepository.deleteById(id);
     }
 

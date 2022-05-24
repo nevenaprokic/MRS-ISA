@@ -83,4 +83,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
     List<Reservation> getUpcomingAdventureReservationsByClient(String email, LocalDate today);
 
+    @Modifying
+    @Query("UPDATE Reservation r SET r.deleted = true WHERE r.id = ?1")
+    void deleteById(Integer id);
+
+    @Query("SELECT r.id FROM Reservation r WHERE r.id = ?1 AND ?3 > ?2")
+    Integer checkCancelCondition(Integer id, LocalDate boundary, LocalDate today);
 }
