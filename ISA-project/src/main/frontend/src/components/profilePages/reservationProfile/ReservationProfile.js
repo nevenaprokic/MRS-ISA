@@ -29,7 +29,6 @@ import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAd
 
 
 function Row({row, setRequests}) {
-    console.log(row);
     const  request  = row;
     const [open, setOpen] = React.useState(false);
 
@@ -150,8 +149,7 @@ function ReservationProfile( {offerT} ){
         async function setData(){
           let role = getRoleFromToken();
           if(role == userType.CLIENT) role = offerT;
-          const responseData = await getReservation[role]();;
-          console.log(responseData.data);
+          const responseData = await getReservation[role]();
           setRequests(responseData.data ? responseData.data : {});
         }
         setData();

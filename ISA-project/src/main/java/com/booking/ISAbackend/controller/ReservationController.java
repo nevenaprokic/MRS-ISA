@@ -8,9 +8,11 @@ import com.booking.ISAbackend.service.ReservationService;
 import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.StyledEditorKit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +137,16 @@ public class ReservationController {
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> cancelReservation(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>("Successfully removed!", HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

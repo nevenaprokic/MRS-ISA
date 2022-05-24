@@ -22,11 +22,10 @@ import TablePagination from '@mui/material/TablePagination';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { offerType } from "../../app/Enum";
-import { getUpcomingCottageReservationsClient, getUpcomingShipReservationsClient, getUpcomingAdventureReservationsClient} from "../../services/ReservationService"
+import { getUpcomingCottageReservationsClient, getUpcomingShipReservationsClient, getUpcomingAdventureReservationsClient, cancelReservation } from "../../services/ReservationService"
 
 
-function Row({row, setRequests}) {
-    console.log(row);
+function Row({row, setRequests, requests}) {
     const  request  = row;
     const [open, setOpen] = React.useState(false);
 
@@ -37,14 +36,11 @@ function Row({row, setRequests}) {
         },
 
     });
-
-
-    const [openDeleteManager, setDeleteManager] = useState(false);
-
-
   
-    function handleRequestAccepted(){
-      console.log("Daa");
+    function handleCancel(){
+        cancelReservation(request.id);
+        requests = requests.filter(data => data != row);
+        setRequests(requests);
     }
 
     return (
@@ -71,9 +67,9 @@ function Row({row, setRequests}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleRequestAccepted()}
+                    onClick={() => handleCancel()}
                   >
-                  Report 
+                      Cancel
                   </Button></TableCell>
           
         </TableRow>
@@ -143,12 +139,16 @@ function UpcomingReservations( { offerT } ){
 
     useEffect(() => {
         async function setData(){
-          const responseData = await getReservation[offerT]();;
+          const responseData = await getReservation[offerT]();
           setRequests(responseData.data ? responseData.data : {});
         }
         setData();
 
     }, []);
+
+    useEffect(() => {
+       // data update
+      }, [requests]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -194,7 +194,7 @@ function UpcomingReservations( { offerT } ){
                 <TableBody>
                 {requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     
-                    <Row key={row.id} row={row} setRequests={setRequests}/>
+                    <Row key={row.id} row={row} setRequests={setRequests} requests={requests} />
                 ))}
                 </TableBody>
             </Table>

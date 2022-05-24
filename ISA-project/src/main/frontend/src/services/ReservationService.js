@@ -167,6 +167,17 @@ export function getUpcomingCottageReservationsClient(){
         )
   
   }
+
+  export function cancelReservation(id){
+    return api
+    .delete("/reservation/" + id)
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+  }
   
 
 
