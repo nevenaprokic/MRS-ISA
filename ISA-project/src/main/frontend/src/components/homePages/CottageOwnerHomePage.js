@@ -124,11 +124,9 @@ export default function CottageOwnerHomePage() {
             <Divider />
             <Tab label="Profile page" {...a11yProps(1)} />
             <Divider />
-            <Tab label="Availability of cottages" {...a11yProps(2)} />
             <Tab label="Add new cottage" {...a11yProps(3)} />
             <Divider />
             <Tab label="Reservation history" {...a11yProps(4)} />
-            <Tab label="Reservation report" {...a11yProps(5)} />
             <Tab label="New reservation" {...a11yProps(6)} />
             <Tab label="New action" {...a11yProps(7)} />
             <Divider />
@@ -166,28 +164,19 @@ export default function CottageOwnerHomePage() {
           <TabPanel value={value} index={2}>
             <OwnerProfile />
           </TabPanel>
-          <TabPanel value={value} index={3}>
-            Item Four
-          </TabPanel>
           <TabPanel value={value} index={4}>
-            Item Five
-          </TabPanel>
-          <TabPanel value={value} index={5}>
             <AddCottagePage />
           </TabPanel>
-          <TabPanel value={value} index={7}>
+          <TabPanel value={value} index={6}>
             <ReservationProfile />
           </TabPanel>
-          <TabPanel value={value} index={8}>
-            Izvestaji
-          </TabPanel>
-          <TabPanel value={value} index={9}>
+          <TabPanel value={value} index={7}>
             <NewReservationForm offers={offers} setOffers={setOffers}/>
           </TabPanel>
-          <TabPanel value={value} index={10}>
+          <TabPanel value={value} index={8}>
             <Checkout offers={offers} setOffers={setOffers}/>
           </TabPanel>
-          <TabPanel value={value} index={12}>
+          <TabPanel value={value} index={10}>
             <WorkingCalendar offers={offers} setOffers={setOffers}/>
           </TabPanel>
         </Box>
