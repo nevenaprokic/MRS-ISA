@@ -116,5 +116,58 @@ export function makeReservationOwner(reservation){
     });
 }
 
+export function getUpcomingCottageReservationsClient(){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-upcoming-cottage-reservations-by-client", {
+        params: {
+            email: email
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+  }
+  
+  export function getUpcomingShipReservationsClient(){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-upcoming-ship-reservations-by-client", {
+        params: {
+            email: email
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+  }
+  
+  export function getUpcomingAdventureReservationsClient(){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-upcoming-adventure-reservations-by-client", {
+        params: {
+            email: email
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+  
+  }
+  
+
 
 

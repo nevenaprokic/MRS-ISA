@@ -2,6 +2,7 @@ package com.booking.ISAbackend.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class AdditionalService {
@@ -12,6 +13,8 @@ public class AdditionalService {
     private String serviceName;
     @Column(name = "price", nullable = false)
     private Double servicePrice;
+    @ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH,CascadeType.REFRESH})
+    private List<Reservation> reservations;
 
     public AdditionalService() {}
 

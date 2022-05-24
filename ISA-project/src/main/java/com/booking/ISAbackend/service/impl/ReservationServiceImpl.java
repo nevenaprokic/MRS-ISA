@@ -232,10 +232,40 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         for(Reservation r: reservations){
             ReservationDTO dto = new ReservationDTO(r);
-            dto.setAdditionalServices(additionalServiceService.getAdditionalServices(r.getOffer()));
+//            dto.setAdditionalServices(additionalServiceService.getAdditionalServices(r.getOffer()));
+            dto.setAdditionalServices(makeAdditionalServicesDTO(r.getAdditionalServices()));
             reservationDTOS.add(dto);
         }
         return reservationDTOS;
+    }
+
+    private List<AdditionalServiceDTO> makeAdditionalServicesDTO(List<AdditionalService> services){
+        List<AdditionalServiceDTO> retList = new ArrayList<>();
+        for(AdditionalService as : services){
+            retList.add(new AdditionalServiceDTO(as));
+        }
+        return retList;
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingCottageReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingCottageReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingShipReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingShipReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingAdventureReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
     }
 
 //    private String localDateToString(LocalDate date){

@@ -26,4 +26,10 @@ public interface ReservationService {
 
     List<ReservationDTO> getPastAdventureReservationsByClient(String email) throws IOException;
 
+    List<ReservationDTO> getUpcomingCottageReservationsByClient(String email) throws IOException;
+
+    List<ReservationDTO> getUpcomingShipReservationsByClient(String email) throws IOException;
+
+    List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException;
+
 }

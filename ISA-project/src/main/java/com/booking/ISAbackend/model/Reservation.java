@@ -21,7 +21,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH,CascadeType.REFRESH})
 	private List<AdditionalService> additionalServices;
 
 	@Column(nullable = false)

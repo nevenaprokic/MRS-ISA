@@ -107,4 +107,35 @@ public class ReservationController {
 
     }
 
+    @GetMapping("get-upcoming-cottage-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getUpcomingCottageReservationsClient(@RequestParam String email) {
+        try {
+            List<ReservationDTO> reservations = reservationService.getUpcomingCottageReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-upcoming-ship-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getUpcomingShipReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getUpcomingShipReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-upcoming-adventure-reservations-by-client")
+    public ResponseEntity<List<ReservationDTO>> getUpcomingAdventureReservationsClient(@RequestParam String email){
+        try{
+            List<ReservationDTO> reservations = reservationService.getUpcomingAdventureReservationsByClient(email);
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

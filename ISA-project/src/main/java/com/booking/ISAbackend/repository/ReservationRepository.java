@@ -74,4 +74,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.endDate < ?2")
     List<Reservation> getPastAdventureReservationsByClient(String email, LocalDate today);
 
+    @Query("SELECT r FROM Reservation r INNER JOIN Cottage ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingCottageReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Ship ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingShipReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingAdventureReservationsByClient(String email, LocalDate today);
+
 }
