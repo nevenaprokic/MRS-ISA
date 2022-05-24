@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
@@ -89,4 +90,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r.id FROM Reservation r WHERE r.id = ?1 AND ?3 > ?2")
     Integer checkCancelCondition(Integer id, LocalDate boundary, LocalDate today);
+
+    @Query("SELECT r.id FROM Client c INNER JOIN Reservation  r ON c.id = r.client.id INNER JOIN Offer o ON r.offer.id = o.id WHERE r.deleted=true AND c.email = ?1 AND r.startDate = ?2 AND o.id = ?3")
+    Optional<Integer> checkIfCanceled(String email, LocalDate date, Integer offerId);
 }

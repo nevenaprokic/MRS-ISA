@@ -2,27 +2,18 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
-import com.booking.ISAbackend.exceptions.CancellingReservationException;
-import com.booking.ISAbackend.exceptions.InvalidPriceException;
-import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
-import com.booking.ISAbackend.exceptions.RequiredFiledException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
-import com.booking.ISAbackend.validation.Validator;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -46,7 +37,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException {
+    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException {
+        Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
+        if(isCanceled.isPresent())
+            throw new PreviouslyCanceledReservationException("Reservation has already been reserved and canceled.");
+        if(!isAvailableClient(params.getEmail(), params.getDate().toString(), params.getEndingDate().toString()))
+            throw new ClientNotAvailableException("Client is not available in this time period.");
+
         List<Optional<AdditionalService>> services = new ArrayList<>();
         for(AdditionalService s : params.getServices()){
             services.add(additionalServiceRepository.findById(s.getId()));
