@@ -23,11 +23,18 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { offerType } from "../../app/Enum";
 import { getUpcomingCottageReservationsClient, getUpcomingShipReservationsClient, getUpcomingAdventureReservationsClient, cancelReservation } from "../../services/ReservationService"
+import ConfirmDialog from "../notifications/ConfirmDialog";
+import Modal from "@mui/material/Modal";
 
 
 function Row({row, setRequests, requests}) {
     const  request  = row;
     const [open, setOpen] = React.useState(false);
+
+    const [openConfirm, setOpenConfirm] = useState(false);
+
+    function handleOpenConfirm(){ setOpenConfirm(true);};
+    function handleCloseConfirm(){setOpenConfirm(false);};
 
     const theme = createTheme({
         palette: {
@@ -44,7 +51,6 @@ function Row({row, setRequests, requests}) {
         };
         cancelReservation(request.id, removeFromTable);
     }
-        
 
     return (
         <ThemeProvider theme={theme}>
@@ -70,12 +76,23 @@ function Row({row, setRequests, requests}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleCancel()}
+                    onClick={handleOpenConfirm}
                   >
                       Cancel
                   </Button></TableCell>
           
         </TableRow>
+
+        <Modal
+                    open={openConfirm}
+                    onClose={handleCloseConfirm}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                >
+                        <ConfirmDialog close={handleCloseConfirm} cbOnConfirm={handleCancel} message="Do you really want to cancel?" />
+                    
+                </Modal>
         
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -117,8 +134,7 @@ function Row({row, setRequests, requests}) {
                 <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                         Additional services: 
                         <label className="textItem"> {request.additionalServices.map((service) => service.serviceName + ": " + service.servicePrice + "€, ")} </label>
-                </Typography>
-                
+                </Typography>                
               </Box>
             </Collapse>
           </TableCell>
