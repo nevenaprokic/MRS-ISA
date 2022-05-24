@@ -168,10 +168,16 @@ export function getUpcomingCottageReservationsClient(){
   
   }
 
-  export function cancelReservation(id){
+  export function cancelReservation(id, removeFromTable){
     return api
     .delete("/reservation/" + id)
-    .then((responseData) => responseData)
+    .then((response) => {
+        toast.success(response.data, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+        });
+         removeFromTable();
+    })
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,

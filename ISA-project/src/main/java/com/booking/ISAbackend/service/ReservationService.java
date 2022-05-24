@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.service;
 
 import com.booking.ISAbackend.dto.*;
+import com.booking.ISAbackend.exceptions.CancellingReservationException;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
 
 import java.io.IOException;
@@ -32,4 +33,5 @@ public interface ReservationService {
 
     List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException;
 
+    void cancelReservation(Integer id) throws CancellingReservationException;
 }

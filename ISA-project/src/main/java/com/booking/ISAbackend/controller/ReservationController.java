@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.*;
+import com.booking.ISAbackend.exceptions.CancellingReservationException;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
 import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Reservation;
@@ -142,10 +143,11 @@ public class ReservationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> cancelReservation(@PathVariable Integer id) {
         try {
-            return new ResponseEntity<>("Successfully removed!", HttpStatus.OK);
+            reservationService.cancelReservation(id);
+            return new ResponseEntity<>("Reservation successfully canceled!", HttpStatus.OK);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CancellingReservationException e) {
+            return new ResponseEntity<>("Cannot cancel reservation less than 3 days before it starts.", HttpStatus.BAD_REQUEST);
         }
     }
 

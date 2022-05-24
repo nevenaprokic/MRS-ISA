@@ -2,6 +2,7 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.CancellingReservationException;
 import com.booking.ISAbackend.exceptions.InvalidPriceException;
 import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
 import com.booking.ISAbackend.exceptions.RequiredFiledException;
@@ -10,10 +11,12 @@ import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
 import com.booking.ISAbackend.validation.Validator;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -266,6 +269,12 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException {
         List<Reservation> reservations = reservationRepository.getUpcomingAdventureReservationsByClient(email, LocalDate.now());
         return getReservationDTOS(reservations);
+    }
+
+    @Override
+    public void cancelReservation(Integer id) throws CancellingReservationException {
+       
+        reservationRepository.deleteById(id);
     }
 
 //    private String localDateToString(LocalDate date){

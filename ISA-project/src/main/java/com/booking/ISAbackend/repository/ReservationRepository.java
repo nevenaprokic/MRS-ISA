@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+
     List<Reservation> findAllByOfferId(Integer id);
   
     @Query("SELECT r FROM Reservation r JOIN FETCH r.client WHERE r.client.id = ?1 AND r.endDate > CURRENT_DATE")
@@ -27,21 +28,20 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByInstructorEmail(String email);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Cottage> nonAvailableCottages(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Ship c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Ship> nonAvailableShips(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Adventure c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Adventure> nonAvailableAdventures(LocalDate date);
 
     @Modifying
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")
     void deleteByOfferId(Integer id);
-
 
     @Query("SELECT r FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
     List<Reservation> findPastReservationByCottageOwnerEmail(String email, LocalDate today);

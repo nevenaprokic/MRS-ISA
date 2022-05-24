@@ -38,10 +38,13 @@ function Row({row, setRequests, requests}) {
     });
   
     function handleCancel(){
-        cancelReservation(request.id);
-        requests = requests.filter(data => data != row);
-        setRequests(requests);
+        const removeFromTable = () =>{
+            requests = requests.filter(data => data != row);
+            setRequests(requests);
+        };
+        cancelReservation(request.id, removeFromTable);
     }
+        
 
     return (
         <ThemeProvider theme={theme}>
