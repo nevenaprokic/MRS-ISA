@@ -2,24 +2,18 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
-import com.booking.ISAbackend.exceptions.InvalidPriceException;
-import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
-import com.booking.ISAbackend.exceptions.RequiredFiledException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
-import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -43,7 +37,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException {
+    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException {
+        Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
+        if(isCanceled.isPresent())
+            throw new PreviouslyCanceledReservationException("Reservation has already been reserved and canceled.");
+        if(!isAvailableClient(params.getEmail(), params.getDate().toString(), params.getEndingDate().toString()))
+            throw new ClientNotAvailableException("Client is not available in this time period.");
+
         List<Optional<AdditionalService>> services = new ArrayList<>();
         for(AdditionalService s : params.getServices()){
             services.add(additionalServiceRepository.findById(s.getId()));
@@ -232,10 +232,51 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         for(Reservation r: reservations){
             ReservationDTO dto = new ReservationDTO(r);
-            dto.setAdditionalServices(additionalServiceService.getAdditionalServices(r.getOffer()));
+//            dto.setAdditionalServices(additionalServiceService.getAdditionalServices(r.getOffer()));
+            dto.setAdditionalServices(makeAdditionalServicesDTO(r.getAdditionalServices()));
             reservationDTOS.add(dto);
         }
         return reservationDTOS;
+    }
+
+    private List<AdditionalServiceDTO> makeAdditionalServicesDTO(List<AdditionalService> services){
+        List<AdditionalServiceDTO> retList = new ArrayList<>();
+        for(AdditionalService as : services){
+            retList.add(new AdditionalServiceDTO(as));
+        }
+        return retList;
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingCottageReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingCottageReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingShipReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingShipReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    @Transactional
+    public List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException {
+        List<Reservation> reservations = reservationRepository.getUpcomingAdventureReservationsByClient(email, LocalDate.now());
+        return getReservationDTOS(reservations);
+    }
+
+    @Override
+    public void cancelReservation(Integer id) throws CancellingReservationException {
+        Optional<Reservation> r = reservationRepository.findById(id);
+        LocalDate today = r.get().getStartDate();
+        LocalDate boundary = today.minusDays(3);
+        Optional<Integer> exists = Optional.ofNullable(reservationRepository.checkCancelCondition(id, boundary, LocalDate.now()));
+        if(exists.isPresent())
+            throw new CancellingReservationException("Cannot cancel reservation.");
+        reservationRepository.deleteById(id);
     }
 
 //    private String localDateToString(LocalDate date){

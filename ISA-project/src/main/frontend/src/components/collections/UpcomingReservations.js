@@ -19,18 +19,22 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
 import TablePagination from '@mui/material/TablePagination';
-import {getAllReservation} from "../../../services/ReservationService";
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import {getAllReservationShipOwner} from "../../../services/ReservationService";
-import { userType, offerType } from "../../../app/Enum";
-import {getRoleFromToken} from "../../../app/jwtTokenUtils";
-import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAdventureReservationsClient } from "../../../services/ClientService";
+import { offerType } from "../../app/Enum";
+import { getUpcomingCottageReservationsClient, getUpcomingShipReservationsClient, getUpcomingAdventureReservationsClient, cancelReservation } from "../../services/ReservationService"
+import ConfirmDialog from "../notifications/ConfirmDialog";
+import Modal from "@mui/material/Modal";
 
 
-function Row({row, setRequests}) {
+function Row({row, setRequests, requests}) {
     const  request  = row;
     const [open, setOpen] = React.useState(false);
+
+    const [openConfirm, setOpenConfirm] = useState(false);
+
+    function handleOpenConfirm(){ setOpenConfirm(true);};
+    function handleCloseConfirm(){setOpenConfirm(false);};
 
     const theme = createTheme({
         palette: {
@@ -39,14 +43,13 @@ function Row({row, setRequests}) {
         },
 
     });
-
-
-    const [openDeleteManager, setDeleteManager] = useState(false);
-
-
   
-    function handleRequestAccepted(){
-      console.log("Daa");
+    function handleCancel(){
+        const removeFromTable = () =>{
+            requests = requests.filter(data => data != row);
+            setRequests(requests);
+        };
+        cancelReservation(request.id, removeFromTable);
     }
 
     return (
@@ -73,12 +76,23 @@ function Row({row, setRequests}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleRequestAccepted()}
+                    onClick={handleOpenConfirm}
                   >
-                  Report 
+                      Cancel
                   </Button></TableCell>
           
         </TableRow>
+
+        <Modal
+                    open={openConfirm}
+                    onClose={handleCloseConfirm}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                >
+                        <ConfirmDialog close={handleCloseConfirm} cbOnConfirm={handleCancel} message="Do you really want to cancel?" />
+                    
+                </Modal>
         
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -114,14 +128,13 @@ function Row({row, setRequests}) {
                         <label className="textItem"> {request.price + "€"} </label>
                     </Typography>
                  <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Number of persone: 
+                        Number of person: 
                         <label className="textItem"> {request.numberOfPerson} </label>
                 </Typography>
                 <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                         Additional services: 
                         <label className="textItem"> {request.additionalServices.map((service) => service.serviceName + ": " + service.servicePrice + "€, ")} </label>
-                </Typography>
-                
+                </Typography>                
               </Box>
             </Collapse>
           </TableCell>
@@ -132,29 +145,29 @@ function Row({row, setRequests}) {
   }
 
 
-function ReservationProfile( {offerT} ){
+function UpcomingReservations( { offerT } ){
     const [requests, setRequests] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     let getReservation = {
-      [userType.COTTAGE_OWNER]: getAllReservation,
-      [userType.SHIP_OWNER]: getAllReservationShipOwner,
-      [offerType.COTTAGE]: getAllCottageReservationsClient,
-      [offerType.SHIP]: getAllShipReservationsClient,
-      [offerType.ADVENTURE]: getAllAdventureReservationsClient,
+      [offerType.COTTAGE]: getUpcomingCottageReservationsClient,
+      [offerType.SHIP]: getUpcomingShipReservationsClient,
+      [offerType.ADVENTURE]: getUpcomingAdventureReservationsClient,
     };
 
     useEffect(() => {
         async function setData(){
-          let role = getRoleFromToken();
-          if(role == userType.CLIENT) role = offerT;
-          const responseData = await getReservation[role]();
+          const responseData = await getReservation[offerT]();
           setRequests(responseData.data ? responseData.data : {});
         }
         setData();
 
     }, []);
+
+    useEffect(() => {
+       // data update
+      }, [requests]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -200,7 +213,7 @@ function ReservationProfile( {offerT} ){
                 <TableBody>
                 {requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     
-                    <Row key={row.id} row={row} setRequests={setRequests}/>
+                    <Row key={row.id} row={row} setRequests={setRequests} requests={requests} />
                 ))}
                 </TableBody>
             </Table>
@@ -219,4 +232,4 @@ function ReservationProfile( {offerT} ){
     )
 }
 
-export default ReservationProfile;
+export default UpcomingReservations;
