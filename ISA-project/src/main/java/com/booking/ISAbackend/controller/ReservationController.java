@@ -1,10 +1,7 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.*;
-import com.booking.ISAbackend.exceptions.CancellingReservationException;
-import com.booking.ISAbackend.exceptions.ClientNotAvailableException;
-import com.booking.ISAbackend.exceptions.OfferNotAvailableException;
-import com.booking.ISAbackend.exceptions.PreviouslyCanceledReservationException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.service.ReservationService;
@@ -34,6 +31,8 @@ public class ReservationController {
             return ResponseEntity.ok("Reservation was successful!");
         }catch (OfferNotAvailableException ex){
             return ResponseEntity.status(400).body("Offer is not available in that time period.");
+        }catch (NotAllowedToMakeReservationException ex){
+            return ResponseEntity.status(400).body("You are not allowed to make a reservation because of penalties.");
         }catch (PreviouslyCanceledReservationException ex){
             return ResponseEntity.status(400).body("Reservation has already been reserved and canceled.");
         }catch (ClientNotAvailableException ex){

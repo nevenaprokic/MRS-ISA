@@ -37,8 +37,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException {
+    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException {
         Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
+        Integer penalties = clientRepository.getPenalties(params.getEmail());
+        if(penalties >= 3)
+            throw new NotAllowedToMakeReservationException("Not allowed to make a reservation.");
         if(isCanceled.isPresent())
             throw new PreviouslyCanceledReservationException("Reservation has already been reserved and canceled.");
         if(!isAvailableClient(params.getEmail(), params.getDate().toString(), params.getEndingDate().toString()))

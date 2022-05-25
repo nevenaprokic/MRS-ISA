@@ -162,3 +162,7 @@ export function getAllAdventureReservationsClient(){
 
 }
 
+export function isAllowedToMakeReservation(){
+  
+}
+

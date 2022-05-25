@@ -15,7 +15,6 @@ import { IconButton } from "@mui/material";
 
 
 function AdditionalInfoClientBox({additionalData}){
-
     const [open, setOpen] = useState(false);
     function handleOpen() {setOpen(true);}
     function handleClose() {setOpen(false);}
@@ -52,6 +51,9 @@ function AdditionalInfoClientBox({additionalData}){
               </div>
               <label className="boxItemTitle">Penalties: </label>
               <label className="boxItemText">{additionalData.penal}</label>
+              {(additionalData.penal >= 3) ?
+               ( <label className="penaltiesText"> Reservations forbidden </label>) :
+               ( <label className="penaltiesText"> Reservations allowed </label>) }
           </div>
           </div>
           <Modal
