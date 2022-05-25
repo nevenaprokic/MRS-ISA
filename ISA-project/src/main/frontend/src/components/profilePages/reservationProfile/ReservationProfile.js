@@ -46,6 +46,10 @@ function Row({ row, setRequests, disabled }) {
   });
 
   const [openForm, setOpenForm] = useState(false);
+  const [openReview, setOpenReview] = React.useState(false);
+
+    function handleOpenReview(){setOpenReview(true);}
+    function handleCloseReview(){setOpenReview(false);}
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -83,7 +87,31 @@ function Row({ row, setRequests, disabled }) {
             {request.endDate}
           </TableCell>
           <TableCell>
-            {disabled ?
+          {getRoleFromToken() == userType.CLIENT ?
+           <TableCell ><Button 
+           type="submit"
+           variant="contained"
+           sx={{float:"right"}}
+           color="primary"
+           size="small"
+           onClick={() => handleOpenReview()}
+         >
+         Review 
+         </Button></TableCell>
+           :
+            <TableCell ><Button 
+            type="submit"
+            variant="contained"
+            sx={{float:"right"}}
+            color="primary"
+            size="small"
+            onClick={() => handleOpenForm()}
+          >
+          Report 
+          </Button>
+          </TableCell>
+          }
+            {/* {disabled ?
             (<Button
               variant="contained"
               sx={{ float: "right" }}
@@ -102,7 +130,7 @@ function Row({ row, setRequests, disabled }) {
             onClick={handleOpenForm}
           >
             Report
-          </Button>)}
+          </Button>)}*/}
             <Modal
               open={openForm}
               onClose={handleCloseForm}
@@ -112,7 +140,7 @@ function Row({ row, setRequests, disabled }) {
                 backgroundColor: "rgb(218, 224, 210, 0.6)",
                 overflow: "auto",
               }}
-            >
+            > 
               <ReservationReportForm closeForm={handleCloseForm} request={request}/>
             </Modal>
           </TableCell>
@@ -225,7 +253,7 @@ function ReservationProfile({ offerT }) {
     [offerType.ADVENTURE]: getAllAdventureReservationsClient,
   };
   let getReportReservation ={
-    [userType.COTTAGE_OWNER]: getAllReportCottageOwner,
+    [userType.COTTAGE_OWNER]: getAllReportCottageOwner
   }
 
   useEffect(() => {
@@ -234,7 +262,7 @@ function ReservationProfile({ offerT }) {
       if (role == userType.CLIENT) role = offerT;
       const responseData = await getReservation[role]();
       setRequests(responseData.data ? responseData.data : {});
-      const reportData = await getReportReservation[role]();
+      const reportData = await getAllReportCottageOwner();
       setReport(reportData.data ? reportData.data : {});
     }
     setData();
@@ -281,6 +309,11 @@ function ReservationProfile({ offerT }) {
                 >
                   <Typography variant="button">End date</Typography>
                 </TableCell>
+                 <TableCell sx={{ color: "#5f6d5f" }} align="center">
+                        <Typography variant="button">
+                            <ClientSort reservations={requests} setReservations={setRequests} />
+                        </Typography>
+                    </TableCell>
                 <TableCell />
                 <TableCell />
               </TableRow>
