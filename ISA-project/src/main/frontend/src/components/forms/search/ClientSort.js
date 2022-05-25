@@ -1,45 +1,29 @@
 import React from 'react'
-import Paper from '@mui/material/Paper';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
 import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import SortByAlphaTwoToneIcon from '@mui/icons-material/SortByAlphaTwoTone';
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {sortCottages} from '../../../services/CottageService'
-import {sortShips} from '../../../services/ShipService'
-import { offerType } from '../../../app/Enum';
+import {sortReservations} from '../../../services/ReservationService';
 
 
-export default function ClientSort({offers, setOffers, type}) {
+export default function ClientSort({ reservations, setReservations }) {
 
     const [sortAsc, setSortAsc] = useState(true);
     const [criteria, setCriteria] = useState(1);
 
-    let sortOffers = {
-      [offerType.COTTAGE]: sortCottages,
-      [offerType.SHIP]: sortShips
-    };
-
-
     const criteriaChanged = event => {
         let value = event.target.value;
         setCriteria(value);
-        sortOffers[type](value, sortAsc, offers, setOffers);
+        sortReservations(value, sortAsc, reservations, setReservations);
     };
 
     const orderChanged = () => {
-        sortOffers[type](criteria, !sortAsc, offers, setOffers);
+        sortReservations(criteria, !sortAsc, reservations, setReservations);
         setSortAsc(!sortAsc);
     };
 
@@ -54,17 +38,13 @@ export default function ClientSort({offers, setOffers, type}) {
               id="demo-simple-select"
               value={criteria}
               label="Criteria"
+              size='10'
               onChange={criteriaChanged}
             >
-              <MenuItem value={1}>Name</MenuItem>
-              <MenuItem value={2}>Street</MenuItem>
-              <MenuItem value={3}>City</MenuItem>
-              <MenuItem value={4}>Rating</MenuItem>
-              <MenuItem value={5}>Price</MenuItem>
-              {type == offerType.SHIP && <MenuItem value={6}>Size</MenuItem>}
-              {type == offerType.SHIP && (
-                <MenuItem value={7}>Max speed</MenuItem>
-              )}
+              <MenuItem value={1}>Date</MenuItem>
+              <MenuItem value={2}>Price</MenuItem>
+              <MenuItem value={3}>Duration</MenuItem>
+             
             </Select>
           </FormControl>
           <Button

@@ -123,16 +123,6 @@ export default function ClientSearch({
             renderInput={(params) => <TextField {...params} />}
           />
         </Grid>
-        {/* <Grid item>
-          <DesktopDatePicker
-            label="To"
-            inputFormat="dd/MM/yyyy"
-            value={valueTo}
-            onChange={handleChangeTo}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </Grid> */}
-
         <Grid item xs>
           <Button size="large" sx={{}} onClick={() => handleSubmit()}>
             Search
