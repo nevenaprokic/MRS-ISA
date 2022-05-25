@@ -14,7 +14,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-export default function ReservationReportForm() {
+export default function ReservationReportForm({closeForm}) {
+  const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
   const [value, setValue] = React.useState(true);
   const [valueOpinion, setOpinionValue] = React.useState("positive");
 
@@ -26,12 +27,16 @@ export default function ReservationReportForm() {
     setOpinionValue(event.target.value);
   };
 
-  const handleSubmit = (e) => {};
+  const onSubmit = (data) => {
+    console.log(data);
+    closeForm();
+  };
 
   
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} >
       <div className="formContainer">
         <Typography variant="h6" gutterBottom>
           Report on the reservation made
@@ -51,7 +56,9 @@ export default function ReservationReportForm() {
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
             value={value}
+            id='showUp'
             onChange={handleChangeYes}
+            {...register("showUp", {required: true})}
           >
             <FormControlLabel value={true} control={<Radio />} label="Yes" />
             <FormControlLabel value={false} control={<Radio />} label="No" />
@@ -66,8 +73,10 @@ export default function ReservationReportForm() {
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
+            id="impression"
             value={valueOpinion}
             onChange={handleChange}
+            {...register("impression", {required: true})}
           >
             <FormControlLabel
               value={"positive"}
@@ -96,9 +105,11 @@ export default function ReservationReportForm() {
             multiline
             rows={4}
             fullWidth
-            defaultValue={""}
+            defaultValue=""
             required
+            {...register("comment", {required:true})}
           />
+          {errors.comment && <label className="requiredLabel">Comment can't be empty</label>}
         </Grid>
         <Grid item xs={12} sm={4} sx={{ marginLeft: "65%" }}>
           <br />
@@ -108,12 +119,12 @@ export default function ReservationReportForm() {
             sx={{ float: "right" }}
             color="success"
             fullWidth
-            onClick={handleSubmit}
           >
             Confirm
           </Button>
         </Grid>
-      </div>
+        </div>
+        </Grid>
     </LocalizationProvider>
   );
 }

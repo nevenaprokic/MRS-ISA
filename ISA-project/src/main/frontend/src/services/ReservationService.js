@@ -115,6 +115,25 @@ export function makeReservationOwner(reservation){
       });
     });
 }
+export function getAllReportCottageOwner(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation-report/get-all-by-cottage-owner", {
+        params: {
+            ownerEmail: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+
+}
 
 
 

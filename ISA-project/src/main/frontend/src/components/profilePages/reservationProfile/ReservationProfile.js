@@ -21,7 +21,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { getAllReservation } from "../../../services/ReservationService";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getAllReservationShipOwner } from "../../../services/ReservationService";
+import { getAllReservationShipOwner ,getAllReportCottageOwner} from "../../../services/ReservationService";
 import { userType, offerType } from "../../../app/Enum";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import {
@@ -32,7 +32,7 @@ import {
 import ReservationReportForm from '../../forms/reservations/ReservationReportForm';
 
 
-function Row({ row, setRequests }) {
+function Row({ row, setRequests, disabled }) {
   console.log(row);
   const request = row;
   const [open, setOpen] = React.useState(false);
@@ -46,10 +46,10 @@ function Row({ row, setRequests }) {
 
   const [openForm, setOpenForm] = useState(false);
 
-  function handleOpenForm() {
-    console.log("Daa");
+  const handleOpenForm = () => {
     setOpenForm(true);
-  }
+  };
+
   const handleCloseForm = () => {
     setOpenForm(false);
   };
@@ -82,16 +82,26 @@ function Row({ row, setRequests }) {
             {request.endDate}
           </TableCell>
           <TableCell>
-            <Button
-              type="submit"
+            {disabled ?
+            (<Button
               variant="contained"
               sx={{ float: "right" }}
               color="primary"
               size="small"
-              onClick={() => handleOpenForm()}
+              onClick={handleOpenForm}
             >
               Report
-            </Button>
+            </Button>) : 
+            (<Button
+            disabled
+            variant="contained"
+            sx={{ float: "right" }}
+            color="primary"
+            size="small"
+            onClick={handleOpenForm}
+          >
+            Report
+          </Button>)}
             <Modal
               open={openForm}
               onClose={handleCloseForm}
@@ -102,7 +112,7 @@ function Row({ row, setRequests }) {
                 overflow: "auto",
               }}
             >
-              <ReservationReportForm/>
+              <ReservationReportForm closeForm={handleCloseForm}/>
             </Modal>
           </TableCell>
         </TableRow>
@@ -202,6 +212,7 @@ function Row({ row, setRequests }) {
 
 function ReservationProfile({ offerT }) {
   const [requests, setRequests] = useState();
+  const [report, setReport] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -212,14 +223,18 @@ function ReservationProfile({ offerT }) {
     [offerType.SHIP]: getAllShipReservationsClient,
     [offerType.ADVENTURE]: getAllAdventureReservationsClient,
   };
+  let getReportReservation ={
+    [userType.COTTAGE_OWNER]: getAllReportCottageOwner,
+  }
 
   useEffect(() => {
     async function setData() {
       let role = getRoleFromToken();
       if (role == userType.CLIENT) role = offerT;
       const responseData = await getReservation[role]();
-      console.log(responseData.data);
       setRequests(responseData.data ? responseData.data : {});
+      const reportData = await getReportReservation[role]();
+      setReport(reportData.data ? reportData.data : {});
     }
     setData();
   }, []);
@@ -234,7 +249,7 @@ function ReservationProfile({ offerT }) {
   };
 
   return (
-    !!requests && (
+    (!!requests && !!report) && (
       <div className="requestsContainer">
         <TableContainer component={Paper} className="tableContainer">
           <Table aria-label="collapsible table">
@@ -273,7 +288,7 @@ function ReservationProfile({ offerT }) {
               {requests
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <Row key={row.id} row={row} setRequests={setRequests} />
+                  <Row key={row.id} row={row} setRequests={setRequests} disabled={report.some(item => row.id === item)} />
                 ))}
             </TableBody>
           </Table>
