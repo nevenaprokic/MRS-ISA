@@ -2,12 +2,14 @@ package com.booking.ISAbackend.service;
 
 import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
+import com.booking.ISAbackend.dto.OfferDTO;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
 import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Client;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ClientService {
@@ -21,4 +23,6 @@ public interface ClientService {
     Boolean canReserve(String email);
 
     void makeReview(Integer stars, Integer offerId, String comment) throws Exception;
+
+    List<OfferDTO> getSubscriptions(String email) throws IOException;
 }

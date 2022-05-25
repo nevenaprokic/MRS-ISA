@@ -2,6 +2,8 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
+import com.booking.ISAbackend.dto.OfferDTO;
+import com.booking.ISAbackend.model.Offer;
 import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -137,5 +140,14 @@ public class ClientController {
         }
     }
 
+    @GetMapping("get-subscriptions/{email}") // na frontu url_base + {email}
+    public ResponseEntity<List<OfferDTO>> getSubscriptions(@PathVariable String email){
+        try{
+            List<OfferDTO> subscriptions = clientService.getSubscriptions(email);
+            return ResponseEntity.ok(subscriptions);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
 
 }

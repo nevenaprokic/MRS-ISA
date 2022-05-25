@@ -1,8 +1,10 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
+import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
+import com.booking.ISAbackend.dto.OfferDTO;
 import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.exceptions.AccountDeletionException;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
@@ -19,10 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -189,6 +191,18 @@ public class ClientServiceImpl implements ClientService {
         }else{
             throw new Exception();
         }
+    }
+
+    @Override
+    @Transactional
+    public List<OfferDTO> getSubscriptions(String email) throws IOException {
+        List<Offer> offers = clientRepository.getSubscriptions(email);
+        List<OfferDTO> subscriptions = new ArrayList<>();
+        for(Offer o : offers){
+            OfferDTO dto = new OfferDTO(o);
+            subscriptions.add(dto);
+        }
+        return subscriptions;
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")
