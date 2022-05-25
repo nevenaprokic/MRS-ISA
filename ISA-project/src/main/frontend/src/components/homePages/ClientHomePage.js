@@ -22,6 +22,7 @@ import ReservationProfile from '../profilePages/reservationProfile/ReservationPr
 import CottageIcon from '@mui/icons-material/Cottage';
 import SailingIcon from '@mui/icons-material/Sailing';
 import KayakingIcon from '@mui/icons-material/Kayaking';
+import UpcomingReservations from '../collections/UpcomingReservations';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -149,7 +150,21 @@ export default function ClientHomePage() {
                     <ClientProfile></ClientProfile>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  Upcoming reservations
+                <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <CottageIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\tCottages"}
+                      </Typography>
+                      <UpcomingReservations offerT={offerType.COTTAGE}/>
+                      <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <SailingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\Ships"}
+                      </Typography>
+                      <UpcomingReservations offerT={offerType.SHIP}/>
+                      <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <KayakingIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\tAdventures"}
+                      </Typography>
+                      <UpcomingReservations offerT={offerType.ADVENTURE}/>
                 </TabPanel>
                 <TabPanel value={value} index={4}>
                       <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>

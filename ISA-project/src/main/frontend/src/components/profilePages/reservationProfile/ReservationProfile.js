@@ -30,11 +30,13 @@ import {
   getAllAdventureReservationsClient,
 } from "../../../services/ClientService";
 import ReservationReportForm from '../../forms/reservations/ReservationReportForm';
+import ClientSort from "../../forms/search/ClientSort";
 
 
 function Row({ row, setRequests, disabled }) {
   const request = row;
   const [open, setOpen] = React.useState(false);
+
 
   const theme = createTheme({
     palette: {

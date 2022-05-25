@@ -10,6 +10,7 @@ import {getQuickActionByOfferId} from "../../../services/QuickActionService";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { makeReservation, convertParams } from '../../../services/ReservationService';
 import ConfirmDialog from "../../layout/ConfirmDialog";
+import { isAllowedToMakeReservation } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -24,6 +25,7 @@ const theme = createTheme({
 
 function QuickActionBox({ offer }) {
   const [quickActionData, setQuickActionsData] = useState();
+  const [canReserve, setCanReserve] = useState();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -36,6 +38,7 @@ function QuickActionBox({ offer }) {
 
   useEffect(() => {
     async function setData() {
+      isAllowedToMakeReservation(setCanReserve);
       let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       return quickActions;
@@ -43,9 +46,8 @@ function QuickActionBox({ offer }) {
     setData();
   }, []);
 
-  if (quickActionData) {
-    console.log("AKCIJE");
-    console.log(quickActionData);
+  if (quickActionData && canReserve) {
+    {console.log("AAAAA", canReserve);}
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">
@@ -91,6 +93,7 @@ function QuickActionBox({ offer }) {
                     variant="contained"
                     bgcolor="secondary"
                     color="primary"
+                    disabled={!canReserve}
                     onClick={() => handleOpen() }
                   >
                     Book now

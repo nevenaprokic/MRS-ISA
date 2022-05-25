@@ -1,6 +1,8 @@
 package com.booking.ISAbackend.model;
 
 import com.booking.ISAbackend.model.Client;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDate;
@@ -10,6 +12,8 @@ import java.util.Optional;
 import javax.persistence.*;
 
 @Entity
+@SQLDelete(sql = "UPDATE reservation SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH,CascadeType.REFRESH})
 	private List<AdditionalService> additionalServices;
 
 	@Column(nullable = false)

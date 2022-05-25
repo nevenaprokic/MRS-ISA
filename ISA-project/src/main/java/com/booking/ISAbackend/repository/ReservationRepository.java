@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+
     List<Reservation> findAllByOfferId(Integer id);
   
     @Query("SELECT r FROM Reservation r JOIN FETCH r.client WHERE r.client.id = ?1 AND r.endDate > CURRENT_DATE")
@@ -27,21 +29,20 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByInstructorEmail(String email);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Cottage> nonAvailableCottages(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Ship c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Ship> nonAvailableShips(LocalDate date);
 
     @Query("SELECT DISTINCT c FROM Reservation r INNER JOIN Adventure c ON r.offer.id = c.id WHERE" +
-            " (r.startDate <= ?1 AND r.endDate >= ?1)")
+            " (r.startDate <= ?1 AND r.endDate >= ?1 AND r.deleted=false)")
     List<Adventure> nonAvailableAdventures(LocalDate date);
 
     @Modifying
     @Query("UPDATE Reservation r SET r.deleted = true WHERE r.offer.id = ?1")
     void deleteByOfferId(Integer id);
-
 
     @Query("SELECT r FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
     List<Reservation> findPastReservationByCottageOwnerEmail(String email, LocalDate today);
@@ -76,4 +77,24 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r.id FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 INNER JOIN ReservationReport rr ON rr.reservation.id = r.id WHERE r.endDate < ?2 ")
     List<Integer> findReservationWithNoReportByCottageOwnerEmail(String email, LocalDate today);
+  
+    @Query("SELECT r FROM Reservation r INNER JOIN Cottage ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingCottageReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Ship ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingShipReservationsByClient(String email, LocalDate today);
+
+    @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
+    List<Reservation> getUpcomingAdventureReservationsByClient(String email, LocalDate today);
+
+    @Modifying
+    @Query("UPDATE Reservation r SET r.deleted = true WHERE r.id = ?1")
+    void deleteById(Integer id);
+
+    @Query("SELECT r.id FROM Reservation r WHERE r.id = ?1 AND ?3 > ?2")
+    Integer checkCancelCondition(Integer id, LocalDate boundary, LocalDate today);
+
+    @Query("SELECT r.id FROM Client c INNER JOIN Reservation  r ON c.id = r.client.id INNER JOIN Offer o ON r.offer.id = o.id WHERE r.deleted=true AND c.email = ?1 AND r.startDate = ?2 AND o.id = ?3")
+    Optional<Integer> checkIfCanceled(String email, LocalDate date, Integer offerId);
+
 }

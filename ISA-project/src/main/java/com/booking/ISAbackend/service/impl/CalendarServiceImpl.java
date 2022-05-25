@@ -14,6 +14,7 @@ import com.booking.ISAbackend.repository.UserRepository;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,7 +97,6 @@ public class CalendarServiceImpl implements CalendarService {
         UnavailableOfferDates dates = new UnavailableOfferDates(offer, start, end);
         unavailabelOfferDatesRepository.save(dates);
     }
-
 
     @Transactional
     public List<CalendarItem> generateCalendarItems(List<Reservation> reservations, List<UnavailableOfferDates> unavailableOfferDates){
