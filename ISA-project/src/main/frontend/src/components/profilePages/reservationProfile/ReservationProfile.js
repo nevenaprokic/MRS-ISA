@@ -27,11 +27,18 @@ import { userType, offerType } from "../../../app/Enum";
 import {getRoleFromToken} from "../../../app/jwtTokenUtils";
 import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAdventureReservationsClient } from "../../../services/ClientService";
 import ClientSort from "../../forms/search/ClientSort";
+import Modal from "@mui/material/Modal";
+import ReviewForm from "../../forms/review/ReviewForm"
 
 
 function Row({row, setRequests}) {
     const  request  = row;
     const [open, setOpen] = React.useState(false);
+
+    const [openReview, setOpenReview] = React.useState(false);
+
+    function handleOpenReview(){setOpenReview(true);}
+    function handleCloseReview(){setOpenReview(false);}
 
     const theme = createTheme({
         palette: {
@@ -68,18 +75,42 @@ function Row({row, setRequests}) {
           <TableCell sx={{fontSize: 16}} align="center">{request.offerName}</TableCell>
           <TableCell sx={{fontSize: 16}} align="center">{request.startDate}</TableCell>
           <TableCell sx={{fontSize: 16}} align="center">{request.endDate}</TableCell>
-          <TableCell ><Button 
-                    type="submit"
-                    variant="contained"
-                    sx={{float:"right"}}
-                    color="primary"
-                    size="small"
-                    onClick={() => handleRequestAccepted()}
-                  >
-                  Report 
-                  </Button></TableCell>
+          {getRoleFromToken() == userType.CLIENT ?
+           <TableCell ><Button 
+           type="submit"
+           variant="contained"
+           sx={{float:"right"}}
+           color="primary"
+           size="small"
+           onClick={() => handleOpenReview()}
+         >
+         Review 
+         </Button></TableCell>
+           :
+            <TableCell ><Button 
+            type="submit"
+            variant="contained"
+            sx={{float:"right"}}
+            color="primary"
+            size="small"
+            onClick={() => handleRequestAccepted()}
+          >
+          Report 
+          </Button></TableCell>
+          }
           
         </TableRow>
+              <Modal
+                    open={openReview
+                    }
+                    onClose={handleCloseReview}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                >
+                        <ReviewForm close={handleCloseReview} offer={row} />
+                    
+                </Modal>
         
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
