@@ -37,7 +37,7 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
 
-insert into client (points, penal, id) values (0, 3, 1);
+insert into client (points, penal, id) values (0, 2, 1);
 insert into client (points, penal, id) values (2, 0, 2);
 insert into client (points, penal, id) values (7, 1, 3);
 insert into client (points, penal, id) values (15, 0, 4);

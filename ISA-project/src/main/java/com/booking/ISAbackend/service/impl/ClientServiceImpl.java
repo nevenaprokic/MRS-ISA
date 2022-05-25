@@ -14,6 +14,7 @@ import com.booking.ISAbackend.service.ClientCategoryService;
 import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,4 +176,15 @@ public class ClientServiceImpl implements ClientService {
         Integer penalties = clientRepository.getPenalties(email);
         return penalties < 3;
     }
+
+    @Scheduled(cron="0 0 0 1 1/1 *")
+    @Transactional
+    public void removePenalties(){
+        clientRepository.removePenalties();
+    }
+
+//    @Scheduled(fixedRate=2000L)
+//    public void printSomething(){
+//        System.out.println("Something");
+//    }
 }

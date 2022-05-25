@@ -162,11 +162,11 @@ export function getAllAdventureReservationsClient(){
 
 }
 
-export function isAllowedToMakeReservation(){
+export function isAllowedToMakeReservation(setCanReserve){
   let email = getUsernameFromToken();
   return api.get("client/is-allowed-to-reserve" ,
     {params:{ email : email}})
-    .then(response => response)
+    .then(response => setCanReserve(response.data))
     .catch((err) => {toast.error(err.response.data, {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,

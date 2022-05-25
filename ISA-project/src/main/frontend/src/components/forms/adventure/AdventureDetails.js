@@ -18,7 +18,8 @@ import QuickActionBox from '../../profilePages/cottageProfile/QuickActionBox';
 import { isAllowedToMakeReservation } from '../../../services/ClientService';
 
 function AdventureDetails({adventure}){
-    
+    const [canReserve, setCanReserve] = useState();
+
     const theme = createTheme({
         palette: {
           primary: {
@@ -41,14 +42,13 @@ function AdventureDetails({adventure}){
     const handleOpenActions = () => setOpenActions(true);
     const handleCloseActions = () => setOpenActions(false);
 
-    let canReserve = null;
     useEffect(() => {
-        canReserve = isAllowedToMakeReservation();
+        isAllowedToMakeReservation(setCanReserve);
         setAdventureData(adventure);
     }, [])
       
     return(
-        adventureData &&
+        (adventureData && canReserve) &&
         <div className="adventureDetailsContainer">
             <ThemeProvider theme={theme}>
                 <Grid item xs={12} md={10}>

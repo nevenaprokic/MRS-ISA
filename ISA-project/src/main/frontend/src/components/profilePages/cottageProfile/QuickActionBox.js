@@ -25,6 +25,7 @@ const theme = createTheme({
 
 function QuickActionBox({ offer }) {
   const [quickActionData, setQuickActionsData] = useState();
+  const [canReserve, setCanReserve] = useState();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -35,10 +36,9 @@ function QuickActionBox({ offer }) {
     makeReservation(convertParams(action, offer.id), handleClose);
   };
 
-  let canReserve = null;
   useEffect(() => {
     async function setData() {
-      canReserve = isAllowedToMakeReservation();
+      isAllowedToMakeReservation(setCanReserve);
       let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       return quickActions;
@@ -46,7 +46,8 @@ function QuickActionBox({ offer }) {
     setData();
   }, []);
 
-  if (quickActionData) {
+  if (quickActionData && canReserve) {
+    {console.log("AAAAA", canReserve);}
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">

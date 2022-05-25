@@ -11,16 +11,17 @@ import { isAllowedToMakeReservation } from '../../services/ClientService';
 
 export default function OfferList({type, offers, setOffers, setLastSearchedOffers}) {
 
+  const [canReserve, setCanReserve] = useState();
+
     let getOffers = {
       [offerType.COTTAGE] : getCottages,
       [offerType.SHIP] : getShips,
       [userType.INSTRUCTOR] : getInstructors
     };
 
-    let canReserve = null;
     useEffect(() => {
         async function setData() {
-          canReserve = isAllowedToMakeReservation();
+          isAllowedToMakeReservation(setCanReserve);
           const offersData = await getOffers[type]();
           setOffers(offersData ? offersData.data : {});
           if(setLastSearchedOffers)  
@@ -31,7 +32,7 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
         setData();
     }, [])
 
-    if(offers){
+    if(offers && canReserve){
       return(<Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {offers.map((offer) => (
