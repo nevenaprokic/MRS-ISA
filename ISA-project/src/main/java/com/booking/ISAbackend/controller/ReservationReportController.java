@@ -1,14 +1,11 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.dto.ReservationDTO;
+import com.booking.ISAbackend.dto.NewReservationReportDTO;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,15 @@ public class ReservationReportController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PostMapping("add")
+    public ResponseEntity<String> addReservationReport(@RequestBody NewReservationReportDTO dto){
+        try{
+            reservationReportService.addReservationReport(dto);
+            return ResponseEntity.ok("Reservation report was successful!");
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body("Something went wrong. Try again.");
+        }
     }
 }

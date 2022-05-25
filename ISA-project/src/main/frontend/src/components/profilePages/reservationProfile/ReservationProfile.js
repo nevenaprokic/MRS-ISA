@@ -33,7 +33,6 @@ import ReservationReportForm from '../../forms/reservations/ReservationReportFor
 
 
 function Row({ row, setRequests, disabled }) {
-  console.log(row);
   const request = row;
   const [open, setOpen] = React.useState(false);
 
@@ -112,7 +111,7 @@ function Row({ row, setRequests, disabled }) {
                 overflow: "auto",
               }}
             >
-              <ReservationReportForm closeForm={handleCloseForm}/>
+              <ReservationReportForm closeForm={handleCloseForm} request={request}/>
             </Modal>
           </TableCell>
         </TableRow>

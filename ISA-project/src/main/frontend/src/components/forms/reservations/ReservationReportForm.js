@@ -13,11 +13,12 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import {addReport} from '../../../services/ReservationService';
 
-export default function ReservationReportForm({closeForm}) {
+export default function ReservationReportForm({closeForm, request}) {
   const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
   const [value, setValue] = React.useState(true);
-  const [valueOpinion, setOpinionValue] = React.useState("positive");
+  const [valueOpinion, setOpinionValue] = React.useState("POSITIVE");
 
   const handleChangeYes = (event) => {
     setValue(event.target.value);
@@ -26,10 +27,13 @@ export default function ReservationReportForm({closeForm}) {
   const handleChange = (event) => {
     setOpinionValue(event.target.value);
   };
+  console.log(request);
 
   const onSubmit = (data) => {
-    console.log(data);
-    closeForm();
+    let params = {...data, 'clientId':request.clinetId, 'valueShowUp': value, 'valueImpression':valueOpinion, 'reservationId':request.id}
+    console.log(params);
+    addReport(params);
+    closeForm(params);
   };
 
   
@@ -58,7 +62,6 @@ export default function ReservationReportForm({closeForm}) {
             value={value}
             id='showUp'
             onChange={handleChangeYes}
-            {...register("showUp", {required: true})}
           >
             <FormControlLabel value={true} control={<Radio />} label="Yes" />
             <FormControlLabel value={false} control={<Radio />} label="No" />
@@ -76,20 +79,19 @@ export default function ReservationReportForm({closeForm}) {
             id="impression"
             value={valueOpinion}
             onChange={handleChange}
-            {...register("impression", {required: true})}
           >
             <FormControlLabel
-              value={"positive"}
+              value={"POSITIVE"}
               control={<Radio />}
               label="Positive"
             />
             <FormControlLabel
-              value={"negative"}
+              value={"NEGATIVE"}
               control={<Radio />}
               label="Negative"
             />
             <FormControlLabel
-              value={"no impression"}
+              value={"NO_IMPRESSION"}
               control={<Radio />}
               label="No impression"
             />
