@@ -37,7 +37,7 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
 
-insert into client (points, penal, id) values (0, 3, 1);
+insert into client (points, penal, id) values (0, 2, 1);
 insert into client (points, penal, id) values (2, 0, 2);
 insert into client (points, penal, id) values (7, 1, 3);
 insert into client (points, penal, id) values (15, 0, 4);
@@ -158,7 +158,7 @@ insert into cottage(bed_number, room_number, id, my_user_id) values (4,4,12,5);
 insert into cottage(bed_number, room_number, id, my_user_id) values (3,3,13,5);
 
 -- /*RESERVATION*/
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-18',4,600,'2022-04-17',1,7);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-28',4,800,'2022-04-17',1,7);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-06-11',2,300,'2022-06-10',2,1);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,250,'2022-04-17',3,3);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-11',2,300,'2022-04-10',2,1);
@@ -166,11 +166,11 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-06-01',2,300,'2022-05-29',2,5);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-25',3,250,'2022-05-17',3,6);
 
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,600,'2021-07-17',1,7);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-08-18',4,670,'2021-07-17',1,7);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-03-18',4,600,'2022-03-17',2,7);
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-18',4,600,'2022-02-17',1,8);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-18',4,650,'2022-02-17',1,8);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-22',4,600,'2022-07-17',2,8);
-insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,600,'2021-07-17',1,9);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,800,'2021-07-17',1,9);
 
 -- /*MARK*/
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
@@ -195,9 +195,9 @@ insert into delete_request(description, my_user_id) values('Ne zelim vise da pos
 -- -- -- insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 
 /*QUICK RESERVATION*/
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',6, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-05-01',10,1000,'2022-05-08','2022-04-25',7, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-07-26','2022-07-17',2,255,'2022-07-23','2022-07-02',1, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-06-20',2,250,'2022-05-23','2022-05-01',6, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-10','2022-06-01',10,1000,'2022-05-08','2022-04-25',7, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-07-26','2022-07-17',2,255,'2022-07-23','2022-05-02',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-18','2022-05-10',10,1000,'2022-05-15','2022-05-02',2, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-06-26','2022-05-25',2,257,'2022-06-23','2022-05-15',1, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',5, false);

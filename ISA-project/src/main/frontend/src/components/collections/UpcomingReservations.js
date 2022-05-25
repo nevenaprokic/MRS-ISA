@@ -25,7 +25,7 @@ import { offerType } from "../../app/Enum";
 import { getUpcomingCottageReservationsClient, getUpcomingShipReservationsClient, getUpcomingAdventureReservationsClient, cancelReservation } from "../../services/ReservationService"
 import ConfirmDialog from "../notifications/ConfirmDialog";
 import Modal from "@mui/material/Modal";
-
+import ClientSort from "../forms/search/ClientSort";
 
 function Row({row, setRequests, requests}) {
     const  request  = row;
@@ -204,6 +204,11 @@ function UpcomingReservations( { offerT } ){
                     <TableCell sx={{ fontWeight: "bold", color: "#5f6d5f", fontSize: 18 }} align="center">
                         <Typography variant="button">
                             End date
+                        </Typography>
+                    </TableCell>
+                    <TableCell sx={{ color: "#5f6d5f" }} align="center">
+                        <Typography variant="button">
+                            <ClientSort reservations={requests} setReservations={setRequests} />
                         </Typography>
                     </TableCell>
                     <TableCell />

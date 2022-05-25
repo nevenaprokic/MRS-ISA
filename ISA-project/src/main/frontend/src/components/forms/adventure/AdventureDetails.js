@@ -15,9 +15,11 @@ import { getRoleFromToken } from '../../../app/jwtTokenUtils';
 import ReservationForm from '../reservations/ReservationForm';
 import Modal from '@mui/material/Modal';
 import QuickActionBox from '../../profilePages/cottageProfile/QuickActionBox';
+import { isAllowedToMakeReservation } from '../../../services/ClientService';
 
 function AdventureDetails({adventure}){
-    
+    const [canReserve, setCanReserve] = useState();
+
     const theme = createTheme({
         palette: {
           primary: {
@@ -40,15 +42,13 @@ function AdventureDetails({adventure}){
     const handleOpenActions = () => setOpenActions(true);
     const handleCloseActions = () => setOpenActions(false);
 
-
     useEffect(() => {
-        console.log("AVAnturica");
-        console.log(adventure);
+        isAllowedToMakeReservation(setCanReserve);
         setAdventureData(adventure);
     }, [])
       
     return(
-        adventureData &&
+        (adventureData && canReserve) &&
         <div className="adventureDetailsContainer">
             <ThemeProvider theme={theme}>
                 <Grid item xs={12} md={10}>
@@ -97,6 +97,7 @@ function AdventureDetails({adventure}){
                                 variant="contained"
                                 bgcolor="secondary"
                                 color="primary"
+                                disabled={!canReserve}
                                 onClick={() => handleOpenReserve() }
                             >
                                 Book now

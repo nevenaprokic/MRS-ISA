@@ -26,6 +26,7 @@ import {getAllReservationShipOwner} from "../../../services/ReservationService";
 import { userType, offerType } from "../../../app/Enum";
 import {getRoleFromToken} from "../../../app/jwtTokenUtils";
 import { getAllCottageReservationsClient, getAllShipReservationsClient, getAllAdventureReservationsClient } from "../../../services/ClientService";
+import ClientSort from "../../forms/search/ClientSort";
 
 
 function Row({row, setRequests}) {
@@ -133,6 +134,7 @@ function Row({row, setRequests}) {
 
 
 function ReservationProfile( {offerT} ){
+
     const [requests, setRequests] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -193,6 +195,13 @@ function ReservationProfile( {offerT} ){
                             End date
                         </Typography>
                     </TableCell>
+                    { getRoleFromToken() == userType.CLIENT && <TableCell sx={{ color: "#5f6d5f" }} align="center">
+                        <Typography variant="button">
+                            <ClientSort reservations={requests} setReservations={setRequests} />
+                        </Typography>
+                    </TableCell>
+                    }
+
                     <TableCell />
                     <TableCell />
                 </TableRow>

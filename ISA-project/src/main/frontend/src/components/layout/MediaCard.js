@@ -27,8 +27,7 @@ const secondaryTheme = createTheme({
   },
 });
 
-export default function MediaCard({ offer, offerT}) {
-
+export default function MediaCard({ offer, offerT, canReserve }) {
   const [offerData, setOfferData] = useState();
 
   const [open, setOpen] = useState(false);
@@ -138,6 +137,7 @@ const modalOfferComponent = (offerStr, offerId) =>{
               variant="contained"
               bgcolor="secondary"
               color="primary"
+              disabled={!canReserve}
               onClick={handleOpenReserve}
             >
               Book now
