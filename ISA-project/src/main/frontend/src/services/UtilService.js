@@ -30,15 +30,16 @@ export function arrayToDateString(arr){
 // format of string: dd/MM/yyyy
 export function stringToDate(dateStr){
   let tokens = dateStr.split('/');
-  return arrayToDateString(tokens);
+  return arrayToDateString(tokens.reverse());
 }
 
 export function dateDiffInDays(a, b) {
   // Discard the time and time-zone information.
   a = stringToDate(a);
   b = stringToDate(b);
+
   const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
   const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-  return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+  
+  return Math.abs(Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24)));
 }

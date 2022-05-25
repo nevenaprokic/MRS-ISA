@@ -2,7 +2,7 @@ import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken, getRoleFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
-import { arrayToDateString, compareString, dateDiffInDays } from "./UtilService";
+import { arrayToDateString, compareString, dateDiffInDays, stringToDate } from "./UtilService";
 
 export function calculatePrice(days, price, additionalServices, guests){
     days = (days == "") ? 0 : days;
@@ -186,11 +186,14 @@ export function getUpcomingCottageReservationsClient(){
   }
   
 export function sortReservations(criteria, sortAsc, reservations, setReservations){
-
+   
     switch(criteria) {
         case 1:
             reservations.sort((a, b) => {
-            return compareString(sortAsc, a.startDate, b.startDate);
+            let d1 = stringToDate(a.startDate);
+            let d2 = stringToDate(b.startDate);
+
+            return (sortAsc) ? d1 - d2 : d2 - d1;
         });
           break;
         case 2:
@@ -200,9 +203,9 @@ export function sortReservations(criteria, sortAsc, reservations, setReservation
           break;
         case 3:
             reservations.sort((a, b) => {
+                console.log()
                 let duration1 = dateDiffInDays(a.startDate, a.endDate);
                 let duration2 = dateDiffInDays(b.endDate, b.startDate);
-                console.log(duration1);
                 return (sortAsc) ?  duration1 - duration2 : duration2 - duration1;
           });
           break;
