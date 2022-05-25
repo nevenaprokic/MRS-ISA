@@ -18,4 +18,5 @@ public interface ClientService {
     void requestAccountDeletion(String email, String reason) throws AccountDeletionException;
     boolean alreadyRequestedDeletion(String email);
     void removeSubscribedClients(List<Client> services);
+    Boolean canReserve(String email);
 }

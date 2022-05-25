@@ -10,6 +10,7 @@ import {getQuickActionByOfferId} from "../../../services/QuickActionService";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { makeReservation, convertParams } from '../../../services/ReservationService';
 import ConfirmDialog from "../../layout/ConfirmDialog";
+import { isAllowedToMakeReservation } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -34,8 +35,10 @@ function QuickActionBox({ offer }) {
     makeReservation(convertParams(action, offer.id), handleClose);
   };
 
+  let canReserve = null;
   useEffect(() => {
     async function setData() {
+      canReserve = isAllowedToMakeReservation();
       let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       return quickActions;
@@ -89,6 +92,7 @@ function QuickActionBox({ offer }) {
                     variant="contained"
                     bgcolor="secondary"
                     color="primary"
+                    disabled={!canReserve}
                     onClick={() => handleOpen() }
                   >
                     Book now

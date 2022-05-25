@@ -7,6 +7,7 @@ import MediaCard from "../layout/MediaCard";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import {getInstructors} from '../../services/InstructorService';
+import { isAllowedToMakeReservation } from '../../services/ClientService';
 
 export default function OfferList({type, offers, setOffers, setLastSearchedOffers}) {
 
@@ -16,8 +17,10 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
       [userType.INSTRUCTOR] : getInstructors
     };
 
+    let canReserve = null;
     useEffect(() => {
         async function setData() {
+          canReserve = isAllowedToMakeReservation();
           const offersData = await getOffers[type]();
           setOffers(offersData ? offersData.data : {});
           if(setLastSearchedOffers)  
@@ -33,7 +36,7 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
           <Grid container spacing={4}>
             {offers.map((offer) => (
               <Grid item key={offer.id + " " + offer.email} xs={12} sm={6} md={4}>
-                <MediaCard offer={offer} offerT={type}></MediaCard>
+                <MediaCard offer={offer} offerT={type} canReserve={canReserve} ></MediaCard>
               </Grid>
             ))}
           </Grid>

@@ -115,5 +115,15 @@ public class ClientController {
         }
     }
 
+    @GetMapping("is-allowed-to-reserve")
+    public ResponseEntity<Boolean> canReserve(@RequestParam String email) {
+        try{
+            Boolean check = clientService.canReserve(email);
+            return ResponseEntity.ok(check);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
 
 }

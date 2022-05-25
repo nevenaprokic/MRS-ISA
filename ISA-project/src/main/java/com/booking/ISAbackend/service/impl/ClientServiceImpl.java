@@ -170,4 +170,9 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
+    @Override
+    public Boolean canReserve(String email){
+        Integer penalties = clientRepository.getPenalties(email);
+        return penalties < 3;
+    }
 }
