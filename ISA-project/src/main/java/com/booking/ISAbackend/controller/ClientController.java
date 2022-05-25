@@ -125,5 +125,17 @@ public class ClientController {
         }
     }
 
+    @PostMapping("make-review")
+    public ResponseEntity<String> canReserve(@RequestBody HashMap<String, String> data) {
+        try{
+            Integer reservationId = Integer.parseInt(data.get("reservationId"));
+            Integer stars = Integer.parseInt(data.get("stars"));
+            clientService.makeReview(stars, reservationId, data.get("comment"));
+            return ResponseEntity.ok("Review has been successfully added.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong.");
+        }
+    }
+
 
 }

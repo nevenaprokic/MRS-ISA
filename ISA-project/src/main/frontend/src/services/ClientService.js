@@ -174,4 +174,19 @@ export function isAllowedToMakeReservation(setCanReserve){
     });
 }
 
+export function makeReviewForOffer(stars, reservationId, comment){
+    api
+    .post("client/make-review", {
+        "stars": stars,
+        "reservationId": reservationId,
+        "comment": comment
+      })
+    .then((res) => {
+        toast.success( res.data, {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
+    })
+    .catch((err) => {
+      toast.error( err.response.data , {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
+    });
+}
+
 

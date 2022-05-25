@@ -9,6 +9,7 @@
   import Grid from "@mui/material/Grid";
   import { useForm } from "react-hook-form";
   import * as React from 'react';
+  import {makeReviewForOffer} from '../../../services/ClientService';
   
   function ReviewForm({ close, offer }) {
 
@@ -23,9 +24,7 @@
       } = useForm({});
 
     const onSubmit = (data) => {
-        console.log(stars);
-        console.log(offer.offerId);
-        console.log(getValues("comment"));
+        makeReviewForOffer(stars, offer.id, getValues("comment"));
         close();
     };
     

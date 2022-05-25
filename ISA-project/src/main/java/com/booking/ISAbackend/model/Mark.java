@@ -1,11 +1,5 @@
 package com.booking.ISAbackend.model;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Mark {
@@ -16,9 +10,18 @@ public class Mark {
 	private String comment;
 	private Boolean approved;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
+
+	public Mark(){}
+
+	public Mark(Integer mark, String comment, Boolean approved, Reservation reservation) {
+		this.mark = mark;
+		this.comment = comment;
+		this.approved = approved;
+		this.reservation = reservation;
+	}
 
 	public Integer getId() {
 		return id;
@@ -39,4 +42,5 @@ public class Mark {
 	public Reservation getReservation() {
 		return reservation;
 	}
+
 }

@@ -19,4 +19,6 @@ public interface ClientService {
     boolean alreadyRequestedDeletion(String email);
     void removeSubscribedClients(List<Client> services);
     Boolean canReserve(String email);
+
+    void makeReview(Integer stars, Integer offerId, String comment) throws Exception;
 }

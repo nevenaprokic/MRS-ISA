@@ -57,6 +57,9 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientCategoryService clientCategoryService;
 
+    @Autowired
+    private MarkRepository markRepository;
+
     @Override
     @Transactional
     public String save(ClientRequest cr) throws InterruptedException {
@@ -175,6 +178,17 @@ public class ClientServiceImpl implements ClientService {
     public Boolean canReserve(String email){
         Integer penalties = clientRepository.getPenalties(email);
         return penalties < 3;
+    }
+
+    @Override
+    public void makeReview(Integer stars, Integer reservationId, String comment) throws Exception {
+        Optional<Reservation> r = reservationRepository.findById(reservationId);
+        if(r.isPresent()){
+            Mark m = new Mark(stars, comment, false, r.get());
+            markRepository.save(m);
+        }else{
+            throw new Exception();
+        }
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")
