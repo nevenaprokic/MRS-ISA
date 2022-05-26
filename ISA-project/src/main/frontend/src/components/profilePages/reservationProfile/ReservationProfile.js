@@ -31,7 +31,6 @@ import {
 } from "../../../services/ClientService";
 import ReservationReportForm from '../../forms/reservations/ReservationReportForm';
 import ClientSort from "../../forms/search/ClientSort";
-import Modal from "@mui/material/Modal";
 import ReviewForm from "../../forms/review/ReviewForm"
 
 
@@ -106,19 +105,17 @@ function Row({ row, setRequests, disabled }) {
           </Button></TableCell>
           }
           
-        </TableRow>
-              <Modal
-                    open={openReview
-                    }
-                    onClose={handleCloseReview}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
-                >
-                        <ReviewForm close={handleCloseReview} offer={row} />
-                    
-                </Modal>
-
+            <Modal
+                  open={openReview
+                  }
+                  onClose={handleCloseReview}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+              >
+                      <ReviewForm close={handleCloseReview} offer={row} />
+                  
+              </Modal>
         
             <Modal
               open={openForm}
@@ -132,6 +129,7 @@ function Row({ row, setRequests, disabled }) {
             > 
               <ReservationReportForm closeForm={handleCloseForm} request={request}/>
             </Modal>
+
           </TableCell>
         </TableRow>
 

@@ -164,6 +164,7 @@ export function getAllAdventureReservationsClient(){
 
 export function isAllowedToMakeReservation(setCanReserve){
   let email = getUsernameFromToken();
+  if(email == null) {console.log("AAA"); return false;}
   return api.get("client/is-allowed-to-reserve" ,
     {params:{ email : email}})
     .then(response => setCanReserve(response.data))

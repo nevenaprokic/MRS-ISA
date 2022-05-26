@@ -32,7 +32,7 @@ export default function OfferList({type, offers, setOffers, setLastSearchedOffer
         setData();
     }, [])
 
-    if(offers && canReserve){
+    if(offers){
       return(<Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {offers.map((offer) => (

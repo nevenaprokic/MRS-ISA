@@ -8,7 +8,7 @@ export function getUsernameFromToken(){
         return username;
     }
     catch{
-        console.log("Greska");
+        console.log("There is no token.");
         return null;
     }
 }
