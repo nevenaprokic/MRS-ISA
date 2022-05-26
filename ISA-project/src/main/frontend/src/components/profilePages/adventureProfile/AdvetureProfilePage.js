@@ -36,8 +36,6 @@ const theme = createTheme({
  
 
 function AdventureProfilePage({id, close, childToParentMediaCard}){
-
-  
     const [adventureData, setAdventureData] = useState();
 
     const [openChangeForm, setOpenForm] = useState(false);
@@ -66,7 +64,6 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
     const handleCloseForm = () => {
         setOpenForm(false);
     }
-
     
     const childToParent = (childData) => {
             setAdventureData(prevState => ({
@@ -189,7 +186,7 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         </Button>
                         </div>
                     ) : (
-                        <></>
+                       <></>
                     )}
                 </div>
                 <Modal

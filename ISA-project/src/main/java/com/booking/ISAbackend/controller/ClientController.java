@@ -140,11 +140,42 @@ public class ClientController {
         }
     }
 
-    @GetMapping("get-subscriptions/{email}") // na frontu url_base + {email}
+    @GetMapping("get-subscriptions/{email}")
     public ResponseEntity<List<OfferDTO>> getSubscriptions(@PathVariable String email){
         try{
             List<OfferDTO> subscriptions = clientService.getSubscriptions(email);
             return ResponseEntity.ok(subscriptions);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @PostMapping("unsubscribe")
+    public ResponseEntity<String> unsubscribe(@RequestBody HashMap<String, String> data){
+        try{
+            clientService.unsubscribe(data.get("email"), data.get("offerId"));
+            return ResponseEntity.ok("Successfully unsubscribed");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong");
+        }
+    }
+
+    @PostMapping("subscribe")
+    public ResponseEntity<String> subscribe(@RequestBody HashMap<String, String> data){
+        try{
+            clientService.subscribe(data.get("email"), data.get("offerId"));
+            return ResponseEntity.ok("Successfully subscribed");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong");
+        }
+    }
+
+    @GetMapping("is-subscribed")
+    public ResponseEntity<Boolean> isSubscribed(@RequestParam String email, @RequestParam String offerId){
+        try{
+            if (clientService.isSubscribed(email, offerId))
+                return ResponseEntity.ok(true);
+            return ResponseEntity.ok(false);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(null);
         }

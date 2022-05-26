@@ -20,6 +20,7 @@ import DeleteShip from "../../forms/ship/DeleteShip";
 import { toast } from "react-toastify";
 import MapBox from "../cottageProfile/MapBox";
 import ChangeShipForm from "../../forms/ship/ChangeShipForm";
+import { isSubscribed, subscribe, unsubscribe } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,8 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
   const [shipData, setShipData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openChangeForm, setOpenForm] = useState(false);
+
+  const [subscribed, setSubscribed] = useState();
 
   const handleOpenForm = () => {
     checkAllowed(true);
@@ -95,6 +98,7 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
   };
 
   useEffect(() => {
+    if(getRoleFromToken() == userType.CLIENT){ isSubscribed(id, setSubscribed); }
     async function setData() {
       let ship = await getShipById(id);
       setShipData(!!ship ? ship.data : {});
@@ -104,8 +108,10 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
     setData();
   }, []);
 
+  useEffect(() => {
+  }, [subscribed]);
+
   function createServiceData() {
-    console.log("DA")
     let rows = [];
     shipData.additionalServices.forEach((data) => {
       let name = data.serviceName;
@@ -113,6 +119,15 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
       rows.push({ name, price });
     });
     return rows;
+  }
+
+  function handleSubscribe(){
+    setSubscribed(!subscribed);
+    if(subscribed){
+      unsubscribe(shipData.id);
+    }else{
+      subscribe(shipData.id);
+    }
   }
 
   let photos = [];
@@ -161,7 +176,13 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
                   </Button>
                 </div>
               ) : (
-                <></>
+                <Button
+                    style={{ marginLeft: "5%" }}
+                    variant="contained"
+                    onClick={handleSubscribe}
+                  >
+                   { (subscribed) ? "Unsubscribe" : "Subscribe"}
+                  </Button>
               )}
             </div>
             <Modal

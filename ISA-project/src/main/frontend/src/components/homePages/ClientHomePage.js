@@ -23,6 +23,8 @@ import CottageIcon from '@mui/icons-material/Cottage';
 import SailingIcon from '@mui/icons-material/Sailing';
 import KayakingIcon from '@mui/icons-material/Kayaking';
 import UpcomingReservations from '../collections/UpcomingReservations';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Subscriptions from '../collections/Subscriptions';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -135,21 +137,31 @@ export default function ClientHomePage() {
                 >
                     <Tab label="Profile page" {...a11yProps(0)} />
                     <Divider />
-                    <Tab label="Upcoming reservations" {...a11yProps(1)} />
+                    <Tab label="Subscriptions" {...a11yProps(1)} />
                     <Divider />
-                    <Tab label="Reservation history" {...a11yProps(2)} />
+                    <Tab label="Upcoming reservations" {...a11yProps(2)} />
                     <Divider />
-                    <Tab label="Cottages" {...a11yProps(3)} />
+                    <Tab label="Reservation history" {...a11yProps(3)} />
                     <Divider />
-                    <Tab label="Ships" {...a11yProps(4)} />
+                    <Tab label="Cottages" {...a11yProps(4)} />
                     <Divider />
-                    <Tab label="Instructors" {...a11yProps(5)} />
+                    <Tab label="Ships" {...a11yProps(5)} />
+                    <Divider />
+                    <Tab label="Instructors" {...a11yProps(6)} />
                     <Divider />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <ClientProfile></ClientProfile>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
+                <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                      <NotificationsIcon fontSize="large" style={{ verticalAlign: '-6' }} />
+                        {"\t\Subscriptions"}
+                      </Typography>
+                      <Subscriptions />
+                </TabPanel>
+                
+                <TabPanel value={value} index={4}>
                 <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                       <CottageIcon fontSize="large" style={{ verticalAlign: '-6' }} />
                         {"\t\tCottages"}
@@ -166,7 +178,7 @@ export default function ClientHomePage() {
                       </Typography>
                       <UpcomingReservations offerT={offerType.ADVENTURE}/>
                 </TabPanel>
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={6}>
                       <Typography variant="h4" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
                       <CottageIcon fontSize="large" style={{ verticalAlign: '-6' }} />
                         {"\t\tCottages"}
@@ -183,7 +195,7 @@ export default function ClientHomePage() {
                       </Typography>
                       <ReservationProfile offerT={offerType.ADVENTURE}/>
                 </TabPanel>
-                <TabPanel value={value} index={6}>
+                <TabPanel value={value} index={8}>
                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
@@ -198,7 +210,7 @@ export default function ClientHomePage() {
                       <OfferList type={offerType.COTTAGE} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
 
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={10}>
                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
@@ -213,7 +225,7 @@ export default function ClientHomePage() {
                       <OfferList type={offerType.SHIP} offers={offers} setOffers={setOffers} setLastSearchedOffers={setLastSearchedOffers} />
                 </TabPanel>
 
-                <TabPanel value={value} index={10}>
+                <TabPanel value={value} index={12}>
                     <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
                     <Divider/>
                     <br/><br/>
