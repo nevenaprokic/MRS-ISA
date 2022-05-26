@@ -43,8 +43,6 @@ export default function ConfirmDialog({ close, cb, actionData, offerData }) {
   };
 
   useEffect(() => {
-    console.log("POCETAK");
-    console.log(offerData);
     async function setData() {
       const request = await api.get(
         "client/profile-info?email=" + getUsernameFromToken()

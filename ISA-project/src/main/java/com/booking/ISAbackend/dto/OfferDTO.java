@@ -11,6 +11,7 @@ import java.util.List;
 
 public class OfferDTO {
 
+    private Integer id;
     private String name;
     private List<String> photos;
     private String street;
@@ -26,6 +27,7 @@ public class OfferDTO {
     public OfferDTO(){}
 
     public OfferDTO(Offer o) throws IOException {
+        this.id = o.getId();
         this.name = o.getName();
         this.street = o.getAddress().getStreet();
         this.city = o.getAddress().getCity();
@@ -145,5 +147,9 @@ public class OfferDTO {
 
     public List<String> getPhotos() {
         return photos;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

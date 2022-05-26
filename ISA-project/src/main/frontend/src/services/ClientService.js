@@ -3,6 +3,7 @@ import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { sendDeleteRequestShipOwner } from "./ShipOwnerService";
 
 export const sendDeleteRequestClient = (data) => {
     console.log(data);
@@ -164,7 +165,7 @@ export function getAllAdventureReservationsClient(){
 
 export function isAllowedToMakeReservation(setCanReserve){
   let email = getUsernameFromToken();
-  if(email == null) {console.log("AAA"); return false;}
+  if(email == null) return false;
   return api.get("client/is-allowed-to-reserve" ,
     {params:{ email : email}})
     .then(response => setCanReserve(response.data))
@@ -190,4 +191,32 @@ export function makeReviewForOffer(stars, reservationId, comment){
     });
 }
 
+export function getSubscriptions(){
+  let email = getUsernameFromToken();
+  return api.get("client/get-subscriptions/" + email)
+  .then(response => response.data)
+  .catch((err) => {toast.error(err.response.data, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 1500,
+    })
+  });
+}
+
+export function unsubscribe(offerId){
+  console.log("JOVAN");
+  console.log(offerId);
+  let email = getUsernameFromToken();
+  return api.get("client/unsubscribe", {
+    params:{
+      email: email,
+      offerId: offerId
+    }
+  })
+  .then(response => response.data)
+  .catch((err) => {toast.error(err.response.data, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 1500,
+    })
+  });
+}
 
