@@ -22,6 +22,7 @@ import Modal from "@mui/material/Modal";
 import { toast } from "react-toastify";
 import MapBox from "./MapBox";
 import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
+import { subscribe, unsubscribe } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   const [cottageData, setCottageData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openChangeForm, setOpenForm] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   const handleOpenForm = () => {
     checkAllowed(true);
@@ -111,6 +113,16 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
     return rows;
   }
 
+  function handleSubscribe(){
+    setSubscribed(!subscribed);
+    if(subscribed){
+      console.log(cottageData);
+      unsubscribe(cottageData.id);
+    }else{
+      subscribe(cottageData.id);
+    }
+  }
+
   let images = [];
 
   if (cottageData) {
@@ -159,7 +171,13 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
                   </Button>
                 </div>
               ) : (
-                <></>
+                <Button
+                    style={{ marginLeft: "5%" }}
+                    variant="contained"
+                    onClick={handleSubscribe}
+                  >
+                   { (subscribed) ? "Unsubscribe" : "Subscribe"}
+                  </Button>
               )}
             </div>
             <Modal

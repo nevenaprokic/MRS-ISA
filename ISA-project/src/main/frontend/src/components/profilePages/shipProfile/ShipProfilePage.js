@@ -20,6 +20,7 @@ import DeleteShip from "../../forms/ship/DeleteShip";
 import { toast } from "react-toastify";
 import MapBox from "../cottageProfile/MapBox";
 import ChangeShipForm from "../../forms/ship/ChangeShipForm";
+import { subscribe, unsubscribe } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,8 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
   const [shipData, setShipData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openChangeForm, setOpenForm] = useState(false);
+
+  const [subscribed, setSubscribed] = useState(false);
 
   const handleOpenForm = () => {
     checkAllowed(true);
@@ -105,7 +108,6 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
   }, []);
 
   function createServiceData() {
-    console.log("DA")
     let rows = [];
     shipData.additionalServices.forEach((data) => {
       let name = data.serviceName;
@@ -113,6 +115,16 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
       rows.push({ name, price });
     });
     return rows;
+  }
+
+  function handleSubscribe(){
+    setSubscribed(!subscribed);
+    if(subscribed){
+      console.log(shipData);
+      unsubscribe(shipData.id);
+    }else{
+      subscribe(shipData.id);
+    }
   }
 
   let photos = [];
@@ -161,7 +173,13 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
                   </Button>
                 </div>
               ) : (
-                <></>
+                <Button
+                    style={{ marginLeft: "5%" }}
+                    variant="contained"
+                    onClick={handleSubscribe}
+                  >
+                   { (subscribed) ? "Unsubscribe" : "Subscribe"}
+                  </Button>
               )}
             </div>
             <Modal

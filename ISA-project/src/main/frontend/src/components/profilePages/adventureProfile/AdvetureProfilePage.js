@@ -20,6 +20,7 @@ import DeleteAdventure from "../../forms/adventure/DeleteAdventure";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
+import { subscribe, unsubscribe } from "../../../services/ClientService";
 
 
 const theme = createTheme({
@@ -44,6 +45,8 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
 
     const [openDialog, setOpenDialog] = useState(false);
 
+    const [subscribed, setSubscribed] = useState(false);
+
     const handleOpenForm = () => {
         console.log("TU");
         async function checkAllowed(){
@@ -66,6 +69,16 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
     const handleCloseForm = () => {
         setOpenForm(false);
     }
+
+    function handleSubscribe(){
+        setSubscribed(!subscribed);
+        if(subscribed){
+          console.log(adventureData);
+          unsubscribe(adventureData.id);
+        }else{
+          subscribe(adventureData.id);
+        }
+      }
 
     
     const childToParent = (childData) => {
@@ -189,7 +202,13 @@ function AdventureProfilePage({id, close, childToParentMediaCard}){
                         </Button>
                         </div>
                     ) : (
-                        <></>
+                        <Button
+                            style={{ marginLeft: "5%" }}
+                            variant="contained"
+                            onClick={handleSubscribe}
+                        >
+                        { (subscribed) ? "Unsubscribe" : "Subscribe"}
+                        </Button>
                     )}
                 </div>
                 <Modal

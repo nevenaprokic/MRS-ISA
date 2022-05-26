@@ -140,13 +140,23 @@ public class ClientController {
         }
     }
 
-    @GetMapping("get-subscriptions/{email}") // na frontu url_base + {email}
+    @GetMapping("get-subscriptions/{email}")
     public ResponseEntity<List<OfferDTO>> getSubscriptions(@PathVariable String email){
         try{
             List<OfferDTO> subscriptions = clientService.getSubscriptions(email);
             return ResponseEntity.ok(subscriptions);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @PostMapping("unsubscribe")
+    public ResponseEntity<String> unsubscribe(@RequestBody HashMap<String, String> data){
+        try{
+            clientService.unsubscribe(data.get("email"), data.get("offerId"));
+            return ResponseEntity.ok("Successfully unsubscribed");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong");
         }
     }
 

@@ -203,14 +203,38 @@ export function getSubscriptions(){
 }
 
 export function unsubscribe(offerId){
-  console.log("JOVAN");
-  console.log(offerId);
   let email = getUsernameFromToken();
-  return api.get("client/unsubscribe", {
-    params:{
+  return api.post("client/unsubscribe", {
       email: email,
       offerId: offerId
-    }
+  })
+  .then(response => response.data)
+  .catch((err) => {toast.error(err.response.data, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 1500,
+    })
+  });
+}
+
+export function subscribe(offerId){
+  let email = getUsernameFromToken();
+  return api.post("client/subscribe", {
+      email: email,
+      offerId: offerId
+  })
+  .then(response => response.data)
+  .catch((err) => {toast.error(err.response.data, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 1500,
+    })
+  });
+}
+
+export function isSubscribed(offerId){
+  let email = getUsernameFromToken();
+  return api.post("client/is-subscribed", {
+      email: email,
+      offerId: offerId
   })
   .then(response => response.data)
   .catch((err) => {toast.error(err.response.data, {
