@@ -31,6 +31,8 @@ import {
 } from "../../../services/ClientService";
 import ReservationReportForm from '../../forms/reservations/ReservationReportForm';
 import ClientSort from "../../forms/search/ClientSort";
+import Modal from "@mui/material/Modal";
+import ReviewForm from "../../forms/review/ReviewForm"
 
 
 function Row({ row, setRequests, disabled }) {
@@ -73,19 +75,12 @@ function Row({ row, setRequests, disabled }) {
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
-          </TableCell>
-          <TableCell sx={{ fontSize: 16 }} align="center">
-            {request.clienName + " " + request.clientLastName}
-          </TableCell>
-          <TableCell sx={{ fontSize: 16 }} align="center">
-            {request.offerName}
-          </TableCell>
-          <TableCell sx={{ fontSize: 16 }} align="center">
-            {request.startDate}
-          </TableCell>
-          <TableCell sx={{ fontSize: 16 }} align="center">
-            {request.endDate}
-          </TableCell>
+
+          </TableCell> 
+          <TableCell sx={{fontSize: 16}} align="center" >{request.clienName + " " + request.clientLastName}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center">{request.offerName}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center">{request.startDate}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center">{request.endDate}</TableCell>
           <TableCell>
           {getRoleFromToken() == userType.CLIENT ?
            <TableCell ><Button 
@@ -108,29 +103,23 @@ function Row({ row, setRequests, disabled }) {
             onClick={() => handleOpenForm()}
           >
           Report 
-          </Button>
-          </TableCell>
+          </Button></TableCell>
           }
-            {/* {disabled ?
-            (<Button
-              variant="contained"
-              sx={{ float: "right" }}
-              color="primary"
-              size="small"
-              onClick={handleOpenForm}
-            >
-              Report
-            </Button>) : 
-            (<Button
-            disabled
-            variant="contained"
-            sx={{ float: "right" }}
-            color="primary"
-            size="small"
-            onClick={handleOpenForm}
-          >
-            Report
-          </Button>)}*/}
+          
+        </TableRow>
+              <Modal
+                    open={openReview
+                    }
+                    onClose={handleCloseReview}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                >
+                        <ReviewForm close={handleCloseReview} offer={row} />
+                    
+                </Modal>
+
+        
             <Modal
               open={openForm}
               onClose={handleCloseForm}

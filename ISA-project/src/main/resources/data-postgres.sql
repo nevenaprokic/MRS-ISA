@@ -322,7 +322,7 @@ insert into offer_photos(offer_id,photos_id) values (13,23);
 -- -- insert into reservation_additional_services(reservation_id,additional_services_id) values (3,1);
 -- --
 -- -- /*SUBSCRIBE*/
--- -- insert into subscribe(my_user_id, offer_id) values (1,1);
+insert into subscribe(my_user_id, offer_id) values (1,1);
 -- -- insert into subscribe(my_user_id, offer_id) values (1,3);
 -- -- insert into subscribe(my_user_id, offer_id) values (1,5);
 -- -- insert into subscribe(my_user_id, offer_id) values (1,7);
