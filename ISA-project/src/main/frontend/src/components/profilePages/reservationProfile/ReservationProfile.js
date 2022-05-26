@@ -37,7 +37,7 @@ function Row({ row, setRequests, disabled }) {
   const request = row;
   const [open, setOpen] = React.useState(false);
 
-
+console.log(disabled);
   const theme = createTheme({
     palette: {
       primary: { main: "#CC7351" },
@@ -100,6 +100,7 @@ function Row({ row, setRequests, disabled }) {
          </Button></TableCell>
            :
             <TableCell ><Button 
+            disabled={!disabled}
             type="submit"
             variant="contained"
             sx={{float:"right"}}
@@ -263,6 +264,7 @@ function ReservationProfile({ offerT }) {
       const responseData = await getReservation[role]();
       setRequests(responseData.data ? responseData.data : {});
       const reportData = await getAllReportCottageOwner();
+      console.log(reportData);
       setReport(reportData.data ? reportData.data : {});
     }
     setData();
