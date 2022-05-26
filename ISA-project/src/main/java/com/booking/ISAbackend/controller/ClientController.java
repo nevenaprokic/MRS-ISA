@@ -160,4 +160,25 @@ public class ClientController {
         }
     }
 
+    @PostMapping("subscribe")
+    public ResponseEntity<String> subscribe(@RequestBody HashMap<String, String> data){
+        try{
+            clientService.subscribe(data.get("email"), data.get("offerId"));
+            return ResponseEntity.ok("Successfully subscribed");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong");
+        }
+    }
+
+    @GetMapping("is-subscribed")
+    public ResponseEntity<Boolean> isSubscribed(@RequestParam String email, @RequestParam String offerId){
+        try{
+            if (clientService.isSubscribed(email, offerId))
+                return ResponseEntity.ok(true);
+            return ResponseEntity.ok(false);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+
 }

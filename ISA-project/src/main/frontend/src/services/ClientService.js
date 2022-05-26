@@ -230,13 +230,14 @@ export function subscribe(offerId){
   });
 }
 
-export function isSubscribed(offerId){
+export function isSubscribed(offerId, setSubscribed){
   let email = getUsernameFromToken();
-  return api.post("client/is-subscribed", {
-      email: email,
-      offerId: offerId
-  })
-  .then(response => response.data)
+  return api.get("client/is-subscribed" ,
+  {params:{
+     email : email,
+      offerId:offerId
+  }})
+  .then(response => { console.log(response); setSubscribed(response.data); })
   .catch((err) => {toast.error(err.response.data, {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 1500,

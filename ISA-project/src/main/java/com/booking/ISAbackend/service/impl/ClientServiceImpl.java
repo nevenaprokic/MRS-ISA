@@ -220,6 +220,34 @@ public class ClientServiceImpl implements ClientService {
         offerRepository.save(o);
     }
 
+    @Override
+    @Transactional
+    public void subscribe(String email, String offerId) {
+        Integer id = Integer.parseInt(offerId);
+        Client c = clientRepository.findByEmail(email);
+        Offer o = offerRepository.findOfferById(id);
+        List<Offer> offers = c.getSubscribedOffers();
+        offers.add(o);
+        c.setSubscribedOffers(offers);
+
+        List<Client> subs = o.getSubscribedClients();
+        subs.add(c);
+        o.setSubscribedClients(subs);
+        clientRepository.save(c);
+        offerRepository.save(o);
+    }
+
+    @Override
+    @Transactional
+    public Boolean isSubscribed(String email, String offerId) {
+        Integer id = Integer.parseInt(offerId);
+        Offer o = offerRepository.findOfferById(id);
+        for(Client c : o.getSubscribedClients())
+            if(c.getEmail().equals(email))
+                return true;
+        return false;
+    }
+
     @Scheduled(cron="0 0 0 1 1/1 *")
     @Transactional
     public void removePenalties(){

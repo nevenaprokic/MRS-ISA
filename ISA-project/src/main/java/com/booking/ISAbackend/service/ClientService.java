@@ -27,4 +27,8 @@ public interface ClientService {
     List<OfferDTO> getSubscriptions(String email) throws IOException;
 
     void unsubscribe(String email, String offerId);
+
+    void subscribe(String email, String offerId);
+
+    Boolean isSubscribed(String email, String offerId);
 }

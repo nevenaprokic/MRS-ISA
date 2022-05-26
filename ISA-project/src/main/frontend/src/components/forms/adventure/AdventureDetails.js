@@ -16,9 +16,13 @@ import ReservationForm from '../reservations/ReservationForm';
 import Modal from '@mui/material/Modal';
 import QuickActionBox from '../../profilePages/cottageProfile/QuickActionBox';
 import { isAllowedToMakeReservation } from '../../../services/ClientService';
+import { userType } from "../../../app/Enum";
+import { subscribe, unsubscribe, isSubscribed } from "../../../services/ClientService";
 
 function AdventureDetails({adventure}){
     const [canReserve, setCanReserve] = useState();
+
+    const [subscribed, setSubscribed] = useState(false);
 
     const theme = createTheme({
         palette: {
@@ -30,6 +34,7 @@ function AdventureDetails({adventure}){
           },
         },
       });
+     
 
     const [adventureData, setAdventureData] = useState();
     const [openReserve, setOpenReserve] = useState(false);
@@ -42,10 +47,25 @@ function AdventureDetails({adventure}){
     const handleOpenActions = () => setOpenActions(true);
     const handleCloseActions = () => setOpenActions(false);
 
+    function handleSubscribe(){
+        setSubscribed(!subscribed);
+        if(subscribed){
+          unsubscribe(adventureData.id);
+        }else{
+          subscribe(adventureData.id);
+        }
+      };
+
     useEffect(() => {
         isAllowedToMakeReservation(setCanReserve);
+        if(getRoleFromToken() == userType.CLIENT){ isSubscribed(adventure.id, setSubscribed); }
         setAdventureData(adventure);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        console.log(subscribed);
+      }, [subscribed]);    
+
       
     return(
         (adventureData && canReserve) &&
@@ -104,6 +124,16 @@ function AdventureDetails({adventure}){
                             </Button>
 
                             <Button
+                                size="small"
+                                variant="contained"
+                                bgcolor="secondary"
+                                color="primary"
+                                onClick={handleSubscribe}
+                            >
+                            { (subscribed) ? "Unsubscribe" : "Subscribe"}
+                            </Button>
+
+                            <Button
                                 className="bookingButton"
                                 size="small"
                                 variant="contained"
@@ -111,7 +141,7 @@ function AdventureDetails({adventure}){
                                 color="secondary"
                                 onClick={() => handleOpenActions() }
                                 >
-                                Special offers
+                                Specials
                             </Button>
                             </>
                         }

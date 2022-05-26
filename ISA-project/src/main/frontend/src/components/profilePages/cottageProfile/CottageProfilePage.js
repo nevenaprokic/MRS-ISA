@@ -22,7 +22,7 @@ import Modal from "@mui/material/Modal";
 import { toast } from "react-toastify";
 import MapBox from "./MapBox";
 import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
-import { subscribe, unsubscribe } from "../../../services/ClientService";
+import { subscribe, unsubscribe, isSubscribed } from "../../../services/ClientService";
 
 const theme = createTheme({
   palette: {
@@ -39,7 +39,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   const [cottageData, setCottageData] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openChangeForm, setOpenForm] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const [subscribed, setSubscribed] = useState();
 
   const handleOpenForm = () => {
     checkAllowed(true);
@@ -95,6 +95,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   };
 
   useEffect(() => {
+    if(getRoleFromToken() == userType.CLIENT){ isSubscribed(id, setSubscribed); }
     async function setcottageData() {
       let cottage = await getCottageById(id);
       setCottageData(!!cottage ? cottage.data : {});
@@ -102,6 +103,9 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
     }
     setcottageData();
   }, []);
+
+  useEffect(() => {
+  }, [subscribed]);
 
   function createServiceData() {
     let rows = [];
@@ -116,7 +120,6 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
   function handleSubscribe(){
     setSubscribed(!subscribed);
     if(subscribed){
-      console.log(cottageData);
       unsubscribe(cottageData.id);
     }else{
       subscribe(cottageData.id);
@@ -130,7 +133,6 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
       let imag = { image: "data:image/jpg;base64," + photo };
       images.push(imag);
     });
-    console.log(cottageData);
     return (
       <div className="changeDataContainer" id="changeDataContainer">
         <ThemeProvider theme={theme}>
