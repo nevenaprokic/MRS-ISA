@@ -251,4 +251,56 @@ export function sortReservations(criteria, sortAsc, reservations, setReservation
       setReservations([...reservations]);
 }
 
+export function getAttendanceReportYearlyCottage(){
+   
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-yearly-cottage", {
+        params: {
+            email: email
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function getAttendanceReportMonthlyCottage(date){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-monthly-cottage", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+
+export function getAttendanceReportWeeklyCottage(date){
+    let email = getUsernameFromToken();
+    return api
+    .get("/reservation/get-attendance-report-weekly-cottage", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+
 

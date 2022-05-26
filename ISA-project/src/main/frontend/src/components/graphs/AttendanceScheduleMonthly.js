@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import {getAttendanceReportYearlyCottage} from '../../services/ReservationService';
+import {getAttendanceReportMonthlyCottage} from '../../services/ReservationService';
 import { useState, useEffect } from "react";
 
 
@@ -40,18 +40,18 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December' ];
+const labels = ['1','2','3','4' ];
 const backgroundColor= ['#E9D5CA', '#99C4C8','#F4BFBF','#FAF0D7','#827397', '#C2DED1','#C4DDFF','#F47C7C','#FFF2F2','#e3cab5']
 const borderColor = ['#d9b7a5','#6aa9af','#ed9292','#f4dda4','#706284', '#acd2c1','#99c3ff','#f25a5a','#FAD4D4','#d6af8f']
 //bez,plava,roze, zuta
 
 
-export default function AttendanceReportYearly() {
+export default function AttendanceReportMonthly({value}) {
     const [offerData, setOffereData] = React.useState();
     let data = {}
     useEffect(() => {
         async function setData() {
-            const dataForReport = await getAttendanceReportYearlyCottage();
+            const dataForReport = await getAttendanceReportMonthlyCottage(value);
             setOffereData(dataForReport ? dataForReport.data : {});
             return dataForReport;
         }
@@ -73,7 +73,7 @@ export default function AttendanceReportYearly() {
                 datasets:set,
             };
             console.log(data);
-        return  <Bar options={options} data={data} height={'900px'} width={'1000px'}/>;
+        return  <Bar options={options} data={data} height={'1700px'} width={'1500px'}/>;
       }
       
     

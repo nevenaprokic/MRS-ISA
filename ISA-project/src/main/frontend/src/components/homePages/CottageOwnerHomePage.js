@@ -133,7 +133,9 @@ export default function CottageOwnerHomePage() {
             <Divider />
             <Tab label="Calendar" {...a11yProps(8)} />
             <Divider />
-            <Tab label="Business report" {...a11yProps(9)} />
+            <Tab label="Attendance report" {...a11yProps(9)} />
+            <Tab label="Income statement" {...a11yProps(10)} />
+            <Tab label="Evaluation report" {...a11yProps(11)} />
           </Tabs>
           <TabPanel value={value} index={0}>
             <p
@@ -182,6 +184,12 @@ export default function CottageOwnerHomePage() {
           </TabPanel>
           <TabPanel value={value} index={12}>
             <HomePageGraph/>
+          </TabPanel>
+          <TabPanel value={value} index={13}>
+            Izvestaj
+          </TabPanel>
+          <TabPanel value={value} index={14}>
+            Izvestaj
           </TabPanel>
         </Box>
       </Container>

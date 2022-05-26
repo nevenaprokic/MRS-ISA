@@ -178,6 +178,44 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-22',4,600,'2022-07-17',2,8);
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2021-07-18',4,800,'2021-07-17',1,9);
 
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-01-11',2,300,'2022-01-10',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-25',3,250,'2022-02-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-11',2,300,'2022-02-10',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-03-25',3,250,'2022-03-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-01',2,300,'2022-03-29',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-25',3,250,'2022-04-17',3,12);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-11',2,300,'2022-07-10',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-25',3,250,'2022-07-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-20',2,300,'2022-07-15',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-08-25',3,250,'2022-08-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-08-01',2,300,'2022-07-29',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-08-25',3,250,'2022-08-17',3,12);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-08',2,300,'2022-07-01',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-07-08',3,250,'2022-07-06',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-08-20',2,300,'2022-08-15',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-09-25',3,250,'2022-09-17',3,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-09-01',2,300,'2022-08-29',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-09-25',3,250,'2022-09-17',3,12);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-01-09',2,300,'2022-01-01',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-01-27',2,300,'2022-01-20',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-01-09',2,300,'2022-01-01',1,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-01-27',2,300,'2022-01-20',1,2);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-09',2,300,'2022-02-01',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-27',2,300,'2022-02-20',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-09',2,300,'2022-02-01',1,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-02-28',2,300,'2022-02-26',1,2);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-09',2,300,'2022-04-03',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-27',2,300,'2022-04-20',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-19',2,300,'2022-04-14',2,1);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-09',2,300,'2022-04-01',1,2);
+
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-08',2,300,'2022-05-06',1,2);
+
 /*MARK*/
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,3);

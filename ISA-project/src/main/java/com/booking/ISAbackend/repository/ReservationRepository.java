@@ -97,4 +97,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r.id FROM Client c INNER JOIN Reservation  r ON c.id = r.client.id INNER JOIN Offer o ON r.offer.id = o.id WHERE r.deleted=true AND c.email = ?1 AND r.startDate = ?2 AND o.id = ?3")
     Optional<Integer> checkIfCanceled(String email, LocalDate date, Integer offerId);
 
+    @Query("SELECT r FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1")
+    List<Reservation> findAllByCottageOwnerEmail(String email);
+
 }
