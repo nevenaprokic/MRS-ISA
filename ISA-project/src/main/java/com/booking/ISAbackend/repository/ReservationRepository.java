@@ -75,6 +75,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r INNER JOIN Adventure ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.endDate < ?2")
     List<Reservation> getPastAdventureReservationsByClient(String email, LocalDate today);
 
+    @Query("SELECT r.id FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 INNER JOIN ReservationReport rr ON rr.reservation.id = r.id WHERE r.endDate < ?2 ")
+    List<Integer> findReservationWithNoReportByCottageOwnerEmail(String email, LocalDate today);
+  
     @Query("SELECT r FROM Reservation r INNER JOIN Cottage ctg ON r.offer.id = ctg.id INNER JOIN Client c ON c.id = r.client.id AND c.email = ?1 WHERE  r.startDate >= ?2")
     List<Reservation> getUpcomingCottageReservationsByClient(String email, LocalDate today);
 
@@ -93,4 +96,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r.id FROM Client c INNER JOIN Reservation  r ON c.id = r.client.id INNER JOIN Offer o ON r.offer.id = o.id WHERE r.deleted=true AND c.email = ?1 AND r.startDate = ?2 AND o.id = ?3")
     Optional<Integer> checkIfCanceled(String email, LocalDate date, Integer offerId);
+
 }
