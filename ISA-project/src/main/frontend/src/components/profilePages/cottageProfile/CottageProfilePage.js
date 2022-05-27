@@ -172,7 +172,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
                     Delete
                   </Button>
                 </div>
-              ) : (
+              ) : getRoleFromToken() != null && getRoleFromToken() == userType.CLIENT ? (
                 <Button
                     style={{ marginLeft: "5%" }}
                     variant="contained"
@@ -180,7 +180,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
                   >
                    { (subscribed) ? "Unsubscribe" : "Subscribe"}
                   </Button>
-              )}
+              ) : <></>}
             </div>
             <Modal
               open={openChangeForm}

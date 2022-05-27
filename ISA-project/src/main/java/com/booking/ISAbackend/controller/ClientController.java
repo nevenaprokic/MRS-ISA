@@ -128,8 +128,8 @@ public class ClientController {
         }
     }
 
-    @PostMapping("make-review")
-    public ResponseEntity<String> canReserve(@RequestBody HashMap<String, String> data) {
+    @PutMapping("make-review")
+    public ResponseEntity<String> makeReview(@RequestBody HashMap<String, String> data) {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
             Integer stars = Integer.parseInt(data.get("stars"));
@@ -181,4 +181,14 @@ public class ClientController {
         }
     }
 
+    @PutMapping("make-complaint")
+    public ResponseEntity<String> makeComplaint(@RequestBody HashMap<String, String> data) {
+        try{
+            Integer reservationId = Integer.parseInt(data.get("reservationId"));
+            clientService.makeComplaint(reservationId, data.get("comment"));
+            return ResponseEntity.ok("Complaint has been successfully added.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong.");
+        }
+    }
 }

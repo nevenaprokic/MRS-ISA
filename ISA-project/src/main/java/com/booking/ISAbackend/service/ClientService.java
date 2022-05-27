@@ -31,4 +31,6 @@ public interface ClientService {
     void subscribe(String email, String offerId);
 
     Boolean isSubscribed(String email, String offerId);
+
+    void makeComplaint(Integer reservationId, String comment) throws Exception;
 }

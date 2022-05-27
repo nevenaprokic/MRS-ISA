@@ -32,6 +32,7 @@ import {
 import ReservationReportForm from '../../forms/reservations/ReservationReportForm';
 import ClientSort from "../../forms/search/ClientSort";
 import ReviewForm from "../../forms/review/ReviewForm"
+import ComplaintForm from "../../forms/review/ComplaintForm";
 
 
 function Row({ row, setRequests, disabled }) {
@@ -48,9 +49,13 @@ function Row({ row, setRequests, disabled }) {
 
   const [openForm, setOpenForm] = useState(false);
   const [openReview, setOpenReview] = React.useState(false);
+  const [openComplaint, setOpenComplaint] = React.useState(false);
 
-    function handleOpenReview(){setOpenReview(true);}
-    function handleCloseReview(){setOpenReview(false);}
+  function handleOpenReview(){setOpenReview(true);}
+  function handleCloseReview(){setOpenReview(false);}
+
+  function handleOpenComplaint(){setOpenComplaint(true);}
+  function handleCloseComplaint(){setOpenComplaint(false);}
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -82,16 +87,28 @@ function Row({ row, setRequests, disabled }) {
           <TableCell sx={{fontSize: 16}} align="center">{request.endDate}</TableCell>
           <TableCell>
           {getRoleFromToken() == userType.CLIENT ?
-           <TableCell ><Button 
+           <>
+            <TableCell ><Button 
            type="submit"
            variant="contained"
            sx={{float:"right"}}
            color="primary"
            size="small"
            onClick={() => handleOpenReview()}
-         >
-         Review 
-         </Button></TableCell>
+            >
+            Review 
+            </Button></TableCell>
+          <TableCell ><Button 
+            type="submit"
+            variant="contained"
+            sx={{float:"right"}}
+            color="primary"
+            size="small"
+            onClick={() => handleOpenComplaint()}
+            >
+            Complain 
+          </Button></TableCell>
+           </>
            :
             <TableCell ><Button 
             type="submit"
@@ -106,8 +123,7 @@ function Row({ row, setRequests, disabled }) {
           }
           
             <Modal
-                  open={openReview
-                  }
+                  open={openReview}
                   onClose={handleCloseReview}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
@@ -116,19 +132,30 @@ function Row({ row, setRequests, disabled }) {
                       <ReviewForm close={handleCloseReview} offer={row} />
                   
               </Modal>
+
+              <Modal
+                  open={openComplaint}
+                  onClose={handleCloseComplaint}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+              >
+                      <ComplaintForm close={handleCloseComplaint} offer={row} />
+                  
+              </Modal>
         
-            <Modal
-              open={openForm}
-              onClose={handleCloseForm}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              sx={{
-                backgroundColor: "rgb(218, 224, 210, 0.6)",
-                overflow: "auto",
-              }}
-            > 
-              <ReservationReportForm closeForm={handleCloseForm} request={request}/>
-            </Modal>
+              <Modal
+                open={openForm}
+                onClose={handleCloseForm}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{
+                  backgroundColor: "rgb(218, 224, 210, 0.6)",
+                  overflow: "auto",
+                }}
+              > 
+                <ReservationReportForm closeForm={handleCloseForm} request={request}/>
+              </Modal>
 
           </TableCell>
         </TableRow>

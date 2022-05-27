@@ -46,8 +46,7 @@ function QuickActionBox({ offer }) {
     setData();
   }, []);
 
-  if (quickActionData && canReserve) {
-    {console.log("AAAAA", canReserve);}
+  if (quickActionData) {
     return (
       <div className="specialOffersContainer">
         <div className="specialOffersTitle">

@@ -17,8 +17,7 @@ public class Complaint {
 
 	public Complaint() {}
 
-	public Complaint(Integer id, String text, Reservation reservation) {
-		this.id = id;
+	public Complaint(String text, Reservation reservation) {
 		this.text = text;
 		this.reservation = reservation;
 	}

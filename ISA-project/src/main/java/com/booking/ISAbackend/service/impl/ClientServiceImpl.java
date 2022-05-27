@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
     private EmailSender emailSender;
 
     @Autowired
-    private ClientCategoryRepository clientCategoryRepository;
+    private ComplaintRepository complaintRepository;
 
     @Autowired
     private ClientCategoryService clientCategoryService;
@@ -246,6 +246,18 @@ public class ClientServiceImpl implements ClientService {
             if(c.getEmail().equals(email))
                 return true;
         return false;
+    }
+
+    @Override
+    @Transactional
+    public void makeComplaint(Integer reservationId, String comment) throws Exception {
+        Optional<Reservation> r = reservationRepository.findById(reservationId);
+        if(r.isPresent()){
+            Complaint c = new Complaint(comment, r.get());
+            complaintRepository.save(c);
+        }else{
+            throw new Exception();
+        }
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")

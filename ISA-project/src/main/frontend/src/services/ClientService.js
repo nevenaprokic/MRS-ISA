@@ -178,7 +178,7 @@ export function isAllowedToMakeReservation(setCanReserve){
 
 export function makeReviewForOffer(stars, reservationId, comment){
     api
-    .post("client/make-review", {
+    .put("client/make-review", {
         "stars": stars,
         "reservationId": reservationId,
         "comment": comment
@@ -245,3 +245,16 @@ export function isSubscribed(offerId, setSubscribed){
   });
 }
 
+export function makeComplaintForOffer(reservationId, comment){
+  api
+  .put("client/make-complaint", {
+      "reservationId": reservationId,
+      "comment": comment
+    })
+  .then((res) => {
+      toast.success( res.data, {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
+  })
+  .catch((err) => {
+    toast.error( err.response.data , {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
+  });
+}

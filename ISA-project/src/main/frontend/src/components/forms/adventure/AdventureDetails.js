@@ -68,11 +68,11 @@ function AdventureDetails({adventure}){
 
       
     return(
-        (adventureData && canReserve) &&
+        (adventureData) &&
         <div className="adventureDetailsContainer">
             <ThemeProvider theme={theme}>
                 <Grid item xs={12} md={10}>
-                    <Card sx={{ display: 'flex', minWidth:"30vw", border:"solid thin #CC7351" }}>
+                    <Card sx={{ display: 'flex', minWidth:"31vw", border:"solid thin #CC7351" }}>
                     <CardContent sx={{ flex: 1, minWidth:"70%" }}>
                         <div>
                             <div className="headerItem">
@@ -110,20 +110,21 @@ function AdventureDetails({adventure}){
                             <br></br>
                             <div style={{ marginBottom: '1vh' }}>Price: {adventure.price}€</div>
                             <br></br>
+
+                        <Button
+                            className="bookingButton"
+                            size="small"
+                            variant="contained"
+                            bgcolor="secondary"
+                            color="secondary"
+                            onClick={() => handleOpenActions() }
+                            >
+                            Specials
+                        </Button>
                         { getRoleFromToken() != null && 
                         <>                           
                             <Button
-                                size="small"
-                                variant="contained"
-                                bgcolor="secondary"
-                                color="primary"
-                                disabled={!canReserve}
-                                onClick={() => handleOpenReserve() }
-                            >
-                                Book now
-                            </Button>
-
-                            <Button
+                                className="bookingButton"
                                 size="small"
                                 variant="contained"
                                 bgcolor="secondary"
@@ -138,13 +139,15 @@ function AdventureDetails({adventure}){
                                 size="small"
                                 variant="contained"
                                 bgcolor="secondary"
-                                color="secondary"
-                                onClick={() => handleOpenActions() }
-                                >
-                                Specials
+                                color="primary"
+                                disabled={!canReserve}
+                                onClick={() => handleOpenReserve() }
+                            >
+                                Book now
                             </Button>
                             </>
                         }
+
                         <Modal
                             open={openReserve}
                             onClose={handleCloseReserve}
