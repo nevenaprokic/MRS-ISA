@@ -299,3 +299,22 @@ $paleGreen: #dae0d2;
    font-weight: bold;
 
 }
+
+.image-gallery {
+    width: auto;
+    height: auto;
+    margin-top: 5vh;
+}
+
+.image-gallery-slide img {
+    width: 50vw;
+    height: auto;
+    object-fit: cover;
+    overflow: hidden;
+    object-position: center center;
+}
+
+.image-gallery-thumbnail img {
+    width: auto;
+    height: 12vh;
+  }

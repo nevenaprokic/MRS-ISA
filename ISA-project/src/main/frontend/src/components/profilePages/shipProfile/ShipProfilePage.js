@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import MapBox from "../cottageProfile/MapBox";
 import ChangeShipForm from "../../forms/ship/ChangeShipForm";
 import { isSubscribed, subscribe, unsubscribe } from "../../../services/ClientService";
+import ImagesGallery from "../../layout/ImageGallery";
 
 const theme = createTheme({
   palette: {
@@ -219,7 +220,9 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
               />
             </Modal>
 
-            <ImagesBox images={photos} />
+            {/* <ImagesBox images={photos} /> */}
+            <ImagesGallery photos={photos}></ImagesGallery>
+
             <QuickActionBox offer={shipData} />
             <MapBox
               street={shipData.street}
