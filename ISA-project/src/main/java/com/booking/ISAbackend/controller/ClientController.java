@@ -3,12 +3,9 @@ package com.booking.ISAbackend.controller;
 import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
 import com.booking.ISAbackend.dto.OfferDTO;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Offer;
 import com.booking.ISAbackend.service.ClientService;
-import com.booking.ISAbackend.exceptions.AccountDeletionException;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,8 +130,10 @@ public class ClientController {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
             Integer stars = Integer.parseInt(data.get("stars"));
-            clientService.makeReview(stars, reservationId, data.get("comment"));
+            clientService.makeReview(stars, reservationId, data.get("comment"), data.get("email"));
             return ResponseEntity.ok("Review has been successfully added.");
+        }catch (FeedbackAlreadyGivenException e) {
+            return ResponseEntity.status(400).body("You have already given the feedback");
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong.");
         }
@@ -185,8 +184,10 @@ public class ClientController {
     public ResponseEntity<String> makeComplaint(@RequestBody HashMap<String, String> data) {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
-            clientService.makeComplaint(reservationId, data.get("comment"));
+            clientService.makeComplaint(reservationId, data.get("comment"), data.get("email"));
             return ResponseEntity.ok("Complaint has been successfully added.");
+        }catch (FeedbackAlreadyGivenException e) {
+            return ResponseEntity.status(400).body("You have already given the feedback");
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong.");
         }

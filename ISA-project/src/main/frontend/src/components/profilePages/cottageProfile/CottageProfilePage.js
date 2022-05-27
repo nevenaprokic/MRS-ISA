@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import MapBox from "./MapBox";
 import ChangeCottageForm from "../../forms/cottage/ChangeCottageForm";
 import { subscribe, unsubscribe, isSubscribed } from "../../../services/ClientService";
+import ImagesGallery from "../../layout/ImageGallery";
 
 const theme = createTheme({
   palette: {
@@ -215,7 +216,8 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
                 id={cottageData.id}
               />
             </Modal>
-            <ImagesBox images={images} />
+            {/* <ImagesBox images={images} /> */}
+            <ImagesGallery photos={images}></ImagesGallery>
 
             <QuickActionBox offer={cottageData} />
             <MapBox

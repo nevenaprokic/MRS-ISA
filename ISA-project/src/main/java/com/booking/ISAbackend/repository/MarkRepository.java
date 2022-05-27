@@ -11,4 +11,7 @@ import java.util.List;
 public interface MarkRepository extends JpaRepository<Mark, Integer>{
     @Query("SELECT m FROM Mark m INNER JOIN Reservation r ON m.reservation.id = r.id INNER JOIN Offer o ON o.id = r.offer.id AND o.id = ?1")
     List<Mark> findAllMarkByOfferId(Integer idOffer);
+
+    @Query("SELECT m FROM Mark m WHERE m.client.id=?1 AND m.reservation.id=?2")
+    Mark alreadyReviewed(Integer clientId, Integer reservationId);
 }
