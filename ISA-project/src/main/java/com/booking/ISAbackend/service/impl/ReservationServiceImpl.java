@@ -284,32 +284,31 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(id);
     }
 
+//    @Override
+//    public List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email, String date){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate startDate = LocalDate.parse(date, formatter);
+//        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+//        List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
+//        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
+//        for(Cottage c:cottages){
+//            TreeMap<LocalDate,Integer> yearlyMap = mapInitialization(13, startDate, 30);
+//            for(Reservation r: allReservations) {
+//                if (r.getOffer().getId() == c.getId()) {
+//                    for(int i = 0; i<7; i++){
+//                        if((startDate.plusDays(i).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(i).compareTo(r.getEndDate()) <= 0))
+//                            weeklyMap.put(startDate.plusDays(i), (weeklyMap.get(startDate.plusDays(i)) + 1));
+//                    }
+//                    yearlyMap.put(r.getStartDate().plusDays(30), (yearlyMap.get(r.getStartDate().plusDays(30)) + 1));
+//                }
+//            }
+//            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),yearlyMap);
+//            dataForReport.add(reportDTO);
+//        }
+//        return  dataForReport;
+//
+//    }
     @Override
-    public List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email){
-        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
-        List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
-        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
-        for(Cottage c:cottages){
-            TreeMap<Integer,Integer> yearlyMap = mapInitialization(13);
-            for(Reservation r: allReservations){
-                if(r.getOffer().getId() == c.getId()){
-                    if(yearlyMap.containsKey(r.getStartDate().getMonthValue())){
-                        yearlyMap.put(r.getStartDate().getMonthValue(),(yearlyMap.get(r.getStartDate().getMonthValue())+1));
-                    }else{
-                        yearlyMap.put(r.getStartDate().getMonthValue(),1);
-                    }
-                }
-            }
-            List<Integer> values = new ArrayList<>();
-            for(Integer value: yearlyMap.values()){
-                values.add(value);
-            }
-            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),values);
-            dataForReport.add(reportDTO);
-        }
-        return  dataForReport;
-
-    }
     public List<AttendanceReportDTO> getAttendanceReportMonthlyCottage(String email, String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDate = LocalDate.parse(date, formatter);
@@ -322,24 +321,21 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
         List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
         for(Cottage c:cottages){
-            TreeMap<Integer,Integer> yearlyMap = mapInitialization(5);
+            TreeMap<LocalDate,Integer> monthlyMap = mapInitialization(22, startDate, 7);
             for(Reservation r: allReservations){
                 if(r.getOffer().getId() == c.getId()){
                     if((r.getStartDate().compareTo(startDate) >= 0) && (r.getStartDate().compareTo(firstWeek) < 0))
-                        yearlyMap.put(1,(yearlyMap.get(1)+1));
+                        monthlyMap.put(startDate,(monthlyMap.get(startDate)+1));
                     else if((r.getStartDate().compareTo(firstWeek) >= 0) && (r.getStartDate().compareTo(secondWeek) < 0))
-                        yearlyMap.put(2,(yearlyMap.get(2)+1));
+                        monthlyMap.put(firstWeek,(monthlyMap.get(firstWeek)+1));
                     else if((r.getStartDate().compareTo(secondWeek) >= 0) && (r.getStartDate().compareTo(thirdWeek) < 0))
-                        yearlyMap.put(3,(yearlyMap.get(3)+1));
+                        monthlyMap.put(secondWeek,(monthlyMap.get(secondWeek)+1));
                     else if((r.getStartDate().compareTo(thirdWeek) >= 0) && (r.getStartDate().compareTo(endDate) < 0))
-                        yearlyMap.put(4,(yearlyMap.get(4)+1));
+                        monthlyMap.put(thirdWeek,(monthlyMap.get(thirdWeek)+1));
                 }
             }
-            List<Integer> values = new ArrayList<>();
-            for(Integer value: yearlyMap.values()){
-                values.add(value);
-            }
-            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),values);
+
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),monthlyMap);
             dataForReport.add(reportDTO);
         }
         return  dataForReport;
@@ -353,42 +349,36 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
         List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
         for(Cottage c:cottages){
-            TreeMap<Integer,Integer> yearlyMap = mapInitialization(8);
+            TreeMap<LocalDate,Integer> weeklyMap = mapInitialization(7, startDate, 1);
             for(Reservation r: allReservations){
-
                 if(r.getOffer().getId() == c.getId()){
-                    int day = r.getStartDate().getDayOfWeek().getValue();
-                    if((startDate.compareTo(r.getStartDate()) >= 0) && (startDate.compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(day,(yearlyMap.get(day)+1));
-                    if((startDate.plusDays(1).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(1).compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(startDate.plusDays(1).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(1).getDayOfWeek().getValue())+1));
-                    if((startDate.plusDays(2).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(2).compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(startDate.plusDays(2).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(2).getDayOfWeek().getValue())+1));
-                    if((startDate.plusDays(3).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(3).compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(startDate.plusDays(3).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(3).getDayOfWeek().getValue())+1));
-                    if((startDate.plusDays(4).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(4).compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(startDate.plusDays(4).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(4).getDayOfWeek().getValue())+1));
-                    if((startDate.plusDays(5).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(5).compareTo(r.getEndDate()) <= 0))
-                        yearlyMap.put(startDate.plusDays(5).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(5).getDayOfWeek().getValue())+1));
-                    if((startDate.plusDays(6).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(6).compareTo(r.getEndDate()) <= 0)){
-                        yearlyMap.put(startDate.plusDays(6).getDayOfWeek().getValue(),(yearlyMap.get(startDate.plusDays(6).getDayOfWeek().getValue())+1));
+                    for(int i = 0; i<7; i++){
+                        if((startDate.plusDays(i).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(i).compareTo(r.getEndDate()) <= 0))
+                            weeklyMap.put(startDate.plusDays(i), (weeklyMap.get(startDate.plusDays(i)) + 1));
                     }
-//ne radi dobro za vikendicu raj-dva puta sabere u cetvrtak umesto u nedelju
                 }
             }
-            List<Integer> values = new ArrayList<>();
-            for(Integer value: yearlyMap.values()){
-                values.add(value);
-            }
-            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),values);
+//            List<Integer> values = new ArrayList<>();
+//            for(Integer value: yearlyMap.values()){
+//                values.add(value);
+//            }
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),weeklyMap);
             dataForReport.add(reportDTO);
         }
         return  dataForReport;
     }
 
+    private TreeMap<LocalDate,Integer>mapInitialization(Integer day, LocalDate start, Integer num){
+        TreeMap<LocalDate,Integer> map = new TreeMap<>();
+        for(int i = 0; i<day;i+=num){
+            map.put(start.plusDays(i),0);
+        }
+        return map;
+    }
+
     private TreeMap<Integer,Integer>mapInitialization(Integer day){
         TreeMap<Integer,Integer> map = new TreeMap<>();
-        for(int i =1; i<day;i++){
+        for(int i = 1; i<day;i++){
             map.put(i,0);
         }
         return map;

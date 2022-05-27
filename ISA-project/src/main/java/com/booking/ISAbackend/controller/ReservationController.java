@@ -157,16 +157,16 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("get-attendance-report-yearly-cottage")
-    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyCottage(@RequestParam String email){
-//        try{
-//
-//        }catch (Exception ex){
-//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//        }
-        List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyCottage(email);
-        return ResponseEntity.ok().body(report);
-    }
+//    @GetMapping("get-attendance-report-yearly-cottage")
+//    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyCottage(@RequestParam String email){
+////        try{
+////
+////        }catch (Exception ex){
+////            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+////        }
+//        List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyCottage(email);
+//        return ResponseEntity.ok().body(report);
+//    }
     @GetMapping("get-attendance-report-monthly-cottage")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyCottage(@RequestParam String email, @RequestParam String date){
 //        try{

@@ -33,7 +33,7 @@ public interface ReservationService {
     List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException;
 
     void cancelReservation(Integer id) throws CancellingReservationException;
-    List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email);
+//    List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportMonthlyCottage(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportWeeklyCottage(String email, String date);
 }

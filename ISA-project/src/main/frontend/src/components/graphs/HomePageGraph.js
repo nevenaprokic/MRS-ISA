@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { Button, Typography, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import AttendanceReportYearly from "./AttendanceSchedule";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -28,6 +28,7 @@ function HomePageGraph() {
     );
   }
   function handleMonthlyAttendanceReport() {
+    console.log("DA")
     setGraph(
       graph.concat(
         <div>
@@ -39,7 +40,7 @@ function HomePageGraph() {
   function handleWeeklyAttendanceReport() {
     setGraph(
       graph.concat(
-        <div>
+        <div >
           <AttendanceReportWeekly value={valueDate}/>
         </div>
       )
@@ -61,7 +62,7 @@ function HomePageGraph() {
       day = "0"+day;
     let date =newValue.getFullYear() + "-" +month + "-" +day;
     setValueDate(date);
-    
+    setGraph([]);
    };
 
   return (
@@ -124,10 +125,13 @@ function HomePageGraph() {
               </div>
             </Grid>
           </Box>
-          <div style={{ height:'900px', width:'1000px'}}>{graph}</div>
+          
+          <div style={{ height:'50px', width:'1000px'}}>{graph}</div>
           </LocalizationProvider>
         </div>
   );
 }
 
 export default HomePageGraph;
+
+// style={{ height:'100px', width:'600px'}}
