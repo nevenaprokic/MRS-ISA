@@ -8,6 +8,10 @@ public class Complaint {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "my_user_id")
+	private Client client;
+
 	@Column(nullable = false)
 	private String text;
 	
@@ -17,9 +21,10 @@ public class Complaint {
 
 	public Complaint() {}
 
-	public Complaint(String text, Reservation reservation) {
+	public Complaint(String text, Reservation reservation, Client client) {
 		this.text = text;
 		this.reservation = reservation;
+		this.client = client;
 	}
 
 	public Integer getId() {

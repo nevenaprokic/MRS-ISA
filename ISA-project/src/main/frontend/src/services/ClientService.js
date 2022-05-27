@@ -177,8 +177,10 @@ export function isAllowedToMakeReservation(setCanReserve){
 }
 
 export function makeReviewForOffer(stars, reservationId, comment){
+    let email = getUsernameFromToken();
     api
     .put("client/make-review", {
+        "email": email,
         "stars": stars,
         "reservationId": reservationId,
         "comment": comment
@@ -246,8 +248,10 @@ export function isSubscribed(offerId, setSubscribed){
 }
 
 export function makeComplaintForOffer(reservationId, comment){
+  let email = getUsernameFromToken();
   api
   .put("client/make-complaint", {
+      "email" : email,
       "reservationId": reservationId,
       "comment": comment
     })

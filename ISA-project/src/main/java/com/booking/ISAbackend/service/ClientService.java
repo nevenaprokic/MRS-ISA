@@ -22,7 +22,7 @@ public interface ClientService {
     void removeSubscribedClients(List<Client> services);
     Boolean canReserve(String email);
 
-    void makeReview(Integer stars, Integer offerId, String comment) throws Exception;
+    void makeReview(Integer stars, Integer offerId, String comment, String email) throws Exception;
 
     List<OfferDTO> getSubscriptions(String email) throws IOException;
 
@@ -32,5 +32,5 @@ public interface ClientService {
 
     Boolean isSubscribed(String email, String offerId);
 
-    void makeComplaint(Integer reservationId, String comment) throws Exception;
+    void makeComplaint(Integer reservationId, String comment, String email) throws Exception;
 }

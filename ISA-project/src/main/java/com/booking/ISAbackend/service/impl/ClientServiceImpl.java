@@ -6,10 +6,7 @@ import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
 import com.booking.ISAbackend.dto.OfferDTO;
 import com.booking.ISAbackend.email.EmailSender;
-import com.booking.ISAbackend.exceptions.AccountDeletionException;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ClientCategoryService;
@@ -186,10 +183,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void makeReview(Integer stars, Integer reservationId, String comment) throws Exception {
+    public void makeReview(Integer stars, Integer reservationId, String comment, String email) throws Exception {
         Optional<Reservation> r = reservationRepository.findById(reservationId);
+        Client c = clientRepository.findByEmail(email);
+        Optional<Mark> om = Optional.ofNullable(markRepository.alreadyReviewed(c.getId(), reservationId));
+        if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Mark m = new Mark(stars, comment, false, r.get());
+            Mark m = new Mark(stars, comment, false, r.get(), c);
             markRepository.save(m);
         }else{
             throw new Exception();
@@ -250,11 +250,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public void makeComplaint(Integer reservationId, String comment) throws Exception {
+    public void makeComplaint(Integer reservationId, String comment, String email) throws Exception {
         Optional<Reservation> r = reservationRepository.findById(reservationId);
+        Client c = clientRepository.findByEmail(email);
+        Optional<Complaint> m = Optional.ofNullable(complaintRepository.alreadyReviewed(c.getId(), reservationId));
+        if(m.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Complaint c = new Complaint(comment, r.get());
-            complaintRepository.save(c);
+            Complaint a = new Complaint(comment, r.get(), c);
+            complaintRepository.save(a);
         }else{
             throw new Exception();
         }
