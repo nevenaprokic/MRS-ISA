@@ -425,4 +425,52 @@ export function getAttendanceReportWeeklyAdventure(date){
                     })}
         )
 }
+export function reviewReport(valueStartDate, valueEndDate, username){
+    return api
+    .get("/reservation-report/get-report-income-statement-cottage", {
+        params: {
+            startDate:valueStartDate.toISOString().split('T')[0],
+            endDate:valueEndDate.toISOString().split('T')[0],
+            email: username
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function reviewReportShip(valueStartDate, valueEndDate, username){
+    return api
+    .get("/reservation-report/get-report-income-statement-ship", {
+        params: {
+            startDate:valueStartDate.toISOString().split('T')[0],
+            endDate:valueEndDate.toISOString().split('T')[0],
+            email: username
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function reviewReportAdventure(valueStartDate, valueEndDate, username){
+    return api
+    .get("/reservation-report/get-report-income-statement-adventure", {
+        params: {
+            startDate:valueStartDate.toISOString().split('T')[0],
+            endDate:valueEndDate.toISOString().split('T')[0],
+            email: username
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
 

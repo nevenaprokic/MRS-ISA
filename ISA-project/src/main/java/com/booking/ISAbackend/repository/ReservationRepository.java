@@ -54,6 +54,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r INNER JOIN Ship s ON r.offer.id = s.id INNER JOIN Owner ow ON ow.id = s.shipOwner.id AND ow.email = ?1 WHERE  r.endDate < ?2")
     List<Reservation> findPastReservationByShipOwnerEmail(String email, LocalDate today);
 
+    @Query("SELECT r FROM Reservation r INNER JOIN Adventure a ON r.offer.id = a.id INNER JOIN Owner ow ON ow.id = a.instructor.id AND ow.email = ?1 WHERE  r.endDate < ?2")
+    List<Reservation> findPastReservationByInstructorEmail(String email, LocalDate today);
+
     @Query("SELECT r FROM Reservation r INNER JOIN Cottage c ON r.offer.id = c.id INNER JOIN Owner ow ON ow.id = c.cottageOwner.id AND ow.email = ?1 WHERE  r.startDate <= ?2 AND r.endDate >= ?2")
     List<Reservation> findCurrentByOwnerEmail(String email, LocalDate today);
 

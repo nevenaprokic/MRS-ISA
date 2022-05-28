@@ -19,6 +19,7 @@ function HomePageGraph() {
   const [valueDate, setValueDate] = React.useState(new Date());
 
   function handleYearlyAttendanceReport() {
+    setGraph([]);
     setGraph(
       graph.concat(
         <div>
@@ -28,7 +29,7 @@ function HomePageGraph() {
     );
   }
   function handleMonthlyAttendanceReport() {
-    console.log("DA")
+    setGraph([]);
     setGraph(
       graph.concat(
         <div>
@@ -38,6 +39,7 @@ function HomePageGraph() {
     );
   }
   function handleWeeklyAttendanceReport() {
+    setGraph([]);
     setGraph(
       graph.concat(
         <div >
@@ -47,12 +49,6 @@ function HomePageGraph() {
     );
     
   }
-
-  // function handleAttendanceReport() {
-  // }
-
-  // function handleIncomeStatement() {}
-  // function handleEvaluationReport() {}
   const handleChangeReservationDate = (newValue) => {
     let month = (newValue.getMonth()+1);
     let day = newValue.getDate();
