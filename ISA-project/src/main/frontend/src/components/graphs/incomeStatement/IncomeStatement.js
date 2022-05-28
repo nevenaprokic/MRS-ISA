@@ -11,11 +11,24 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
+import { getRoleFromToken,getUsernameFromToken } from "../../../app/jwtTokenUtils";
+import Review from "./Review";
+import { reviewReport, reviewReportAdventure, reviewReportShip } from "../../../services/ReservationService";
+import { userType } from "../../../app/Enum";
+
 
 function IncomeStatement() {
-  const [graph, setGraph] = useState([]);
+  const [report, setReport] = useState([]);
   const [valueStartDate, setValueStartDate] = React.useState(new Date());
   const [valueEndDate, setValueEndDate] = React.useState(new Date());
+  const [reportData, setReportData] = React.useState();
+
+  let getReportByOwnerEmail = {
+    [userType.COTTAGE_OWNER]: reviewReport,
+    [userType.INSTRUCTOR]: reviewReportAdventure,
+    [userType.SHIP_OWNER]: reviewReportShip,
+  };
+
 
   function checkDate() {
     const currentDate = new Date();
@@ -35,20 +48,42 @@ function IncomeStatement() {
     }
     return true;
   }
+  function getData() {
+    async function setCheck() {
+      let username = getUsernameFromToken();
+      let role = getRoleFromToken();
+      const data = await getReportByOwnerEmail[role](valueStartDate, valueEndDate, username);
+      setReportData(!!data ? data.data : {});
+      return data;
+    }
+    setCheck();
+  }
   function handleIncomeStatement() {
     if (checkDate()) {
-      console.log("da");
+      getData();
+      !!reportData &&
+        setReport(
+          report.concat(
+            <div>
+              <Review
+                data={reportData}
+                startDate={valueStartDate}
+                endDate={valueEndDate}
+              />
+            </div>
+          )
+        );
     }
   }
 
   const handleStartDateReport = (newValue) => {
     setValueStartDate(newValue);
-    setGraph([]);
+    setReport([]);
   };
 
   const handleEndDateReport = (newValue) => {
     setValueEndDate(newValue);
-    setGraph([]);
+    setReport([]);
   };
 
   return (
@@ -102,7 +137,7 @@ function IncomeStatement() {
           </Grid>
         </Box>
 
-        <div style={{ height: "50px", width: "1000px" }}>{graph}</div>
+        <div style={{ height: "50px", width: "1000px" }}>{report}</div>
       </LocalizationProvider>
     </div>
   );

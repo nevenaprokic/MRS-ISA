@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.NewReservationReportDTO;
+import com.booking.ISAbackend.dto.OfferForReportDTO;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class ReservationReportController {
     @GetMapping("get-all-by-cottage-owner")
     public ResponseEntity<List<Integer>> getReservationReportCottageOwner(@RequestParam String ownerEmail, @RequestParam String role){
         try{
+
             List<Integer> reservationsWithNoReport = reservationReportService.getReservationReportCottageOwner(ownerEmail);
             return ResponseEntity.ok().body(reservationsWithNoReport);
         }catch (Exception ex){
@@ -44,6 +46,34 @@ public class ReservationReportController {
             return ResponseEntity.ok("Reservation report was successful!");
         }catch(Exception ex){
             return ResponseEntity.status(400).body("Something went wrong. Try again.");
+        }
+    }
+
+    @GetMapping("get-report-income-statement-cottage")
+    public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementCottage(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
+        try{
+            List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementCottage(startDate,endDate,email);
+            return ResponseEntity.ok(dto);
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+    @GetMapping("get-report-income-statement-ship")
+    public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementShip(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
+        try{
+            List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementShip(startDate,endDate,email);
+            return ResponseEntity.ok(dto);
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body(null);
+        }
+    }
+    @GetMapping("get-report-income-statement-adventure")
+    public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementAdventure(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
+        try{
+            List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementAdventure(startDate,endDate,email);
+            return ResponseEntity.ok(dto);
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body(null);
         }
     }
 }
