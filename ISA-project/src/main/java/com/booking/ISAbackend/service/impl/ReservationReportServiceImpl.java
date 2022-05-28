@@ -41,6 +41,21 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         }
         return reservationWithNoReport;
     }
+
+    @Override
+    public List<Integer> getReservationReportShipOwner(String ownerEmail) {
+        LocalDate today = LocalDate.now();
+        List<Integer> reservationWithReport = reservationRepository.findReservationWithNoReportByShipOwnerEmail(ownerEmail, today);
+        List<Reservation> reservations = reservationRepository.findPastReservationByShipOwnerEmail(ownerEmail,today);
+        List<Integer> reservationWithNoReport = new ArrayList<>();
+        for(Reservation r: reservations) {
+            if(!reservationWithReport.contains(r.getId())){
+                reservationWithNoReport.add(r.getId());
+            }
+        }
+        return reservationWithNoReport;
+    }
+
     @Override
     public void addReservationReport(NewReservationReportDTO dto){
         Optional<Client> client = clientRepository.findById(dto.getClientId());

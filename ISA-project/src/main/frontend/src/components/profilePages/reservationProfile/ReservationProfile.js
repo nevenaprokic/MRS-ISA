@@ -21,7 +21,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { getAllReservation } from "../../../services/ReservationService";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getAllReservationShipOwner ,getAllReportCottageOwner} from "../../../services/ReservationService";
+import { getAllReservationShipOwner ,getAllReportCottageOwner, getAllReportShipOwner} from "../../../services/ReservationService";
 import { userType, offerType } from "../../../app/Enum";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import {
@@ -268,7 +268,8 @@ function ReservationProfile({ offerT }) {
     [offerType.ADVENTURE]: getAllAdventureReservationsClient,
   };
   let getReportReservation ={
-    [userType.COTTAGE_OWNER]: getAllReportCottageOwner
+    [userType.COTTAGE_OWNER]: getAllReportCottageOwner,
+    [userType.SHIP_OWNER] : getAllReportShipOwner
   }
 
   useEffect(() => {
@@ -277,7 +278,7 @@ function ReservationProfile({ offerT }) {
       if (role == userType.CLIENT) role = offerT;
       const responseData = await getReservation[role]();
       setRequests(responseData.data ? responseData.data : {});
-      const reportData = await getAllReportCottageOwner();
+      const reportData = await getReportReservation[role]();
       console.log(reportData);
       setReport(reportData.data ? reportData.data : {});
     }
