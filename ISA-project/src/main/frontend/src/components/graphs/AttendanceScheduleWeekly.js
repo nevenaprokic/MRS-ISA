@@ -10,8 +10,10 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-import {getAttendanceReportWeeklyCottage} from '../../services/ReservationService';
+import {getAttendanceReportWeeklyAdventure, getAttendanceReportWeeklyCottage, getAttendanceReportWeeklyShip} from '../../services/ReservationService';
 import { useEffect } from "react";
+import {getRoleFromToken} from '../../app/jwtTokenUtils';
+import {userType} from '../../app/Enum';
 
 ChartJS.register(
   CategoryScale,
@@ -42,9 +44,16 @@ const borderColor = ['#d9b7a5','#6aa9af','#ed9292','#f4dda4','#706284', '#acd2c1
 export default function AttendanceReportWeekly({value}) {
   const [offerData, setOffereData] = React.useState();
   let data = {};
+  let getReportData = {
+    [userType.COTTAGE_OWNER]: getAttendanceReportWeeklyCottage,
+    [userType.SHIP_OWNER] : getAttendanceReportWeeklyShip,
+    [userType.INSTRUCTOR] : getAttendanceReportWeeklyAdventure
+  };
+
   useEffect(() => {
     async function setData() {
-      const dataForReport = await getAttendanceReportWeeklyCottage(value);
+      let role = getRoleFromToken();
+      const dataForReport = await  getReportData[role](value);
       setOffereData(dataForReport ? dataForReport.data : {});
       return dataForReport;
     }
@@ -54,8 +63,6 @@ export default function AttendanceReportWeekly({value}) {
   if (offerData) {
     let set = [];
     let i = 0;
-    console.log("OFER DATA");
-    console.log(offerData);
     offerData.map((report) => {
       set.push({
         label: report.offerName,

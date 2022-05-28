@@ -5,7 +5,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
-import AttendanceReportYearly from "./AttendanceSchedule";
+import AttendanceReportYearly from "./AttendanceScheduleYearly";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -22,7 +22,7 @@ function HomePageGraph() {
     setGraph(
       graph.concat(
         <div>
-          <AttendanceReportYearly />
+          <AttendanceReportYearly value={valueDate}/>
         </div>
       )
     );
@@ -133,5 +133,3 @@ function HomePageGraph() {
 }
 
 export default HomePageGraph;
-
-// style={{ height:'100px', width:'600px'}}

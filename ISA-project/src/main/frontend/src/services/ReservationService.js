@@ -251,14 +251,15 @@ export function sortReservations(criteria, sortAsc, reservations, setReservation
       setReservations([...reservations]);
 }
 
-export function getAttendanceReportYearlyCottage(){
+export function getAttendanceReportYearlyCottage(date){
    
     let email = getUsernameFromToken();
   
     return api
     .get("/reservation/get-attendance-report-yearly-cottage", {
         params: {
-            email: email
+            email: email,
+            date:date
         },
       })
     .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
@@ -302,5 +303,108 @@ export function getAttendanceReportWeeklyCottage(date){
                     })}
         )
 }
+export function getAttendanceReportYearlyShip(date){
+   
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-yearly-ship", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function getAttendanceReportMonthlyShip(date){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-monthly-ship", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
 
+export function getAttendanceReportWeeklyShip(date){
+    let email = getUsernameFromToken();
+    return api
+    .get("/reservation/get-attendance-report-weekly-ship", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function getAttendanceReportYearlyAdventure(date){
+   
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-yearly-adventure", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+export function getAttendanceReportMonthlyAdventure(date){
+    let email = getUsernameFromToken();
+  
+    return api
+    .get("/reservation/get-attendance-report-monthly-adventure", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+
+export function getAttendanceReportWeeklyAdventure(date){
+    let email = getUsernameFromToken();
+    return api
+    .get("/reservation/get-attendance-report-weekly-adventure", {
+        params: {
+            email: email,
+            date:date
+        },
+      })
+    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
 

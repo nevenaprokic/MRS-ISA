@@ -71,7 +71,7 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     @Transactional
     public List<AdventureDTO> getInstructorAdventures(String email) throws IOException { //ubaciti ocenu
-        List<Adventure> adventures = adventureRepository.findCottageByInstructorEmail(email);
+        List<Adventure> adventures = adventureRepository.findAdventureByInstructorEmail(email);
         List<AdventureDTO>  adventureDTOList = new ArrayList<AdventureDTO>();
         if(adventures != null){
             for (Adventure a: adventures

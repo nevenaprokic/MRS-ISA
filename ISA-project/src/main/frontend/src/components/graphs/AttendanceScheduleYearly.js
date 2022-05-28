@@ -8,8 +8,10 @@ import {
   Tooltip,
   Legend,} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import {getAttendanceReportYearlyCottage} from '../../services/ReservationService';
+import {getAttendanceReportYearlyAdventure, getAttendanceReportYearlyCottage, getAttendanceReportYearlyShip} from '../../services/ReservationService';
 import { useState, useEffect } from "react";
+import {getRoleFromToken} from '../../app/jwtTokenUtils';
+import {userType} from '../../app/Enum';
 
 
 ChartJS.register(
@@ -41,9 +43,15 @@ const borderColor = ['#d9b7a5','#6aa9af','#ed9292','#f4dda4','#706284', '#acd2c1
 export default function AttendanceReportYearly({value}) {
   const [offerData, setOffereData] = React.useState();
   let data = {};
+  let getReportData = {
+    [userType.COTTAGE_OWNER]: getAttendanceReportYearlyCottage,
+    [userType.SHIP_OWNER] : getAttendanceReportYearlyShip,
+    [userType.INSTRUCTOR] : getAttendanceReportYearlyAdventure
+  };
   useEffect(() => {
     async function setData() {
-      const dataForReport = await getAttendanceReportYearlyCottage(value);
+      let role = getRoleFromToken();
+      const dataForReport = await  getReportData[role](value);
       setOffereData(dataForReport ? dataForReport.data : {});
       return dataForReport;
     }
@@ -53,8 +61,6 @@ export default function AttendanceReportYearly({value}) {
   if (offerData) {
     let set = [];
     let i = 0;
-    console.log("OFER DATA");
-    console.log(offerData);
     offerData.map((report) => {
       set.push({
         label: report.offerName,

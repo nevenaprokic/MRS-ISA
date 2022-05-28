@@ -33,7 +33,15 @@ public interface ReservationService {
     List<ReservationDTO> getUpcomingAdventureReservationsByClient(String email) throws IOException;
 
     void cancelReservation(Integer id) throws CancellingReservationException;
-//    List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email, String date);
+    List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportMonthlyCottage(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportWeeklyCottage(String email, String date);
+
+    List<AttendanceReportDTO> getAttendanceReportYearlyShip(String email, String date);
+    List<AttendanceReportDTO> getAttendanceReportMonthlyShip(String email, String date);
+    List<AttendanceReportDTO> getAttendanceReportWeeklyShip(String email, String date);
+
+    List<AttendanceReportDTO> getAttendanceReportYearlyAdventure(String email, String date);
+    List<AttendanceReportDTO> getAttendanceReportMonthlyAdventure(String email, String date);
+    List<AttendanceReportDTO> getAttendanceReportWeeklyAdventure(String email, String date);
 }
