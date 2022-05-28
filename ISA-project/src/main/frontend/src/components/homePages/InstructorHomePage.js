@@ -20,7 +20,7 @@ import { useState } from "react";
 import { offerType } from "../../app/Enum";
 import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
 import NewReservationForm from "../forms/reservations/reservationOwner/NewReservationForm";
-import HomePageGraph from "../graphs/HomePageGraph";
+import HomePageGraph from "../graphs/attendanceSchedule/HomePageGraph";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

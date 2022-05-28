@@ -21,7 +21,8 @@ import WorkingCalendar from "../calendar/WorkingCalendar";
 import ReservationProfile from "../profilePages/reservationProfile/ReservationProfile";
 import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservationForm";
 import NewReservationForm from '../forms/reservations/reservationOwner/NewReservationForm';
-import HomePageGraph from '../graphs/HomePageGraph';
+import HomePageGraph from '../graphs/attendanceSchedule/HomePageGraph';
+import MarkForm from '../graphs/marks/MarkForm';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -189,7 +190,7 @@ export default function CottageOwnerHomePage() {
             Izvestaj
           </TabPanel>
           <TabPanel value={value} index={14}>
-            Izvestaj
+            <MarkForm/>
           </TabPanel>
         </Box>
       </Container>

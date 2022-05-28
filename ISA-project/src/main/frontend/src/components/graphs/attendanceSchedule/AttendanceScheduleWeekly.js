@@ -10,10 +10,10 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-import {getAttendanceReportWeeklyAdventure, getAttendanceReportWeeklyCottage, getAttendanceReportWeeklyShip} from '../../services/ReservationService';
+import {getAttendanceReportWeeklyAdventure, getAttendanceReportWeeklyCottage, getAttendanceReportWeeklyShip} from '../../../services/ReservationService';
 import { useEffect } from "react";
-import {getRoleFromToken} from '../../app/jwtTokenUtils';
-import {userType} from '../../app/Enum';
+import {getRoleFromToken} from '../../../app/jwtTokenUtils';
+import {userType} from '../../../app/Enum';
 
 ChartJS.register(
   CategoryScale,
