@@ -26,6 +26,16 @@ public class ReservationReportController {
         }
 
     }
+    @GetMapping("get-all-by-ship-owner")
+    public ResponseEntity<List<Integer>> getReservationReportShipOwner(@RequestParam String ownerEmail, @RequestParam String role){
+        try{
+            List<Integer> reservationsWithNoReport = reservationReportService.getReservationReportShipOwner(ownerEmail);
+            return ResponseEntity.ok().body(reservationsWithNoReport);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
     @PostMapping("add")
     public ResponseEntity<String> addReservationReport(@RequestBody NewReservationReportDTO dto){

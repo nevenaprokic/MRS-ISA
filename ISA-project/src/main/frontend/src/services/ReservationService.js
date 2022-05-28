@@ -134,6 +134,24 @@ export function getAllReportCottageOwner(){
         )
 
 }
+export function getAllReportShipOwner(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation-report/get-all-by-ship-owner", {
+        params: {
+            ownerEmail: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
 export function addReport(params){
     api
     .post("/reservation-report/add", params)
