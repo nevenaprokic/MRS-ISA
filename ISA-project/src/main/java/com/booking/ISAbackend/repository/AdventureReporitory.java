@@ -1,7 +1,6 @@
 package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Adventure;
-import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Instructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AdventureReporitory extends JpaRepository<Adventure, Integer> {
-    List<Adventure> findCottageByInstructorEmail(String email);
+    List<Adventure> findAdventureByInstructorEmail(String email);
     Optional<Adventure> findById(Integer id);
 
     @Query("SELECT a FROM Adventure a JOIN FETCH a.address WHERE (lower(a.address.city) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', a.address.city, '%'))" +

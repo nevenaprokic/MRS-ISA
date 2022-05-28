@@ -34,6 +34,12 @@ public class ReservationServiceImpl implements ReservationService {
     private EmailSender emailSender;
     @Autowired
     private ClientCategoryRepository clientCategoryRepository;
+    @Autowired
+    private CottageRepository cottageRepository;
+    @Autowired
+    private ShipRepository shipRepository;
+    @Autowired
+    private AdventureReporitory adventureReporitory;
 
     @Override
     @Transactional
@@ -281,6 +287,175 @@ public class ReservationServiceImpl implements ReservationService {
             throw new CancellingReservationException("Cannot cancel reservation.");
         reservationRepository.deleteById(id);
     }
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportYearlyCottage(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
+        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
+        for(Cottage c:cottages){
+            TreeMap<LocalDate, Integer> yearlyMap = getMapAttendance(365,  startDate, 31, allReservations, c);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),yearlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+
+    }
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportMonthlyCottage(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
+        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
+        for(Cottage c:cottages){
+            TreeMap<LocalDate, Integer> monthlyMap = getMapAttendance(22,  startDate, 7, allReservations, c);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),monthlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportWeeklyCottage(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByCottageOwnerEmail(email);
+        List<Cottage> cottages = cottageRepository.findCottageByCottageOwnerEmail(email);
+        for(Cottage c:cottages){
+            TreeMap<LocalDate,Integer> weeklyMap =  getMapAttendance(7,  startDate, 1, allReservations, c);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(c.getName(),weeklyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+    private TreeMap<LocalDate,Integer>mapInitialization(Integer day, LocalDate start, Integer num){
+        TreeMap<LocalDate,Integer> map = new TreeMap<>();
+        for(int i = 0; i<day;i+=num){
+            map.put(start.plusDays(i),0);
+        }
+        return map;
+    }
+    private TreeMap<LocalDate, Integer> getMapAttendance(int day, LocalDate startDate, int num, List<Reservation> allReservations, Offer offer) {
+        TreeMap<LocalDate,Integer> dateMap = mapInitialization(day, startDate, num);
+        for(Reservation r: allReservations){
+            if(r.getOffer().getId() == offer.getId()){
+                for(int week = 0; week < day; week+= num){
+                    for(int i = 0; i< num; i++){
+                        if((startDate.plusDays(i+week).compareTo(r.getStartDate()) >= 0) && (startDate.plusDays(i+week).compareTo(r.getEndDate()) <= 0))
+                            dateMap.put(startDate.plusDays(week),(dateMap.get(startDate.plusDays(week))+1));
+                    }
+                }
+            }
+        }
+        return dateMap;
+    }
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportYearlyShip(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByShipOwnerEmail(email);
+        List<Ship> ships = shipRepository.findShipByShipOwnerEmail(email);
+        for(Ship s:ships){
+            TreeMap<LocalDate, Integer> yearlyMap = getMapAttendance(365,  startDate, 31, allReservations, s);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(s.getName(),yearlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+
+    }
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportMonthlyShip(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByShipOwnerEmail(email);
+        List<Ship> ships = shipRepository.findShipByShipOwnerEmail(email);
+        for(Ship s:ships){
+            TreeMap<LocalDate, Integer> monthlyMap = getMapAttendance(22,  startDate, 7, allReservations, s);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(s.getName(),monthlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportWeeklyShip(String email, String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByShipOwnerEmail(email);
+        List<Ship> ships = shipRepository.findShipByShipOwnerEmail(email);
+        for(Ship s:ships){
+            TreeMap<LocalDate,Integer> weeklyMap =  getMapAttendance(7,  startDate, 1, allReservations, s);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(s.getName(),weeklyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportYearlyAdventure(String email, String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByInstructorEmail(email);
+        List<Adventure> adventures = adventureReporitory.findAdventureByInstructorEmail(email);
+        for(Adventure a:adventures){
+            TreeMap<LocalDate, Integer> yearlyMap = getMapAttendance(365,  startDate, 31, allReservations, a);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(a.getName(),yearlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportMonthlyAdventure(String email, String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByInstructorEmail(email);
+        List<Adventure> adventures = adventureReporitory.findAdventureByInstructorEmail(email);
+        for(Adventure a:adventures){
+            TreeMap<LocalDate, Integer> monthlyMap = getMapAttendance(22,  startDate, 7, allReservations, a);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(a.getName(),monthlyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
+    @Override
+    public List<AttendanceReportDTO> getAttendanceReportWeeklyAdventure(String email, String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDate = LocalDate.parse(date, formatter);
+
+        List<AttendanceReportDTO> dataForReport = new ArrayList<>();
+        List<Reservation> allReservations = reservationRepository.findAllByInstructorEmail(email);
+        List<Adventure> adventures = adventureReporitory.findAdventureByInstructorEmail(email);
+        for(Adventure a:adventures){
+            TreeMap<LocalDate,Integer> weeklyMap =  getMapAttendance(7,  startDate, 1, allReservations, a);
+            AttendanceReportDTO reportDTO = new AttendanceReportDTO(a.getName(),weeklyMap);
+            dataForReport.add(reportDTO);
+        }
+        return  dataForReport;
+    }
+
 
 //    private String localDateToString(LocalDate date){
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");

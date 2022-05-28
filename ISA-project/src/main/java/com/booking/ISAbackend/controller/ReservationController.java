@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.StyledEditorKit;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,6 +154,94 @@ public class ReservationController {
 
         } catch (CancellingReservationException e) {
             return new ResponseEntity<>("Cannot cancel reservation less than 3 days before it starts.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-attendance-report-yearly-cottage")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyCottage(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyCottage(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("get-attendance-report-monthly-cottage")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyCottage(@RequestParam String email, @RequestParam String date){
+        try{
+          List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyCottage(email, date);
+          return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-attendance-report-weekly-cottage")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyCottage(@RequestParam String email, @RequestParam String date){
+        try{
+          List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyCottage(email, date);
+          return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("get-attendance-report-yearly-ship")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyShip(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyShip(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("get-attendance-report-monthly-ship")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyShip(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyShip(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-attendance-report-weekly-ship")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyShip(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyShip(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("get-attendance-report-yearly-adventure")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyAdventure(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyAdventure(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    @GetMapping("get-attendance-report-monthly-adventure")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyAdventure(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyAdventure(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get-attendance-report-weekly-adventure")
+    public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyAdventure(@RequestParam String email, @RequestParam String date){
+        try{
+            List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyAdventure(email, date);
+            return ResponseEntity.ok().body(report);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
