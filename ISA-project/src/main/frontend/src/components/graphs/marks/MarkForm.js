@@ -28,9 +28,10 @@ import { getAdventureByInstructorEmail } from "../../../services/AdventureServic
 import { getShipByShipOwnerEmail } from "../../../services/ShipService";
 import { getCottageByCottageOwnerEmail } from "../../../services/CottageService";
 import Divider from "@mui/material/Divider";
+import {getMarkByShipOwnerEmail, getMarkByCottageOwnerEmail, getMarkByInstructorEmail} from '../../../services/MarkService';
 
-function Row({ row, setRequests }) {
-  const request = row;
+function Row({ row, role }) {
+  const offer = row;
   const [open, setOpen] = React.useState(false);
 
   const theme = createTheme({
@@ -55,14 +56,14 @@ function Row({ row, setRequests }) {
             </IconButton>
           </TableCell>
           <TableCell sx={{ fontSize: 16 }} align="center">
-            {"Sumska vila"}
+            {userType.INSTRUCTOR == role ? offer.offerName : offer.name}
           </TableCell>
           <TableCell sx={{ fontSize: 16 }} align="center">
             {" "}
             <Rating
               name="half-rating-read"
               precision={0.5}
-              value={4}
+              value={offer.mark}
               readOnly
             />
           </TableCell>
@@ -88,7 +89,7 @@ function Row({ row, setRequests }) {
                   sx={{ color: "#5f6d5f" }}
                 >
                   Price:
-                  <label className="textItem"> {"100€"} </label>
+                  <label className="textItem"> {offer.price + '€'} </label>
                 </Typography>
                 <Typography
                   variant="body1"
@@ -97,7 +98,7 @@ function Row({ row, setRequests }) {
                   sx={{ color: "#5f6d5f" }}
                 >
                   Number of persone:
-                  <label className="textItem"> {"2"} </label>
+                  <label className="textItem"> {offer.numberOfPerson} </label>
                 </Typography>
                 <Typography
                   variant="body1"
@@ -106,7 +107,16 @@ function Row({ row, setRequests }) {
                   sx={{ color: "#5f6d5f" }}
                 >
                   Additional services:
-                  <label className="textItem">{" servisi"}</label>
+                  <label className="textItem">
+                    {" "}
+                    {offer.additionalServices.map(
+                      (service) =>
+                        service.serviceName +
+                        ": " +
+                        service.servicePrice +
+                        "€, "
+                    )}{" "}
+                  </label>
                 </Typography>
                 <Typography
                   variant="body1"
@@ -115,7 +125,7 @@ function Row({ row, setRequests }) {
                   sx={{ color: "#5f6d5f" }}
                 >
                   Address:
-                  <label className="textItem"> {"Neka adresa"} </label>
+                  <label className="textItem"> {offer.street + ", " + offer.city + ", "+offer.state} </label>
                 </Typography>
               </Box>
             </Collapse>
@@ -130,6 +140,7 @@ function MarkForm() {
   const [offers, setOffers] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [mark,setMark] = useState();
 
   let role = getRoleFromToken();
   let getOfferByOwnerEmail = {
@@ -137,12 +148,19 @@ function MarkForm() {
     [userType.INSTRUCTOR]: getAdventureByInstructorEmail,
     [userType.SHIP_OWNER]: getShipByShipOwnerEmail,
   };
+  let getMarkByOwnerEmail = {
+    [userType.COTTAGE_OWNER]: getMarkByCottageOwnerEmail,
+    [userType.INSTRUCTOR]: getMarkByInstructorEmail,
+    [userType.SHIP_OWNER]: getMarkByShipOwnerEmail,
+  };
 
   useEffect(() => {
     async function getOfferData() {
       let username = getUsernameFromToken();
       const offersData = await getOfferByOwnerEmail[role](username);
       setOffers(!!offersData ? offersData.data : {});
+      const markData = await getMarkByOwnerEmail[role](username);
+      setMark(markData ? markData.data : {});
 
       return offersData;
     }
@@ -159,7 +177,7 @@ function MarkForm() {
   };
 
   return (
-    !!offers && (
+    (!!offers && !!mark) && (
       <div>
         <div>
           <p
@@ -174,7 +192,7 @@ function MarkForm() {
             <Rating
               name="half-rating-read"
               precision={0.5}
-              value={4}
+              value={mark}
               readOnly
               style={{marginLeft:"2%"}}
               size="large"
@@ -209,7 +227,7 @@ function MarkForm() {
                 {offers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <Row key={row.id} row={row} setRequests={setOffers} />
+                    <Row key={row.id} row={row} role={role} />
                   ))}
               </TableBody>
             </Table>
