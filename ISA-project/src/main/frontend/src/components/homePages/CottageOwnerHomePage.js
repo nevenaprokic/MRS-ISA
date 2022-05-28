@@ -23,6 +23,7 @@ import Checkout from "../forms/reservations/newQuickReservation/NewQuickReservat
 import NewReservationForm from '../forms/reservations/reservationOwner/NewReservationForm';
 import HomePageGraph from '../graphs/attendanceSchedule/HomePageGraph';
 import MarkForm from '../graphs/marks/MarkForm';
+import IncomeStatement from '../graphs/incomeStatement/IncomeStatement';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -187,7 +188,7 @@ export default function CottageOwnerHomePage() {
             <HomePageGraph/>
           </TabPanel>
           <TabPanel value={value} index={13}>
-            Izvestaj
+            <IncomeStatement/>
           </TabPanel>
           <TabPanel value={value} index={14}>
             <MarkForm/>
