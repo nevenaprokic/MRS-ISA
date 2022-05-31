@@ -1,12 +1,18 @@
 package com.booking.ISAbackend.service.impl;
 
+import com.booking.ISAbackend.dto.MarkDTO;
+import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MarkServiceImpl implements MarkService {
@@ -67,5 +73,23 @@ public class MarkServiceImpl implements MarkService {
         if(adventures.size() > 0 && mark > 0.0)
             mark /= adventures.size();
         return mark;
+    }
+
+    @Override
+    @Transactional
+    public List<MarkDTO> getAllUncheckesMarks() throws IOException {
+        List<Mark> notApprovedMarks = markRepository.findAllNotApproved();
+        List<MarkDTO> marksData = new ArrayList<MarkDTO>();
+        for(Mark mark : notApprovedMarks){
+            Optional<Reservation> reservation = reservationRepository.findById(mark.getId());
+            if(reservation.isPresent()){
+                Reservation r = reservation.get();
+                ReservationDTO reservationDTO = new ReservationDTO(r);
+                MarkDTO data = new MarkDTO(mark, reservationDTO);
+                marksData.add(data);
+            }
+
+        }
+        return marksData;
     }
 }

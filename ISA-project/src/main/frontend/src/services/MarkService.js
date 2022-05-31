@@ -54,3 +54,13 @@ export function getMarkByShipOwnerEmail(email){
             return err.message;
         });
 }
+
+export function getAllNotApprovedMarks(){
+    return api
+    .get("/mark/all-unchecked")
+    .then((responseData) => console.log(responseData))
+    .catch((err) => {
+        console.log(err);
+        
+    } )
+}

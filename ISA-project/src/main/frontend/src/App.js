@@ -58,6 +58,7 @@ function App() {
           <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
           <Route path='/admin/loyalty-program/add-category' element={<AddLoyaltyCategory/>}/>
           <Route path='/admin/loyalty-program/delete-category' element={<DeleteCategory/>}/>
+          <Route path='/admin/unchecked-marks' element={<DeleteCategory/>}/>
         </Routes>
     </div>
   );

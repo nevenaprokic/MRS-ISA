@@ -217,10 +217,10 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-08',2,300,'2022-05-06',1,2);
 
 /*MARK*/
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,3);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Onako!',3,4);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',4,5);
+insert into mark(approved, comment, mark, reservation_id) values (false,'Odlican ambijent!',5,2);
+insert into mark(approved, comment, mark, reservation_id) values (false ,'Odlican ambijent!',5,3);
+insert into mark(approved, comment, mark, reservation_id) values (false ,'Onako!',3,4);
+insert into mark(approved, comment, mark, reservation_id) values (false ,'Nista posebno!',4,5);
 insert into mark(approved, comment, mark, reservation_id) values (true,'okej!',4,6);
 insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,7);
 

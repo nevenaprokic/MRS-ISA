@@ -14,4 +14,7 @@ public interface MarkRepository extends JpaRepository<Mark, Integer>{
 
     @Query("SELECT m FROM Mark m WHERE m.client.id=?1 AND m.reservation.id=?2")
     Mark alreadyReviewed(Integer clientId, Integer reservationId);
+
+    @Query("SELECT m FROM  Mark m WHERE  m.approved = false" +"")
+    List<Mark> findAllNotApproved();
 }
