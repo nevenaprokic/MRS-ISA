@@ -1,4 +1,4 @@
-import { getAllNotApprovedMarks } from "../../../services/MarkService";
+import { getAllNotApprovedMarks, acceptMark } from "../../../services/MarkService";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 
@@ -24,7 +24,7 @@ import { createTheme } from '@mui/material/styles';
 import TablePagination from '@mui/material/TablePagination';
 
 
-function Row({row, setRequests}) {
+function Row({row, setRequests, marks}) {
     console.log(row);
     const  request  = row;
     const [open, setOpen] = React.useState(false);
@@ -41,12 +41,12 @@ function Row({row, setRequests}) {
 
     });
 
-    function handleRequestAccepted(requestId){
-      console.log(requestId);
-      //acceptRegistrationRequest(requestId, setRequests);
+    function handleRequestAccepted(mark){
+      acceptMark(mark, setRequests, marks)
     }
 
     return (
+         !!marks &&
         <ThemeProvider theme={theme}>
       <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -70,7 +70,7 @@ function Row({row, setRequests}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleRequestAccepted(request.id)}
+                    onClick={() => handleRequestAccepted(request)}
                   >
                   Accept 
                   </Button></TableCell>
@@ -160,7 +160,7 @@ function NotApprovedMarks(){
 
     return (
         !!marks && 
-        <div className="requestsContainer">
+        <div className="requestsC ontainer">
         <TableContainer component={Paper} className="tableContainer">
             <Table aria-label="collapsible table" >
                 <TableHead>
@@ -192,7 +192,7 @@ function NotApprovedMarks(){
                 <TableBody>
                 {marks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     
-                    <Row key={row.id} row={row} setMarks={setMarks}/>
+                    <Row key={row.id} row={row} setRequests={setMarks} marks={marks}/>
                 ))}
                 </TableBody>
             </Table>

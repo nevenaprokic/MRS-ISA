@@ -12,4 +12,6 @@ public interface MarkService {
     Double getMarkByShipOwnerEmail(String email);
     Double getMarkByInstructorEmail(String email);
     List<MarkDTO> getAllUncheckesMarks() throws IOException;
+
+    void acceptMark(int markId);
 }

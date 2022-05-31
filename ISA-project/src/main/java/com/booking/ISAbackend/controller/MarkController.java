@@ -6,11 +6,9 @@ import com.booking.ISAbackend.service.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -47,6 +45,16 @@ public class MarkController {
             return new ResponseEntity<>(marks, marks.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/accept/{markId}")
+    public ResponseEntity<String> acceptMark(@PathVariable int markId){
+        try{
+            markService.acceptMark(markId);
+            return ResponseEntity.ok("Successfully accepted mark");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong, please try again later");
         }
     }
 

@@ -60,5 +60,7 @@ public class Mark {
 
 	public LocalDate getSendingTime() {return sendingTime; }
 
+	public void setApproved(boolean approved) {this.approved = approved;}
+
 
 }

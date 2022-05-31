@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class MarkDTO {
-
+    private Integer id;
     private Integer mark;
     private String comment;
     private Boolean approved;
@@ -27,6 +27,7 @@ public class MarkDTO {
         this.approved = mark.getApproved();
         this.reservationDTO = reservationDTO;
         this.sendingTime = localDateToString(mark.getSendingTime());
+        this.id = mark.getId();
     }
 
     public Integer getMark() {
@@ -68,5 +69,7 @@ public class MarkDTO {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         return formatter.format(date);
     }
+    public int getId(){ return  id;}
+
 }
 

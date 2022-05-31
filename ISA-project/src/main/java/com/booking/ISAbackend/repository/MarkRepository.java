@@ -18,4 +18,6 @@ public interface MarkRepository extends JpaRepository<Mark, Integer>{
 
     @Query("SELECT m FROM  Mark m WHERE  m.approved = false" +"")
     List<Mark> findAllNotApproved(Sort sendingTime);
+
+    Mark findById(Long markId);
 }

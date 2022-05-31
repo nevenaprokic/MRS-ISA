@@ -1,5 +1,6 @@
 import axios from "axios";
 import api from "../app/api";
+import { toast } from "react-toastify";
 
 export function getMarkByOfferId(id){
     return api
@@ -63,4 +64,20 @@ export function getAllNotApprovedMarks(){
         console.log(err);
         
     } )
+}
+
+export function acceptMark(mark, setMarks, allUncheckedMarks){
+    api
+    .put("/mark/accept/" + mark.id)
+    .then((responseData) => {toast.success(responseData.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                        setMarks(allUncheckedMarks.filter((uncheckedMark) => uncheckedMark.id !== mark.id))
+                     })
+    .catch((err) => {toast.err(err.resposneData.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                })
 }

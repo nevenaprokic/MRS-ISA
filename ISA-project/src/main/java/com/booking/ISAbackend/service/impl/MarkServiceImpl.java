@@ -93,4 +93,15 @@ public class MarkServiceImpl implements MarkService {
         }
         return marksData;
     }
+
+    @Override
+    public void acceptMark(int markId) {
+        Optional<Mark> mark = markRepository.findById(markId);
+        if(mark.isPresent()){
+            Mark m = mark.get();
+            m.setApproved(true);
+            markRepository.save(m);
+        }
+
+    }
 }
