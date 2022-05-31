@@ -34,7 +34,8 @@ export function generateCalendarEvents(evetns){
                 start: event.startDate,
                 end: event.endDate + "T23:59:00",
                 application_id: event.id,
-                isReservation: event.reservation
+                isReservation: event.reservation,
+                isAction: event.action
 
             }
         )
@@ -88,6 +89,21 @@ export function addOffersUnavailableDates(offerId, selectInfo){
                 });
                 return false;
             } )
+}
+
+export function getQuickActionDetails(actionId){
+    return api
+    .get("calendar/action-info", {
+        params:{
+            actionId: actionId
+        }
+    })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error("Something went wrong.", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                });
 }
 
 function renderEvent(selectInfo){

@@ -13,6 +13,7 @@ import ReservationDetails from './ReservationDetails';
 import Modal from '@mui/material/Modal';
 import AddUnavailableOfferDates from './AddUnavailableOfferDates';
 import { OfflinePinRounded } from '@mui/icons-material';
+import QuickActionDetails from './QuickActionDetails';
 
 
 export default function WorkingCalendar({offers, setOffers}){
@@ -27,6 +28,8 @@ export default function WorkingCalendar({offers, setOffers}){
   const [offerName, setOfferName] = useState();
   const [offerId, setOfferId] = useState();
   const [selectedDates, setSelectedDates] = useState();
+  const [actionId, setActionId] = useState();
+  const [openActionDetails, setOpenActionDetails] = useState(false);
 
   function handleOpenForm(){setOpenForm(true)}
   function handleCloseForm(){
@@ -38,6 +41,13 @@ export default function WorkingCalendar({offers, setOffers}){
   }
   function handleCLoseUnavailableDatesForm() {setUnavailableDatesForm(false)}
 
+  function handleOpenActionDetails() {
+    setOpenActionDetails(true);
+  }
+
+  function handleCloseActionDetails(){
+    setOpenActionDetails(false);
+  }
 
 
   function findEvent(id){
@@ -96,10 +106,16 @@ export default function WorkingCalendar({offers, setOffers}){
       async function set(){
         let id = clickInfo.event.id;//currentViewType
         let event = findEvent(id);
+        console.log(event);
+
         if(event.isReservation){
           
           setReservationId(event.application_id);
           handleOpenForm();
+        }
+        else if(event.isAction){
+          setActionId(event.application_id);
+          handleOpenActionDetails();
         }
                 
       }
@@ -161,6 +177,16 @@ export default function WorkingCalendar({offers, setOffers}){
             sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
         >
                 <AddUnavailableOfferDates offerId={offerId} offerName={offerName} close={handleCLoseUnavailableDatesForm} selectedDates={selectedDates}/>
+            
+        </Modal>
+        <Modal
+            open={openActionDetails}
+            onClose={handleCloseActionDetails}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+        >
+                <QuickActionDetails actionId={actionId} setActionId={setActionId} close={handleCloseActionDetails}/>
             
         </Modal>
       </div>

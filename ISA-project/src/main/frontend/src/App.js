@@ -56,7 +56,7 @@ function App() {
           <Route path='/owner/calendar' element={<WorkingCalendar/>} />
           <Route path='/admin/loyalty-program' element={<LoyalyProgeramPage/>}/>
           <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
-          <Route path='/admin/loyalty-program/add-category' element={<LoyalyProgeramPage/>}/>
+          <Route path='/admin/loyalty-program/add-category' element={<AddLoyaltyCategory/>}/>
           <Route path='/admin/loyalty-program/delete-category' element={<DeleteCategory/>}/>
         </Routes>
     </div>

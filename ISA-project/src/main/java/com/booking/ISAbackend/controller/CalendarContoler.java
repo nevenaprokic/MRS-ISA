@@ -2,10 +2,12 @@ package com.booking.ISAbackend.controller;
 
 
 import com.booking.ISAbackend.dto.CalendarItem;
+import com.booking.ISAbackend.dto.QuickReservationDTO;
 import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.dto.UnavailableDateDTO;
 import com.booking.ISAbackend.exceptions.BusyDateIntervalException;
 import com.booking.ISAbackend.exceptions.InvalidDateInterval;
+import com.booking.ISAbackend.exceptions.PassedDateException;
 import com.booking.ISAbackend.exceptions.UnavailableDatesAlreadyDefine;
 import com.booking.ISAbackend.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +58,22 @@ public class CalendarContoler {
             return ResponseEntity.badRequest().body("End date need to be after start date");
         } catch (UnavailableDatesAlreadyDefine e) {
             return ResponseEntity.badRequest().body("It is allowed to choose only intervals in which there are no already defined unavailable dates");
-        }catch (Exception e) {
+        }catch (PassedDateException e){
+            return ResponseEntity.badRequest().body("Selected dates have passed");
+        }
+        catch (Exception e) {
             return ResponseEntity.badRequest().body("Something went wrong. Please try again");
+        }
+    }
+
+    @GetMapping("action-info")
+    public ResponseEntity<QuickReservationDTO> getQuickActionsDetails(@RequestParam int actionId) {
+        try {
+            QuickReservationDTO action = calendarService.getActionDetails(actionId);
+            return ResponseEntity.ok(action);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }
