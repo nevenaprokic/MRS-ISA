@@ -2,14 +2,19 @@ package com.booking.ISAbackend.dto;
 
 import com.booking.ISAbackend.model.Mark;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class MarkDTO {
 
     private Integer mark;
     private String comment;
     private Boolean approved;
     private ReservationDTO reservationDTO;
+    private String sendingTime;
 
-    public MarkDTO(Integer mark, String comment, Boolean approved, ReservationDTO reservationDTO) {
+    public MarkDTO(Integer mark, String comment, Boolean approved, ReservationDTO reservationDTO, String sendingTime) {
+        this.sendingTime = sendingTime;
         this.mark = mark;
         this.comment = comment;
         this.approved = approved;
@@ -21,6 +26,7 @@ public class MarkDTO {
         this.comment = mark.getComment();
         this.approved = mark.getApproved();
         this.reservationDTO = reservationDTO;
+        this.sendingTime = localDateToString(mark.getSendingTime());
     }
 
     public Integer getMark() {
@@ -53,6 +59,14 @@ public class MarkDTO {
 
     public void setReservationDTO(ReservationDTO reservationDTO) {
         this.reservationDTO = reservationDTO;
+    }
+
+    public void setSendingTime(String sendingTime){this.sendingTime = sendingTime;}
+    public String getSendingTime(){return  sendingTime;}
+
+    private String localDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
     }
 }
 

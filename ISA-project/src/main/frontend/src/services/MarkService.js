@@ -58,7 +58,7 @@ export function getMarkByShipOwnerEmail(email){
 export function getAllNotApprovedMarks(){
     return api
     .get("/mark/all-unchecked")
-    .then((responseData) => console.log(responseData))
+    .then((responseData) => responseData)
     .catch((err) => {
         console.log(err);
         

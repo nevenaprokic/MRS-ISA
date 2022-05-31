@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.model;
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Mark {
@@ -9,6 +10,7 @@ public class Mark {
 	private Integer mark;
 	private String comment;
 	private Boolean approved;
+	private LocalDate sendingTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "my_user_id")
@@ -26,6 +28,14 @@ public class Mark {
 		this.approved = approved;
 		this.reservation = reservation;
 		this.client = client;
+	}
+	public Mark(Integer mark, String comment, Boolean approved, Reservation reservation, Client client, LocalDate sendingTime) {
+		this.mark = mark;
+		this.comment = comment;
+		this.approved = approved;
+		this.reservation = reservation;
+		this.client = client;
+		this.sendingTime = sendingTime;
 	}
 
 	public Integer getId() {
@@ -47,5 +57,8 @@ public class Mark {
 	public Reservation getReservation() {
 		return reservation;
 	}
+
+	public LocalDate getSendingTime() {return sendingTime; }
+
 
 }

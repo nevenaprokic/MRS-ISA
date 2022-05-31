@@ -6,6 +6,7 @@ import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +79,7 @@ public class MarkServiceImpl implements MarkService {
     @Override
     @Transactional
     public List<MarkDTO> getAllUncheckesMarks() throws IOException {
-        List<Mark> notApprovedMarks = markRepository.findAllNotApproved();
+        List<Mark> notApprovedMarks = markRepository.findAllNotApproved(Sort.by(Sort.Direction.DESC, "sendingTime"));
         List<MarkDTO> marksData = new ArrayList<MarkDTO>();
         for(Mark mark : notApprovedMarks){
             Optional<Reservation> reservation = reservationRepository.findById(mark.getId());
