@@ -76,4 +76,7 @@ public class ReservationReportController {
             return ResponseEntity.status(400).body(null);
         }
     }
+
+    //all-by-instructor
+    
 }

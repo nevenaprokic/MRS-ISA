@@ -244,5 +244,16 @@ public class ReservationController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("instructor-history")
+    public ResponseEntity<List<ReservationDTO>> getReservationByInstructor(@RequestParam String ownerId,@RequestParam String role){
+        try{
+            List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);
+            System.out.println(reservations.size());
+            return ResponseEntity.ok().body(reservations);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
 }

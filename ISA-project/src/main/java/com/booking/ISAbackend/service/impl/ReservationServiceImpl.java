@@ -234,6 +234,8 @@ public class ReservationServiceImpl implements ReservationService {
             reservations = reservationRepository.findPastReservationByShipOwnerEmail(ownerId, LocalDate.now());
         else if(role.equals(UserType.COTTAGE_OWNER.toString()))
             reservations = reservationRepository.findPastReservationByCottageOwnerEmail(ownerId, LocalDate.now());
+        else if(role.equals(UserType.INSTRUCTOR.toString()))
+            reservations = reservationRepository.findPastReservationByInstructorEmail(ownerId, LocalDate.now());
         return getReservationDTOS(reservations);
     }
 

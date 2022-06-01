@@ -23,6 +23,7 @@ import NewReservationForm from "../forms/reservations/reservationOwner/NewReserv
 import HomePageGraph from "../graphs/attendanceSchedule/HomePageGraph";
 import MarkForm from '../graphs/marks/MarkForm';
 import IncomeStatement from '../graphs/incomeStatement/IncomeStatement';
+import ReservationProfile from "../profilePages/reservationProfile/ReservationProfile";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -170,7 +171,7 @@ function InstructorHomePage() {
             <AddAdventurePage />
           </TabPanel>
           <TabPanel value={value} index={6}>
-            Reservation history
+           <ReservationProfile/>
           </TabPanel>
           <TabPanel value={value} index={7}>
             <NewReservationForm offers={offers} setOffers={setOffers} />
