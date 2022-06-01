@@ -245,7 +245,7 @@ export function sortReservations(criteria, sortAsc, reservations, setReservation
             let d1 = stringToDate(a.startDate);
             let d2 = stringToDate(b.startDate);
 
-            return (sortAsc) ? d1 - d2 : d2 - d1;
+            return (sortAsc) ? d1 -d2 : d2 - d1;
         });
           break;
         case 2:

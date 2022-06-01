@@ -78,5 +78,15 @@ public class ReservationReportController {
     }
 
     //all-by-instructor
-    
+    @GetMapping("all-by-instructor")
+    public ResponseEntity<List<Integer>> getReservationReportInstructor(@RequestParam String ownerEmail, @RequestParam String role){
+        try{
+            List<Integer> reservationsWithNoReport = reservationReportService.getNotReportedReservationsInstructor(ownerEmail);
+            return ResponseEntity.ok().body(reservationsWithNoReport);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

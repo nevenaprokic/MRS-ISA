@@ -35,7 +35,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     @Override
     public List<Integer> getReservationReportCottageOwner(String ownerEmail) {
         LocalDate today = LocalDate.now();
-        List<Integer> reservationWithReport = reservationRepository.findReservationWithNoReportByCottageOwnerEmail(ownerEmail, today);
+        List<Integer> reservationWithReport = reservationRepository.findReservationWithReportByCottageOwnerEmail(ownerEmail, today);
         List<Reservation> reservations = reservationRepository.findPastReservationByCottageOwnerEmail(ownerEmail,today);
         List<Integer> reservationWithNoReport = new ArrayList<>();
         for(Reservation r: reservations) {
@@ -49,7 +49,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     @Override
     public List<Integer> getReservationReportShipOwner(String ownerEmail) {
         LocalDate today = LocalDate.now();
-        List<Integer> reservationWithReport = reservationRepository.findReservationWithNoReportByShipOwnerEmail(ownerEmail, today);
+        List<Integer> reservationWithReport = reservationRepository.findReservationWithReportByShipOwnerEmail(ownerEmail, today);
         List<Reservation> reservations = reservationRepository.findPastReservationByShipOwnerEmail(ownerEmail,today);
         List<Integer> reservationWithNoReport = new ArrayList<>();
         for(Reservation r: reservations) {
@@ -138,6 +138,20 @@ public class ReservationReportServiceImpl implements ReservationReportService {
 
         List<OfferForReportDTO> offers = listInitializationAdventure(email);
         return  getReportList(reservations, startDate, endDate, offers);
+    }
+
+    @Override
+    public List<Integer> getNotReportedReservationsInstructor(String ownerEmail) {
+        LocalDate today = LocalDate.now();
+        List<Integer> reservationWithReport = reservationRepository.findReservationWithReportByInstructorEmeil(ownerEmail, today);
+        List<Reservation> reservations = reservationRepository.findPastReservationByInstructorEmail(ownerEmail,today);
+        List<Integer> reservationWithNoReport = new ArrayList<>();
+        for(Reservation r: reservations) {
+            if(!reservationWithReport.contains(r.getId())){
+                reservationWithNoReport.add(r.getId());
+            }
+        }
+        return reservationWithNoReport;
     }
 
     private ArrayList<OfferForReportDTO> listInitializationAdventure(String email){
