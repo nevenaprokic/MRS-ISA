@@ -106,4 +106,22 @@ $darkGrrenGray: #5f6d5f;
     max-width: 900px !important;
 }
 }
+
+.reportFormBtnContainer{
+    //width: 70%;
+    margin-left: 50%;
+}
+
+.reportFormBtn{
+    //width: 30%;
+    vertical-align: top;
+    //display: inline-block;
+    float: right;
+    margin-left: 5%;
+}
   
+
+.closeBtn{
+    float: right;
+    vertical-align: top;
+}

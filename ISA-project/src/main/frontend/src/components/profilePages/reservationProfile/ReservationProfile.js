@@ -21,7 +21,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { getAllReservation } from "../../../services/ReservationService";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getAllReservationShipOwner ,getAllReportCottageOwner, getAllReportShipOwner} from "../../../services/ReservationService";
+import { getAllReservationShipOwner ,getAllReportCottageOwner, getAllReportShipOwner, getAllReservationInstructor, getAllReportInstructor} from "../../../services/ReservationService";
 import { userType, offerType } from "../../../app/Enum";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import {
@@ -33,6 +33,7 @@ import ReservationReportForm from '../../forms/reservations/ReservationReportFor
 import ClientSort from "../../forms/search/ClientSort";
 import ReviewForm from "../../forms/review/ReviewForm"
 import ComplaintForm from "../../forms/review/ComplaintForm";
+import pageIcon from '../../images/writer.png'
 
 
 function Row({ row, setRequests, disabled }) {
@@ -266,10 +267,12 @@ function ReservationProfile({ offerT }) {
     [offerType.COTTAGE]: getAllCottageReservationsClient,
     [offerType.SHIP]: getAllShipReservationsClient,
     [offerType.ADVENTURE]: getAllAdventureReservationsClient,
+    [userType.INSTRUCTOR]: getAllReservationInstructor,
   };
   let getReportReservation ={
     [userType.COTTAGE_OWNER]: getAllReportCottageOwner,
-    [userType.SHIP_OWNER] : getAllReportShipOwner
+    [userType.SHIP_OWNER] : getAllReportShipOwner,
+    [userType.INSTRUCTOR] : getAllReportInstructor
   }
 
   useEffect(() => {
@@ -295,13 +298,14 @@ function ReservationProfile({ offerT }) {
   };
 
   return (
+    //
     (!!requests && !!report) && (
       <div className="requestsContainer">
         <TableContainer component={Paper} className="tableContainer">
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow sx={{ borderBottom: "solid #99A799" }}>
-                <TableCell />
+                <TableCell><img src={pageIcon} width="60" height="60"></img></TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#5f6d5f", fontSize: 18 }}
                   align="center"

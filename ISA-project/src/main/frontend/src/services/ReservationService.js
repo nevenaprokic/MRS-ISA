@@ -245,7 +245,7 @@ export function sortReservations(criteria, sortAsc, reservations, setReservation
             let d1 = stringToDate(a.startDate);
             let d2 = stringToDate(b.startDate);
 
-            return (sortAsc) ? d1 - d2 : d2 - d1;
+            return (sortAsc) ? d1 -d2 : d2 - d1;
         });
           break;
         case 2:
@@ -474,3 +474,40 @@ export function reviewReportAdventure(valueStartDate, valueEndDate, username){
         )
 }
 
+export function getAllReservationInstructor(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation/instructor-history", {
+        params: {
+            ownerId: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}
+
+export function getAllReportInstructor(){
+    let email = getUsernameFromToken();
+    let role = getRoleFromToken();
+    console.log(email);
+    return api
+    .get("/reservation-report/all-by-instructor", {
+        params: {
+            ownerEmail: email ,
+            role: role
+        },
+      })
+    .then((responseData) => responseData)
+    .catch((err) => {toast.error(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })}
+        )
+}

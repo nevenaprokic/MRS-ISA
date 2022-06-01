@@ -39,7 +39,6 @@ public class MarkController {
     public ResponseEntity<List<MarkDTO>> getAllUncheckedMarks(){
         try{
             List<MarkDTO> marks = markService.getAllUncheckesMarks();
-            System.out.println(marks.size());
             return new ResponseEntity<>(marks, marks.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

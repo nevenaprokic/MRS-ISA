@@ -14,6 +14,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import {addReport} from '../../../services/ReservationService';
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from '@mui/material/styles';
+
+
 
 export default function ReservationReportForm({closeForm, request}) {
   const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
@@ -36,15 +40,33 @@ export default function ReservationReportForm({closeForm, request}) {
     closeForm(params);
   };
 
+  function handleCancelClick(){
+    closeForm();
+  }
+
   
+  const theme = createTheme({
+    palette: {
+      primary: { main:'#CC7351'},
+      secondary: { main:'#99A799'},
+    },
+
+  });
 
   return (
+    <ThemeProvider theme={theme}>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} >
       <div className="formContainer">
+        <div className="closeBtn">
+            <Button size="large" color="secondary" onClick={() => closeForm()}>
+            x
+            </Button>
+        </div>
         <Typography variant="h6" gutterBottom>
           Report on the reservation made
         </Typography>
+
         <Typography gutterBottom>
           <label className="headerText">
             Fields marked with an asterisk (*) are required.
@@ -113,20 +135,38 @@ export default function ReservationReportForm({closeForm, request}) {
           />
           {errors.comment && <label className="requiredLabel">Comment can't be empty</label>}
         </Grid>
-        <Grid item xs={12} sm={4} sx={{ marginLeft: "65%" }}>
+        <div className={"reportFormBtnContainer"}>
           <br />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ float: "right" }}
-            color="success"
-            fullWidth
-          >
-            Confirm
-          </Button>
+          <div className="reportFormBtn">
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ float: "right" }}
+              color="success"
+              fullWidth
+            >
+              Confirm
+            </Button>
+          </div>
+          <div className="reportFormBtn">
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ float: "right" }}
+              color="secondary"
+              fullWidth
+              onClick={() => handleCancelClick()}
+            >
+              Cancel
+            </Button>
+          </div>   
+        </div>
+        <Grid item xs={12} sm={3} sx={{}}>
+          
         </Grid>
         </div>
         </Grid>
     </LocalizationProvider>
+    </ThemeProvider>
   );
 }

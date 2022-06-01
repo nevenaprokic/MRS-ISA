@@ -12,4 +12,5 @@ public interface ReservationReportService {
     List<OfferForReportDTO> getReportIncomeStatementCottage(String start, String end, String email);
     List<OfferForReportDTO> getReportIncomeStatementShip(String start, String end, String email);
     List<OfferForReportDTO> getReportIncomeStatementAdventure(String start, String end, String email);
+    List<Integer> getNotReportedReservationsInstructor(String ownerEmail);
 }
