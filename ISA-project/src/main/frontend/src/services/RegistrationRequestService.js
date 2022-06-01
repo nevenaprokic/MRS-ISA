@@ -20,7 +20,7 @@ export function acceptRegistrationRequest(requestId, setRequests){
     .post("/registration-request/accept", requestId)
     .then((responseData) => { 
 
-        toast.success(responseData.data, {
+        toast.success("Successfully accepted request", {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: 1500,
         });

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -189,7 +190,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Mark> om = Optional.ofNullable(markRepository.alreadyReviewed(c.getId(), reservationId));
         if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Mark m = new Mark(stars, comment, false, r.get(), c);
+            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
             markRepository.save(m);
         }else{
             throw new Exception();

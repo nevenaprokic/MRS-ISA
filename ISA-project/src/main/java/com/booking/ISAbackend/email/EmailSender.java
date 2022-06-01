@@ -12,4 +12,5 @@ public interface EmailSender {
     void reservationConfirmation(ReservationParamsDTO params) throws MailException;
     void notifySubscribersNewQuickReservation(String email, String offerName, String date);
     void notifyClientNewReservation(String email, Reservation reservation);
+    void notifyCliendDiscardMark(String email, String message);
 }

@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Mark;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,9 @@ public interface MarkRepository extends JpaRepository<Mark, Integer>{
 
     @Query("SELECT m FROM Mark m WHERE m.client.id=?1 AND m.reservation.id=?2")
     Mark alreadyReviewed(Integer clientId, Integer reservationId);
+
+    @Query("SELECT m FROM  Mark m WHERE  m.approved = false" +"")
+    List<Mark> findAllNotApproved(Sort sendingTime);
+
+    Mark findById(Long markId);
 }

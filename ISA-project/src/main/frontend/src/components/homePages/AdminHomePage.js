@@ -18,6 +18,7 @@ import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import AdminProfile from '../profilePages/userProfile/AdminProfile';
 import RegistrationRequestsList from '../collections/RegistrationRequestsList';
 import LoyalyProgeramPage from '../loyalty/LoyaltyProgramPage';
+import NotApprovedMarks from '../graphs/marks/NotApprovedMarks';
 
 
 function TabPanel(props) {
@@ -100,6 +101,7 @@ export default function AdminHomePage() {
                     <Divider />
                     <Tab label="Users" {...a11yProps(2)} />
                     <Tab label="Registration requests" {...a11yProps(3)} />
+                    <Tab label="Unchecked marks" {...a11yProps(3)} />
                     <Divider />
                     <Tab label="Loyalty program" {...a11yProps(4)} />
                     <Divider />
@@ -121,7 +123,10 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={5}>
                     <RegistrationRequestsList />
                 </TabPanel>
-                <TabPanel value={value} index={7}>
+                <TabPanel value={value} index={6}>
+                    <NotApprovedMarks />
+                </TabPanel>
+                <TabPanel value={value} index={8}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
              

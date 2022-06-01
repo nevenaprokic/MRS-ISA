@@ -32,7 +32,7 @@ insert into owner_category(name, earnings,  reservation_points, low_limit_points
 /*CLIENTS*/
 
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'pera@gmail.com', 'Petar', 'Peric', '$2a$10$vxfy.kTR4mQxDTIQ6LmeCuoea46hQ9KmeBTTSW4BQay4QD60nXo5K', '062-111-1111', 1, false);/*sifra*/
-insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'marko@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '065-111-1112', 2, false);/*klijent2*/
+insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'natasha.lakovic@gmail.com', 'Marko', 'Slavic', '$2a$10$.lyxc9BnJGhDQMcszD2/nuZsMdi1bjP1catCqpAa5AKc0rwtMaIJ.', '065-111-1112', 2, false);/*klijent2*/
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'sara@gmail.com', 'Sara', 'Mirkovic', '$2a$10$GLP6wpgzOsuq316wup3UlOX7HzPTT5F/86R5PcC/MHw.NYim3vD5a', '063-111-1113', 3, false);/*klijent3*/
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
@@ -217,18 +217,16 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-08',2,300,'2022-05-06',1,2);
 
 /*MARK*/
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,2);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,3);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Onako!',3,4);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',4,5);
-insert into mark(approved, comment, mark, reservation_id) values (true,'okej!',4,6);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican ambijent!',5,7);
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (false,'Odlican ambijent!',5,3, '2022-05-09');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (false ,'Onako!',3,18, '2022-04-29');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (false ,'Nista posebno!',4,6, '2022-05-31');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'okej!',4,10, '2022-05-19');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Odlican ambijent!',5,11, '2022-05-09');
 
-insert into mark(approved, comment, mark, reservation_id) values (true,'Lep provod, nije dobar ambijent!',4,8);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Odlican avantura!',5,9);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Sjajno!',5,10);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Nista posebno!',3,11);
-insert into mark(approved, comment, mark, reservation_id) values (true,'Super je bilo!',4,12);
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Lep provod, nije dobar ambijent!',4,12, '2022-04-09');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Odlican avantura!',5,14, '2022-05-01');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Sjajno!',5,15, '2022-05-26');
+insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Nista posebno!',3,16, '2022-05-27');
 
 /*DELETE REQUEST*/
 insert into delete_request(description, my_user_id) values('Ne zelim vise da poslujem!',7);
