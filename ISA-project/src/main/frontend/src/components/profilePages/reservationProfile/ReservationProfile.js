@@ -33,6 +33,7 @@ import ReservationReportForm from '../../forms/reservations/ReservationReportFor
 import ClientSort from "../../forms/search/ClientSort";
 import ReviewForm from "../../forms/review/ReviewForm"
 import ComplaintForm from "../../forms/review/ComplaintForm";
+import pageIcon from '../../images/writer.png'
 
 
 function Row({ row, setRequests, disabled }) {
@@ -304,7 +305,7 @@ function ReservationProfile({ offerT }) {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow sx={{ borderBottom: "solid #99A799" }}>
-                <TableCell />
+                <TableCell><img src={pageIcon} width="60" height="60"></img></TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#5f6d5f", fontSize: 18 }}
                   align="center"

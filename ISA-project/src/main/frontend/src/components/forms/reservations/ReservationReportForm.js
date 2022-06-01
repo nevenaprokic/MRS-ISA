@@ -18,6 +18,7 @@ import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
 
 
+
 export default function ReservationReportForm({closeForm, request}) {
   const { register, getValues, handleSubmit, formState: { errors }, watch } = useForm({});
   const [value, setValue] = React.useState(true);
@@ -57,9 +58,15 @@ export default function ReservationReportForm({closeForm, request}) {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit(onSubmit)} >
       <div className="formContainer">
+        <div className="closeBtn">
+            <Button size="large" color="secondary" onClick={() => closeForm()}>
+            x
+            </Button>
+        </div>
         <Typography variant="h6" gutterBottom>
           Report on the reservation made
         </Typography>
+
         <Typography gutterBottom>
           <label className="headerText">
             Fields marked with an asterisk (*) are required.
