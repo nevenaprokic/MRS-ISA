@@ -171,7 +171,7 @@ function InstructorHomePage() {
             <AddAdventurePage />
           </TabPanel>
           <TabPanel value={value} index={6}>
-           <ReservationProfile/>
+            <ReservationProfile/>
           </TabPanel>
           <TabPanel value={value} index={7}>
             <NewReservationForm offers={offers} setOffers={setOffers} />
