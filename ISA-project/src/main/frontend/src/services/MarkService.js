@@ -61,7 +61,15 @@ export function getAllNotApprovedMarks(){
     .get("/mark/all-unchecked")
     .then((responseData) => responseData)
     .catch((err) => {
-        console.log(err);
+        if (err.response.status === 404){
+            return(<div>Trenutno nema nepregledanih recenzija</div>)
+        }
+        else{
+            toast.error(err.response.data, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        }
         
     } )
 }
@@ -75,7 +83,23 @@ export function acceptMark(mark, setMarks, allUncheckedMarks){
                         });
                         setMarks(allUncheckedMarks.filter((uncheckedMark) => uncheckedMark.id !== mark.id))
                      })
-    .catch((err) => {toast.err(err.resposneData.data, {
+    .catch((err) => {toast.err(err.response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    });
+                })
+}
+
+export function rejectMark(mark, setMarks, allUncheckedMarks){
+    api
+    .put("/mark/discard/" + mark.id)
+    .then((responseData) => {toast.success(responseData.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        });
+                        setMarks(allUncheckedMarks.filter((uncheckedMark) => uncheckedMark.id !== mark.id))
+                     })
+    .catch((err) => {toast.err(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
                     });

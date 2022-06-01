@@ -1,4 +1,4 @@
-import { getAllNotApprovedMarks, acceptMark } from "../../../services/MarkService";
+import { getAllNotApprovedMarks, acceptMark, rejectMark } from "../../../services/MarkService";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 
@@ -22,6 +22,7 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from '@mui/material/styles';
 import TablePagination from '@mui/material/TablePagination';
+import ratingIcon from '../../images/satisfaction.png'
 
 
 function Row({row, setRequests, marks}) {
@@ -43,6 +44,10 @@ function Row({row, setRequests, marks}) {
 
     function handleRequestAccepted(mark){
       acceptMark(mark, setRequests, marks)
+    }
+
+    function handleRejectMark(mark){
+      rejectMark(mark, setRequests, marks)
     }
 
     return (
@@ -80,7 +85,7 @@ function Row({row, setRequests, marks}) {
                     sx={{float:"right"}}
                     color="secondary"
                     size="small"
-                    //onClick={handleOpenDelete}
+                    onClick={() => handleRejectMark(request)}
                   >
                   Discard
                   </Button></TableCell>
@@ -164,8 +169,9 @@ function NotApprovedMarks(){
         <TableContainer component={Paper} className="tableContainer">
             <Table aria-label="collapsible table" >
                 <TableHead>
+                
                 <TableRow sx={{borderBottom:"solid #99A799"}}>
-                    <TableCell />
+                    <TableCell><img width="60" height={"60"} src={ratingIcon}></img> </TableCell>
                     <TableCell sx={{ fontWeight: "bold", color: "#5f6d5f", fontSize: 18}} align="center">
                         <Typography variant="button">
                             Offer
@@ -206,7 +212,7 @@ function NotApprovedMarks(){
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {marks.length == 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no registration requests</Typography>}
+      {marks.length === 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no registration requests</Typography>}
     </div>
     )
 }

@@ -1,14 +1,12 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.MarkDTO;
-import com.booking.ISAbackend.model.Mark;
 import com.booking.ISAbackend.service.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -54,6 +52,17 @@ public class MarkController {
             markService.acceptMark(markId);
             return ResponseEntity.ok("Successfully accepted mark");
         }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong, please try again later");
+        }
+    }
+
+    @PutMapping("/discard/{markId}")
+    public ResponseEntity<String> discardMark(@PathVariable int markId){
+        try{
+            markService.discardMark(markId);
+            return ResponseEntity.ok("Successfully reject mark");
+        }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again later");
         }
     }

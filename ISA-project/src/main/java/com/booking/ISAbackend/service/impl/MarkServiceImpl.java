@@ -2,6 +2,7 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.MarkDTO;
 import com.booking.ISAbackend.dto.ReservationDTO;
+import com.booking.ISAbackend.email.EmailService;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.MarkService;
@@ -27,6 +28,8 @@ public class MarkServiceImpl implements MarkService {
     private ShipRepository shipRepository;
     @Autowired
     private AdventureReporitory adventureReporitory;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Double getMark(Integer idOffer){
@@ -102,6 +105,27 @@ public class MarkServiceImpl implements MarkService {
             m.setApproved(true);
             markRepository.save(m);
         }
+    }
 
+    @Override
+    @Transactional
+    public void discardMark(int markId) {
+        Optional<Mark> mark = markRepository.findById(markId);
+        if(mark.isPresent()){
+            Mark m = mark.get();
+            markRepository.delete(m);
+            sendEmailNotification(m);
+        }
+    }
+
+    @Transactional
+    public void sendEmailNotification(Mark mark) {
+        Reservation reservation = mark.getReservation();
+        Client client = reservation.getClient();
+        String message = "Your review for reservation " + reservation.getOffer().getName()  +
+                " from " + reservation.getStartDate().toString() +
+                " to " + reservation.getEndDate().toString() +
+                " has been rejected.";
+        emailService.notifyCliendDiscardMark(client.getEmail(),message);
     }
 }

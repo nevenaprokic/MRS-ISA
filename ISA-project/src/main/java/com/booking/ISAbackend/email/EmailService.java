@@ -91,4 +91,14 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
     }
 
+    @Override
+    public void notifyCliendDiscardMark(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Review rejected");
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
 }

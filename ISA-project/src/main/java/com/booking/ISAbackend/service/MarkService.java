@@ -1,7 +1,6 @@
 package com.booking.ISAbackend.service;
 
 import com.booking.ISAbackend.dto.MarkDTO;
-import com.booking.ISAbackend.model.Mark;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,4 +13,6 @@ public interface MarkService {
     List<MarkDTO> getAllUncheckesMarks() throws IOException;
 
     void acceptMark(int markId);
+
+    void discardMark(int markId);
 }
