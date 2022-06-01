@@ -158,4 +158,8 @@ public class ReservationDTO {
     public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
         this.additionalServices = additionalServices;
     }
+
+    public void setClientEmail(String email){
+        this.clientEmail = email;
+    }
 }
