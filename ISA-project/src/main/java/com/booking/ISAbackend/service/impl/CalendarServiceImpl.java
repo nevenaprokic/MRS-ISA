@@ -80,6 +80,7 @@ public class CalendarServiceImpl implements CalendarService {
                     clientName,
                     offerPhoto
                     );
+            reservationDTO.setClientEmail(client.getEmail());
             return  reservationDTO;
         }
         return null;

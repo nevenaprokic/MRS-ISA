@@ -13,6 +13,8 @@ import "./WorkingCalendar.scss"
 import { useEffect, useState } from 'react';
 import { getReservationDetails } from '../../services/CalendarService';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { Modal } from '@mui/material';
+import ConciseClientProfile from '../profilePages/userProfile/ConciseClientProfile';
 
 function ReservationDetails({reservationId, setReservationId, close}){
     
@@ -28,6 +30,15 @@ function ReservationDetails({reservationId, setReservationId, close}){
       });
 
     const [reservationData, setReservationData] = useState();
+    const [openClientProfile, setOpenCLientProfile] = useState(false);
+
+    function handleOpenClientProfile(){
+        setOpenCLientProfile(true);
+    }
+
+    function handleCloseClientProfile(){
+        setOpenCLientProfile(false);
+    }
 
     useEffect(() => {
         async function set(){
@@ -77,7 +88,12 @@ function ReservationDetails({reservationId, setReservationId, close}){
                     <Typography variant="subtitle1" paragraph>
                         client: {reservationData.clienName}
                     </Typography>
+                    <Button variant='outlined' size="small" color="primary" onClick={() => handleOpenClientProfile()}>
+                        View client profile
+                    </Button>
+                    
                     <div>
+                        <br/>
                         <div className="personNumLabel">
                             <PersonOutlineIcon style={theme.secondary}></PersonOutlineIcon>
                         </div>
@@ -95,6 +111,17 @@ function ReservationDetails({reservationId, setReservationId, close}){
                     <Typography variant="subtitle1" color="secondary" sx={{fontWeight: "bold"}}>
                         Price: {reservationData.price} €
                     </Typography>
+
+                    <Modal
+                        open={openClientProfile}
+                        onClose={handleCloseClientProfile}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+                    >
+                            <ConciseClientProfile closeModal={handleCloseClientProfile} clientEmail={reservationData.clientEmail} />
+                        
+                    </Modal>
                 </CardContent>
                 <CardMedia
                     component="img"
