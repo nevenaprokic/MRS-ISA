@@ -33,7 +33,8 @@ import ReservationReportForm from '../../forms/reservations/ReservationReportFor
 import ClientSort from "../../forms/search/ClientSort";
 import ReviewForm from "../../forms/review/ReviewForm"
 import ComplaintForm from "../../forms/review/ComplaintForm";
-import pageIcon from '../../images/writer.png'
+import pageIcon from '../../images/writer.png';
+import ConciseClientProfile from "../userProfile/ConciseClientProfile";
 
 
 function Row({ row, setRequests, disabled }) {
@@ -51,12 +52,16 @@ console.log(disabled);
   const [openForm, setOpenForm] = useState(false);
   const [openReview, setOpenReview] = React.useState(false);
   const [openComplaint, setOpenComplaint] = React.useState(false);
+  const [openClientProfile, setOpenClientProfile] = React.useState(false);
 
   function handleOpenReview(){setOpenReview(true);}
   function handleCloseReview(){setOpenReview(false);}
 
   function handleOpenComplaint(){setOpenComplaint(true);}
   function handleCloseComplaint(){setOpenComplaint(false);}
+
+  function handleOpenClientProfile(){setOpenClientProfile(true);}
+  function handleCloseClientProfile(){setOpenClientProfile(false);}
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -193,6 +198,25 @@ console.log(disabled);
                   Phone number:
                   <label className="textItem"> {request.phoneNumber} </label>
                 </Typography>
+                <Button 
+                    variant="contained" 
+                    color="secondary"
+                    size="small"
+                    onClick={() => handleOpenClientProfile()}>
+                    View profile
+                </Button>
+                <Modal
+                  open={openClientProfile}
+                  onClose={handleCloseClientProfile}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+              >
+                      <ConciseClientProfile closeModal={handleCloseClientProfile} clientEmail={request.clientEmail} />
+                  
+              </Modal>
+
+
               </Box>
             </Collapse>
           </TableCell>

@@ -70,11 +70,20 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         Boolean automaticallyPenal = false;
         if(!dto.getValueShowUp())
             automaticallyPenal = true;
+            if(client.isPresent()){
+                addPenalToClient(client.get());
+            }
         if(client.isPresent() && reservation.isPresent()){
             ReservationReport reservationReport = new ReservationReport(penalOption,automaticallyPenal, dto.getComment(),reservation.get(),client.get());
             reservationReportRepository.save(reservationReport);
         }
 
+    }
+
+    private void addPenalToClient(Client client) {
+        int penals = client.getPenal();
+        penals +=1 ;
+        client.setPenal(penals);
     }
 
     @Override
