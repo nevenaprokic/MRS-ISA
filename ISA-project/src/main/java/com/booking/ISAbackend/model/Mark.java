@@ -62,5 +62,27 @@ public class Mark {
 
 	public void setApproved(boolean approved) {this.approved = approved;}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
+	public void setMark(Integer mark) {
+		this.mark = mark;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}
 }

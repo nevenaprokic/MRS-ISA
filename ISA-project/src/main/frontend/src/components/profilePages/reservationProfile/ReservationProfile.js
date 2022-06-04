@@ -167,7 +167,8 @@ console.log(disabled);
           </TableCell>
         </TableRow>
 
-        <TableRow>
+        { getRoleFromToken() != userType.CLIENT && 
+          <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
@@ -198,13 +199,13 @@ console.log(disabled);
                   Phone number:
                   <label className="textItem"> {request.phoneNumber} </label>
                 </Typography>
-                <Button 
+               <Button 
                     variant="contained" 
                     color="secondary"
                     size="small"
                     onClick={() => handleOpenClientProfile()}>
                     View profile
-                </Button>
+                </Button> 
                 <Modal
                   open={openClientProfile}
                   onClose={handleCloseClientProfile}
@@ -221,6 +222,7 @@ console.log(disabled);
             </Collapse>
           </TableCell>
         </TableRow>
+        }
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -302,12 +304,17 @@ function ReservationProfile({ offerT }) {
   useEffect(() => {
     async function setData() {
       let role = getRoleFromToken();
+      setReport([]);
       if (role == userType.CLIENT) role = offerT;
+      else
+      {
+        const reportData = await getReportReservation[role]();
+        console.log(reportData);
+        setReport(reportData.data ? reportData.data : {});
+      }
       const responseData = await getReservation[role]();
       setRequests(responseData.data ? responseData.data : {});
-      const reportData = await getReportReservation[role]();
-      console.log(reportData);
-      setReport(reportData.data ? reportData.data : {});
+      
     }
     setData();
   }, []);
@@ -322,8 +329,7 @@ function ReservationProfile({ offerT }) {
   };
 
   return (
-    //
-    (!!requests && !!report) && (
+    (requests && report) && (
       <div className="requestsContainer">
         <TableContainer component={Paper} className="tableContainer">
           <Table aria-label="collapsible table">

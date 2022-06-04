@@ -140,4 +140,28 @@ public class Reservation {
 	public void setAdditionalServices(List<AdditionalService> additionalServices) {
 		this.additionalServices = additionalServices;
 	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public void setNumberOfPerson(Integer numberOfPerson) {
+		this.numberOfPerson = numberOfPerson;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 }
