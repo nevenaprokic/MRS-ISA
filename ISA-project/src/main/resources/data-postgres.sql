@@ -37,7 +37,7 @@ insert into my_user (role_id, email_verified, email, first_name, last_name, pass
 insert into my_user (role_id, email_verified, email, first_name, last_name, password, phone_number, address_id, deleted) values (1, true, 'lela@gmail.com', 'Lela', 'Mitic', '$2a$10$E6WPiiY.RPGnUNjUjOxMKONnwolnPF490yDx0ROx083y4rRwDgJum', '063-111-1114', 4, false);/*klijent4*/
 
 
-insert into client (points, penal, id) values (0, 3, 1);
+insert into client (points, penal, id) values (0, 2, 1);
 insert into client (points, penal, id) values (2, 0, 2);
 insert into client (points, penal, id) values (7, 1, 3);
 insert into client (points, penal, id) values (15, 0, 4);
@@ -238,7 +238,7 @@ insert into quick_reservation(end_date,end_date_action,number_of_person,price,st
 
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-18','2022-05-10',10,1000,'2022-05-15','2022-05-02',2, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-06-26','2022-05-25',2,257,'2022-06-23','2022-05-15',1, false);
-insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',5, false);
+insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-08-26','2022-07-30',2,250,'2022-08-23','2022-05-30',5, false);
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-05-20',2,250,'2022-05-23','2022-05-01',4, false);
 /*REGISTRATION REQUEST*/
 /*id, deleted, description, email, first_name, last_name, password, person_type,phone_number, address_id*/
