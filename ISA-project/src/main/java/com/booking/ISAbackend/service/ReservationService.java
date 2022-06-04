@@ -44,4 +44,6 @@ public interface ReservationService {
     List<AttendanceReportDTO> getAttendanceReportYearlyAdventure(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportMonthlyAdventure(String email, String date);
     List<AttendanceReportDTO> getAttendanceReportWeeklyAdventure(String email, String date);
+
+    void sendEmail(ReservationParamsDTO params);
 }

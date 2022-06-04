@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.model;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Mark {

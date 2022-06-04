@@ -187,7 +187,7 @@ public class ClientServiceImpl implements ClientService {
     public void makeReview(Integer stars, Integer reservationId, String comment, String email) throws Exception {
         Optional<Reservation> r = reservationRepository.findById(reservationId);
         Client c = clientRepository.findByEmail(email);
-        Optional<Mark> om = Optional.ofNullable(markRepository.alreadyReviewed(c.getId(), reservationId));
+        Optional<Mark> om = markRepository.alreadyReviewed(c.getId(), reservationId);
         if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
             Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
