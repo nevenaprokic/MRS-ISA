@@ -66,7 +66,7 @@ return(
     (reservationData && clientData) &&
     <div className="reservationDetailsContainer">
     <ThemeProvider theme={theme}>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={10}>
         <CardActionArea component="a" href="#">
             <Card sx={{ display: 'flex' }}>
             <CardContent sx={{ flex: 1 }}>
@@ -114,7 +114,7 @@ return(
             </CardContent>
             <CardMedia
                 component="img"
-                sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                sx={{ width: 250, display: { xs: 'none', sm: 'block' } }}
                 image= { "data:image/jpg;base64," +   offerData.photos[0]}
                 //alt={post.imageLabel}
             />

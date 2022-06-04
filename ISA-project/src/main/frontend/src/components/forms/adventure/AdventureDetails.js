@@ -119,7 +119,7 @@ function AdventureDetails({adventure}){
                             color="secondary"
                             onClick={() => handleOpenActions() }
                             >
-                            Specials
+                            Special
                         </Button>
                         { getRoleFromToken() != null && 
                         <>                           
@@ -143,7 +143,7 @@ function AdventureDetails({adventure}){
                                 disabled={!canReserve}
                                 onClick={() => handleOpenReserve() }
                             >
-                                Book now
+                                Book
                             </Button>
                             </>
                         }

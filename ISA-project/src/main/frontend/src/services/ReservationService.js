@@ -37,8 +37,8 @@ export function convertParams(action, offer){
         services: action.additionalServices,
         total: action.price,
         guests: action.numberOfPerson,
-        date: arrayToDateString(action.startDate),
-        endingDate: arrayToDateString(action.endDate),
+        date: arrayToDateString(action.startDate).toISOString().split('T')[0],
+        endingDate: arrayToDateString(action.endDate).toISOString().split('T')[0],
         offerId: offer,
         actionId: action.id
     };
