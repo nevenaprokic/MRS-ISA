@@ -9,6 +9,7 @@ import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -185,7 +186,8 @@ public class ClientController {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
             clientService.makeComplaint(reservationId, data.get("comment"), data.get("email"));
-            return ResponseEntity.ok("Complaint has been successfully added.");
+            //return ResponseEntity.ok("Complaint has been successfully added.");
+            return new ResponseEntity<String>("Complaint has been successfully added.", HttpStatus.CREATED);
         }catch (FeedbackAlreadyGivenException e) {
             return ResponseEntity.status(400).body("You have already given the feedback");
         } catch (Exception e) {

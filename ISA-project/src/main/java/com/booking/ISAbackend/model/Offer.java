@@ -143,6 +143,10 @@ public class Offer {
 		this.price = price;
 	}
 
+	public void setUnavailableDate(List<UnavailableOfferDates> unavailableDate) {
+		this.unavailableDate = unavailableDate;
+	}
+
 	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
 	}
@@ -173,6 +177,10 @@ public class Offer {
 
 	public void setQuickReservations(List<QuickReservation> quickReservations) {
 		this.quickReservations = quickReservations;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setReservations(List<Reservation> reservations) {

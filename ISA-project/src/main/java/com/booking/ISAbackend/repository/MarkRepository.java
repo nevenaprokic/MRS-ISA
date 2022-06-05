@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MarkRepository extends JpaRepository<Mark, Integer>{
@@ -14,7 +15,7 @@ public interface MarkRepository extends JpaRepository<Mark, Integer>{
     List<Mark> findAllMarkByOfferId(Integer idOffer);
 
     @Query("SELECT m FROM Mark m WHERE m.client.id=?1 AND m.reservation.id=?2")
-    Mark alreadyReviewed(Integer clientId, Integer reservationId);
+    Optional<Mark> alreadyReviewed(Integer clientId, Integer reservationId);
 
     @Query("SELECT m FROM  Mark m WHERE  m.approved = false" +"")
     List<Mark> findAllNotApproved(Sort sendingTime);

@@ -41,8 +41,18 @@ public class ReservationController {
         }catch(Exception ex){
             return ResponseEntity.status(400).body("Something went wrong. Try again.");
         }
-
     }
+
+    @PostMapping("confirm-email")
+    public ResponseEntity<String> sendCofirmationForReservation(@RequestBody ReservationParamsDTO params){
+        try{
+            reservationService.sendEmail(params);
+            return ResponseEntity.ok("Reservation was successful!");
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body("Something went wrong. Try again.");
+        }
+    }
+
     @GetMapping("get-all-by-cottage-owner")
     public ResponseEntity<List<ReservationDTO>> getReservation(@RequestParam String ownerId,@RequestParam String role){
         try{

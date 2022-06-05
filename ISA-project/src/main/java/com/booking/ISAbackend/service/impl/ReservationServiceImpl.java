@@ -82,7 +82,6 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation r = new Reservation(params.getDate(), params.getEndingDate(), ys, params.getTotal(), params.getGuests(), offer, user, false);
         reservationRepository.save(r);
-        emailSender.reservationConfirmation(params);
     }
 
     @Override
@@ -456,6 +455,11 @@ public class ReservationServiceImpl implements ReservationService {
             dataForReport.add(reportDTO);
         }
         return  dataForReport;
+    }
+
+    @Override
+    public void sendEmail(ReservationParamsDTO params) {
+        emailSender.reservationConfirmation(params);
     }
 
 

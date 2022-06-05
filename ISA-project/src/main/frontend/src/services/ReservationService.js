@@ -19,7 +19,7 @@ export function makeReservation(params, close){
     api
     .post("/reservation/make", params)
     .then((responseData) => {
-        console.log(responseData.data);
+        api.post("/reservation/confirm-email", params);
         toast.success(responseData.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
