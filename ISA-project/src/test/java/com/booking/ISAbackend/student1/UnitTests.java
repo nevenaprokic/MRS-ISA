@@ -60,6 +60,7 @@ public class UnitTests {
     MarkRepository markRepository;
 
     @Test()
+    @Transactional
     public void makeReview() throws Exception {
         // 1. Definisanje ponašanja mock objekata
         Reservation r = new Reservation();

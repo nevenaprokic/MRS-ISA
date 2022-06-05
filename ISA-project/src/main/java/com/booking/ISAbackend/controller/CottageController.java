@@ -46,9 +46,7 @@ public class CottageController {
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
-
 
     @GetMapping("get-all")
     public ResponseEntity<List<CottageDTO>> getCottages(){
@@ -183,5 +181,10 @@ public class CottageController {
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<String> testMethod(){
+        return ResponseEntity.ok().body("Successfully change cottage");
     }
 }
