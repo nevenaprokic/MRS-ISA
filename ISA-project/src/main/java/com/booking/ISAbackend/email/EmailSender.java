@@ -13,4 +13,5 @@ public interface EmailSender {
     void notifySubscribersNewQuickReservation(String email, String offerName, String date);
     void notifyClientNewReservation(String email, Reservation reservation);
     void notifyCliendDiscardMark(String email, String message);
+    void notifyNewAdmin(String emeil, String message);
 }

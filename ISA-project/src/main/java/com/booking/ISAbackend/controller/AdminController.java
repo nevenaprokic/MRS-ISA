@@ -38,4 +38,19 @@ public class AdminController {
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
+
+    @PostMapping("add-admin")
+    public ResponseEntity<String> addNewAdmin (@RequestBody UserProfileData newAdminData){
+        try{
+                userService.addNewAdmin(newAdminData);
+                return ResponseEntity.ok().body("Successfully added new admin.");
+        } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong, please try agan later.");
+        }
+
+    }
 }

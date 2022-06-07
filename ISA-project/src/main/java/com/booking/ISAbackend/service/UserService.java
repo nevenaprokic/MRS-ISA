@@ -20,7 +20,7 @@ public interface UserService {
     InstructorProfileData getInstructorDataByEmail(String email);
     void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     void changeInstrctorData(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
-
+    void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
 
     CottageOwner findCottageOwnerByEmail(String email);
 

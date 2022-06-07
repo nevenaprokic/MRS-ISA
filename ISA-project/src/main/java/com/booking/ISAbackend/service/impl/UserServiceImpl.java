@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
 import com.booking.ISAbackend.dto.*;
+import com.booking.ISAbackend.email.EmailService;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPasswordException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
@@ -48,6 +51,12 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -241,6 +250,31 @@ public class UserServiceImpl implements UserService{
 				userRepository.save(instructor);
 			}
 		}
+	}
+
+	@Override
+	@Transactional
+	public void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+		if(validateUserNewData(data)){
+			Address address = new Address(data.getStreet(), data.getCity(), data.getState());
+			addressRepository.save(address);
+			boolean profileDeleted =false;
+			//String password = generateNewAdminPassword();
+			String password = "sifra";
+			//String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address
+			Role role = roleRepository.findByName("ADMIN").get(0);
+			Admin newAdmin = new Admin(data.getFirstName(),
+					data.getLastName(), passwordEncoder.encode(password), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address );
+
+			newAdmin.setEmailVerified(false);
+			userRepository.save(newAdmin);
+			//emailService.notifyNewAdmin(data.getEmail(), password);
+		}
+	}
+
+	private String generateNewAdminPassword() {
+		String password = new Random().ints(10, 33, 122).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
+		return password;
 	}
 
 	private boolean instructorDataValidation(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {

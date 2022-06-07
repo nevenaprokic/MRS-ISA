@@ -13,6 +13,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
 import api from '../../../app/api';
 import { toast } from "react-toastify";
+import { addNewAdmin } from '../../../services/AdminService';
 
 function  AddAdmin(){
 
@@ -31,6 +32,7 @@ function  AddAdmin(){
 
     const onSubmit = (data) => {
         console.log(data);
+        addNewAdmin(data);
     }
 
     return (
