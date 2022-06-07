@@ -19,6 +19,8 @@ import AdminProfile from '../profilePages/userProfile/AdminProfile';
 import RegistrationRequestsList from '../collections/RegistrationRequestsList';
 import LoyalyProgeramPage from '../loyalty/LoyaltyProgramPage';
 import NotApprovedMarks from '../graphs/marks/NotApprovedMarks';
+import AddAdmin from '../forms/user/AddAdmin';
+import "../../style/AddAdminForm.scss"
 
 
 function TabPanel(props) {
@@ -100,12 +102,13 @@ export default function AdminHomePage() {
                     <Tab label="Profile page" {...a11yProps(1)} />
                     <Divider />
                     <Tab label="Users" {...a11yProps(2)} />
-                    <Tab label="Registration requests" {...a11yProps(3)} />
-                    <Tab label="Unchecked marks" {...a11yProps(3)} />
+                    <Tab label="Add new admin" {...a11yProps(3)} />
+                    <Tab label="Registration requests" {...a11yProps(4)} />
+                    <Tab label="Unchecked marks" {...a11yProps(5)} />
                     <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(4)} />
+                    <Tab label="Loyalty program" {...a11yProps(6)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(5)} />
+                    <Tab label="Business reports" {...a11yProps(7)} />
                     
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -117,16 +120,16 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={2}>
                     <AdminProfile />
                 </TabPanel>
-                <TabPanel value={value} index={4}>
-
-                </TabPanel>
                 <TabPanel value={value} index={5}>
-                    <RegistrationRequestsList />
+                  <AddAdmin />
                 </TabPanel>
                 <TabPanel value={value} index={6}>
+                    <RegistrationRequestsList />
+                </TabPanel>
+                <TabPanel value={value} index={7}>
                     <NotApprovedMarks />
                 </TabPanel>
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={9}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
              
