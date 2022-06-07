@@ -21,7 +21,6 @@ export default function Review({ data, startDate, endDate }) {
     (endDate.getMonth() + 1) +
     "/" +
     endDate.getFullYear();
-  console.log(data);
   return (
     <div className="reviewContainer">
       <Typography variant="h5" gutterBottom color={"#CC7351"}>

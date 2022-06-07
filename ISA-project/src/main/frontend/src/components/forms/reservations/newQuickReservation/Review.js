@@ -12,7 +12,6 @@ export default function Review({offer, additionalServicesInputList}) {
 
   let price = offer.price + '€';
   let totalPrice = parseInt(offer.price) * parseInt(offer.daysReservation);
-  console.log(additionalServicesInputList);
   if(additionalServicesInputList.length != 1 && additionalServicesInputList[0].servicePrice !== ''){
     additionalServicesInputList.map((additional) => {totalPrice+= parseInt(additional.servicePrice)});
   }

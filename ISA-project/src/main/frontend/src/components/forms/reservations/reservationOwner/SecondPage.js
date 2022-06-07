@@ -22,14 +22,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-
-const additionalServices = [
-  { serviceName: 'Klima ', servicePrice: '10' },
-  { serviceName: 'Dorucak', servicePrice: '4' },
-  { serviceName: 'Vecera', servicePrice: '5'},
-  { serviceName: 'Rucak', servicePrice: '7'},
-]
-
 export default function SecondPage({setReservation, reservation, offers, checked, setChecked}) {
   const [valueReservation, setValueReservation] = React.useState(new Date());
   let currentOffer = offers.find((offer) => offer.id === reservation.offerId);

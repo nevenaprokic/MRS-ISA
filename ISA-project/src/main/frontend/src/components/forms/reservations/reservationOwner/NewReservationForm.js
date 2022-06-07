@@ -193,8 +193,6 @@ export default function NewReservationForm({ offers, setOffers }) {
       let username = getUsernameFromToken();
       const clientsData = await getClient[role](username);
       setClient(clientsData ? clientsData : {});
-      console.log("KLIJENT")
-      console.log(clientsData);
       return clientsData;
     }
     setDataClient();
@@ -211,7 +209,7 @@ export default function NewReservationForm({ offers, setOffers }) {
         );
       case 2:
         return (
-          <Review reservation={reservation} checked={checked} setReservation={setReservation}/>
+          <Review reservation={reservation} checked={checked} />
         );
       default:
         throw new Error("Unknown step");

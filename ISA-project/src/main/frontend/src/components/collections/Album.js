@@ -33,7 +33,6 @@ export default function Album( {albumData, setAlbumeData}){
 
    
     if(albumData){     
-      {console.log(albumData)}
         return(<Container sx={{ py: 8}} maxWidth="md" >
           <Grid container spacing={4}>
             {albumData.map((offer) => (

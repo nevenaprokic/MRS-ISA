@@ -6,14 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import {addDays} from '../../../../services/UtilService';
 
-const additionalServices = [
-  { serviceName: 'Klima ', servicePrice: '10' },
-  { serviceName: 'Dorucak', servicePrice: '4' },
-  { serviceName: 'Vecera', servicePrice: '5'},
-  { serviceName: 'Rucak', servicePrice: '7'},
-]
-
-export default function Review({reservation, checked, setReservation}) {
+export default function Review({reservation, checked}) {
 
 
   let totalPrice = parseInt(reservation.price) * parseInt(reservation.daysReservation);
