@@ -14,6 +14,8 @@ public class UserProfileData {
     private String city;
     private String state;
 
+    private boolean emailVerified;
+
     public UserProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state) {
         this.email = email;
         this.firstName = firstName;
@@ -25,6 +27,17 @@ public class UserProfileData {
     }
     public UserProfileData(){
 
+    }
+
+    public UserProfileData(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, boolean emailVerified) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.emailVerified = emailVerified;
     }
 
     public String getEmail() {
@@ -54,5 +67,8 @@ public class UserProfileData {
     public String getState() {
         return state;
     }
+
+    public boolean isEmailVerified() {return emailVerified;}
+
 }
 

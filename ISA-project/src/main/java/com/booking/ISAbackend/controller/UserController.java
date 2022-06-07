@@ -43,8 +43,8 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("update-password")
-	public ResponseEntity<String> updatePassword(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+	@PostMapping("update-password/{email}")
+	public ResponseEntity<String> updatePassword(@PathVariable String email, @RequestBody HashMap<String, String> data) {
 		try {
 			userService.isOldPasswordCorrect(email, data);
 			return ResponseEntity.ok("Successfully changed password.");

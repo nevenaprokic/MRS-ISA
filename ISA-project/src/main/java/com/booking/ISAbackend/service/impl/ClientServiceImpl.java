@@ -93,8 +93,8 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientDTO findByEmail(String email) {
         Client client = clientRepository.findByEmail(email);
-        ClientCategory category = clientCategoryService.findCategoryByReservationPoints(client.getPoints()).get(0);
         if(client == null) return null;
+        ClientCategory category = clientCategoryService.findCategoryByReservationPoints(client.getPoints()).get(0);
         ClientDTO dto = new ClientDTO(
                 client.getEmail(),
                 client.getFirstName(),

@@ -27,6 +27,8 @@ import LoyalyProgeramPage from './components/loyalty/LoyaltyProgramPage';
 import ChangeLoyaltyCategory from './components/forms/loyaltyCategory/ChangeLoyaltyCategory';
 import AddLoyaltyCategory from './components/forms/loyaltyCategory/AddLoyaltyCategory';
 import DeleteCategory from './components/forms/loyaltyCategory/DeleteCategory';
+import NotApprovedMarks from './components/graphs/marks/NotApprovedMarks';
+import AddAdmin from './components/forms/user/AddAdmin';
 
 function App() {
   return (
@@ -58,7 +60,8 @@ function App() {
           <Route path='/admin/loyalty-program/change' element={<ChangeLoyaltyCategory/>}/>
           <Route path='/admin/loyalty-program/add-category' element={<AddLoyaltyCategory/>}/>
           <Route path='/admin/loyalty-program/delete-category' element={<DeleteCategory/>}/>
-          <Route path='/admin/unchecked-marks' element={<DeleteCategory/>}/>
+          <Route path='/admin/unchecked-marks' element={<NotApprovedMarks/>}/>
+          <Route path='/admin/add-new-admin' element={<AddAdmin/>}/>
         </Routes>
     </div>
   );
