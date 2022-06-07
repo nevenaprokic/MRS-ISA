@@ -13,7 +13,7 @@ const additionalServices = [
   { serviceName: 'Rucak', servicePrice: '7'},
 ]
 
-export default function Review({reservation, checked}) {
+export default function Review({reservation, checked, setReservation}) {
 
 
   let totalPrice = parseInt(reservation.price) * parseInt(reservation.daysReservation);
@@ -29,7 +29,8 @@ export default function Review({reservation, checked}) {
     { name: 'Start date reservation: ', detail: startDateReservationString},
     { name: 'End date reservation: ', detail: endDateReservationString},
   ];
-  
+  reservation.price = (totalPrice - (totalPrice*reservation.discount/100));
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom color={"#CC7351"}>
@@ -50,9 +51,21 @@ export default function Review({reservation, checked}) {
         ) }
 
         <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Price" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            {totalPrice}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Discount" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            { reservation.discount +"% " }
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {totalPrice + "€"}
+            {(totalPrice - (totalPrice*reservation.discount/100))+"€"}
           </Typography>
         </ListItem>
       </List>

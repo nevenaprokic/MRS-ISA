@@ -14,6 +14,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
 import api from '../../../app/api';
 import { toast } from "react-toastify";
+import "../../../style/ChangeOwnerData.scss";
 
 
 export default function ChangePassword({close}) {

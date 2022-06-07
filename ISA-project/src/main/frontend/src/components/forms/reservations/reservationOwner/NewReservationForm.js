@@ -105,6 +105,7 @@ export default function NewReservationForm({ offers, setOffers }) {
     startDateReservation: "",
     peopleNum: 0,
     price: 0,
+    discount:0,
 
   });
   const [client, setClient] = React.useState();
@@ -123,7 +124,7 @@ export default function NewReservationForm({ offers, setOffers }) {
 
     } else if (activeStep == 2) {
       setActiveStep(activeStep + 1);
-      let params = {...reservation, "services":checked, };
+      let params = {...reservation, "services":checked};
       makeReservationOwner(params);
     } 
   };
@@ -192,6 +193,7 @@ export default function NewReservationForm({ offers, setOffers }) {
       let username = getUsernameFromToken();
       const clientsData = await getClient[role](username);
       setClient(clientsData ? clientsData : {});
+      console.log("KLIJENT")
       console.log(clientsData);
       return clientsData;
     }
@@ -209,7 +211,7 @@ export default function NewReservationForm({ offers, setOffers }) {
         );
       case 2:
         return (
-          <Review reservation={reservation} checked={checked}/>
+          <Review reservation={reservation} checked={checked} setReservation={setReservation}/>
         );
       default:
         throw new Error("Unknown step");

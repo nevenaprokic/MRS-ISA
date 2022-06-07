@@ -100,6 +100,8 @@ export function isAvailableOffer(data){
 
 }
 export function makeReservationOwner(reservation){
+    console.log("RESERVACIJA")
+    console.log(reservation);
     api
     .post("/reservation/make-by-owner", reservation)
     .then((responseData) => {

@@ -35,7 +35,7 @@ export default function Review({offer, additionalServicesInputList}) {
     { name: 'Start date reservation: ', detail: startDateReservationString},
     { name: 'End date reservation: ', detail: endDateReservationString},
   ];
-  
+ 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom color={"#CC7351"}>
