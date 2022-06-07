@@ -10,10 +10,7 @@ import java.util.stream.Collectors;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailService;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPasswordException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 
 import com.booking.ISAbackend.repository.*;
@@ -54,6 +51,8 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private AdminRepository adminRepository;
 
 	@Autowired
 	private EmailService emailService;
@@ -125,6 +124,21 @@ public class UserServiceImpl implements UserService{
 		}
 		return dto;
 	}
+
+	@Override
+	public void cahngeAdminFirstPassword(String email, HashMap<String, String> data) throws InvalidPasswordException {
+		Admin currentUser = adminRepository.findByEmail(email);
+		System.out.println(email);
+		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
+		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
+			currentUser.setPassword(newPasswordHash);
+			currentUser.setFirstLogin(false);
+			userRepository.save(currentUser);
+			return;
+		}
+		throw new InvalidPasswordException("Data is invalid.");
+	}
+
 	@Override
 	public ShipOwner findShipOwnerByEmail(String email){
 		MyUser user = userRepository.findByEmail(email);
@@ -134,10 +148,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public UserProfileData findAdminByEmail(String email) {
-		MyUser user = userRepository.findByEmail(email);
-		UserProfileData adminData = new UserProfileData(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(),
-							user.getAddress().getStreet(), user.getAddress().getCity(), user.getAddress().getState());
+	public AdminDTO findAdminByEmail(String email) {
+		Admin admin = adminRepository.findByEmail(email);
+		AdminDTO adminData = new AdminDTO(admin.getEmail(), admin.getFirstName(), admin.getLastName(), admin.getPhoneNumber(),
+				admin.getAddress().getStreet(), admin.getAddress().getCity(), admin.getAddress().getState(),
+				admin.isEmailVerified(), admin.isDefaultAdmin(), admin.isFirstLogin());
 		return adminData;
 	}
 
@@ -169,6 +184,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		MyUser currentUser = userRepository.findByEmail(email);
+		System.out.println(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
 		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
 			currentUser.setPassword(newPasswordHash);
@@ -254,21 +270,23 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
-		if(validateUserNewData(data)){
+	public void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException, AlreadyExitingUsernameException {
+		MyUser user = userRepository.findByEmail(data.getEmail());
+		if(validateUserNewData(data) && user == null){
 			Address address = new Address(data.getStreet(), data.getCity(), data.getState());
 			addressRepository.save(address);
 			boolean profileDeleted =false;
-			//String password = generateNewAdminPassword();
-			String password = "sifra";
-			//String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address
+			String password = generateNewAdminPassword();
 			Role role = roleRepository.findByName("ADMIN").get(0);
 			Admin newAdmin = new Admin(data.getFirstName(),
-					data.getLastName(), passwordEncoder.encode(password), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address );
+					data.getLastName(), passwordEncoder.encode(password), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address, true, false );
 
-			newAdmin.setEmailVerified(false);
+			newAdmin.setEmailVerified(true);
 			userRepository.save(newAdmin);
-			//emailService.notifyNewAdmin(data.getEmail(), password);
+			emailService.notifyNewAdmin(data.getEmail(), password);
+		}
+		else{
+			throw new AlreadyExitingUsernameException("Email address already exists.");
 		}
 	}
 

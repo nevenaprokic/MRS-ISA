@@ -48,3 +48,44 @@ export function addNewAdmin(adminData){
                         autoClose: 1500,
                     }))
 }
+
+export function firstLoginChangePassword(adminData, close){
+  console.log(adminData);
+    api
+    .post("/admin/change-password/" + getUsernameFromToken(), adminData)
+    .then(res =>{
+        let data = {
+          email: getUsernameFromToken(),
+          password: adminData["newPassword1"]
+        }
+        login(data);
+      close();
+      toast.success(res.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
+    })
+    .catch((err) => {
+      toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+      });
+    });
+}
+
+function login(data){
+    api
+      .post("auth/login", data)
+      .then((res) => {
+        const token = res.data.accessToken;
+        // dekodiranje tokena, da dobijes podatke
+        localStorage.setItem("user", token);
+        window.location = "/user-home-page/admin"
+      })
+      .catch((err) => {
+        toast.error("Username or password is not correct.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        });
+      });
+  }

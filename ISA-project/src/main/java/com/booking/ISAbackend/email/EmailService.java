@@ -106,7 +106,7 @@ public class EmailService implements EmailSender{
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
-        mail.setSubject("Review rejected");
+        mail.setSubject("New admin registration");
         String message = "You have been added as one of admins in our application. Your password for first login is: " + password +
                 " . After first login you have to change password.";
         mail.setText(message);
