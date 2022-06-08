@@ -248,6 +248,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
     }
 
+    @Override
     public Owner findReservationOwner(Reservation reservation) throws UserNotFoundException {
         List<Integer> cottagesId = cottageRepository.getCottagesId();
         List<Integer> adventuresId = adventureReporitory.getAdveturesId();

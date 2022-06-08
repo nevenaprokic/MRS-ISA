@@ -85,4 +85,18 @@ public class AdminController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("complaint-response/{response}/{complaintId}")
+    public ResponseEntity<String> respondOnComplaint(@PathVariable("response")  String response, @PathVariable("complaintId") int complaintId){
+        try{
+            clientService.respondOnComplaint(response, complaintId);
+            return ResponseEntity.ok().body("Successfully send response on complaint");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("Something went wrong. Please try again");
+
+        }
+    }
+
 }

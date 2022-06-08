@@ -4,10 +4,7 @@ import com.booking.ISAbackend.dto.ClientDTO;
 import com.booking.ISAbackend.dto.ClientRequest;
 import com.booking.ISAbackend.dto.ComplaintDTO;
 import com.booking.ISAbackend.dto.OfferDTO;
-import com.booking.ISAbackend.exceptions.AccountDeletionException;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.model.Complaint;
 
@@ -37,4 +34,6 @@ public interface ClientService {
     void makeComplaint(Integer reservationId, String comment, String email) throws Exception;
 
     List<ComplaintDTO> getAllNotDeletedComplaints();
+
+    void respondOnComplaint(String response, int complalintId) throws UserNotFoundException;
 }

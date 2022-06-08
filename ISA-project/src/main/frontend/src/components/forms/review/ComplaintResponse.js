@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import "../../../style/DeleteOrder.scss";
 import "react-toastify/dist/ReactToastify.css";
+import { sentResponseOnComplaint } from "../../../services/AdminService";
 
 function ComplaintResponse({close, complaint, complaints, setComplaints}){
 
@@ -34,6 +35,7 @@ function ComplaintResponse({close, complaint, complaints, setComplaints}){
   
       const onSubmit = (data) => {
         console.log(data);
+        sentResponseOnComplaint(data.response, complaint.id, setComplaints, complaints);
     
         close();
       };

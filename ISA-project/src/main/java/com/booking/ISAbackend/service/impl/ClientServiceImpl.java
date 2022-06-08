@@ -8,6 +8,7 @@ import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ClientCategoryService;
 import com.booking.ISAbackend.service.ClientService;
+import com.booking.ISAbackend.service.ReservationReportService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -63,6 +64,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientCategoryRepository categoryRepository;
+
+    @Autowired
+    private ReservationReportService reservationReportService;
 
     @Override
     @Transactional
@@ -274,6 +278,34 @@ public class ClientServiceImpl implements ClientService {
             complaints.add(createComplaintDTO(complaint));
         }
         return complaints;
+    }
+
+    @Override
+    @Transactional
+    public void respondOnComplaint(String response, int complalintId) throws UserNotFoundException {
+        Optional<Complaint> complaint = complaintRepository.findById(complalintId);
+        if(complaint.isPresent()){
+            Complaint complaintForResponse = complaint.get();
+            Client client = complaintForResponse.getClient();
+            Reservation reservation = complaintForResponse.getReservation();
+            Owner owner = reservationReportService.findReservationOwner(reservation);
+            sendComplaintResponseToUsers(owner, client, reservation, response);
+            complaintForResponse.setDeleted(true);
+            complaintRepository.save(complaintForResponse);
+
+        }
+    }
+
+    @Transactional
+    public void sendComplaintResponseToUsers(Owner owner, Client client, Reservation reservation, String text) {
+        String clientMessage = "Response for complaint on reservation '" + reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + "-" + reservation.getEndDate() + ":  "  + text;
+
+        String ownerMessage = "Response for complaint on reservation  " +  reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + " - " + reservation.getEndDate() + ": " + text;
+
+        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
+        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")
