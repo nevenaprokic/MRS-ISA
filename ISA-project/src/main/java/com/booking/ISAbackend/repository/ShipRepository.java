@@ -35,4 +35,6 @@ public interface ShipRepository extends JpaRepository<Ship, Integer> {
             " AND (s.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (s.price <= :price OR :price = -1) AND (s.shipOwner.email = :email) ")
     List<Ship> searchShipsByShipOwnerEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
 
+    @Query("SELECT s.id FROM Ship s")
+    List<Integer> getShipsId();
 }

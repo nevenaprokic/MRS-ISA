@@ -512,3 +512,49 @@ export function getAllReportInstructor(){
                     })}
         )
 }
+
+export function getAllNotReviewedReservationReports(){
+    return api
+    .get("/reservation-report/all-not-reviewed")
+    .then((response) => response)
+    .catch((err) => toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+    }))
+}
+
+export function addPenaltyToCLient(reservationReport, setReports, reports){
+    api
+    .put("reservation-report/add-penalty/" + reservationReport.reportId)
+    .then((response) => {
+        toast.success(response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })
+        setReports(reports.filter((report) => report.reportId !== reservationReport.reportId));
+        
+    })
+    .catch((err) => toast.error(err.response.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            }))
+
+}
+
+export function rejectPenaltyToCLient(reservationReport, setReports, reports){
+    api
+    .put("reservation-report/reject-penalty/" + reservationReport.reportId)
+    .then((response) => {
+        toast.success(response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })
+        setReports(reports.filter((report) => report.reportId !== reservationReport.reportId));
+        
+    })
+    .catch((err) => toast.error(err.response.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            }))
+
+}

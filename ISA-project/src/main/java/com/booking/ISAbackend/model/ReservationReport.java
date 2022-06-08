@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.model;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Entity
@@ -18,9 +19,18 @@ public class ReservationReport {
 	@OneToOne
 	private Reservation reservation;
 
+	private Boolean reviewed;
+
+	private LocalDate sentDate;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id")
 	private Client client;
+
+	public ReservationReport(){
+
+	}
+
 
 	public ReservationReport(Boolean penalOption, Boolean automaticallyPenal, String comment, Reservation reservation, Client client) {
 		this.penalOption = penalOption;
@@ -53,4 +63,11 @@ public class ReservationReport {
 	public Client getClient() {
 		return client;
 	}
+
+	public Boolean getReviewed(){ return reviewed;}
+	public void setReviewed(boolean reviewed) {this.reviewed = reviewed;}
+
+	public LocalDate getSentDate() {return  sentDate;}
+
+	public void setSentDate(LocalDate sentDate) { this.sentDate = sentDate;}
 }

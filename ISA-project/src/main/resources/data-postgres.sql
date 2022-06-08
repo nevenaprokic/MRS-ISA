@@ -252,7 +252,10 @@ insert into unavailable_offer_dates(offer_id, start_date, end_date) values (7, '
 
 
 /*RESERVATION REPORT*/
-insert into reservation_report(automatically_penal, comment, penal_option, reservation_id)values(false,'Jako prijatni ljudi',false,4);
+insert into reservation_report(automatically_penal, comment, penal_option, reservation_id, reviewed, sent_date) values(false,'Jako prijatni ljudi',false,6, false, '2022-06-05');
+insert into reservation_report(automatically_penal, comment, penal_option, reservation_id, reviewed, sent_date)values(false,'Jako neprijatni ljudi, slomili su pola tanjira i casa i odbilid da to nadoknade.',true,3, false, '2022-04-23');
+insert into reservation_report(automatically_penal, comment, penal_option, reservation_id, reviewed, sent_date)values(false,'Doveli su ljubimce iako to nije dozvoljeno',true,1, false, '2022-04-20');
+insert into reservation_report(automatically_penal, comment, penal_option, reservation_id, reviewed, sent_date)values(false,'Pravili su zurku iako je yabranjena muzika posle 10',true,7, false, '2022-05-29');
 
 /*ADDITIONAL SERVICES*/
 insert into additional_service(name,price) values ('dorucak', 10);

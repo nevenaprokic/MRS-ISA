@@ -2,6 +2,7 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.NewReservationReportDTO;
 import com.booking.ISAbackend.dto.OfferForReportDTO;
+import com.booking.ISAbackend.dto.ReservationReportAdminDTO;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,6 +88,38 @@ public class ReservationReportController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @GetMapping("all-not-reviewed")
+    public ResponseEntity<List<ReservationReportAdminDTO>> getAllNotReviewedReports(){
+        try{
+            List<ReservationReportAdminDTO> reports = reservationReportService.getAllNotReviewedWIthPenaltyOption();
+            return new ResponseEntity<>(reports, reports.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("add-penalty/{reportId}")
+    public ResponseEntity<String> addPenaltyToClient(@PathVariable Integer reportId){
+        try{
+            reservationReportService.addPenaltyToClient(reportId);
+            return ResponseEntity.ok().body("Successfully added penalty to client");
+        }catch(Exception e){
+            return  ResponseEntity.status(400).body("Something went wrong. Please try again");
+        }
+    }
+
+    @PutMapping("reject-penalty/{reportId}")
+    public ResponseEntity<String> rejectPenaltyToClient(@PathVariable Integer reportId){
+        try{
+            reservationReportService.rejectPenaltyOption(reportId);
+            return ResponseEntity.ok().body("Successfully rejected penalty option to client");
+        }catch(Exception e){
+            e.printStackTrace();
+            return  ResponseEntity.status(400).body("Something went wrong. Please try again");
+        }
     }
 
 }
