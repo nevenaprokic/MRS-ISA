@@ -5,31 +5,23 @@ import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.model.ReservationReport;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ReservationReportAdminDTO {
     private String comment;
     private int reportId;
-    private String clientName;
-    private int clientId;
-    private String offerName;
-    private String reservationStartDate;
-    private String reservationEndDate;
     private String reportSentDate;
+    private ReservationDTO reservationDTO;
+    private ClientDTO clientDTO;
 
-    public ReservationReportAdminDTO(String comment, int reportId, String clientName, String offerName,
-                                     String reservationStartDate, String reservationEndDate, String reportSentDate,
-                                      int clientId ) {
-        this.comment = comment;
-        this.reportId = reportId;
-        this.clientName = clientName;
-        this.offerName = offerName;
-        this.reservationStartDate = reservationStartDate;
-        this.reservationEndDate = reservationEndDate;
-        this.reportSentDate = reportSentDate;
-        this.clientId = clientId;
+    public ReservationReportAdminDTO(ReservationReport report, ReservationDTO reservationDTO, ClientDTO clientDTO) {
+        reportId = report.getId();
+        comment = report.getComment();
+        reportSentDate = localDateToString(report.getSentDate());
+        this.reservationDTO = reservationDTO;
+        this.clientDTO = clientDTO;
+
     }
-
-
     public String getComment() {
         return comment;
     }
@@ -38,27 +30,20 @@ public class ReservationReportAdminDTO {
         return reportId;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public String getOfferName() {
-        return offerName;
-    }
-
-    public String getReservationStartDate() {
-        return reservationStartDate;
-    }
-
-    public String getReservationEndDate() {
-        return reservationEndDate;
-    }
-
     public String getReportSentDate() {
         return reportSentDate;
     }
 
-    public int getClientId(){
-        return clientId;
+    public ReservationDTO getReservationDTO() {return reservationDTO;}
+
+    public void setReservationDTO(ReservationDTO dto) {reservationDTO = dto;}
+
+    public ClientDTO getClientDTO() {return clientDTO;}
+
+
+    private String localDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
     }
+
 }

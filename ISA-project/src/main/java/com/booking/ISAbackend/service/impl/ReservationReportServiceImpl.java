@@ -1,8 +1,6 @@
 package com.booking.ISAbackend.service.impl;
 
-import com.booking.ISAbackend.dto.NewReservationReportDTO;
-import com.booking.ISAbackend.dto.OfferForReportDTO;
-import com.booking.ISAbackend.dto.ReservationReportAdminDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ReservationReportService;
@@ -12,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,6 +33,8 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     private AdventureReporitory adventureReporitory;
     @Autowired
     private ShipRepository shipRepository;
+    @Autowired
+    private ClientCategoryRepository clientCategoryRepository;
 
     @Override
     public List<Integer> getReservationReportCottageOwner(String ownerEmail) {
@@ -170,7 +171,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
 
     @Override
     @Transactional
-    public List<ReservationReportAdminDTO> getAllNotReviewedWIthPenaltyOption() {
+    public List<ReservationReportAdminDTO> getAllNotReviewedWIthPenaltyOption() throws IOException {
         List<ReservationReport> reservationReports = reservationReportRepository.findAllNotReviewedForPenalty();
         List<ReservationReportAdminDTO> reportsForAdmin = new ArrayList<ReservationReportAdminDTO>();
         for(ReservationReport report: reservationReports){
@@ -207,20 +208,13 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     }
 
     @Transactional
-    public ReservationReportAdminDTO createAdminReportDTO(ReservationReport report){
+    public ReservationReportAdminDTO createAdminReportDTO(ReservationReport report) throws IOException {
         Reservation reservation = report.getReservation();
-        Offer offer = reservation.getOffer();
+        ReservationDTO reservationDTO = new ReservationDTO(reservation);
         Client client = reservation.getClient();
-        String clientName = client.getLastName() + " " + client.getFirstName();
-
-        ReservationReportAdminDTO reportDTO = new ReservationReportAdminDTO(report.getComment(),
-                report.getId(),
-                clientName,
-                offer.getName(),
-                convertDate(reservation.getStartDate()),
-                convertDate(reservation.getEndDate()),
-                convertDate(report.getSentDate()),
-                client.getId());
+        ClientCategory category = clientCategoryRepository.findByMatchingInterval(client.getPoints()).get(0);
+        ClientDTO clientDTO = new ClientDTO(reservation.getClient(), category.getName());
+        ReservationReportAdminDTO reportDTO = new ReservationReportAdminDTO(report, reservationDTO, clientDTO);
         return reportDTO;
     }
 

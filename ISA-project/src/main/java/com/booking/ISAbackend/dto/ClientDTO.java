@@ -48,6 +48,20 @@ public class ClientDTO {
         
     }
 
+    public ClientDTO(Client c, String category) {
+        this.email = c.getEmail();
+        this.firstName = c.getFirstName();
+        this.lastName = c.getLastName();
+        this.phoneNumber = c.getPhoneNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
+        this.clientCategory = category;
+        this.penal = c.getPenal();
+        this.points = c.getPoints();
+
+    }
+
     public String getEmail() {
         return email;
     }

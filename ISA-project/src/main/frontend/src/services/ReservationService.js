@@ -515,7 +515,7 @@ export function getAllReportInstructor(){
 export function getAllNotReviewedReservationReports(){
     return api
     .get("/reservation-report/all-not-reviewed")
-    .then((response) => console.log(response.data))
+    .then((response) => response)
     .catch((err) => toast.error(err.response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 1500,
