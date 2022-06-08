@@ -74,12 +74,9 @@ public class PhotoServiceImpl implements PhotoService {
         Iterator<Photo> iterator = oldPhotos.iterator();
         while (iterator.hasNext()) {
             Photo photo = iterator.next();
-            String folder = "./src/main/frontend/src/components/images/";
-            Path path = Paths.get(folder + photo.getPath());
-            File file = new File(path.toString());
             iterator.remove();
-            photoRepository.delete(photo);
-            file.delete();
+            photo.setDeleted(true);
+            photoRepository.save(photo);
         }
     }
     @Override

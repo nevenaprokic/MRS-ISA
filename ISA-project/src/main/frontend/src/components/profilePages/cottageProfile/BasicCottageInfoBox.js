@@ -1,5 +1,4 @@
 import "./CottageProfilePage.scss";
-import HomeIcon from "@mui/icons-material/Home";
 import HotelIcon from "@mui/icons-material/Hotel";
 import MeetingRoom from "@mui/icons-material/MeetingRoom";
 import ArticleIcon from "@mui/icons-material/Article";

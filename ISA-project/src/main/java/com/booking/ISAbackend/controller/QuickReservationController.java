@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public class QuickReservationController {
     }
 
     @GetMapping("already-exist")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> alreadyExistQuickReservationForOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dateNumber){
         try {
             Boolean check = quickReservationService.checkQuickReservationByOfferId(Integer.parseInt(offerId), startDate,Integer.parseInt(dateNumber));
@@ -47,6 +49,7 @@ public class QuickReservationController {
     }
 
     @GetMapping("available-period")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> isAvailablePeriod(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dateNumber){
         try {
             Boolean check = offerService.checkUnavailableDate(Integer.parseInt(offerId), startDate,Integer.parseInt(dateNumber));
@@ -56,6 +59,7 @@ public class QuickReservationController {
         }
     }
     @PostMapping("add")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> addNewQuickReservation(@RequestBody NewQuickReservationDTO dto){
         try{
             Integer quickReservationId =  quickReservationService.addNewQuickReservation(dto);
@@ -68,6 +72,7 @@ public class QuickReservationController {
     }
 
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");

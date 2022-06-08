@@ -11,6 +11,7 @@ import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class CottageOwnerController {
     private RegistrationRequestService registrationRequestService;
 
     @GetMapping("profile-info")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<CottageOwnerProfileInfoDTO> getCottageOwnerProfileInfo(@RequestParam String email){
         try{
             CottageOwnerProfileInfoDTO cottageOwner =  userService.getCottageOwnerDataByEmail(email);
@@ -35,6 +37,7 @@ public class CottageOwnerController {
     }
 
     @PostMapping("change-data")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageOwnerData(@RequestBody CottageOwnerNewDataDTO newData){
         try{
             userService.changeCottageOwnerData(newData);
@@ -45,6 +48,7 @@ public class CottageOwnerController {
     }
 
     @PostMapping("send-delete-request")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> sendDeleteRequestCottageOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(userService.sendDeleteRequestCottageOwner(email, data.get("reason")))

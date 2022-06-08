@@ -13,7 +13,6 @@ import { useState, useEffect } from "react";
 import ChangeAdventureForm from "../../forms/adventure/ChangeAdventureForm";
 import Modal from '@mui/material/Modal';
 import { toast } from "react-toastify";
-import { getMarkByOfferId } from "../../../services/MarkService";
 import Rating from "@mui/material/Rating";
 import MapBox from "../cottageProfile/MapBox";
 import DeleteAdventure from "../../forms/adventure/DeleteAdventure";

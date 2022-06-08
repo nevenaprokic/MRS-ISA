@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.OptimisticLockException;
@@ -28,6 +29,7 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @PostMapping("make")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<String> makeReservation(@RequestBody ReservationParamsDTO params){
         try {
             reservationService.makeReservation(params);
@@ -48,6 +50,7 @@ public class ReservationController {
     }
 
     @PostMapping("confirm-email")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<String> sendCofirmationForReservation(@RequestBody ReservationParamsDTO params){
         try{
             reservationService.sendEmail(params);
@@ -58,6 +61,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-all-by-cottage-owner")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     public ResponseEntity<List<ReservationDTO>> getReservation(@RequestParam String ownerId,@RequestParam String role){
         try{
             List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);
@@ -68,6 +72,7 @@ public class ReservationController {
 
     }
     @GetMapping("get-all-by-ship-owner")
+    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
     public ResponseEntity<List<ReservationDTO>> getReservationByShipOwner(@RequestParam String ownerId,@RequestParam String role){
         try{
             List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);
@@ -79,6 +84,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-cottage-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getPastCottageReservationsClient(@RequestParam String email) {
         try {
             List<ReservationDTO> reservations = reservationService.getPastCottageReservationsByClient(email);
@@ -89,6 +95,7 @@ public class ReservationController {
     }
 
     @GetMapping("available-offer")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> isAvailableOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dayNum){
         try{
             Boolean check = reservationService.isAvailableOffer(Integer.parseInt(offerId), startDate, Integer.parseInt(dayNum));
@@ -99,6 +106,7 @@ public class ReservationController {
     }
 
     @PostMapping("make-by-owner")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> makeReservationOwner(@RequestBody NewReservationDTO dto){
         try {
             Integer reservationId = reservationService.makeReservationOwner(dto);
@@ -112,6 +120,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-ship-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getPastShipReservationsClient(@RequestParam String email){
         try{
             List<ReservationDTO> reservations = reservationService.getPastShipReservationsByClient(email);
@@ -122,6 +131,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-adventure-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getPastAdventureReservationsClient(@RequestParam String email){
         try{
             List<ReservationDTO> reservations = reservationService.getPastAdventureReservationsByClient(email);
@@ -133,6 +143,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-upcoming-cottage-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getUpcomingCottageReservationsClient(@RequestParam String email) {
         try {
             List<ReservationDTO> reservations = reservationService.getUpcomingCottageReservationsByClient(email);
@@ -143,6 +154,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-upcoming-ship-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getUpcomingShipReservationsClient(@RequestParam String email){
         try{
             List<ReservationDTO> reservations = reservationService.getUpcomingShipReservationsByClient(email);
@@ -153,6 +165,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-upcoming-adventure-reservations-by-client")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getUpcomingAdventureReservationsClient(@RequestParam String email){
         try{
             List<ReservationDTO> reservations = reservationService.getUpcomingAdventureReservationsByClient(email);
@@ -163,6 +176,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('CLIENT')")
     public ResponseEntity<String> cancelReservation(@PathVariable Integer id) {
         try {
             reservationService.cancelReservation(id);
@@ -174,6 +188,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-attendance-report-yearly-cottage")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyCottage(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyCottage(email, date);
@@ -184,6 +199,7 @@ public class ReservationController {
 
     }
     @GetMapping("get-attendance-report-monthly-cottage")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyCottage(@RequestParam String email, @RequestParam String date){
         try{
           List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyCottage(email, date);
@@ -194,6 +210,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-attendance-report-weekly-cottage")
+    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyCottage(@RequestParam String email, @RequestParam String date){
         try{
           List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyCottage(email, date);
@@ -203,6 +220,7 @@ public class ReservationController {
         }
     }
     @GetMapping("get-attendance-report-yearly-ship")
+    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyShip(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyShip(email, date);
@@ -213,6 +231,7 @@ public class ReservationController {
 
     }
     @GetMapping("get-attendance-report-monthly-ship")
+    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyShip(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyShip(email, date);
@@ -223,6 +242,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-attendance-report-weekly-ship")
+    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyShip(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyShip(email, date);
@@ -232,6 +252,7 @@ public class ReservationController {
         }
     }
     @GetMapping("get-attendance-report-yearly-adventure")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportYearlyAdventure(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportYearlyAdventure(email, date);
@@ -242,6 +263,7 @@ public class ReservationController {
 
     }
     @GetMapping("get-attendance-report-monthly-adventure")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportMonthlyAdventure(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportMonthlyAdventure(email, date);
@@ -252,6 +274,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-attendance-report-weekly-adventure")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<AttendanceReportDTO>> getAttendanceReportWeeklyAdventure(@RequestParam String email, @RequestParam String date){
         try{
             List<AttendanceReportDTO> report = reservationService.getAttendanceReportWeeklyAdventure(email, date);
@@ -261,6 +284,7 @@ public class ReservationController {
         }
     }
     @GetMapping("instructor-history")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<ReservationDTO>> getReservationByInstructor(@RequestParam String ownerId,@RequestParam String role){
         try{
             List<ReservationDTO> reservations = reservationService.getAllReservation(ownerId, role);

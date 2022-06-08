@@ -213,7 +213,7 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException {
+    public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException {
         Cottage cottage = cottageRepository.findCottageById(cottageId);
         String cottageOwnerEmail = cottage.getCottageOwner().getEmail();
         System.out.println(cottageDTO.getName());
@@ -226,7 +226,11 @@ public class CottageServiceImpl implements CottageService {
             cottage.setCancellationConditions(cottageDTO.getCancellationConditions());
             cottage.setPhotos(updateCottagePhotos(cottageDTO.getPhotos(), cottage.getPhotos(), cottageOwnerEmail));
 
+            cottage.setNumberOfModify(cottage.getNumberOfModify()+1);
+
             updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
+
+            Thread.sleep(cottage.getBedNumber()*2000);
             cottageRepository.save(cottage);
         }
     }

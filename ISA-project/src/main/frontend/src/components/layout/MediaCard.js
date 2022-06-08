@@ -10,7 +10,6 @@ import "../../style/MediaCard.scss";
 import CottageProfilePage from "../profilePages/cottageProfile/CottageProfilePage";
 import { useState } from "react";
 import { useEffect } from 'react';
-import {getMarkByOfferId} from '../../services/MarkService';
 import Rating from '@mui/material/Rating';
 import { getRoleFromToken} from "../../app/jwtTokenUtils";
 import Modal from '@mui/material/Modal';

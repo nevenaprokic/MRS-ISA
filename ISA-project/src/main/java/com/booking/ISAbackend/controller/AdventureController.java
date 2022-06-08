@@ -8,6 +8,7 @@ import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,7 @@ public class AdventureController {
     private OfferService offerService;
 
     @PostMapping(value = "add-adventure" )
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> addAdventure(@RequestParam("email") String ownerEmail,
                                                @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                                @RequestParam("offerName") String offerName,
@@ -62,6 +64,7 @@ public class AdventureController {
     }
 
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
         try{
 
@@ -79,6 +82,7 @@ public class AdventureController {
     }
 
     @GetMapping("instructor-adventures")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<List<AdventureDTO>> getInstructorAdventures(@RequestParam String email){
         try{
             List<AdventureDTO> adventures = adventureService.getInstructorAdventures(email);
@@ -89,6 +93,7 @@ public class AdventureController {
     }
 
     @GetMapping("details")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<AdventureDetailsDTO> getAdventureDetail(@RequestParam String id){
         try{
             AdventureDetailsDTO adventure = adventureService.findAdventureById(Integer.parseInt(id));
@@ -100,6 +105,7 @@ public class AdventureController {
     }
 
     @PostMapping("update-adventure")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventureData(@RequestBody AdventureDTO newAdventureData){
          try{
              adventureService.updateAdventure(newAdventureData, newAdventureData.getId());
@@ -111,6 +117,7 @@ public class AdventureController {
     }
 
     @PostMapping("update-adventure-services")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventrueAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -125,6 +132,7 @@ public class AdventureController {
     }
 
     @GetMapping("search-adventures")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
 
         try{
@@ -137,6 +145,7 @@ public class AdventureController {
     }
 
     @GetMapping("update-allowed")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<Boolean> isAllowedAdventureUpdate(@RequestParam String email, @RequestParam int adventureId){
         try{
             Boolean allowedUpdate = adventureService.chechUpdateAllowed(adventureId);
@@ -149,6 +158,7 @@ public class AdventureController {
     }
 
     @GetMapping("allowed-operation")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<Boolean> isAllowedAdventureOperation(@RequestParam Integer adventureId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(adventureId);
@@ -161,6 +171,7 @@ public class AdventureController {
     }
 
     @GetMapping("delete")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> deleteAdventure(@RequestParam Integer adventureId){
         try{
             offerService.delete(adventureId);

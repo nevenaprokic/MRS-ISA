@@ -11,6 +11,9 @@ public class Photo {
     @Column(nullable = false)
     private String path;
 
+    @Column(nullable = false)
+    private Boolean deleted;
+
     public Photo(String url) {
         this.path = url;
     }
@@ -24,6 +27,14 @@ public class Photo {
 
     public Integer getId() {
         return id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
 

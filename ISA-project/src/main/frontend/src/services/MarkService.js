@@ -1,20 +1,6 @@
 import api from "../app/api";
 import { toast } from "react-toastify";
 
-export function getMarkByOfferId(id){
-    return api
-        .get("/mark/get", {
-            params:{
-                id:id
-            }
-        })
-        .then((data) => data)
-        .catch((err) => {
-            console.log("Nije uspesno dobavljeno");
-            return err.message;
-        });
-}
-
 export function getMarkByCottageOwnerEmail(email){
     return api
         .get("/mark/get-all-cottage", {

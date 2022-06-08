@@ -16,6 +16,7 @@ import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class InstructorController {
     }
 
     @PostMapping("search-client")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
@@ -63,6 +65,7 @@ public class InstructorController {
         }
     }
     @PostMapping("delete-profile-request")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> sendDeleteRequestInstructor(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(instructorService.sendDeleteRequest(email, data.get("reason")))
@@ -75,6 +78,7 @@ public class InstructorController {
     }
 
     @PostMapping("change-data")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
         try{
             userService.changeInstrctorData(newData);

@@ -10,6 +10,8 @@ import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,7 @@ public class CottageController {
     private OfferService offerService;
 
     @GetMapping("get-cottages-by-owner-email")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
         try{
             List<CottageDTO> cottages = cottageService.findCottageByCottageOwnerEmail(email);
@@ -69,6 +72,7 @@ public class CottageController {
         }
     }
     @GetMapping("search-by-owner")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
@@ -79,6 +83,7 @@ public class CottageController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> addCottage(@RequestParam("email") String ownerEmail,
                                              @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                              @RequestParam("offerName") String offerName,
@@ -110,6 +115,7 @@ public class CottageController {
 
     }
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -125,6 +131,7 @@ public class CottageController {
     }
 
     @PostMapping("search-client")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesClient(params);
@@ -134,6 +141,7 @@ public class CottageController {
         }
     }
     @GetMapping("allowed-operation")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer cottageId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(cottageId);
@@ -146,6 +154,7 @@ public class CottageController {
     }
 
     @GetMapping("delete")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
         try{
             offerService.delete(cottageId);
@@ -159,10 +168,13 @@ public class CottageController {
         }
     }
     @PostMapping("update")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageData(@RequestBody CottageDTO newCottageData){
         try{
             cottageService.updateCottage(newCottageData, newCottageData.getId());
             return ResponseEntity.ok().body("Successfully update cottage.");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -170,6 +182,7 @@ public class CottageController {
     }
 
     @PostMapping("update-cottage-services")
+    @PreAuthorize("hasRole('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -181,10 +194,5 @@ public class CottageController {
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping
-    public ResponseEntity<String> testMethod(){
-        return ResponseEntity.ok().body("Successfully change cottage");
     }
 }

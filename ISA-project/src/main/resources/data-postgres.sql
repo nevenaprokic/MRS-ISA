@@ -95,55 +95,55 @@ insert into additional_service(name,price) values ('vecera', 3);
 insert into additional_service(name,price) values ('fen', 8);
 
 /*PHOTO*/
-insert into photo(path) values('pecanje6.jpg');
-insert into photo(path) values('bela ladja1.jpg');
-insert into photo(path) values('brvnara1.jpg');
-insert into photo(path) values('brvnara2.jpg');
-insert into photo(path) values('original.jpg');
-insert into photo(path) values('pecanje1.jpg');
-insert into photo(path) values('pecanje2.jpg');
-insert into photo(path) values('pecanje3.jpg');
-insert into photo(path) values('pecanje4.jpg');
-insert into photo(path) values('pecanje5.jpg');
-insert into photo(path) values('pecanje7.jpg');
-insert into photo(path) values('pecanje8.jpg');
-insert into photo(path) values('pecanje9.jpg');
-insert into photo(path) values('pecanje10.jpg');
+insert into photo(path,deleted) values('pecanje6.jpg',false);
+insert into photo(path,deleted) values('bela ladja1.jpg',false);
+insert into photo(path,deleted) values('brvnara1.jpg',false);
+insert into photo(path,deleted) values('brvnara2.jpg',false);
+insert into photo(path,deleted) values('original.jpg',false);
+insert into photo(path,deleted) values('pecanje1.jpg',false);
+insert into photo(path,deleted) values('pecanje2.jpg',false);
+insert into photo(path,deleted) values('pecanje3.jpg',false);
+insert into photo(path,deleted) values('pecanje4.jpg',false);
+insert into photo(path,deleted) values('pecanje5.jpg',false);
+insert into photo(path,deleted) values('pecanje7.jpg',false);
+insert into photo(path,deleted) values('pecanje8.jpg',false);
+insert into photo(path,deleted) values('pecanje9.jpg',false);
+insert into photo(path,deleted) values('pecanje10.jpg',false);
 
-insert into photo(path) values('galeb.jpg');
-insert into photo(path) values('sidro.jpeg');
-insert into photo(path) values('jela1.jpg');
-insert into photo(path) values('sumska vila1.jpg');
-insert into photo(path) values('sumska vila2.jpg');
-insert into photo(path) values('sumska vila3.jpg');
-insert into photo(path) values('sumska vila4.jpg');
-insert into photo(path) values('hmf1.jpg');
-insert into photo(path) values('hmf2.jpg');
+insert into photo(path,deleted) values('galeb.jpg',false);
+insert into photo(path,deleted) values('sidro.jpeg',false);
+insert into photo(path,deleted) values('jela1.jpg',false);
+insert into photo(path,deleted) values('sumska vila1.jpg',false);
+insert into photo(path,deleted) values('sumska vila2.jpg',false);
+insert into photo(path,deleted) values('sumska vila3.jpg',false);
+insert into photo(path,deleted) values('sumska vila4.jpg',false);
+insert into photo(path,deleted) values('hmf1.jpg',false);
+insert into photo(path,deleted) values('hmf2.jpg',false);
 
 /*COTTAGE*/
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,30,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1, 20,2);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,40,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2, 14, 1);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u miru i tisini u prirodi.','Jela',3,25,'Nije dozvoljeno bilo kakvo unistavanje imovine.',3, 1, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu! U blizini se nalazi ski staza.','Vikendica Raj',2,30,'Nije dozvoljeno bilo kakvo unistavanje imovine.',1, 20,2, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Sjajan pogled na sumu i planinu!','Brvnara',4,40,'Nije dozvoljeno bilo kakvo unistavanje imovine.',2, 14, 1, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u miru i tisini u prirodi.','Jela',3,25,'Nije dozvoljeno bilo kakvo unistavanje imovine.',3, 1, 0, 0);
 
 insert into cottage(bed_number, room_number, id, my_user_id) values (2,2,1,5);
 insert into cottage(bed_number, room_number, id, my_user_id) values (4,3,2,5);
 insert into cottage(bed_number, room_number, id, my_user_id) values (3,2,3,6);
 
 /*SHIP*/
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,60,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4, 0, 1);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,120,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5, 1, 1);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,50,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6, 1,1);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Bela jahta na obali Dunava','Galeb',2,60,'Nije dozvoljeno bilo kakvo unistavanje imovine.',4, 0, 1, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivanje krstarenjem Dunava uz prijatnu palubu i kabinu za odmor.','Bela ladja',15,120,'Nije dozvoljeno bilo kakvo unistavanje imovine.',5, 1, 1, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Sidro',3,50,'Nije dozvoljeno bilo kakvo unistavanje imovine.',6, 1,1, 0);
 
 insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',8,'Jahta',4,7);
 insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Ne poseduje pecarosku opremu',20,2,200,'GPS, VHF RADIO',12,'Jahta',5,8);
 insert into ship(additional_equipment, max_speed, motor_number, motor_power, navigation_equipment, size, type, id, ship_owner_id) values ('Poseduje pecarosku opremu',18,1,200,'GPS, VHF RADIO',7,'Jahta',6,8);
 
 /*ADVENTURE*/
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje na Ibru',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7, 3, 2);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na Tisi',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8, 2, 0);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Dunavu',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',9, 0, 0);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Savi',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10, 0, 0);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Mušičarenje',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10, 3, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u pecanju ribe.','Pecanje na Ibru',5,6000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',7, 3, 2, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Pecanje kao vid opustanja','Avantura na Tisi',10,12000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',8, 2, 0, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Dunavu',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',9, 0, 0, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Avantura na Savi',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10, 0, 0, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Uzivajte u zvucima talasanja vode!','Mušičarenje',3,5000,'Nije dozvoljeno bilo kakvo unistavanje imovine i prirode.',10, 3, 0, 0);
 
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',7,9);
 insert into adventure(additional_equipment, id, my_user_id) values ('Ne poseduje pecarosku opremu',8,9);
@@ -151,8 +151,8 @@ insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pe
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',10,9);
 insert into adventure(additional_equipment, id, my_user_id) values ('Poseduje pecarosku opremu',11,9);
 
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Sumska vila se nalazi na Kopaoniku, na 6 km od ski-centra Kopaonik i nudi smeštaj sa barom, besplatnim WiFi internetom, zajedničkom kuhinjom i zajedničkim salonom','Sumska vila',8,120,'Nije dozvoljeno bilo kakvo unistavanje imovine.',11, 0, 0);
-insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Holiday Home Floris nudi smeštaj sa terasom i pogledom na planinu, a nalazi se na oko 6 km od ski-centra Kopaonik. Gosti ove vikendice mogu da koriste vrt, pribor za pripremu roštilja, besplatan WiFi i besplatan privatni parking.','Holiday Home Floris',5,150,'Nije dozvoljeno bilo kakvo unistavanje imovine.',12, 0, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Sumska vila se nalazi na Kopaoniku, na 6 km od ski-centra Kopaonik i nudi smeštaj sa barom, besplatnim WiFi internetom, zajedničkom kuhinjom i zajedničkim salonom','Sumska vila',8,120,'Nije dozvoljeno bilo kakvo unistavanje imovine.',11, 0, 0, 0);
+insert into offer(cancellation_conditions, deleted, description, name, number_of_person, price, rules_of_conduct, address_id, number_of_reservations, number_of_quick_reservations, number_of_modify) values ('Dozvoljeno je otkazivanje 3 dana pre.',false,'Objekat Holiday Home Floris nudi smeštaj sa terasom i pogledom na planinu, a nalazi se na oko 6 km od ski-centra Kopaonik. Gosti ove vikendice mogu da koriste vrt, pribor za pripremu roštilja, besplatan WiFi i besplatan privatni parking.','Holiday Home Floris',5,150,'Nije dozvoljeno bilo kakvo unistavanje imovine.',12, 0, 0, 0);
 
 insert into cottage(bed_number, room_number, id, my_user_id) values (4,4,12,5);
 insert into cottage(bed_number, room_number, id, my_user_id) values (3,3,13,5);
