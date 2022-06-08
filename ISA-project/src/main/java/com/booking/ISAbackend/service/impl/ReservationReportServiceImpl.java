@@ -199,7 +199,22 @@ public class ReservationReportServiceImpl implements ReservationReportService {
             client.setPenal(client.getPenal()+ 1);
             clientRepository.save(client);
             reservationReport.setReviewed(true);
+            reservationReportRepository.save(reservationReport);
             sendAddPenaltyEmailToUsers(owner, client, reservationReport.getReservation());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void rejectPenaltyOption(Integer reportId) throws UserNotFoundException {
+        Optional<ReservationReport> report = reservationReportRepository.findById(reportId);
+        if(report.isPresent()){
+            ReservationReport reservationReport = report.get();
+            Owner owner = findReservationOwner(reservationReport.getReservation());
+            Client client = reservationReport.getReservation().getClient();
+            reservationReport.setReviewed(true);
+            reservationReportRepository.save(reservationReport);
+            sendRejectPenaltyEmailToUsers(owner, client, reservationReport.getReservation());
         }
     }
 
@@ -208,7 +223,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         String clientMessage = "You GOT 1 PENALTY for reservation '" + reservation.getOffer().getName() + "' for period:  " +
         reservation.getStartDate().toString() + "-" + reservation.getEndDate() + "  at the request of the owner.";
 
-        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + "GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
+        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + " GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
                 reservation.getStartDate().toString() + " - " + reservation.getEndDate() + "  on your request.";
 
         emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
@@ -220,14 +235,14 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         String clientMessage = "You DIDN'T GET 1 PENALTY for reservation '" + reservation.getOffer().getName() + "' for period:  " +
                 reservation.getStartDate().toString() + "-" + reservation.getEndDate() + "  at the request of the owner.";
 
-        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + "DIDN'T GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
+        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + " DIDN'T GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
                 reservation.getStartDate().toString() + " - " + reservation.getEndDate() + "  on your request.";
 
         emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
         emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
     }
 
-    private Owner findReservationOwner(Reservation reservation) throws UserNotFoundException {
+    public Owner findReservationOwner(Reservation reservation) throws UserNotFoundException {
         List<Integer> cottagesId = cottageRepository.getCottagesId();
         List<Integer> adventuresId = adventureReporitory.getAdveturesId();
         List<Integer> shipsId = shipRepository.getShipsId();

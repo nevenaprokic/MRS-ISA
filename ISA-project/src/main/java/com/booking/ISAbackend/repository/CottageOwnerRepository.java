@@ -11,6 +11,6 @@ public interface CottageOwnerRepository extends JpaRepository<CottageOwner, Inte
     CottageOwner findById(int id);
     CottageOwner findByEmail(String email);
 
-    @Query("SELECT c FROM CottageOwner  c INNER JOIN Cottage ct WHERE ct.id = ?1 AND ct.cottageOwner.id = c.id")
+    @Query("SELECT DISTINCT c FROM CottageOwner  c INNER JOIN Cottage ct ON ct.id = ?1 WHERE ct.cottageOwner.id = c.id")
     CottageOwner findCottageOwnerByCottageId(int cottageId);
 }

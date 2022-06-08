@@ -107,7 +107,18 @@ public class ReservationReportController {
             reservationReportService.addPenaltyToClient(reportId);
             return ResponseEntity.ok().body("Successfully added penalty to client");
         }catch(Exception e){
-            return  ResponseEntity.ok().body("Something went wrong. Please try again");
+            return  ResponseEntity.status(400).body("Something went wrong. Please try again");
+        }
+    }
+
+    @PutMapping("reject-penalty/{reportId}")
+    public ResponseEntity<String> rejectPenaltyToClient(@PathVariable Integer reportId){
+        try{
+            reservationReportService.rejectPenaltyOption(reportId);
+            return ResponseEntity.ok().body("Successfully rejected penalty option to client");
+        }catch(Exception e){
+            e.printStackTrace();
+            return  ResponseEntity.status(400).body("Something went wrong. Please try again");
         }
     }
 

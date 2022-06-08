@@ -19,4 +19,6 @@ public interface ReservationReportService {
     List<Integer> getNotReportedReservationsInstructor(String ownerEmail);
     List<ReservationReportAdminDTO> getAllNotReviewedWIthPenaltyOption() throws IOException;
     void addPenaltyToClient(Integer reportId) throws UserNotFoundException;
+
+    void rejectPenaltyOption(Integer reportId) throws UserNotFoundException;
 }

@@ -12,6 +12,6 @@ public interface ShipOwnerRepository extends JpaRepository<ShipOwner, Integer> {
     ShipOwner findByEmail(String email);
 
 
-    @Query("SELECT s FROM ShipOwner  s INNER JOIN Ship sh WHERE sh.id = ?1 AND sh.shipOwner.id = s.id")
+    @Query("SELECT DISTINCT s FROM ShipOwner  s INNER JOIN Ship sh ON sh.id = ?1 WHERE sh.shipOwner.id = s.id")
     ShipOwner findShipOwnerByShipId(int shipId);
 }

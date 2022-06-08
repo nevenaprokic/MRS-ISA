@@ -29,6 +29,6 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
     )
     List<Instructor> searchInstructorsClient(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("address")String address);
 
-    @Query("SELECT i FROM Instructor  i INNER JOIN Adventure a WHERE a.id = ?1 AND a.instructor.id = i.id")
+    @Query("SELECT DISTINCT i FROM Instructor i INNER JOIN Adventure a ON a.id = ?1 WHERE a.instructor.id = i.id")
     Instructor findInstructorByAdventure(int adventureId);
 }

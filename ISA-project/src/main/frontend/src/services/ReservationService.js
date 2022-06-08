@@ -522,10 +522,38 @@ export function getAllNotReviewedReservationReports(){
     }))
 }
 
-export function addPenaltyToCLient(reservationReport, setReports){
+export function addPenaltyToCLient(reservationReport, setReports, reports){
+    api
+    .put("reservation-report/add-penalty/" + reservationReport.reportId)
+    .then((response) => {
+        toast.success(response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })
+        setReports(reports.filter((report) => report.reportId !== reservationReport.reportId));
+        
+    })
+    .catch((err) => toast.error(err.response.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            }))
 
 }
 
-export function rejectPenaltyToCLient(reservationReport, setReports){
+export function rejectPenaltyToCLient(reservationReport, setReports, reports){
+    api
+    .put("reservation-report/reject-penalty/" + reservationReport.reportId)
+    .then((response) => {
+        toast.success(response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                    })
+        setReports(reports.filter((report) => report.reportId !== reservationReport.reportId));
+        
+    })
+    .catch((err) => toast.error(err.response.data, {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                                autoClose: 1500,
+                            }))
 
 }

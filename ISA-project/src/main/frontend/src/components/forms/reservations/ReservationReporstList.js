@@ -43,16 +43,17 @@ function Row({report, setReports, reports}) {
 
     });
 
-    function handleRequestAccepted(report){
-      
+    function handleRequestAccepted(reviewdReport){
+      addPenaltyToCLient(reviewdReport, setReports, reports);
     }
 
-    function handleRejectMark(report){
-      
+    function handleRejectMark(reviewdReport){
+        console.log("tuu");
+      rejectPenaltyToCLient(reviewdReport, setReports, reports);
     }
 
     return (
-         !!reports &&
+         !!reports && !!setReports &&
         <ThemeProvider theme={theme}>
       <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
