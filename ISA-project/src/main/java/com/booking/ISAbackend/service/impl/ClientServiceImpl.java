@@ -258,7 +258,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Complaint> m = Optional.ofNullable(complaintRepository.alreadyReviewed(c.getId(), reservationId));
         if(m.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Complaint a = new Complaint(comment, r.get(), c, false);
+            Complaint a = new Complaint(comment, r.get(), c, false, LocalDate.now());
             complaintRepository.save(a);
         }else{
             throw new Exception();
@@ -300,8 +300,9 @@ public class ClientServiceImpl implements ClientService {
                 category.getName(),
                 client.getPenal(),
                 localDateToString(reservation.getStartDate()),
-                localDateToString(reservation.getEndDate())
-                );
+                localDateToString(reservation.getEndDate()),
+                localDateToString(complaint.getRecivedTime())
+        );
         return dto;
     }
 

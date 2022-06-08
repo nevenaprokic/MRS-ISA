@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Complaint {
@@ -21,13 +22,16 @@ public class Complaint {
 
 	private boolean deleted;
 
+	private LocalDate recivedTime;
+
 	public Complaint() {}
 
-	public Complaint(String text, Reservation reservation, Client client, boolean deleted) {
+	public Complaint(String text, Reservation reservation, Client client, boolean deleted, LocalDate recivedTime) {
 		this.text = text;
 		this.reservation = reservation;
 		this.client = client;
 		this.deleted = deleted;
+		this.recivedTime = recivedTime;
 	}
 
 	public Integer getId() {
@@ -59,4 +63,6 @@ public class Complaint {
 	public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
 	public Client getClient() {return client;}
+
+	public LocalDate getRecivedTime() {return recivedTime;}
 }

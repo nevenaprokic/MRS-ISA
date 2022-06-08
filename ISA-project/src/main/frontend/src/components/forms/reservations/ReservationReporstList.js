@@ -48,7 +48,6 @@ function Row({report, setReports, reports}) {
     }
 
     function handleRejectMark(reviewdReport){
-        console.log("tuu");
       rejectPenaltyToCLient(reviewdReport, setReports, reports);
     }
 

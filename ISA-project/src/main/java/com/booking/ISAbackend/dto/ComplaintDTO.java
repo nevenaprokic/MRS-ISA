@@ -9,8 +9,10 @@ public class ComplaintDTO {
     private int clientPenalty;
     private String reservationStartDate;
     private String reservationEndDate;
+    private String recivedTime;
 
-    public ComplaintDTO(int id, String text, String offerName, String clientName, String clientCategory, int clientPenalty, String reservationStartDate, String reservationEndDate) {
+    public ComplaintDTO(int id, String text, String offerName, String clientName, String clientCategory, int clientPenalty,
+                        String reservationStartDate, String reservationEndDate, String recivedTime) {
         this.id = id;
         this.text = text;
         this.offerName = offerName;
@@ -19,6 +21,7 @@ public class ComplaintDTO {
         this.clientPenalty = clientPenalty;
         this.reservationStartDate = reservationStartDate;
         this.reservationEndDate = reservationEndDate;
+        this.recivedTime = recivedTime;
     }
 
     public int getId() {
@@ -51,5 +54,9 @@ public class ComplaintDTO {
 
     public String getReservationEndDate() {
         return reservationEndDate;
+    }
+
+    public String getRecivedTime(){
+        return recivedTime;
     }
 }
