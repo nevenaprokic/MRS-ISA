@@ -28,11 +28,14 @@ import TablePagination from '@mui/material/TablePagination';
 import ratingIcon from '../../images/satisfaction.png';
 import table_icon from '../../images/reservation_report_icon.png';
 import Divider from '@mui/material/Divider';
+import ComplaintResponse from "./ComplaintResponse";
+import { Modal } from "@mui/material";
 
 
 function Row({complaint, setComplaints, complaints}) {
    
     const [open, setOpen] = React.useState(false);
+    const [openResponse, setOpenResponse] = useState(false);
 
     function executeOnClick(isExpanded) {
         console.log(isExpanded);
@@ -46,8 +49,12 @@ function Row({complaint, setComplaints, complaints}) {
 
     });
 
-    function handleEnterResponse(reviewdReport){
-     //addPenaltyToCLient(reviewdReport, setComplaints, complaints);
+    function handleOpenResponse(){
+      setOpenResponse(true);
+    }
+
+    function handleCloseResponse(){
+        setOpenResponse(false);
     }
 
     return (
@@ -74,7 +81,7 @@ function Row({complaint, setComplaints, complaints}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleEnterResponse(complaint)}
+                    onClick={() => handleOpenResponse(complaint)}
                   >
                   respond to the complaint 
                   </Button></TableCell>
@@ -129,6 +136,15 @@ function Row({complaint, setComplaints, complaints}) {
               </Box>
             </Collapse>
           </TableCell>
+          <Modal
+                open={openResponse}
+                onClose={handleCloseResponse}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <ComplaintResponse complaint={complaint} close={handleCloseResponse} setComplaints={setComplaints} complaints={complaints}/>
+              </Modal>
         </TableRow>
       </React.Fragment>
       </ThemeProvider>
