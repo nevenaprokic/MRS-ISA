@@ -1,4 +1,3 @@
-import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken, getRoleFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
@@ -100,6 +99,8 @@ export function isAvailableOffer(data){
 
 }
 export function makeReservationOwner(reservation){
+    console.log("RESERVACIJA")
+    console.log(reservation);
     api
     .post("/reservation/make-by-owner", reservation)
     .then((responseData) => {
@@ -280,7 +281,7 @@ export function getAttendanceReportYearlyCottage(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => {return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -297,7 +298,7 @@ export function getAttendanceReportMonthlyCottage(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => {return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -314,7 +315,7 @@ export function getAttendanceReportWeeklyCottage(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -332,7 +333,7 @@ export function getAttendanceReportYearlyShip(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -349,7 +350,7 @@ export function getAttendanceReportMonthlyShip(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -366,7 +367,7 @@ export function getAttendanceReportWeeklyShip(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -384,7 +385,7 @@ export function getAttendanceReportYearlyAdventure(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -401,7 +402,7 @@ export function getAttendanceReportMonthlyAdventure(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -418,7 +419,7 @@ export function getAttendanceReportWeeklyAdventure(date){
             date:date
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -434,7 +435,7 @@ export function reviewReport(valueStartDate, valueEndDate, username){
             email: username
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .then((responseData) => {return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -450,7 +451,7 @@ export function reviewReportShip(valueStartDate, valueEndDate, username){
             email: username
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
@@ -466,7 +467,7 @@ export function reviewReportAdventure(valueStartDate, valueEndDate, username){
             email: username
         },
       })
-    .then((responseData) => {console.log("IZVESTAJ prihoda"); console.log(responseData.data); return responseData;})
+    .then((responseData) => { return responseData;})
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,

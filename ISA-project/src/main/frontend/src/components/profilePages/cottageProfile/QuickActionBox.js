@@ -38,7 +38,9 @@ function QuickActionBox({ offer }) {
 
   useEffect(() => {
     async function setData() {
-      isAllowedToMakeReservation(setCanReserve);
+      let role = getRoleFromToken();
+      if(userType.CLIENT == role)
+        isAllowedToMakeReservation(setCanReserve);
       let quickActions = await getQuickActionByOfferId(offer.id);
       setQuickActionsData(!!quickActions ? quickActions.data : {});
       return quickActions;

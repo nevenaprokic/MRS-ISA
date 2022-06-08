@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import "../attendanceSchedule/Graph.scss";
 import Grid from "@mui/material/Grid";
 import * as React from "react";
@@ -61,29 +61,19 @@ function IncomeStatement() {
   function handleIncomeStatement() {
     if (checkDate()) {
       getData();
-      !!reportData &&
-        setReport(
-          report.concat(
-            <div>
-              <Review
-                data={reportData}
-                startDate={valueStartDate}
-                endDate={valueEndDate}
-              />
-            </div>
-          )
-        );
     }
   }
 
   const handleStartDateReport = (newValue) => {
     setValueStartDate(newValue);
     setReport([]);
+    
   };
 
   const handleEndDateReport = (newValue) => {
     setValueEndDate(newValue);
     setReport([]);
+   
   };
 
   return (
@@ -137,7 +127,15 @@ function IncomeStatement() {
           </Grid>
         </Box>
 
-        <div style={{ height: "50px", width: "1000px" }}>{report}</div>
+        <div style={{ height: "50px", width: "1000px" }}>{!!reportData &&
+        <div>
+          <Review
+            data={reportData}
+            startDate={valueStartDate}
+            endDate={valueEndDate}
+          />
+        </div>
+      }</div>
       </LocalizationProvider>
     </div>
   );

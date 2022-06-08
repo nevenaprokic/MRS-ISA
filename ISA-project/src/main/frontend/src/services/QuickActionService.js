@@ -1,7 +1,5 @@
-import axios from "axios";
 import api from "../app/api";
 import { toast } from "react-toastify";
-import {getUsernameFromToken} from '../app/jwtTokenUtils';
 
 export function getQuickActionByOfferId(id) {
   return api

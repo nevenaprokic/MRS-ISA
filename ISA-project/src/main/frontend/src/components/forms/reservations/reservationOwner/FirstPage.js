@@ -11,7 +11,7 @@ export default function FirstPage({clients, setReservation, offers, role}) {
     let email = selectedOffer.split("-")[0];
     let currentClient = clients.find((client) => client.email === email);
     setReservation(prevState => {
-        return{...prevState, clientUserName:currentClient.email, clientName: currentClient.firstName, clientLastName:currentClient.lastName}
+        return{...prevState, clientUserName:currentClient.email, clientName: currentClient.firstName, clientLastName:currentClient.lastName,  discount:currentClient.discount}
       })
     let currentOffer = offers.find((offer) => offer.id === currentClient.offerId);
    
