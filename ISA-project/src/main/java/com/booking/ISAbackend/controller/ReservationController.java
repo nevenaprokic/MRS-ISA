@@ -96,14 +96,12 @@ public class ReservationController {
 
     @PostMapping("make-by-owner")
     public ResponseEntity<Integer> makeReservationOwner(@RequestBody NewReservationDTO dto){
-        Integer reservationId = reservationService.makeReservationOwner(dto);
-        return ResponseEntity.ok(reservationId);
-//        try{
-//            Integer reservationId = reservationService.makeReservationOwner(dto);
-//            return ResponseEntity.ok(reservationId);
-//        }catch(Exception ex){
-//            return ResponseEntity.status(400).body(null);
-//        }
+        try{
+            Integer reservationId = reservationService.makeReservationOwner(dto);
+            return ResponseEntity.ok(reservationId);
+        }catch(Exception ex){
+            return ResponseEntity.status(400).body(null);
+        }
 
     }
 
