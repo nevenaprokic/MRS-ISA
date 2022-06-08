@@ -1,4 +1,4 @@
-import { getAllNotReviewedReservationReports } from "../../../services/ReservationService";
+import { getAllNotReviewedReservationReports, addPenaltyToCLient, rejectPenaltyToCLient } from "../../../services/ReservationService";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 

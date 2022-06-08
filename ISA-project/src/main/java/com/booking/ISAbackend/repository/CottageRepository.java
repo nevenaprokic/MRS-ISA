@@ -34,4 +34,7 @@ public interface CottageRepository extends JpaRepository<Cottage, Integer> {
             " AND (lower(c.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', c.name, '%')))"+
             " AND (c.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (c.price <= :price OR :price = -1) AND (c.cottageOwner.email = :email) ")
     List<Cottage> searchCottagesByCottageOwnerEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
+
+    @Query("SELECT c.id FROM Cottage c")
+    List<Integer> getCottagesId();
 }

@@ -1,12 +1,12 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.*;
+import com.booking.ISAbackend.email.EmailSender;
+import com.booking.ISAbackend.exceptions.UserNotFoundException;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,14 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     private ShipRepository shipRepository;
     @Autowired
     private ClientCategoryRepository clientCategoryRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private CottageOwnerRepository cottageOwnerRepository;
+    @Autowired
+    private ShipOwnerRepository shipOwnerRepository;
+    @Autowired
+    private EmailSender emailSender;
 
     @Override
     public List<Integer> getReservationReportCottageOwner(String ownerEmail) {
@@ -178,6 +186,64 @@ public class ReservationReportServiceImpl implements ReservationReportService {
             reportsForAdmin.add(createAdminReportDTO(report));
         }
         return reportsForAdmin;
+    }
+
+    @Override
+    @Transactional
+    public void addPenaltyToClient(Integer reportId) throws UserNotFoundException {
+        Optional<ReservationReport> report = reservationReportRepository.findById(reportId);
+        if(report.isPresent()){
+            ReservationReport reservationReport = report.get();
+            Owner owner = findReservationOwner(reservationReport.getReservation());
+            Client client = reservationReport.getReservation().getClient();
+            client.setPenal(client.getPenal()+ 1);
+            clientRepository.save(client);
+            reservationReport.setReviewed(true);
+            sendAddPenaltyEmailToUsers(owner, client, reservationReport.getReservation());
+        }
+    }
+
+    @Transactional
+    public void sendAddPenaltyEmailToUsers(Owner owner, Client client, Reservation reservation) {
+        String clientMessage = "You GOT 1 PENALTY for reservation '" + reservation.getOffer().getName() + "' for period:  " +
+        reservation.getStartDate().toString() + "-" + reservation.getEndDate() + "  at the request of the owner.";
+
+        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + "GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + " - " + reservation.getEndDate() + "  on your request.";
+
+        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
+        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
+    }
+
+    @Transactional
+    public void sendRejectPenaltyEmailToUsers(Owner owner, Client client, Reservation reservation) {
+        String clientMessage = "You DIDN'T GET 1 PENALTY for reservation '" + reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + "-" + reservation.getEndDate() + "  at the request of the owner.";
+
+        String ownerMessage = "Client: " + client.getFirstName() + " " + client.getLastName() + "DIDN'T GET 1 PENALTY for reservation " +  reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + " - " + reservation.getEndDate() + "  on your request.";
+
+        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
+        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
+    }
+
+    private Owner findReservationOwner(Reservation reservation) throws UserNotFoundException {
+        List<Integer> cottagesId = cottageRepository.getCottagesId();
+        List<Integer> adventuresId = adventureReporitory.getAdveturesId();
+        List<Integer> shipsId = shipRepository.getShipsId();
+        Offer offer = reservation.getOffer();
+        if(cottagesId.contains(offer.getId())){
+            return cottageOwnerRepository.findCottageOwnerByCottageId(offer.getId());
+        }
+        else if(adventuresId.contains(offer.getId())){
+            return instructorRepository.findInstructorByAdventure(offer.getId());
+        }
+        else if(shipsId.contains(offer.getId())){
+            return shipOwnerRepository.findShipOwnerByShipId(offer.getId());
+        }
+        else{
+            throw new UserNotFoundException("Offer's owner not foud.");
+        }
     }
 
     private ArrayList<OfferForReportDTO> listInitializationAdventure(String email){

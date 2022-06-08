@@ -101,4 +101,14 @@ public class ReservationReportController {
         }
     }
 
+    @PutMapping("add-penalty/{reportId}")
+    public ResponseEntity<String> addPenaltyToClient(@PathVariable Integer reportId){
+        try{
+            reservationReportService.addPenaltyToClient(reportId);
+            return ResponseEntity.ok().body("Successfully added penalty to client");
+        }catch(Exception e){
+            return  ResponseEntity.ok().body("Something went wrong. Please try again");
+        }
+    }
+
 }

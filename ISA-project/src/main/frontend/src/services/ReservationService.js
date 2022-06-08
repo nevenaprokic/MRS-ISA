@@ -521,3 +521,11 @@ export function getAllNotReviewedReservationReports(){
         autoClose: 1500,
     }))
 }
+
+export function addPenaltyToCLient(reservationReport, setReports){
+
+}
+
+export function rejectPenaltyToCLient(reservationReport, setReports){
+
+}

@@ -1,6 +1,5 @@
 package com.booking.ISAbackend.email;
 
-import com.booking.ISAbackend.confirmationToken.ConfirmationToken;
 import com.booking.ISAbackend.dto.ReservationParamsDTO;
 import com.booking.ISAbackend.model.Reservation;
 import org.springframework.mail.MailException;
@@ -14,4 +13,5 @@ public interface EmailSender {
     void notifyClientNewReservation(String email, Reservation reservation);
     void notifyCliendDiscardMark(String email, String message);
     void notifyNewAdmin(String emeil, String message);
+    void notifyUserAboutReservationReport(String email, String message);
 }
