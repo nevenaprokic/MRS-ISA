@@ -11,14 +11,10 @@ import { useForm } from "react-hook-form";
 import { useRef } from "react";
 import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
-import { getUsernameFromToken } from '../../../app/jwtTokenUtils';
-import api from '../../../app/api';
-import { toast } from "react-toastify";
-import "../../../style/ChangeOwnerData.scss";
 import { firstLoginChangePassword } from '../../../services/AdminService';
 
 
-export default function ChangePassword({close, setUpdatePassword}) {
+export default function AdminPasswordChange({close}) {
 
   const theme = createTheme({
     palette: {
@@ -36,29 +32,8 @@ export default function ChangePassword({close, setUpdatePassword}) {
   const password = useRef({});
   password.current = watch("newPassword1", "");
 
- 
   const onSubmit = (data) => {
-    console.log(getUsernameFromToken());
-    if(!!setUpdatePassword){
-      firstLoginChangePassword(data, close)
-    }
-    else{
-      api
-      .post("/user/update-password/" + getUsernameFromToken(), data)
-      .then(res => {
-        close();
-        toast.success(res.data, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-      })
-      .catch((err) => {
-        toast.error(err.response.data, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 1500,
-        });
-      });
-    }
+      
   }
 
   return (

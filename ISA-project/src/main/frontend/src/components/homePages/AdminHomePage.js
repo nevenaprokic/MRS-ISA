@@ -13,13 +13,18 @@ import MainNavigationHome from '../layout/MainNavigationHome';
 import Grid from '@mui/material/Grid';
 import Search from '../forms/search/Search';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ClientProfile from '../profilePages/userProfile/ClientProfile';
 import AdminProfile from '../profilePages/userProfile/AdminProfile';
 import RegistrationRequestsList from '../collections/RegistrationRequestsList';
 import LoyalyProgeramPage from '../loyalty/LoyaltyProgramPage';
 import NotApprovedMarks from '../graphs/marks/NotApprovedMarks';
-
+import AddAdmin from '../forms/user/AddAdmin';
+import "../../style/AddAdminForm.scss";
+import {getAdminByEmail} from "../../services/AdminService"
+import ChangePassword from '../forms/user/ChangePassword';
+import { width } from '@mui/system';
+import { Modal } from '@mui/material';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -58,6 +63,21 @@ export default function AdminHomePage() {
    
 
     const [value, setValue] = useState(0);
+    const [openPasswordForm, setOpenPasswordForm] = useState(false);
+    const [adminData, setAdminData] = useState();
+    const [updatePassword, setUpdatePassword] = useState(false);
+
+    useEffect(() => {
+      async function setAdmin(){
+        const response = await getAdminByEmail();
+        console.log(response.data)
+        setAdminData(response.data ? response.data : {});
+        if(response.data.firstLogin) {
+          handleOpenPasswordForm();
+        }
+      }
+      setAdmin();
+    }, []);
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -70,14 +90,27 @@ export default function AdminHomePage() {
             },
 
       });
-      const secondaryTheme = createTheme({
-        palette: {
-          primary: { main:'#9DAB86'},
-          secondary: { main:'#ffffff'},
-        },
+     
+      function handleOpenPasswordForm(){
+        setOpenPasswordForm(true);
+      }
 
-  });
-  return (
+      function handleClosePasswordForm(){
+        setOpenPasswordForm(false);
+        console.log(updatePassword);
+        if(updatePassword){
+          window.location = "/user-home-page/admin";
+        }
+        else{
+          //window.location = "/log-in";
+        } 
+       
+      }
+
+  if(!!adminData) {
+    if(!adminData.firstLogin){
+    return (
+        !!setUpdatePassword &&
         <ThemeProvider theme={outerTheme}>
           <MainNavigationHome/>
             <Container maxWidth="100%">
@@ -101,12 +134,16 @@ export default function AdminHomePage() {
                     <Divider />
                     <Tab label="Users" {...a11yProps(2)} />
                     <Tab label="Registration requests" {...a11yProps(3)} />
-                    <Tab label="Unchecked marks" {...a11yProps(3)} />
+                    <Tab label="Unchecked marks" {...a11yProps(4)} />
                     <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(4)} />
+                    <Tab label="Loyalty program" {...a11yProps(5)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(5)} />
+                    <Tab label="Business reports" {...a11yProps(6)} />
+                    <Divider />
+                    {adminData.defaultAdmin &&  
                     
+                    <Tab label="Add new admin" {...a11yProps(7)} />
+                    }
                 </Tabs>
                 <TabPanel value={value} index={0}>
                   <p style={{marginTop:'0px', marginBottom:'0px', fontSize:'30px', color:'#CC7351'}}>Search<SearchIcon/></p>
@@ -117,9 +154,7 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={2}>
                     <AdminProfile />
                 </TabPanel>
-                <TabPanel value={value} index={4}>
-
-                </TabPanel>
+               
                 <TabPanel value={value} index={5}>
                     <RegistrationRequestsList />
                 </TabPanel>
@@ -129,10 +164,34 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={8}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
+                {adminData.defaultAdmin &&  
+                  <TabPanel value={value} index={12}>
+                    <AddAdmin />
+                  </TabPanel>
+                }
              
                 </Box>
             </Container>
             </ThemeProvider>
 
   );
+  }
+  else{
+    
+    return (
+      !!setUpdatePassword &&
+      <Modal
+      open={openPasswordForm}
+      onClose={handleClosePasswordForm}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      sx={{backgroundColor:"rgb(218, 224, 210, 0.6)", overflow:"auto"}}
+  >
+          <ChangePassword close={handleClosePasswordForm} setUpdatePassword={setUpdatePassword}/>
+      
+    </Modal>
+    );
+    
+  }
+}
 }

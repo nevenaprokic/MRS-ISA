@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.booking.ISAbackend.dto.*;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPasswordException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 
 import com.booking.ISAbackend.model.*;
 
@@ -20,15 +17,14 @@ public interface UserService {
     InstructorProfileData getInstructorDataByEmail(String email);
     void changeOwnerData(NewOwnerDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     void changeInstrctorData(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
-
+    void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException, AlreadyExitingUsernameException;
 
     CottageOwner findCottageOwnerByEmail(String email);
 
     Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException;
     ShipOwner findShipOwnerByEmail(String email);
 
-
-    UserProfileData findAdminByEmail(String email);
+    AdminDTO findAdminByEmail(String email);
     void changeAdminData(UserProfileData newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
 
     Instructor findInstructorByEmail(String email);
@@ -38,4 +34,6 @@ public interface UserService {
     boolean sendDeleteRequestShipOwner(String email, String reason);
     CottageOwnerProfileInfoDTO getCottageOwnerDataByEmail(String email);
     ShipOwnerProfileInfoDTO getShipOwnerDataByEmail(String email);
+
+    void cahngeAdminFirstPassword(String email, HashMap<String, String> data) throws InvalidPasswordException;
 }
