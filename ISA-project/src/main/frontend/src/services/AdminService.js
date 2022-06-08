@@ -88,3 +88,27 @@ function login(data){
         });
       });
   }
+
+  export function getAllComplaints(){
+    return api
+    .get("/admin/all-complaints")
+    .then((response) => response)
+    .catch((err) => console.log(err));
+  }
+
+  export function sentResponseOnComplaint(response, complaintID, setComplaints, complaints){
+    api
+    .put("admin/complaint-response/"+ response+ "/"+complaintID)
+    .then((response)=> { toast.success(response.data, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 1500,
+                        })
+              setComplaints(complaints.filter((complaint) => complaint.id !== complaintID));
+
+              })
+    .catch((err) => toast.error(err.response.data, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: 1500,
+                        }))
+
+  }

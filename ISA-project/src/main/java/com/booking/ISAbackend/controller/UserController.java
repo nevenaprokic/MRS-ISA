@@ -29,8 +29,6 @@ public class UserController {
 	@Autowired
 	private RegistrationRequestService registrationRequestService;
 
-
-
 	@PostMapping("registration-owner")
 	@PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
 	public ResponseEntity<String> sendOwnerRegistration(@RequestBody OwnerRegistrationRequestDTO request){

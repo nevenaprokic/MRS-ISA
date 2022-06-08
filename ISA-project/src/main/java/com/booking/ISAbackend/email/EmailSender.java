@@ -14,4 +14,5 @@ public interface EmailSender {
     void notifyCliendDiscardMark(String email, String message);
     void notifyNewAdmin(String emeil, String message);
     void notifyUserAboutReservationReport(String email, String message);
+    void sendResponseOnComplaint(String email, String message);
 }

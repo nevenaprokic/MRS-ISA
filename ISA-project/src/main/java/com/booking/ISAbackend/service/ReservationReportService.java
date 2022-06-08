@@ -4,6 +4,8 @@ import com.booking.ISAbackend.dto.NewReservationReportDTO;
 import com.booking.ISAbackend.dto.OfferForReportDTO;
 import com.booking.ISAbackend.dto.ReservationReportAdminDTO;
 import com.booking.ISAbackend.exceptions.UserNotFoundException;
+import com.booking.ISAbackend.model.Owner;
+import com.booking.ISAbackend.model.Reservation;
 import com.booking.ISAbackend.model.ReservationReport;
 
 import java.io.IOException;
@@ -21,4 +23,5 @@ public interface ReservationReportService {
     void addPenaltyToClient(Integer reportId) throws UserNotFoundException;
 
     void rejectPenaltyOption(Integer reportId) throws UserNotFoundException;
+    Owner findReservationOwner(Reservation reservation) throws UserNotFoundException;
 }

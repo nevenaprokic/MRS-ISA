@@ -26,6 +26,7 @@ import ChangePassword from '../forms/user/ChangePassword';
 import { width } from '@mui/system';
 import { Modal } from '@mui/material';
 import ReservationReportsList from '../forms/reservations/ReservationReporstList';
+import ComplaintList from '../forms/review/ComplaintsList';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -137,14 +138,15 @@ export default function AdminHomePage() {
                     <Tab label="Registration requests" {...a11yProps(3)} />
                     <Tab label="Unchecked marks" {...a11yProps(4)} />
                     <Tab label="Reservation reports" {...a11yProps(5)} />
+                    <Tab label="Complaints" {...a11yProps(6)} />
                     <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(6)} />
+                    <Tab label="Loyalty program" {...a11yProps(7)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(7)} />
+                    <Tab label="Business reports" {...a11yProps(8)} />
                     <Divider />
                     {adminData.defaultAdmin &&  
                     
-                    <Tab label="Add new admin" {...a11yProps(8)} />
+                    <Tab label="Add new admin" {...a11yProps(9)} />
                     }
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -165,11 +167,14 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={6}>
                     <NotApprovedMarks />
                 </TabPanel>
-                <TabPanel value={value} index={9}>
+                <TabPanel value={value} index={8}>
+                    <ComplaintList />
+                </TabPanel>
+                <TabPanel value={value} index={10}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
                 {adminData.defaultAdmin &&  
-                  <TabPanel value={value} index={13}>
+                  <TabPanel value={value} index={14}>
                     <AddAdmin />
                   </TabPanel>
                 }

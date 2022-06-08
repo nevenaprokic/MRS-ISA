@@ -1,3 +1,6 @@
+
+import { getAllComplaints } from "../../../services/AdminService";
+
 import { getAllNotReviewedReservationReports, addPenaltyToCLient, rejectPenaltyToCLient } from "../../../services/ReservationService";
 import { useEffect, useState } from "react";
 import * as React from 'react';
@@ -25,11 +28,14 @@ import TablePagination from '@mui/material/TablePagination';
 import ratingIcon from '../../images/satisfaction.png';
 import table_icon from '../../images/reservation_report_icon.png';
 import Divider from '@mui/material/Divider';
+import ComplaintResponse from "./ComplaintResponse";
+import { Modal } from "@mui/material";
 
 
-function Row({report, setReports, reports}) {
+function Row({complaint, setComplaints, complaints}) {
    
     const [open, setOpen] = React.useState(false);
+    const [openResponse, setOpenResponse] = useState(false);
 
     function executeOnClick(isExpanded) {
         console.log(isExpanded);
@@ -43,16 +49,16 @@ function Row({report, setReports, reports}) {
 
     });
 
-    function handleRequestAccepted(reviewdReport){
-      addPenaltyToCLient(reviewdReport, setReports, reports);
+    function handleOpenResponse(){
+      setOpenResponse(true);
     }
 
-    function handleRejectMark(reviewdReport){
-      rejectPenaltyToCLient(reviewdReport, setReports, reports);
+    function handleCloseResponse(){
+        setOpenResponse(false);
     }
 
     return (
-         !!reports && !!setReports &&
+         !!complaint && !!setComplaints &&
         <ThemeProvider theme={theme}>
       <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -66,29 +72,20 @@ function Row({report, setReports, reports}) {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell> 
-          <TableCell sx={{fontSize: 16}} align="center" >{report.reservationDTO.offerName}</TableCell>
-          <TableCell sx={{fontSize: 16}} align="center">{`${report.reservationDTO.clienName} ${report.reservationDTO.clientLastName}`}</TableCell>
-          <TableCell sx={{fontSize: 16}} align="center">{report.reportSentDate}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center" >{complaint.offerName}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center">{`${complaint.clientName}`}</TableCell>
+          <TableCell sx={{fontSize: 16}} align="center">{complaint.recivedTime}</TableCell>
           <TableCell ><Button 
                     type="submit"
                     variant="contained"
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleRequestAccepted(report)}
+                    onClick={() => handleOpenResponse(complaint)}
                   >
-                  Add penalty 
+                  respond to the complaint 
                   </Button></TableCell>
-          <TableCell ><Button 
-                    type="submit"
-                    variant="contained"
-                    sx={{float:"right"}}
-                    color="secondary"
-                    size="small"
-                    onClick={() => handleRejectMark(report)}
-                  >
-                  Reject penalty
-                  </Button></TableCell>
+          
         </TableRow>
        
         <TableRow>
@@ -96,7 +93,7 @@ function Row({report, setReports, reports}) {
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                  Comment
+                  Text
                 </Typography>
                 <div >
                         <ShowMoreText
@@ -111,62 +108,59 @@ function Row({report, setReports, reports}) {
                             width={280}
                             truncatedEndingComponent={"... "}
                         >
-                            {report.comment}
+                            {complaint.text}
                         </ShowMoreText>
                 </div>
                 <br></br>
-                <Typography variant="h6" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                  Reservation details
-                </Typography>
-                    <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Reservation date:
-                        <label className="textItem"> {`${report.reservationDTO.startDate}  -  ${report.reservationDTO.endDate}`} </label>
-                    </Typography>
-                    <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Persons: 
-                        <label className="textItem"> {report.reservationDTO.numberOfPerson} </label>
-                    </Typography>
+                
                 <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Price: 
-                        <label className="textItem"> {report.reservationDTO.price} e</label>
+                    Reservation date:
+                    <label className="textItem"> {`${complaint.reservationStartDate}  -  ${complaint.reservationEndDate}`} </label>
                 </Typography>
+                    
                 <br></br>
-                <Typography variant="h6" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                  Client details
-                </Typography><Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Name: 
-                        <label className="textItem"> {`${report.clientDTO.firstName} ${report.clientDTO.lastName}`} </label>
+                <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
+                        Client name: 
+                        <label className="textItem"> {complaint.clientName} </label>
                 </Typography>
                 <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Category: 
-                        <label className="textItem"> {`${report.clientDTO.clientCategory}`} </label>
+                        Client category: 
+                        <label className="textItem"> {`${complaint.clientCategory}`} </label>
                 </Typography>
                 <Typography variant="body1" gutterBottom component="div" sx={{color:"#5f6d5f"}}>
-                        Penal: 
-                        <label className="textItem"> {`${report.clientDTO.penal}`} </label>
+                        Client penalty: 
+                        <label className="textItem"> {`${complaint.clientPenalty}`} </label>
                 </Typography>
                 
                 
               </Box>
             </Collapse>
           </TableCell>
+          <Modal
+                open={openResponse}
+                onClose={handleCloseResponse}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
+              >
+                <ComplaintResponse complaint={complaint} close={handleCloseResponse} setComplaints={setComplaints} complaints={complaints}/>
+              </Modal>
         </TableRow>
       </React.Fragment>
       </ThemeProvider>
     );
   }
 
-function ReservationReportsList(){
+function ComplaintList(){
     
-    const [reports, setReports] = useState();
+    const [complaints, setComplaints] = useState();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         async function setData(){
-            const responseData = await getAllNotReviewedReservationReports();
-          
-            setReports(responseData.data ? responseData.data : {});
+            const responseData = await getAllComplaints();
+            setComplaints(responseData.data ? responseData.data : {});
         }
         setData();
 
@@ -183,10 +177,10 @@ function ReservationReportsList(){
     
 
     return (
-        !!reports && 
+        !!complaints && 
         <div className="requestsC ontainer">
             <Typography variant="h6" sx={{color:"#5f6d5f"}}>
-                As an administrator, you are able to add penalty points to clients depending on their behaviour during the reservation.
+                As an administrator, you are able to answer on client's complaints.
             </Typography>
             <Divider/>
 
@@ -216,9 +210,9 @@ function ReservationReportsList(){
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {reports.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                {complaints.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     
-                    <Row key={row.id} report={row} setReports={setReports} reports={reports}/>
+                    <Row key={row.id} complaint={row} setComplaints={setComplaints} complaints={complaints}/>
                 ))}
                 </TableBody>
             </Table>
@@ -226,16 +220,15 @@ function ReservationReportsList(){
         <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={reports.length}
+            count={complaints.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {reports.length === 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservation reports for reviewing</Typography>}
+      {complaints.length === 0 && <Typography variant="h6" sx={{color:"#CC7351"}}>There are currently no reservation reports for reviewing</Typography>}
     </div>
     )
 }
 
-
-export default ReservationReportsList;
+export default ComplaintList;

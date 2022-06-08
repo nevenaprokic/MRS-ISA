@@ -123,5 +123,15 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
     }
 
+    @Override
+    public void sendResponseOnComplaint(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response on complaint");
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
 
 }
