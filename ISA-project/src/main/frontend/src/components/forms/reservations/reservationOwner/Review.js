@@ -6,13 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import {addDays} from '../../../../services/UtilService';
 
-const additionalServices = [
-  { serviceName: 'Klima ', servicePrice: '10' },
-  { serviceName: 'Dorucak', servicePrice: '4' },
-  { serviceName: 'Vecera', servicePrice: '5'},
-  { serviceName: 'Rucak', servicePrice: '7'},
-]
-
 export default function Review({reservation, checked}) {
 
 
@@ -29,7 +22,8 @@ export default function Review({reservation, checked}) {
     { name: 'Start date reservation: ', detail: startDateReservationString},
     { name: 'End date reservation: ', detail: endDateReservationString},
   ];
-  
+  reservation.price = (totalPrice - (totalPrice*reservation.discount/100));
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom color={"#CC7351"}>
@@ -50,9 +44,21 @@ export default function Review({reservation, checked}) {
         ) }
 
         <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Price" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            {totalPrice}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Discount" />
+          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            { reservation.discount +"% " }
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {totalPrice + "€"}
+            {(totalPrice - (totalPrice*reservation.discount/100))+"€"}
           </Typography>
         </ListItem>
       </List>

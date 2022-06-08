@@ -44,8 +44,8 @@ public class ClientController {
         return ResponseEntity.ok("Registration was successful.");
     }
 
-    @GetMapping("profile-info")
-    public ResponseEntity<ClientDTO> getClientProfileInfo(@RequestParam String email){
+    @GetMapping("profile-info/{email}")
+    public ResponseEntity<ClientDTO> getClientProfileInfo(@PathVariable("email") String email){
         ClientDTO dto = clientService.findByEmail(email);
         return ResponseEntity.ok(dto);
     }

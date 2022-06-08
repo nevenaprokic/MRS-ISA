@@ -9,6 +9,7 @@ import com.booking.ISAbackend.service.QuickReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -59,6 +60,8 @@ public class QuickReservationController {
         try{
             Integer quickReservationId =  quickReservationService.addNewQuickReservation(dto);
             return ResponseEntity.ok(String.valueOf(quickReservationId));
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. Please try again and create new quick reservation.");
         }catch(Exception ex){
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }

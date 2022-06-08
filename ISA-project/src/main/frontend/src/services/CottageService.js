@@ -1,4 +1,3 @@
-import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";

@@ -45,7 +45,7 @@ export default function ConfirmDialog({ close, cb, actionData, offerData }) {
   useEffect(() => {
     async function setData() {
       const request = await api.get(
-        "client/profile-info?email=" + getUsernameFromToken()
+        "client/profile-info/" + getUsernameFromToken()
       ).catch(() => { console.log("Doslo je do greske kod dobavljanja podataka o klijentu."); });
       setClientData(request ? request.data : null);
     }

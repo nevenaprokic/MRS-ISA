@@ -72,7 +72,7 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
     }
     @Async
-    public void notifySubscribersNewQuickReservation(String email, String offerName, String date){
+    public void notifySubscribersNewQuickReservation(String email, String offerName, String date) throws MailException{
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
@@ -81,8 +81,8 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
     }
 
-    @Override
-    public void notifyClientNewReservation(String email, Reservation reservation) {
+    @Async
+    public void notifyClientNewReservation(String email, Reservation reservation) throws MailException{
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));

@@ -1,9 +1,7 @@
-import axios from "axios";
 import api from "../app/api";
 import { getUsernameFromToken } from "../app/jwtTokenUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { sendDeleteRequestShipOwner } from "./ShipOwnerService";
 
 export const sendDeleteRequestClient = (data) => {
     console.log(data);

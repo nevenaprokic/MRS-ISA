@@ -1,7 +1,5 @@
-import axios from "axios";
 import api from "../app/api";
 import { toast } from "react-toastify";
-import {getUsernameFromToken} from '../app/jwtTokenUtils';
 
 export function getQuickActionByOfferId(id) {
   return api
@@ -67,7 +65,7 @@ export function makeQuickReservation(data, additionalServicesInputList) {
       });
     })
     .catch((err) => {
-      toast.error("You made a mistake, try again.", {
+      toast.error(err.response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

@@ -22,7 +22,7 @@ function ConciseClientProfile({closeModal, clientEmail}){
     React.useEffect(() => {
         async function setData() {
             const request = await api.get(
-              "client/profile-info?email=" + clientEmail
+              "client/profile-info/" + clientEmail
             ).catch(() => { console.log("Doslo je do neke greske kod dobavljanja podataka o klijentu."); });
             setClientData(request ? request.data : null);
           }

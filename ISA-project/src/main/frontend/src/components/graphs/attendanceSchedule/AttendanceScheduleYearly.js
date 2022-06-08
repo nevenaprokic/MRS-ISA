@@ -9,7 +9,7 @@ import {
   Legend,} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import {getAttendanceReportYearlyAdventure, getAttendanceReportYearlyCottage, getAttendanceReportYearlyShip} from '../../../services/ReservationService';
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import {getRoleFromToken} from '../../../app/jwtTokenUtils';
 import {userType} from '../../../app/Enum';
 

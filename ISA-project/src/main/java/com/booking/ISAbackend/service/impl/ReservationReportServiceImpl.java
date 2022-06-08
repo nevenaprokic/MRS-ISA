@@ -38,11 +38,16 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     @Autowired
     private InstructorRepository instructorRepository;
     @Autowired
+    private OwnerCategoryRepository ownerCategoryRepository;
+    @Autowired
     private CottageOwnerRepository cottageOwnerRepository;
     @Autowired
     private ShipOwnerRepository shipOwnerRepository;
     @Autowired
     private EmailSender emailSender;
+    @Autowired
+    private InstructorRepository instructorRepository;
+
 
     @Override
     public List<Integer> getReservationReportCottageOwner(String ownerEmail) {
@@ -107,10 +112,11 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         LocalDate startDate = LocalDate.parse(start, formatter);
         LocalDate endDate = LocalDate.parse(end, formatter);
 
+        CottageOwner cottageOwner = cottageOwnerRepository.findByEmail(email);
         List<Reservation> reservations = reservationRepository.findPastReservationByCottageOwnerEmail(email,LocalDate.now());
 
         List<OfferForReportDTO> offers = listInitialization(email);
-        getReportList(reservations, startDate, endDate, offers);
+        getReportList(reservations, startDate, endDate, offers, cottageOwner.getPoints());
         return offers;
     }
 
@@ -121,29 +127,30 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         LocalDate startDate = LocalDate.parse(start, formatter);
         LocalDate endDate = LocalDate.parse(end, formatter);
 
+        ShipOwner shipOwner = shipOwnerRepository.findByEmail(email);
         List<Reservation> reservations = reservationRepository.findPastReservationByShipOwnerEmail(email,LocalDate.now());
 
         List<OfferForReportDTO> offers = listInitializationShip(email);
-        return  getReportList(reservations, startDate, endDate, offers);
+        return  getReportList(reservations, startDate, endDate, offers, shipOwner.getPoints());
 
     }
 
-    private List<OfferForReportDTO> getReportList(List<Reservation> reservations, LocalDate startDate, LocalDate endDate, List<OfferForReportDTO> offers) {
+    private List<OfferForReportDTO> getReportList(List<Reservation> reservations, LocalDate startDate, LocalDate endDate, List<OfferForReportDTO> offers, int points) {
+        OwnerCategory category =  ownerCategoryRepository.findByMatchingInterval(points).get(0);
         Double totalPrice = 0.0;
         Integer numberOfReservation = 0;
 
         for(Reservation r: reservations){
             if((r.getStartDate().compareTo(startDate)>=0)&&(r.getStartDate().compareTo(endDate)<=0)){
-                totalPrice += r.getPrice();
+                totalPrice += (r.getPrice() * category.getEarningsPercent()/100);
                 numberOfReservation++;
                 for(OfferForReportDTO of: offers){
                     if(of.getOfferName().equals(r.getOffer().getName())){
                         of.setNumberOfReservation((of.getNumberOfReservation()+1));
-                        of.setTotalPrice((of.getTotalPrice()+r.getPrice()));
+                        of.setTotalPrice((of.getTotalPrice()+(r.getPrice()* category.getEarningsPercent()/100)));
                         break;
                     }
                 }
-
             }
         }
         offers.add(new OfferForReportDTO("total", numberOfReservation, totalPrice));
@@ -158,9 +165,9 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         LocalDate endDate = LocalDate.parse(end, formatter);
 
         List<Reservation> reservations = reservationRepository.findPastReservationByInstructorEmail(email,LocalDate.now());
-
+        Instructor instructor = instructorRepository.findByEmail(email);
         List<OfferForReportDTO> offers = listInitializationAdventure(email);
-        return  getReportList(reservations, startDate, endDate, offers);
+        return  getReportList(reservations, startDate, endDate, offers, instructor.getPoints());
     }
 
     @Override

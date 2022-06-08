@@ -15,6 +15,7 @@ public class ClientDTO {
     private Integer penal;
     private Integer offerId;
     private Integer points;
+    private Double discount;
 
 
     public ClientDTO() {}
@@ -33,7 +34,7 @@ public class ClientDTO {
         this.points = points;
     }
 
-    public ClientDTO(Client c, Integer id, String category) {
+    public ClientDTO(Client c, Integer id, String category, Double discount) {
         this.email = c.getEmail();
         this.firstName = c.getFirstName();
         this.lastName = c.getLastName();
@@ -45,6 +46,7 @@ public class ClientDTO {
         this.penal = c.getPenal();
         this.offerId = id;
         this.points = c.getPoints();
+        this.discount = discount;
         
     }
 
@@ -142,4 +144,7 @@ public class ClientDTO {
         return offerId;
     }
 
+    public Double getDiscount() {
+        return discount;
+    }
 }

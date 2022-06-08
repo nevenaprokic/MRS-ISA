@@ -9,8 +9,10 @@ import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OptimisticLockException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException {
+    public void makeReservation(ReservationParamsDTO params) throws OptimisticLockException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException, InterruptedException {
         Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
         Integer penalties = clientRepository.getPenalties(params.getEmail());
         if(penalties >= 3)
@@ -80,7 +82,9 @@ public class ReservationServiceImpl implements ReservationService {
             x.ifPresent(ys::add);
         }
 
+        offer.setNumberOfReservations(offer.getNumberOfReservations() + 1);
         Reservation r = new Reservation(params.getDate(), params.getEndingDate(), ys, params.getTotal(), params.getGuests(), offer, user, false);
+        Thread.sleep(r.getClient().getPenal() * 3000L);
         reservationRepository.save(r);
     }
 
@@ -136,7 +140,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
     @Override
     @Transactional
-    public Integer makeReservationOwner(NewReservationDTO dto){
+    public Integer makeReservationOwner(NewReservationDTO dto) throws InterruptedException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
@@ -144,15 +148,25 @@ public class ReservationServiceImpl implements ReservationService {
         Offer offer = offerRepository.findOfferById(dto.getOfferId());
         Client client = clientRepository.findByEmail(dto.getClientUserName());
 
-        List<AdditionalService> newAdditionalService = new ArrayList<>();
-        for(AdditionalService a: dto.getServices()){
-            AdditionalService additionalService = additionalServiceRepository.save(new AdditionalService(a.getName(),a.getPrice()));
-            newAdditionalService.add(additionalService);
-        }
+//        List<AdditionalService> newAdditionalService = new ArrayList<>();
+//        for(AdditionalService a: dto.getServices()){
+//            AdditionalService additionalService = additionalServiceRepository.save(new AdditionalService(a.getName(),a.getPrice()));
+//            newAdditionalService.add(additionalService);
+//        }
 
+        List<Optional<AdditionalService>> services = new ArrayList<>();
+        for(AdditionalService s : dto.getServices()){
+            services.add(additionalServiceRepository.findById(s.getId()));
+        }
+        List<AdditionalService> newAdditionalService = new ArrayList<>();
+        for (Optional<AdditionalService> x : services) {
+            x.ifPresent(newAdditionalService::add);
+        }
+        offer.setNumberOfReservations(offer.getNumberOfReservations()+1);
         Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
         Reservation newReservation = reservationRepository.save(reservation);
         offer.getReservations().add(newReservation);
+        Thread.sleep(client.getPenal()*2000);
         offerRepository.save(offer);
         sendEmail(client.getEmail(), reservation);
         return newReservation.getId();
@@ -163,26 +177,6 @@ public class ReservationServiceImpl implements ReservationService {
         emailSender.notifyClientNewReservation("markoooperic123+++fdf@gmail.com", reservation);
 
     }
-//    @Override
-//    public void addAdditionalServices(List<AdditionalServiceDTO> additionalServiceDTOs, Integer reservationId) {
-//
-//        List<Optional<AdditionalService>> services = new ArrayList<>();
-//        for(AdditionalServiceDTO s : additionalServiceDTOs){
-//            services.add(additionalServiceRepository.findById(s.getId()));
-//        }
-//        List<AdditionalService> additionalServices = new ArrayList<>();
-//        for (Optional<AdditionalService> x : services) {
-//            x.ifPresent(additionalServices::add);
-//        }
-//        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-//
-//        if(reservation.isPresent()){
-//            Reservation r = reservation.get();
-//            r.setAdditionalServices(additionalServices);
-//            reservationRepository.save(r);
-//        }
-//
-//    }
 
     @Override
     @Transactional
@@ -192,7 +186,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
             ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName(), category.getDiscount());
             clients.add(dto);
         }
         return clients;
@@ -205,7 +199,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
             ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName(), category.getDiscount());
             clients.add(dto);
         }
         return clients;
@@ -218,7 +212,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<ClientDTO> clients = new ArrayList<>();
         for(Reservation r: currentReservation){
             ClientCategory category = clientCategoryRepository.findByMatchingInterval(r.getClient().getPoints()).get(0);
-            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName());
+            ClientDTO dto = new ClientDTO(r.getClient(), r.getOffer().getId(), category.getName(), category.getDiscount());
             clients.add(dto);
         }
         return clients;
