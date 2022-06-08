@@ -45,8 +45,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     private ShipOwnerRepository shipOwnerRepository;
     @Autowired
     private EmailSender emailSender;
-    @Autowired
-    private InstructorRepository instructorRepository;
+
 
 
     @Override

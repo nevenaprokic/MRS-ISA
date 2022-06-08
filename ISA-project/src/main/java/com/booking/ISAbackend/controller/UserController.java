@@ -28,8 +28,6 @@ public class UserController {
 	@Autowired
 	private RegistrationRequestService registrationRequestService;
 
-
-
 	@PostMapping("registration-owner")
 	public ResponseEntity<String> sendOwnerRegistration(@RequestBody OwnerRegistrationRequestDTO request){
 		try {

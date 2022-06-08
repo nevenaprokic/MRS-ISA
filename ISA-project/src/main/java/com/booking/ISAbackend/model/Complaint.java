@@ -19,12 +19,15 @@ public class Complaint {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 
+	private boolean deleted;
+
 	public Complaint() {}
 
-	public Complaint(String text, Reservation reservation, Client client) {
+	public Complaint(String text, Reservation reservation, Client client, boolean deleted) {
 		this.text = text;
 		this.reservation = reservation;
 		this.client = client;
+		this.deleted = deleted;
 	}
 
 	public Integer getId() {
@@ -50,4 +53,10 @@ public class Complaint {
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+
+	public boolean isDeleted() {return deleted;}
+
+	public void setDeleted(boolean deleted) { this.deleted = deleted; }
+
+	public Client getClient() {return client;}
 }

@@ -1,10 +1,7 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
-import com.booking.ISAbackend.dto.AdditionalServiceDTO;
-import com.booking.ISAbackend.dto.ClientDTO;
-import com.booking.ISAbackend.dto.ClientRequest;
-import com.booking.ISAbackend.dto.OfferDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
@@ -22,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -62,6 +60,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private ClientCategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -257,16 +258,28 @@ public class ClientServiceImpl implements ClientService {
         Optional<Complaint> m = Optional.ofNullable(complaintRepository.alreadyReviewed(c.getId(), reservationId));
         if(m.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Complaint a = new Complaint(comment, r.get(), c);
+            Complaint a = new Complaint(comment, r.get(), c, false);
             complaintRepository.save(a);
         }else{
             throw new Exception();
         }
     }
 
+    @Override
+    @Transactional
+    public List<ComplaintDTO> getAllNotDeletedComplaints() {
+        List<ComplaintDTO> complaints =  new ArrayList<ComplaintDTO>();
+        List<Complaint> notReviewedComplaints = complaintRepository.findAllNotDeleted();
+        for(Complaint complaint : notReviewedComplaints){
+            complaints.add(createComplaintDTO(complaint));
+        }
+        return complaints;
+    }
+
     @Scheduled(cron="0 0 0 1 1/1 *")
     @Transactional
     public void removePenalties(){
+
         clientRepository.removePenalties();
     }
 
@@ -274,4 +287,27 @@ public class ClientServiceImpl implements ClientService {
 //    public void printSomething(){
 //        System.out.println("Something");
 //    }
+
+    @Transactional
+    public ComplaintDTO createComplaintDTO(Complaint complaint){
+        Reservation reservation = complaint.getReservation();
+        Client client = reservation.getClient();
+        ClientCategory category = categoryRepository.findByMatchingInterval(client.getPoints()).get(0);
+        //int id, String text, String offerName, String clientName, String clientCategory, int clientPenalty, String reservationStartDate, String reservationEndDate
+        ComplaintDTO dto = new ComplaintDTO(complaint.getId(), complaint.getText(),
+                reservation.getOffer().getName(),
+                client.getFirstName() + " " + client.getLastName(),
+                category.getName(),
+                client.getPenal(),
+                localDateToString(reservation.getStartDate()),
+                localDateToString(reservation.getEndDate())
+                );
+        return dto;
+    }
+
+    private String localDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
+    }
+
 }

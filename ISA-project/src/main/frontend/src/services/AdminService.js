@@ -88,3 +88,10 @@ function login(data){
         });
       });
   }
+
+  export function getAllComplaints(){
+    return api
+    .get("/admin/all-complaints")
+    .then((response) => console.log(response.data))
+    .catch((err) => console.log(err));
+  }

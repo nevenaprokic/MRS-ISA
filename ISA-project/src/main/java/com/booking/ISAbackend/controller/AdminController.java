@@ -1,8 +1,10 @@
 package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.AdminDTO;
+import com.booking.ISAbackend.dto.ComplaintDTO;
 import com.booking.ISAbackend.dto.UserProfileData;
 import com.booking.ISAbackend.exceptions.*;
+import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("admin")
@@ -17,6 +20,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ClientService clientService;
 
     @GetMapping("profile-info")
     public ResponseEntity<AdminDTO> getAdminProfileInfo(@RequestParam String email){
@@ -67,6 +73,16 @@ public class AdminController {
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something wnt wrong. Please try again later");
+        }
+    }
+
+    @GetMapping("all-complaints")
+    public ResponseEntity<List<ComplaintDTO>> gellAllNotReviewComplaints(){
+        try{
+            return ResponseEntity.ok().body(clientService.getAllNotDeletedComplaints());
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }

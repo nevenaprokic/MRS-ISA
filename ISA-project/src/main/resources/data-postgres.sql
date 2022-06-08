@@ -313,7 +313,12 @@ insert into offer_photos(offer_id,photos_id) values (12,21);
 insert into offer_photos(offer_id,photos_id) values (13,22);
 insert into offer_photos(offer_id,photos_id) values (13,23);
 
---
+/*COMPLAINT*/
+insert into complaint(my_user_id, reservation_id, text, deleted) values (2, 20, 'Vlasnik je bio veoma neljubazan, ne zelimo vise da dolazimo na takva mesta.', false);
+insert into complaint(my_user_id, reservation_id, text, deleted) values (3, 21, 'Lose ophodjenje prema gostima.', false);
+insert into complaint(my_user_id, reservation_id, text, deleted) values (1, 45, 'Veoma smo nezadovoljni saradnjom. Uslovi nisu bili kao na slikama.', false);
+insert into complaint(my_user_id, reservation_id, text, deleted) values (1, 46, 'Ovaj vlasnik je jako neljubazan i nekulturan covek!', false);
+
 -- /*OWNER TRANSACTION*/
 -- insert into owner_transaction(owner_id,transaction_id) values (9,1);
 -- insert into owner_transaction(owner_id,transaction_id) values (5,2);

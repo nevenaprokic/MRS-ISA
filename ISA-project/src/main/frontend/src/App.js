@@ -30,6 +30,7 @@ import DeleteCategory from './components/forms/loyaltyCategory/DeleteCategory';
 import NotApprovedMarks from './components/graphs/marks/NotApprovedMarks';
 import AddAdmin from './components/forms/user/AddAdmin';
 import ReservationReportsList from './components/forms/reservations/ReservationReporstList';
+import ComplaintList from './components/forms/review/ComplaintsList';
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
           <Route path='/admin/loyalty-program/delete-category' element={<DeleteCategory/>}/>
           <Route path='/admin/unchecked-marks' element={<NotApprovedMarks/>}/>
           <Route path='/admin/add-new-admin' element={<AddAdmin/>}/>
+          <Route path='/admin/complaints-review' element={<ComplaintList/>}/>
           <Route path='/admin/reservation-reports' element={<ReservationReportsList/>}/>
         </Routes>
     </div>
