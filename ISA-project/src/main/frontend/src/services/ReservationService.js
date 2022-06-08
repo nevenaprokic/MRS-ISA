@@ -104,13 +104,13 @@ export function makeReservationOwner(reservation){
     api
     .post("/reservation/make-by-owner", reservation)
     .then((responseData) => {
-      toast.success("You successfully added a new quick resrevation.", {
+      toast.success("You successfully added a new resrevation.", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
     })
     .catch((err) => {
-      toast.error("You made a mistake, try again.", {
+      toast.error(err.response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

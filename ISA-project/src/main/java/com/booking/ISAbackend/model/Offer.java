@@ -54,6 +54,9 @@ public class Offer {
 	@Column(nullable = false)
 	private Long numberOfReservations;
 
+	@Column(nullable = false)
+	private Long numberOfQuickReservations;
+
 
 	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
 		this.name = name;
@@ -218,5 +221,13 @@ public class Offer {
 
 	public Long getNumberOfReservations() {
 		return numberOfReservations;
+	}
+
+	public Long getNumberOfQuickReservation() {
+		return numberOfQuickReservations;
+	}
+
+	public void setNumberOfQuickReservation(Long numberOfQuickReservation) {
+		this.numberOfQuickReservations = numberOfQuickReservation;
 	}
 }

@@ -140,7 +140,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
     @Override
     @Transactional
-    public Integer makeReservationOwner(NewReservationDTO dto){
+    public Integer makeReservationOwner(NewReservationDTO dto) throws InterruptedException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
@@ -162,9 +162,11 @@ public class ReservationServiceImpl implements ReservationService {
         for (Optional<AdditionalService> x : services) {
             x.ifPresent(newAdditionalService::add);
         }
+        offer.setNumberOfReservations(offer.getNumberOfReservations()+1);
         Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
         Reservation newReservation = reservationRepository.save(reservation);
         offer.getReservations().add(newReservation);
+        Thread.sleep(client.getPenal()*2000);
         offerRepository.save(offer);
         sendEmail(client.getEmail(), reservation);
         return newReservation.getId();

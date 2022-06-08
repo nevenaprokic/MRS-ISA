@@ -19,7 +19,7 @@ public interface ReservationService {
     List<ClientDTO> getClientByShipOwnerEmail(String email);
     List<ClientDTO> getClientByInstructorEmail(String email);
 
-    Integer makeReservationOwner(NewReservationDTO dto);
+    Integer makeReservationOwner(NewReservationDTO dto) throws InterruptedException;
 
     List<ReservationDTO> getPastCottageReservationsByClient(String email) throws IOException;
 

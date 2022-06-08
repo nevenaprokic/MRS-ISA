@@ -65,7 +65,7 @@ export function makeQuickReservation(data, additionalServicesInputList) {
       });
     })
     .catch((err) => {
-      toast.error("You made a mistake, try again.", {
+      toast.error(err.response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });

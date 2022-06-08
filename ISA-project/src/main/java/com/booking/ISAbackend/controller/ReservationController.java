@@ -99,10 +99,12 @@ public class ReservationController {
     }
 
     @PostMapping("make-by-owner")
-    public ResponseEntity<Integer> makeReservationOwner(@RequestBody NewReservationDTO dto){
-        try{
+    public ResponseEntity<String> makeReservationOwner(@RequestBody NewReservationDTO dto){
+        try {
             Integer reservationId = reservationService.makeReservationOwner(dto);
-            return ResponseEntity.ok(reservationId);
+            return ResponseEntity.ok(reservationId.toString());
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation at the same time. Please try again.");
         }catch(Exception ex){
             return ResponseEntity.status(400).body(null);
         }
