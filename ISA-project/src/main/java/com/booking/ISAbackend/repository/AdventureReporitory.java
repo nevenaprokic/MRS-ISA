@@ -22,4 +22,8 @@ public interface AdventureReporitory extends JpaRepository<Adventure, Integer> {
 
     List<Adventure> findAllByInstructor(Instructor i);
 
+    @Query("SELECT a.id FROM Adventure a")
+    List<Integer> getAdveturesId();
+
+
 }

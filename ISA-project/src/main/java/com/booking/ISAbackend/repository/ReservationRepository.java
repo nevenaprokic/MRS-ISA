@@ -116,4 +116,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             "INNER JOIN Owner ow ON ow.id = a.instructor.id " +"AND ow.email = ?1 " +
             "INNER JOIN ReservationReport rr ON rr.reservation.id = r.id WHERE r.endDate < ?2 ")
     List<Integer> findReservationWithReportByInstructorEmeil(String ownerEmail, LocalDate today);
+
+
 }

@@ -28,4 +28,7 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
             "AND (lower(c.lastName) LIKE lower(concat('%', :lastName, '%')) OR lower(:lastName) LIKE lower(concat('%', c.lastName, '%')))"
     )
     List<Instructor> searchInstructorsClient(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("address")String address);
+
+    @Query("SELECT DISTINCT i FROM Instructor i INNER JOIN Adventure a ON a.id = ?1 WHERE a.instructor.id = i.id")
+    Instructor findInstructorByAdventure(int adventureId);
 }
