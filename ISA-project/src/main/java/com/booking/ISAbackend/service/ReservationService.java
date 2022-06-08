@@ -2,6 +2,7 @@ package com.booking.ISAbackend.service;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
+import com.booking.ISAbackend.model.Reservation;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public interface ReservationService {
 
     List<ReservationDTO> getAllReservation(String ownerId, String role) throws IOException;
 
-    void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException;
+    void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException, InterruptedException;
     Boolean isAvailableOffer(Integer offerId,String startDate, Integer dayNum);
     Boolean isAvailableClient(String emailClient, String startReservation, String endReservation);
     List<ClientDTO> getClientByCottageOwnerEmail(String email);

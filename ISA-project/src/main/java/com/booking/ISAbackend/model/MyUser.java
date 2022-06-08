@@ -52,6 +52,10 @@ public class MyUser implements UserDetails{
 	@Column(nullable = false)
 	private Boolean emailVerified;
 
+	@Version
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 	public MyUser(Integer id, String firstName, String lastName, String password, String phoneNumber, String email, Boolean deleted, Role role, Address address, DeleteRequest deleteRequest, Boolean emailVerified) {
 		this.id = id;
 		this.firstName = firstName;

@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OptimisticLockException;
 import javax.swing.text.StyledEditorKit;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -27,9 +29,11 @@ public class ReservationController {
 
     @PostMapping("make")
     public ResponseEntity<String> makeReservation(@RequestBody ReservationParamsDTO params){
-        try{
+        try {
             reservationService.makeReservation(params);
             return ResponseEntity.ok("Reservation was successful!");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation before you. Please choose another period.");
         }catch (OfferNotAvailableException ex){
             return ResponseEntity.status(400).body("Offer is not available in that time period.");
         }catch (NotAllowedToMakeReservationException ex){

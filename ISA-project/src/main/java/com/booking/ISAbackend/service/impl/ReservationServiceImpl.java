@@ -9,8 +9,10 @@ import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OptimisticLockException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException {
+    public void makeReservation(ReservationParamsDTO params) throws OptimisticLockException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException, InterruptedException {
         Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
         Integer penalties = clientRepository.getPenalties(params.getEmail());
         if(penalties >= 3)
@@ -80,7 +82,9 @@ public class ReservationServiceImpl implements ReservationService {
             x.ifPresent(ys::add);
         }
 
+        offer.setNumberOfReservations(offer.getNumberOfReservations() + 1);
         Reservation r = new Reservation(params.getDate(), params.getEndingDate(), ys, params.getTotal(), params.getGuests(), offer, user, false);
+        Thread.sleep(r.getClient().getPenal() * 3000L);
         reservationRepository.save(r);
     }
 

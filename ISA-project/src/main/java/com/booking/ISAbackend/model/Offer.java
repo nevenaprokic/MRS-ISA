@@ -37,6 +37,7 @@ public class Offer {
 	
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<QuickReservation> quickReservations;
+
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 
@@ -47,8 +48,11 @@ public class Offer {
 	private List<Client> subscribedClients;
 
 	@Version
-	@Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
 	private Long version;
+
+	@Column(nullable = false)
+	private Long numberOfReservations;
 
 
 	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
@@ -206,5 +210,13 @@ public class Offer {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, name, description);
+	}
+
+	public void setNumberOfReservations(Long numberOfReservations) {
+		this.numberOfReservations = numberOfReservations;
+	}
+
+	public Long getNumberOfReservations() {
+		return numberOfReservations;
 	}
 }

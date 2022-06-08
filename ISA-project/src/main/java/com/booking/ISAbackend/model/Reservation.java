@@ -37,7 +37,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private Boolean deleted;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -163,5 +163,9 @@ public class Reservation {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
 	}
 }
