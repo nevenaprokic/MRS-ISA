@@ -25,6 +25,7 @@ import {getAdminByEmail} from "../../services/AdminService"
 import ChangePassword from '../forms/user/ChangePassword';
 import { width } from '@mui/system';
 import { Modal } from '@mui/material';
+import ReservationReportsList from '../forms/reservations/ReservationReporstList';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -135,14 +136,15 @@ export default function AdminHomePage() {
                     <Tab label="Users" {...a11yProps(2)} />
                     <Tab label="Registration requests" {...a11yProps(3)} />
                     <Tab label="Unchecked marks" {...a11yProps(4)} />
+                    <Tab label="Reservation reports" {...a11yProps(5)} />
                     <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(5)} />
+                    <Tab label="Loyalty program" {...a11yProps(6)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(6)} />
+                    <Tab label="Business reports" {...a11yProps(7)} />
                     <Divider />
                     {adminData.defaultAdmin &&  
                     
-                    <Tab label="Add new admin" {...a11yProps(7)} />
+                    <Tab label="Add new admin" {...a11yProps(8)} />
                     }
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -154,18 +156,20 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={2}>
                     <AdminProfile />
                 </TabPanel>
-               
+                <TabPanel value={value} index={7}>
+                    <ReservationReportsList />
+                </TabPanel>
                 <TabPanel value={value} index={5}>
                     <RegistrationRequestsList />
                 </TabPanel>
                 <TabPanel value={value} index={6}>
                     <NotApprovedMarks />
                 </TabPanel>
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={9}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
                 {adminData.defaultAdmin &&  
-                  <TabPanel value={value} index={12}>
+                  <TabPanel value={value} index={13}>
                     <AddAdmin />
                   </TabPanel>
                 }

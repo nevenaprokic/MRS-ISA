@@ -2,6 +2,7 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.NewReservationReportDTO;
 import com.booking.ISAbackend.dto.OfferForReportDTO;
+import com.booking.ISAbackend.dto.ReservationReportAdminDTO;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,6 +88,17 @@ public class ReservationReportController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @GetMapping("all-not-reviewed")
+    public ResponseEntity<List<ReservationReportAdminDTO>> getAllNotReviewedReports(){
+        try{
+            List<ReservationReportAdminDTO> reports = reservationReportService.getAllNotReviewedWIthPenaltyOption();
+            return new ResponseEntity<>(reports, reports.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

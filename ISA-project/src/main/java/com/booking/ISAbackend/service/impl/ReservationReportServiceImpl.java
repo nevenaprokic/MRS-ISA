@@ -2,10 +2,13 @@ package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.NewReservationReportDTO;
 import com.booking.ISAbackend.dto.OfferForReportDTO;
+import com.booking.ISAbackend.dto.ReservationReportAdminDTO;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +78,8 @@ public class ReservationReportServiceImpl implements ReservationReportService {
             }
         if(client.isPresent() && reservation.isPresent()){
             ReservationReport reservationReport = new ReservationReport(penalOption,automaticallyPenal, dto.getComment(),reservation.get(),client.get());
+            reservationReport.setReviewed(false);
+            reservationReport.setSentDate(LocalDate.now());
             reservationReportRepository.save(reservationReport);
         }
 
@@ -163,6 +168,17 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         return reservationWithNoReport;
     }
 
+    @Override
+    @Transactional
+    public List<ReservationReportAdminDTO> getAllNotReviewedWIthPenaltyOption() {
+        List<ReservationReport> reservationReports = reservationReportRepository.findAllNotReviewedForPenalty();
+        List<ReservationReportAdminDTO> reportsForAdmin = new ArrayList<ReservationReportAdminDTO>();
+        for(ReservationReport report: reservationReports){
+            reportsForAdmin.add(createAdminReportDTO(report));
+        }
+        return reportsForAdmin;
+    }
+
     private ArrayList<OfferForReportDTO> listInitializationAdventure(String email){
         ArrayList<OfferForReportDTO> offers = new ArrayList<OfferForReportDTO>();
         List<Adventure> adventures = adventureReporitory.findAdventureByInstructorEmail(email);
@@ -188,5 +204,28 @@ public class ReservationReportServiceImpl implements ReservationReportService {
             offers.add(new OfferForReportDTO(c.getName(),0,0.0));
         }
         return offers;
+    }
+
+    @Transactional
+    public ReservationReportAdminDTO createAdminReportDTO(ReservationReport report){
+        Reservation reservation = report.getReservation();
+        Offer offer = reservation.getOffer();
+        Client client = reservation.getClient();
+        String clientName = client.getLastName() + " " + client.getFirstName();
+
+        ReservationReportAdminDTO reportDTO = new ReservationReportAdminDTO(report.getComment(),
+                report.getId(),
+                clientName,
+                offer.getName(),
+                convertDate(reservation.getStartDate()),
+                convertDate(reservation.getEndDate()),
+                convertDate(report.getSentDate()),
+                client.getId());
+        return reportDTO;
+    }
+
+    private String convertDate(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
     }
 }
