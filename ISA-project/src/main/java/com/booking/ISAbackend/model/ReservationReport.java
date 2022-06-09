@@ -70,4 +70,28 @@ public class ReservationReport {
 	public LocalDate getSentDate() {return  sentDate;}
 
 	public void setSentDate(LocalDate sentDate) { this.sentDate = sentDate;}
+
+	public void setPenalOption(Boolean penalOption) {
+		this.penalOption = penalOption;
+	}
+
+	public void setAutomaticallyPenal(Boolean automaticallyPenal) {
+		this.automaticallyPenal = automaticallyPenal;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}
+
+	public void setReviewed(Boolean reviewed) {
+		this.reviewed = reviewed;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
 }
