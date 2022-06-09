@@ -49,7 +49,7 @@ public class UserController {
 			userService.isOldPasswordCorrect(email, data);
 			return ResponseEntity.ok("Successfully changed password.");
 		} catch (InvalidPasswordException e) {
-			return ResponseEntity.status(400).body("Old password is not correct.");
+			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}
 

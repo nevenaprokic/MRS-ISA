@@ -37,13 +37,13 @@ public class ReservationController {
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("Someone has made reservation before you. Please choose another period.");
         }catch (OfferNotAvailableException ex){
-            return ResponseEntity.status(400).body("Offer is not available in that time period.");
+            return ResponseEntity.status(400).body(ex.getMessage());
         }catch (NotAllowedToMakeReservationException ex){
-            return ResponseEntity.status(400).body("You are not allowed to make a reservation because of penalties.");
+            return ResponseEntity.status(400).body(ex.getMessage());
         }catch (PreviouslyCanceledReservationException ex){
-            return ResponseEntity.status(400).body("Reservation has already been reserved and canceled.");
+            return ResponseEntity.status(400).body(ex.getMessage());
         }catch (ClientNotAvailableException ex){
-            return ResponseEntity.status(400).body("Client is not available in this time period.");
+            return ResponseEntity.status(400).body(ex.getMessage());
         }catch(Exception ex){
             return ResponseEntity.status(400).body("Something went wrong. Try again.");
         }
@@ -165,7 +165,7 @@ public class ReservationController {
     }
 
     @GetMapping("get-upcoming-adventure-reservations-by-client")
-    @PreAuthorize("hasAnyRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<ReservationDTO>> getUpcomingAdventureReservationsClient(@RequestParam String email){
         try{
             List<ReservationDTO> reservations = reservationService.getUpcomingAdventureReservationsByClient(email);
@@ -183,7 +183,7 @@ public class ReservationController {
             return new ResponseEntity<>("Reservation successfully canceled!", HttpStatus.OK);
 
         } catch (CancellingReservationException e) {
-            return new ResponseEntity<>("Cannot cancel reservation less than 3 days before it starts.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

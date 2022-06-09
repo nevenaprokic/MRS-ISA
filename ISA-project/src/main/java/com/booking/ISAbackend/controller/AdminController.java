@@ -68,7 +68,7 @@ public class AdminController {
             userService.cahngeAdminFirstPassword(email, data);
             return ResponseEntity.ok("Successfully changed password.");
         } catch (InvalidPasswordException e) {
-            return ResponseEntity.status(400).body("Old password is not correct.");
+            return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something wnt wrong. Please try again later");
