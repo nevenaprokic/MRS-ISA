@@ -44,4 +44,16 @@ public class DeleteRequest {
 	public MyUser getMyUser() {
 		return myUser;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setMyUser(MyUser myUser) {
+		this.myUser = myUser;
+	}
 }

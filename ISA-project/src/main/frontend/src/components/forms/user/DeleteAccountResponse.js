@@ -11,9 +11,9 @@ import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import "../../../style/DeleteOrder.scss";
 import "react-toastify/dist/ReactToastify.css";
-import { sendResponseForDeleteAccountRequest } from "../../../services/AdminService";
+import { deleteAccountOnRequest, rejectDeleteAccountOnRequest } from "../../../services/AdminService";
 
-function DeleteAccountResponse({close, deleteRequest, allDeleteRequest, setDeleteRequests }){
+function DeleteAccountResponse({close, deleteRequest, allDeleteRequest, setDeleteRequests, isDelete}){
 
     const theme = createTheme({
         palette: {
@@ -35,8 +35,12 @@ function DeleteAccountResponse({close, deleteRequest, allDeleteRequest, setDelet
   
       const onSubmit = (data) => {
         console.log(data);
-        sendResponseForDeleteAccountRequest(data.response, deleteRequest.id, setDeleteRequests, allDeleteRequest);
-    
+        if(isDelete){
+            deleteAccountOnRequest(data.response, deleteRequest, setDeleteRequests, allDeleteRequest);
+        }
+        else{
+            rejectDeleteAccountOnRequest(data.response, deleteRequest, setDeleteRequests, allDeleteRequest);
+        }
         close();
       };
     return (
@@ -81,7 +85,7 @@ function DeleteAccountResponse({close, deleteRequest, allDeleteRequest, setDelet
                   <TextField
                     required
                     id="reason"
-                    label="Reason for deleting the order"
+                    label="Enter your response"
                     multiline
                     rows={4}
                     defaultValue=""

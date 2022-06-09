@@ -36,6 +36,7 @@ function Row({deleteRequest, setDeleteRequests, deleteRequests}) {
    
     const [open, setOpen] = React.useState(false);
     const [openResponse, setOpenResponse] = useState(false);
+    const [deleteAccount, setDeleteAccount] = useState(false);
 
     function executeOnClick(isExpanded) {
         console.log(isExpanded);
@@ -49,8 +50,9 @@ function Row({deleteRequest, setDeleteRequests, deleteRequests}) {
 
     });
 
-    function handleOpenResponse(){
-      setOpenResponse(true);
+    function handleOpenResponse(deteleAccount){
+        setDeleteAccount(deleteAccount);
+        setOpenResponse(true);
     }
 
     function handleCloseResponse(){
@@ -81,10 +83,23 @@ function Row({deleteRequest, setDeleteRequests, deleteRequests}) {
                     sx={{float:"right"}}
                     color="primary"
                     size="small"
-                    onClick={() => handleOpenResponse()}
+                    onClick={() => handleOpenResponse(true)}
                   >
-                  respond to the request
-                  </Button></TableCell>
+                  delete account
+                  </Button>
+            </TableCell>
+            <TableCell ><Button 
+                    type="submit"
+                    variant="contained"
+                    sx={{float:"right"}}
+                    color="primary"
+                    size="small"
+                    onClick={() => handleOpenResponse(false)}
+                  >
+                  reject request
+                  </Button>
+            </TableCell>
+        
           
         </TableRow>
        
@@ -122,8 +137,9 @@ function Row({deleteRequest, setDeleteRequests, deleteRequests}) {
                 aria-describedby="modal-modal-description"
                 sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
               >
-                <DeleteAccountResponse deleteRequest={deleteRequest} close={handleCloseResponse} setDeleteRequests={setDeleteRequests} allDeleteRequest={deleteRequests}/>
-              </Modal>
+                <DeleteAccountResponse deleteRequest={deleteRequest} close={handleCloseResponse} setDeleteRequests={setDeleteRequests} 
+                                       allDeleteRequest={deleteRequests} isDelete={deleteAccount}/>
+          </Modal>
         </TableRow>
       </React.Fragment>
       </ThemeProvider>

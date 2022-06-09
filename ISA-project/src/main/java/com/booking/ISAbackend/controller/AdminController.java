@@ -4,6 +4,7 @@ import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -104,6 +105,28 @@ public class AdminController {
             return new ResponseEntity(deleteAccountRequest, deleteAccountRequest.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("delete-request/delete/{userId}/{requestId}")
+    public ResponseEntity<String> deleteAccountOnRequest(@PathVariable("userId") int userId, @PathVariable("requestId") int requestId, @RequestBody String message){
+        try{
+            userService.deleteAccount(message, userId, requestId);
+            return ResponseEntity.ok().body("Successfully delete user account");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong. Please try again.");
+        }
+    }
+
+    @PutMapping("delete-request/reject/{userId}/{requestId}")
+    public ResponseEntity<String> rejectDeleteAccountOnRequest(@PathVariable("userId") int userId, @PathVariable("requestId") int requestId, @RequestBody String message){
+        try{
+            userService.rejectDeleteAccountRequest(message, userId, requestId);
+            return ResponseEntity.ok().body("Successfully reject delete request");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong. Please try again.");
         }
     }
 
