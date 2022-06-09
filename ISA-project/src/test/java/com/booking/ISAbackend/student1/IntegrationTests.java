@@ -1,6 +1,7 @@
 package com.booking.ISAbackend.student1;
 import static org.springframework.integration.util.MessagingAnnotationUtils.hasValue;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -8,13 +9,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.booking.ISAbackend.config.WebConfig;
+import com.booking.ISAbackend.config.WebSecurityConfig;
+import com.booking.ISAbackend.controller.ClientController;
+import com.booking.ISAbackend.controller.CottageController;
 import com.booking.ISAbackend.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -31,7 +40,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest()
 public class IntegrationTests {
 
     private static final String URL_PREFIX = "/cottage";
@@ -46,7 +55,7 @@ public class IntegrationTests {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
     }
 
     @Test
@@ -81,13 +90,14 @@ public class IntegrationTests {
     }
 
     @Test
+    @WithMockUser(authorities = {"CLIENT"})
     @Transactional
     public void makeComplaintTest() throws Exception {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("reservationId", "1");
         map.put("comment", "Super je bilo!");
-        map.put("email", "pera@gmail.com");
+        map.put("email", "markoooperic123+pera@gmail.com");
         String data = TestUtil.json(map);
 
         mockMvc.perform(put("/client/make-complaint").contentType(contentType).content(data)).andExpect(status().isCreated());

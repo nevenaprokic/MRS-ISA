@@ -71,7 +71,7 @@ public class ClientController {
             clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
             return ResponseEntity.ok("Successfully created request for deleting account.");
         } catch (AccountDeletionException e) {
-            return ResponseEntity.status(400).body("Account cannot be deleted or request already exist.");
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
@@ -143,16 +143,16 @@ public class ClientController {
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
             Integer stars = Integer.parseInt(data.get("stars"));
             clientService.makeReview(stars, reservationId, data.get("comment"), data.get("email"));
-            return ResponseEntity.ok("Review has been successfully added.");
+            return new ResponseEntity<String>("Review has been successfully added.", HttpStatus.CREATED);
         }catch (FeedbackAlreadyGivenException e) {
-            return ResponseEntity.status(400).body("You have already given the feedback");
+            return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong.");
         }
     }
 
     @GetMapping("get-subscriptions/{email}")
-    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<OfferDTO>> getSubscriptions(@PathVariable String email){
         try{
             List<OfferDTO> subscriptions = clientService.getSubscriptions(email);
@@ -205,7 +205,7 @@ public class ClientController {
             //return ResponseEntity.ok("Complaint has been successfully added.");
             return new ResponseEntity<String>("Complaint has been successfully added.", HttpStatus.CREATED);
         }catch (FeedbackAlreadyGivenException e) {
-            return ResponseEntity.status(400).body("You have already given the feedback");
+            return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong.");
         }
