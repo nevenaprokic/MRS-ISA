@@ -7,7 +7,7 @@ export function changeCottageOwnerData(newCottageOwnerData) {
   let email = getUsernameFromToken();
   newCottageOwnerData["email"] = email;
   api
-    .post("/cottage-owner/change-data", newCottageOwnerData)
+    .put("/cottage-owner/change-data", newCottageOwnerData)
     .then((responseData) => {
       toast.success("You successfully changed the data.", {
         position: toast.POSITION.BOTTOM_RIGHT,

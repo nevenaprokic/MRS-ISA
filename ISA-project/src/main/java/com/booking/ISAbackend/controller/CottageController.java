@@ -153,7 +153,7 @@ public class CottageController {
 
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
     @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
         try{
@@ -167,7 +167,7 @@ public class CottageController {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
-    @PostMapping("update")
+    @PutMapping("update")
     @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageData(@RequestBody CottageDTO newCottageData){
         try{
@@ -181,7 +181,7 @@ public class CottageController {
         }
     }
 
-    @PostMapping("update-cottage-services")
+    @PutMapping("update-cottage-services")
     @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageAdditionalServices(@RequestBody Map<String, Object> data){
         try{

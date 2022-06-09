@@ -36,7 +36,7 @@ public class CottageOwnerController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageOwnerData(@RequestBody CottageOwnerNewDataDTO newData){
         try{

@@ -220,7 +220,7 @@ export function checkReservation(cottageData) {
         cottageId: cottageData.id,
       },
     })
-    .then((response) => {console.log(response.data);  return response.data;})
+    .then((response) => {return response.data;})
     .catch((err) => {
       toast.error(
         "Somethnig went wrong. Please wait a fiew seconds and try again.",
@@ -233,7 +233,7 @@ export function checkReservation(cottageData) {
 }
 export function deleteCottage(cottageId) {
   return api
-    .get("/cottage/delete", {
+    .delete("/cottage/delete", {
       params: {
         cottageId: cottageId,
       },
@@ -259,7 +259,7 @@ export function deleteCottage(cottageId) {
 }
 export function updateCottage(cottageData, additionalServices){
   api
-  .post("/cottage/update", cottageData)
+  .put("/cottage/update", cottageData)
   .then((responseData) => {
        updateAdditionalServices(cottageData.id, additionalServices);
   })
@@ -271,7 +271,7 @@ export function updateCottage(cottageData, additionalServices){
 }
 function updateAdditionalServices(offerId, additionalServiceDTOS){
   api
-  .post("/cottage/update-cottage-services",  {
+  .put("/cottage/update-cottage-services",  {
       params:{
           offerId : offerId,
           additionalServiceDTOS : additionalServiceDTOS

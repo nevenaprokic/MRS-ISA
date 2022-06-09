@@ -8,7 +8,7 @@ export function changeShipOwnerData(newShipOwnerData) {
   let email = getUsernameFromToken();
   newShipOwnerData["email"] = email;
   api
-    .post("/ship-owner/change-data", newShipOwnerData)
+    .put("/ship-owner/change-data", newShipOwnerData)
     .then((responseData) => {
       toast.success("You successfully changed the data.", {
         position: toast.POSITION.BOTTOM_RIGHT,

@@ -157,7 +157,7 @@ public class ShipController {
         }
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
         try{
@@ -171,7 +171,7 @@ public class ShipController {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
-    @PostMapping("update")
+    @PutMapping("update")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipData(@RequestBody ShipDTO newShipData){
         try{
@@ -183,7 +183,7 @@ public class ShipController {
         }
     }
 
-    @PostMapping("update-ship-services")
+    @PutMapping("update-ship-services")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipAdditionalServices(@RequestBody Map<String, Object> data){
         try{

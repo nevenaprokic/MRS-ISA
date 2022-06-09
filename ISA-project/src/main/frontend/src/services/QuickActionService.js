@@ -53,7 +53,6 @@ export function isAvailablePeriod(data) {
     });
 }
 export function makeQuickReservation(data, additionalServicesInputList) {
-  
   api
     .post("/quick-reservation/add", data)
     .then((responseData) => {

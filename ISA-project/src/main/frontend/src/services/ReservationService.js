@@ -66,7 +66,6 @@ export function getAllReservation(){
 export function getAllReservationShipOwner(){
     let email = getUsernameFromToken();
     let role = getRoleFromToken();
-    console.log(email);
     return api
     .get("/reservation/get-all-by-ship-owner", {
         params: {
@@ -99,8 +98,6 @@ export function isAvailableOffer(data){
 
 }
 export function makeReservationOwner(reservation){
-    console.log("RESERVACIJA")
-    console.log(reservation);
     api
     .post("/reservation/make-by-owner", reservation)
     .then((responseData) => {
@@ -119,7 +116,6 @@ export function makeReservationOwner(reservation){
 export function getAllReportCottageOwner(){
     let email = getUsernameFromToken();
     let role = getRoleFromToken();
-    console.log(email);
     return api
     .get("/reservation-report/get-all-by-cottage-owner", {
         params: {
@@ -492,7 +488,6 @@ export function getAllReservationInstructor(){
 export function getAllReportInstructor(){
     let email = getUsernameFromToken();
     let role = getRoleFromToken();
-    console.log(email);
     return api
     .get("/reservation-report/all-by-instructor/" + email)
     .then((responseData) => responseData)

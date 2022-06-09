@@ -35,7 +35,7 @@ public class ShipOwnerController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipOwnerData(@RequestBody ShipOwnerNewDataDTO newData){
         try{

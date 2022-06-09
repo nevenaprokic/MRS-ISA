@@ -246,7 +246,7 @@ export function checkReservation(shipData) {
 }
 export function deleteShip(shipId) {
   return api
-    .get("/ship/delete", {
+    .delete("/ship/delete", {
       params: {
         shipId: shipId,
       },
@@ -271,9 +271,8 @@ export function deleteShip(shipId) {
     });
 }
 export function updateShip(shipData, additionalServices){
-  console.log(shipData);
   api
-  .post("/ship/update", shipData)
+  .put("/ship/update", shipData)
   .then((responseData) => {
        updateAdditionalServices(shipData.id, additionalServices);
   })
@@ -285,7 +284,7 @@ export function updateShip(shipData, additionalServices){
 }
 function updateAdditionalServices(offerId, additionalServiceDTOS){
   api
-  .post("/ship/update-ship-services",  {
+  .put("/ship/update-ship-services",  {
       params:{
           offerId : offerId,
           additionalServiceDTOS : additionalServiceDTOS
