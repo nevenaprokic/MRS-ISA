@@ -112,7 +112,7 @@ function login(data){
   export function getAllDeleteAccountRequests(){
     return api
     .get("/admin/delete-account-requets")
-    .then((response) => console.log(response.data))
+    .then((response) => response)
     .catch((err) => {
         if (err.response.status === 401){
           return(<div>Greska u autentifikaciji</div>)
