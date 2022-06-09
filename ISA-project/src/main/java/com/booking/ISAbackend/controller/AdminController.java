@@ -24,8 +24,8 @@ public class AdminController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("profile-info")
-    public ResponseEntity<AdminDTO> getAdminProfileInfo(@RequestParam String email){
+    @GetMapping("profile-info/{email}")
+    public ResponseEntity<AdminDTO> getAdminProfileInfo(@PathVariable("email") String email){
         try{
             AdminDTO adminData = userService.findAdminByEmail(email);
             return ResponseEntity.ok(adminData);

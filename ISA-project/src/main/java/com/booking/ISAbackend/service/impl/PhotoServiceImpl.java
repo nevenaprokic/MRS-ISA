@@ -50,6 +50,7 @@ public class PhotoServiceImpl implements PhotoService {
             String photoName = savePhotoInFileSystem(photoData.getBytes(), email, counter);
             Photo p = new Photo(photoName);
             adventurePhotos.add(p);
+            p.setDeleted(false);
             photoRepository.save(p);
             counter++;
 
@@ -89,6 +90,7 @@ public class PhotoServiceImpl implements PhotoService {
             String photoName = savePhotoInFileSystem(bytes, email, counter);
             Photo p = new Photo(photoName);
             adventurePhotos.add(p);
+            p.setDeleted(false);
             photoRepository.save(p);
             counter++;
 

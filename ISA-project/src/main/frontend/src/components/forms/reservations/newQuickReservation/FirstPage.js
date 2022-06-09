@@ -29,6 +29,11 @@ export default function FirstPage({offers, setOffer, role }) {
     })
   };
 
+  React.useEffect(() => {
+      handleChangeActionDate(new Date());
+      
+  }, [])
+
   const handleChangeActionDate = (newValue) => {
     setValueAction(newValue);
     let month = (newValue.getMonth()+1);
@@ -38,6 +43,7 @@ export default function FirstPage({offers, setOffer, role }) {
     if(day.toString().length === 1)
       day = "0"+day;
     let date = newValue.getFullYear()+ "-" +month + "-" +day;
+    console.log(date);
     setOffer(prevState => {
       return{...prevState, startDateAction:date}
     })

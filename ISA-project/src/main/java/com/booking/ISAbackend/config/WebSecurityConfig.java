@@ -88,17 +88,17 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()//.antMatchers("/**").permitAll()		// /auth/**
                 .antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 .antMatchers("/api/foo").permitAll()		// /api/foo
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/calendar/**").hasAnyRole("COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
-                .antMatchers("/client/**").hasAnyRole( "CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
-                .antMatchers("/cottage-owner/**").hasAnyRole("COTTAGE_OWNER","ADMIN")
-                .antMatchers("/loyalty/**").hasRole("ADMIN")
-                .antMatchers("/mark/**").hasAnyRole("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
-                .antMatchers("/registration-request/**").hasRole("ADMIN")
-                .antMatchers("/reservation/**").hasAnyRole("CLIENT", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
-                .antMatchers("/reservation-report/**").hasAnyRole("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
-                .antMatchers("/ship-owner/**").hasAnyRole("SHIP_OWNER","ADMIN")
-                .antMatchers("/user/**").hasAnyRole("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER","CLIENT")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/calendar/**").hasAnyAuthority("COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/client/**").hasAnyAuthority( "CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/cottage-owner/**").hasAnyAuthority("COTTAGE_OWNER","ADMIN")
+                .antMatchers("/loyalty/**").hasAuthority("ADMIN")
+                .antMatchers("/mark/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/registration-request/**").hasAuthority("ADMIN")
+                .antMatchers("/reservation/**").hasAnyAuthority("CLIENT", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/reservation-report/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/ship-owner/**").hasAnyAuthority("SHIP_OWNER","ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER","CLIENT")
 
                 // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                 // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi

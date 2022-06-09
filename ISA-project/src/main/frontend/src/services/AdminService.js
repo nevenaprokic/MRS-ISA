@@ -1,5 +1,5 @@
 import api from "../app/api";
-import { getUsernameFromToken } from "../app/jwtTokenUtils";
+import { getRoleFromToken, getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
 
 export function changeAdminData(newAdminData){
@@ -20,13 +20,9 @@ export function changeAdminData(newAdminData){
 
 export function getAdminByEmail(){
     let email = getUsernameFromToken();
+    console.log(getRoleFromToken());
     return api
-    .get("/admin/profile-info", 
-        {
-            params:{
-            email: email
-        }
-    })
+    .get("/admin/profile-info/" + email)
     .then((responseData) => responseData)
     .catch((err) => toast.error("Admin not found." ,{
                     position: toast.POSITION.BOTTOM_RIGHT,
@@ -98,7 +94,7 @@ function login(data){
 
   export function sentResponseOnComplaint(response, complaintID, setComplaints, complaints){
     api
-    .put("admin/complaint-response/"+ response+ "/"+complaintID)
+    .put("admin/complaint-response/" + response + "/"+ complaintID)
     .then((response)=> { toast.success(response.data, {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: 1500,

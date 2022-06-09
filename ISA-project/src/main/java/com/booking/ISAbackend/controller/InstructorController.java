@@ -45,7 +45,7 @@ public class InstructorController {
     }
 
     @PostMapping("search-client")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
@@ -65,7 +65,7 @@ public class InstructorController {
         }
     }
     @PostMapping("delete-profile-request")
-    @PreAuthorize("hasRole('INSTRUCTOR')")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> sendDeleteRequestInstructor(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(instructorService.sendDeleteRequest(email, data.get("reason")))
@@ -78,7 +78,7 @@ public class InstructorController {
     }
 
     @PostMapping("change-data")
-    @PreAuthorize("hasRole('INSTRUCTOR')")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
         try{
             userService.changeInstrctorData(newData);

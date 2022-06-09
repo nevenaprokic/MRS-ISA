@@ -17,25 +17,25 @@ public class MarkController {
     private MarkService markService;
 
     @GetMapping("get-all-cottage")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<Double> getMarkByCottageOwnerEmail(@RequestParam String email){
         return ResponseEntity.ok(markService.getMarkByCottageOwnerEmail(email));
     }
 
     @GetMapping("get-all-ship")
-    @PreAuthorize("hasRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<Double> getMarkShipOwnerEmail(@RequestParam String email){
         return ResponseEntity.ok(markService.getMarkByShipOwnerEmail(email));
     }
 
     @GetMapping("get-all-adventure")
-    @PreAuthorize("hasRole('INSTRUCTOR')")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<Double> getMarkInstructorEmail(@RequestParam String email){
         return ResponseEntity.ok(markService.getMarkByInstructorEmail(email));
     }
 
     @GetMapping("all-unchecked")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<MarkDTO>> getAllUncheckedMarks(){
         try{
             List<MarkDTO> marks = markService.getAllUncheckesMarks();
@@ -46,7 +46,7 @@ public class MarkController {
     }
 
     @PutMapping("/accept/{markId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> acceptMark(@PathVariable int markId){
         try{
             markService.acceptMark(markId);
@@ -57,7 +57,7 @@ public class MarkController {
     }
 
     @PutMapping("/discard/{markId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> discardMark(@PathVariable int markId){
         try{
             markService.discardMark(markId);

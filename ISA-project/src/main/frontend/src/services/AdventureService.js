@@ -5,11 +5,7 @@ import { toast } from "react-toastify";
 
 export function getAdventureByInstructorEmail(username){
     return api
-        .get("/adventure/instructor-adventures", {
-            params:{
-                email:username
-            }
-        })
+        .get("/adventure/instructor-adventures/" + username)
         .then((response) => response)
         .catch((err) => {toast.error(err.response.data, {
                             position: toast.POSITION.BOTTOM_RIGHT,
@@ -36,13 +32,7 @@ export function getAdventureById(id){
 export function checkUpdateAllowed(adventureData){
     console.log(adventureData);
         return api
-    .get("/adventure/update-allowed", {
-
-        params: {
-            email : adventureData.ownerEmail,
-            adventureId : adventureData.id
-        }
-    })
+    .get("/adventure/update-allowed/" + adventureData.ownerEmail + "/" + adventureData.id)
     .then((response) => response.data)
     .catch((err) => {
         toast.error("Somethnig went wrong. Please wait a fiew seconds and try again.", {
@@ -105,11 +95,12 @@ export function addAdventure(adventureData, additionalServices){
 }
 
 export function searchAdventureByInstructor(params, setOffers){
+    console.log("PARAMS", params);
     params.maxPeople = params.maxPeople == "" ? -1 : params.maxPeople; 
     params.price = params.price == "" ? -1 : params.price; 
-    params.email = getUsernameFromToken();
     return api
-        .get("/adventure/search-adventures",  {params})
+        .get("/adventure/search-adventures",  {params} + "/"
+                                            + getUsernameFromToken())
         .then((data) => {console.log(data.data); setOffers(data.data)}) //setOffers(data.data)
         .catch((err) => {toast.error(err.response.data, {
                             position: toast.POSITION.BOTTOM_RIGHT,

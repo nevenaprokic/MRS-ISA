@@ -25,7 +25,7 @@ public class ShipOwnerController {
     private RegistrationRequestService registrationRequestService;
 
     @GetMapping("profile-info")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<ShipOwnerProfileInfoDTO> getShipOwnerProfileInfo(@RequestParam String email){
         try{
             ShipOwnerProfileInfoDTO shipOwner =  userService.getShipOwnerDataByEmail(email);
@@ -36,7 +36,7 @@ public class ShipOwnerController {
     }
 
     @PostMapping("change-data")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipOwnerData(@RequestBody ShipOwnerNewDataDTO newData){
         try{
             userService.changeShipOwnerData(newData);
@@ -47,7 +47,7 @@ public class ShipOwnerController {
     }
 
     @PostMapping("send-delete-request")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> sendDeleteRequestShipOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(userService.sendDeleteRequestShipOwner(email, data.get("reason")))

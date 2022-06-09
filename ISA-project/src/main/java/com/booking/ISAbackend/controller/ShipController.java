@@ -28,7 +28,7 @@ public class ShipController {
     private OfferService offerService;
 
     @GetMapping("get-all-by-owner")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
         try {
             List<ShipDTO> ships = shipService.findShipByShipOwnerEmail(email);
@@ -52,7 +52,7 @@ public class ShipController {
 
     }
     @GetMapping("search-by-owner")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
         try{
             List<ShipDTO> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
@@ -63,7 +63,7 @@ public class ShipController {
         }
     }
     @PostMapping("add")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
                                           @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
@@ -119,7 +119,7 @@ public class ShipController {
         }
     }
     @PostMapping("add-additional-services")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForShip(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -135,7 +135,7 @@ public class ShipController {
     }
 
     @PostMapping("search-client")
-    @PreAuthorize("hasAnyRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<ShipDTO>> searchShipsClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<ShipDTO> ships = shipService.searchShipsClient(params);
@@ -146,7 +146,7 @@ public class ShipController {
     }
 
     @GetMapping("allowed-operation")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<Boolean> isAllowedShipOperation(@RequestParam Integer shipId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(shipId);
@@ -158,7 +158,7 @@ public class ShipController {
     }
 
     @GetMapping("delete")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
         try{
             offerService.delete(shipId);
@@ -172,7 +172,7 @@ public class ShipController {
         }
     }
     @PostMapping("update")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipData(@RequestBody ShipDTO newShipData){
         try{
             shipService.updateShip(newShipData, newShipData.getId());
@@ -184,7 +184,7 @@ public class ShipController {
     }
 
     @PostMapping("update-ship-services")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");

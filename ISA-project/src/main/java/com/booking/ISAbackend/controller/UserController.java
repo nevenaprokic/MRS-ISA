@@ -30,7 +30,7 @@ public class UserController {
 	private RegistrationRequestService registrationRequestService;
 
 	@PostMapping("registration-owner")
-	@PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
+	@PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
 	public ResponseEntity<String> sendOwnerRegistration(@RequestBody OwnerRegistrationRequestDTO request){
 		try {
 			boolean userIsExists = registrationRequestService.save(request);

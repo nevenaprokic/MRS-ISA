@@ -28,7 +28,7 @@ public class CottageController {
     private OfferService offerService;
 
     @GetMapping("get-cottages-by-owner-email")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
         try{
             List<CottageDTO> cottages = cottageService.findCottageByCottageOwnerEmail(email);
@@ -72,7 +72,7 @@ public class CottageController {
         }
     }
     @GetMapping("search-by-owner")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
@@ -83,7 +83,7 @@ public class CottageController {
     }
 
     @PostMapping("add")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> addCottage(@RequestParam("email") String ownerEmail,
                                              @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                              @RequestParam("offerName") String offerName,
@@ -115,7 +115,7 @@ public class CottageController {
 
     }
     @PostMapping("add-additional-services")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -131,7 +131,7 @@ public class CottageController {
     }
 
     @PostMapping("search-client")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesClient(params);
@@ -141,7 +141,7 @@ public class CottageController {
         }
     }
     @GetMapping("allowed-operation")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer cottageId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(cottageId);
@@ -154,7 +154,7 @@ public class CottageController {
     }
 
     @GetMapping("delete")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
         try{
             offerService.delete(cottageId);
@@ -168,7 +168,7 @@ public class CottageController {
         }
     }
     @PostMapping("update")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageData(@RequestBody CottageDTO newCottageData){
         try{
             cottageService.updateCottage(newCottageData, newCottageData.getId());
@@ -182,7 +182,7 @@ public class CottageController {
     }
 
     @PostMapping("update-cottage-services")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");

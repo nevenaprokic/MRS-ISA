@@ -26,7 +26,7 @@ public class CottageOwnerController {
     private RegistrationRequestService registrationRequestService;
 
     @GetMapping("profile-info")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<CottageOwnerProfileInfoDTO> getCottageOwnerProfileInfo(@RequestParam String email){
         try{
             CottageOwnerProfileInfoDTO cottageOwner =  userService.getCottageOwnerDataByEmail(email);
@@ -37,7 +37,7 @@ public class CottageOwnerController {
     }
 
     @PostMapping("change-data")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageOwnerData(@RequestBody CottageOwnerNewDataDTO newData){
         try{
             userService.changeCottageOwnerData(newData);
@@ -48,7 +48,7 @@ public class CottageOwnerController {
     }
 
     @PostMapping("send-delete-request")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> sendDeleteRequestCottageOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(userService.sendDeleteRequestCottageOwner(email, data.get("reason")))

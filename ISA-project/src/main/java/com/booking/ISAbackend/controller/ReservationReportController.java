@@ -20,7 +20,7 @@ public class ReservationReportController {
     private ReservationReportService reservationReportService;
 
     @GetMapping("get-all-by-cottage-owner")
-    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<Integer>> getReservationReportCottageOwner(@RequestParam String ownerEmail, @RequestParam String role){
         try{
 
@@ -32,7 +32,7 @@ public class ReservationReportController {
 
     }
     @GetMapping("get-all-by-ship-owner")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<Integer>> getReservationReportShipOwner(@RequestParam String ownerEmail, @RequestParam String role){
         try{
             List<Integer> reservationsWithNoReport = reservationReportService.getReservationReportShipOwner(ownerEmail);
@@ -44,7 +44,7 @@ public class ReservationReportController {
     }
 
     @PostMapping("add")
-    @PreAuthorize("hasAnyRole('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> addReservationReport(@RequestBody NewReservationReportDTO dto){
         try{
             reservationReportService.addReservationReport(dto);
@@ -55,7 +55,7 @@ public class ReservationReportController {
     }
 
     @GetMapping("get-report-income-statement-cottage")
-    @PreAuthorize("hasAnyRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementCottage(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
         try{
             List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementCottage(startDate,endDate,email);
@@ -65,7 +65,7 @@ public class ReservationReportController {
         }
     }
     @GetMapping("get-report-income-statement-ship")
-    @PreAuthorize("hasAnyRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementShip(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
         try{
             List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementShip(startDate,endDate,email);
@@ -75,7 +75,7 @@ public class ReservationReportController {
         }
     }
     @GetMapping("get-report-income-statement-adventure")
-    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<List<OfferForReportDTO>> getReportIncomeStatementAdventure(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String email){
         try{
             List<OfferForReportDTO> dto = reservationReportService.getReportIncomeStatementAdventure(startDate,endDate,email);
@@ -86,11 +86,11 @@ public class ReservationReportController {
     }
 
     //all-by-instructor
-    @GetMapping("all-by-instructor")
-    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
-    public ResponseEntity<List<Integer>> getReservationReportInstructor(@RequestParam String ownerEmail, @RequestParam String role){
+    @GetMapping("all-by-instructor/{email}")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    public ResponseEntity<List<Integer>> getReservationReportInstructor(@PathVariable("email") String email){
         try{
-            List<Integer> reservationsWithNoReport = reservationReportService.getNotReportedReservationsInstructor(ownerEmail);
+            List<Integer> reservationsWithNoReport = reservationReportService.getNotReportedReservationsInstructor(email);
             return ResponseEntity.ok().body(reservationsWithNoReport);
         }catch (Exception ex){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -99,6 +99,7 @@ public class ReservationReportController {
     }
 
     @GetMapping("all-not-reviewed")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<ReservationReportAdminDTO>> getAllNotReviewedReports(){
         try{
             List<ReservationReportAdminDTO> reports = reservationReportService.getAllNotReviewedWIthPenaltyOption();
@@ -110,6 +111,7 @@ public class ReservationReportController {
     }
 
     @PutMapping("add-penalty/{reportId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> addPenaltyToClient(@PathVariable Integer reportId){
         try{
             reservationReportService.addPenaltyToClient(reportId);
@@ -120,6 +122,7 @@ public class ReservationReportController {
     }
 
     @PutMapping("reject-penalty/{reportId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> rejectPenaltyToClient(@PathVariable Integer reportId){
         try{
             reservationReportService.rejectPenaltyOption(reportId);

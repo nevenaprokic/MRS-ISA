@@ -29,6 +29,11 @@ function IncomeStatement() {
     [userType.SHIP_OWNER]: reviewReportShip,
   };
 
+  React.useEffect(() => {
+    handleStartDateReport(new Date());
+    handleEndDateReport(new Date());
+    
+}, [])
 
   function checkDate() {
     const currentDate = new Date();

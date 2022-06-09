@@ -18,6 +18,11 @@ function HomePageGraph() {
   const [graph, setGraph] = useState([]);
   const [valueDate, setValueDate] = React.useState(new Date());
 
+  useEffect(() => {
+    handleChangeReservationDate(new Date());
+
+  }, [])
+
   function handleYearlyAttendanceReport() {
     setGraph([]);
     setGraph(

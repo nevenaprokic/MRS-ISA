@@ -480,12 +480,7 @@ export function getAllReservationInstructor(){
     let role = getRoleFromToken();
     console.log(email);
     return api
-    .get("/reservation/instructor-history", {
-        params: {
-            ownerId: email ,
-            role: role
-        },
-      })
+    .get("/reservation/instructor-history/" + email + "/" +role)
     .then((responseData) => responseData)
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
@@ -499,12 +494,7 @@ export function getAllReportInstructor(){
     let role = getRoleFromToken();
     console.log(email);
     return api
-    .get("/reservation-report/all-by-instructor", {
-        params: {
-            ownerEmail: email ,
-            role: role
-        },
-      })
+    .get("/reservation-report/all-by-instructor/" + email)
     .then((responseData) => responseData)
     .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,

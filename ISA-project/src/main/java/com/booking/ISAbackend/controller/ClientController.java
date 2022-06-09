@@ -31,7 +31,7 @@ public class ClientController {
     private ReservationService reservationService;
 
     @PostMapping("registration")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> addClient(@RequestBody ClientRequest request, UriComponentsBuilder ucBuilder) throws InterruptedException {
 
         ClientDTO existUser = this.clientService.findByEmail(request.getEmail());
@@ -46,14 +46,14 @@ public class ClientController {
     }
 
     @GetMapping("profile-info/{email}")
-    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
+    @PreAuthorize("hasAnyAuthority('CLIENT','COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<ClientDTO> getClientProfileInfo(@PathVariable("email") String email){
         ClientDTO dto = clientService.findByEmail(email);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("update-profile-info")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> updateInfo(@RequestParam String email, @RequestBody ClientDTO dto) {
         try{
             clientService.updateInfo(email, dto);
@@ -65,7 +65,7 @@ public class ClientController {
     }
 
     @PostMapping("delete-account")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> deleteAccount(@RequestBody HashMap<String, String> data){
         try{
             clientService.requestAccountDeletion(data.get("email"), data.get("reason"));
@@ -76,13 +76,13 @@ public class ClientController {
     }
 
     @GetMapping("deletion-requested")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<Boolean> alreadyRequestedDeletion(@RequestParam String email){
         return ResponseEntity.ok(clientService.alreadyRequestedDeletion(email));
     }
 
     @GetMapping("get-by-reservation-cottage")
-    @PreAuthorize("hasRole('COTTAGE_OWNER')")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<ClientDTO>> getClientByCottageOwnerEmail(@RequestParam String ownerEmail){
         try{
             List<ClientDTO> clients = reservationService.getClientByCottageOwnerEmail(ownerEmail);
@@ -93,7 +93,7 @@ public class ClientController {
     }
 
     @GetMapping("get-by-reservation-ship")
-    @PreAuthorize("hasRole('SHIP_OWNER')")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ClientDTO>> getClientByShipOwnerEmail(@RequestParam String ownerEmail){
         try{
             List<ClientDTO> clients = reservationService.getClientByShipOwnerEmail(ownerEmail);
@@ -104,7 +104,7 @@ public class ClientController {
     }
 
     @GetMapping("get-by-reservation-adventure")
-    @PreAuthorize("hasRole('INSTRUCTOR')")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<List<ClientDTO>> getClientByInstructorEmail(@RequestParam String ownerEmail){
         try{
             List<ClientDTO> clients = reservationService.getClientByInstructorEmail(ownerEmail);
@@ -115,7 +115,7 @@ public class ClientController {
     }
 
     @GetMapping("available-client")
-    @PreAuthorize("hasAnyRole('CLIENT','COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
+    @PreAuthorize("hasAnyAuthority('CLIENT','COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> isAvailableClient(@RequestParam String emailClient, @RequestParam String startDateReservation, @RequestParam String endDateReservation){
         try{
             Boolean check = reservationService.isAvailableClient(emailClient, startDateReservation, endDateReservation);
@@ -126,7 +126,7 @@ public class ClientController {
     }
 
     @GetMapping("is-allowed-to-reserve")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<Boolean> canReserve(@RequestParam String email) {
         try{
             Boolean check = clientService.canReserve(email);
@@ -137,7 +137,7 @@ public class ClientController {
     }
 
     @PutMapping("make-review")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> makeReview(@RequestBody HashMap<String, String> data) {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
@@ -152,7 +152,7 @@ public class ClientController {
     }
 
     @GetMapping("get-subscriptions/{email}")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     public ResponseEntity<List<OfferDTO>> getSubscriptions(@PathVariable String email){
         try{
             List<OfferDTO> subscriptions = clientService.getSubscriptions(email);
@@ -163,7 +163,7 @@ public class ClientController {
     }
 
     @PostMapping("unsubscribe")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> unsubscribe(@RequestBody HashMap<String, String> data){
         try{
             clientService.unsubscribe(data.get("email"), data.get("offerId"));
@@ -174,7 +174,7 @@ public class ClientController {
     }
 
     @PostMapping("subscribe")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> subscribe(@RequestBody HashMap<String, String> data){
         try{
             clientService.subscribe(data.get("email"), data.get("offerId"));
@@ -185,7 +185,7 @@ public class ClientController {
     }
 
     @GetMapping("is-subscribed")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<Boolean> isSubscribed(@RequestParam String email, @RequestParam String offerId){
         try{
             if (clientService.isSubscribed(email, offerId))
@@ -197,7 +197,7 @@ public class ClientController {
     }
 
     @PutMapping("make-complaint")
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> makeComplaint(@RequestBody HashMap<String, String> data) {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));

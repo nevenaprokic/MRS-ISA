@@ -358,6 +358,9 @@ public class AdventureServiceImpl implements AdventureService {
                 additionalEquipment,
                 instructor);
 
+        newAdventure.setNumberOfReservations(0l);
+        newAdventure.setNumberOfModify(0l);
+        newAdventure.setNumberOfQuickReservation(0l);
         adventureRepository.save(newAdventure);
 
         return adventureRepository.save(newAdventure);
