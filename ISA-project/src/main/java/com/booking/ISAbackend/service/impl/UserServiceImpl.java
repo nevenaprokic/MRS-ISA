@@ -1,10 +1,7 @@
 package com.booking.ISAbackend.service.impl;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -137,6 +134,30 @@ public class UserServiceImpl implements UserService{
 			return;
 		}
 		throw new InvalidPasswordException("Data is invalid.");
+	}
+
+	@Override
+	@Transactional
+	public List<DeleteAccountRequestDTO> getAllDeleteAcountRequests() {
+		List<DeleteRequest> deleteRequests = deleteRequestRepository.findAllActiveRequests();
+		List<DeleteAccountRequestDTO> activeDeleteRequests = new ArrayList<DeleteAccountRequestDTO>();
+		for(DeleteRequest request : deleteRequests){
+			DeleteAccountRequestDTO dto  = createDeleteRequestDTO(request);
+			activeDeleteRequests.add(dto);
+		}
+		return activeDeleteRequests;
+	}
+
+	@Transactional
+	public DeleteAccountRequestDTO createDeleteRequestDTO(DeleteRequest request) {
+		MyUser user = request.getMyUser();
+		DeleteAccountRequestDTO dto = new DeleteAccountRequestDTO(user.getId(),
+																	user.getFirstName(),
+																	user.getLastName(),
+																	user.getRole().getName(),
+																	request.getDescription(),
+																	request.getId());
+		return dto;
 	}
 
 	@Override

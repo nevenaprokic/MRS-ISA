@@ -1,8 +1,6 @@
 package com.booking.ISAbackend.controller;
 
-import com.booking.ISAbackend.dto.AdminDTO;
-import com.booking.ISAbackend.dto.ComplaintDTO;
-import com.booking.ISAbackend.dto.UserProfileData;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.service.UserService;
@@ -96,6 +94,16 @@ public class AdminController {
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong. Please try again");
 
+        }
+    }
+
+    @GetMapping("delete-account-requets")
+    public ResponseEntity<DeleteAccountRequestDTO> getAllDeleteAccountRequests(){
+        try{
+            List<DeleteAccountRequestDTO> deleteAccountRequest = userService.getAllDeleteAcountRequests();
+            return new ResponseEntity(deleteAccountRequest, deleteAccountRequest.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 

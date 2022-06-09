@@ -24,6 +24,10 @@ public class Complaint {
 
 	private LocalDate recivedTime;
 
+	@Version
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 	public Complaint() {}
 
 	public Complaint(String text, Reservation reservation, Client client, boolean deleted, LocalDate recivedTime) {

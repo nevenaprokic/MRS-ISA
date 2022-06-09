@@ -1,9 +1,5 @@
 package com.booking.ISAbackend.model;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class DeleteRequest {
@@ -18,6 +14,10 @@ public class DeleteRequest {
 	@OneToOne
 	private MyUser myUser;
 
+	@Version
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 	public DeleteRequest(){}
 
 	public DeleteRequest(MyUser myUser) {
@@ -27,5 +27,21 @@ public class DeleteRequest {
 	public DeleteRequest(String description, MyUser myUser) {
 		this.description = description;
 		this.myUser = myUser;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public MyUser getMyUser() {
+		return myUser;
 	}
 }

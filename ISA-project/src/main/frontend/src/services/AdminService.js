@@ -108,3 +108,29 @@ function login(data){
                         }))
 
   }
+
+  export function getAllDeleteAccountRequests(){
+    return api
+    .get("/admin/delete-account-requets")
+    .then((response) => console.log(response.data))
+    .catch((err) => {
+        if (err.response.status === 401){
+          return(<div>Greska u autentifikaciji</div>)
+        }
+        else if (err.response.status === 403){
+          return(<div>Greska u autorizaciji</div>)
+        }
+        else if (err.response.status === 404){
+          return(<div>Trenutno nema nepregledanih recenzija</div>)
+        }
+        else{
+          toast.error(err.response.data, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+        })
+    }
+    }
+    
+      
+  )
+  }
