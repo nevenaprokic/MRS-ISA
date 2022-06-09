@@ -134,3 +134,7 @@ function login(data){
       
   )
   }
+
+  export function sendResponseForDeleteAccountRequest(response, requestId, setDeleteRequests, allDeleteRequests){
+
+  }

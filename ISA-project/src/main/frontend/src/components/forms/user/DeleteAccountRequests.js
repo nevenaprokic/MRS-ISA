@@ -27,7 +27,7 @@ import TablePagination from '@mui/material/TablePagination';
 import ratingIcon from '../../images/satisfaction.png';
 import table_icon from '../../images/reservation_report_icon.png';
 import Divider from '@mui/material/Divider';
-import ComplaintResponse from "../review/ComplaintResponse";
+import DeleteAccountResponse from "./DeleteAccountResponse";
 import { Modal } from "@mui/material";
 
 
@@ -122,7 +122,7 @@ function Row({deleteRequest, setDeleteRequests, deleteRequests}) {
                 aria-describedby="modal-modal-description"
                 sx={{ backgroundColor: "rgb(218, 224, 210, 0.6)" }}
               >
-                <ComplaintResponse complaint={deleteRequest} close={handleCloseResponse} setComplaints={setDeleteRequests} complaints={deleteRequests}/>
+                <DeleteAccountResponse deleteRequest={deleteRequest} close={handleCloseResponse} setDeleteRequests={setDeleteRequests} allDeleteRequest={deleteRequests}/>
               </Modal>
         </TableRow>
       </React.Fragment>
