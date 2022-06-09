@@ -36,4 +36,10 @@ public interface UserService {
     ShipOwnerProfileInfoDTO getShipOwnerDataByEmail(String email);
 
     void cahngeAdminFirstPassword(String email, HashMap<String, String> data) throws InvalidPasswordException;
+
+    List<DeleteAccountRequestDTO> getAllDeleteAcountRequests();
+    void deleteAccount(String response, int clientId, int deleteRequestId);
+    void rejectDeleteAccountRequest(String response, int userId, int deleteRequestId);
+
+
 }

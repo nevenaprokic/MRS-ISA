@@ -49,6 +49,7 @@ export default function AttendanceReportMonthly({value}) {
     [userType.INSTRUCTOR] : getAttendanceReportMonthlyAdventure
   };
   useEffect(() => {
+    
     async function setData() {
       let role = getRoleFromToken();
       const dataForReport = await  getReportData[role](value);

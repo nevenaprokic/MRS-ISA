@@ -108,3 +108,90 @@ function login(data){
                         }))
 
   }
+
+  export function getAllDeleteAccountRequests(){
+    return api
+    .get("/admin/delete-account-requets")
+    .then((response) => response)
+    .catch((err) => {
+        if (err.response.status === 401){
+          return(<div>Greska u autentifikaciji</div>)
+        }
+        else if (err.response.status === 403){
+          return(<div>Greska u autorizaciji</div>)
+        }
+        else if (err.response.status === 404){
+          return(<div>Trenutno nema nepregledanih recenzija</div>)
+        }
+        else{
+          toast.error(err.response.data, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+        })
+    }
+    }
+    
+      
+  )
+  }
+
+  export function deleteAccountOnRequest(response, request, setDeleteRequests, allDeleteRequests){
+    api
+    .put("/admin/delete-request/delete/" + request.userId + "/" + request.requestId, response)
+    .then((response) => {toast.success(response.data, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 1500,
+                                  })
+                        setDeleteRequests(allDeleteRequests.filter((deleteRequest) => deleteRequest.requestId !== request.requestId));
+
+          })
+    .catch((err) => {
+      if (err.response.status === 401){
+        return(<div>Greska u autentifikaciji</div>)
+      }
+      else if (err.response.status === 403){
+        return(<div>Greska u autorizaciji</div>)
+      }
+      else if (err.response.status === 404){
+        return(<div>Trenutno nema nepregledanih recenzija</div>)
+      }
+      else{
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+      })
+
+    }
+  })
+}
+
+export function rejectDeleteAccountOnRequest(response, request, setDeleteRequests, allDeleteRequests){
+  api
+  .put("/admin/delete-request/reject/" + request.userId + "/" + request.requestId, response)
+  .then((response) => {toast.success(response.data, {
+                      position: toast.POSITION.BOTTOM_RIGHT,
+                      autoClose: 1500,
+                                })
+                      setDeleteRequests(allDeleteRequests.filter((deleteRequest) => deleteRequest.requestId !== request.requestId));
+
+        })
+  .catch((err) => {
+    if (err.response.status === 401){
+      return(<div>Greska u autentifikaciji</div>)
+    }
+    else if (err.response.status === 403){
+      return(<div>Greska u autorizaciji</div>)
+    }
+    else if (err.response.status === 404){
+      return(<div>Trenutno nema nepregledanih recenzija</div>)
+    }
+    else{
+      toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+    })
+
+  }
+})
+}
+  

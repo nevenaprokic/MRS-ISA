@@ -27,6 +27,7 @@ import { width } from '@mui/system';
 import { Modal } from '@mui/material';
 import ReservationReportsList from '../forms/reservations/ReservationReporstList';
 import ComplaintList from '../forms/review/ComplaintsList';
+import DeleteAccountRequests from '../forms/user/DeleteAccountRequests';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -139,14 +140,15 @@ export default function AdminHomePage() {
                     <Tab label="Unchecked marks" {...a11yProps(4)} />
                     <Tab label="Reservation reports" {...a11yProps(5)} />
                     <Tab label="Complaints" {...a11yProps(6)} />
+                    <Tab label="Delete account requests" {...a11yProps(7)} />                    
                     <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(7)} />
+                    <Tab label="Loyalty program" {...a11yProps(8)} />
                     <Divider />
-                    <Tab label="Business reports" {...a11yProps(8)} />
+                    <Tab label="Business reports" {...a11yProps(9)} />
                     <Divider />
                     {adminData.defaultAdmin &&  
                     
-                    <Tab label="Add new admin" {...a11yProps(9)} />
+                    <Tab label="Add new admin" {...a11yProps(10)} />
                     }
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -170,11 +172,14 @@ export default function AdminHomePage() {
                 <TabPanel value={value} index={8}>
                     <ComplaintList />
                 </TabPanel>
-                <TabPanel value={value} index={10}>
+                <TabPanel value={value} index={9}>
+                    <DeleteAccountRequests />
+                </TabPanel>
+                <TabPanel value={value} index={11}>
                   <LoyalyProgeramPage/>
                 </TabPanel>
                 {adminData.defaultAdmin &&  
-                  <TabPanel value={value} index={14}>
+                  <TabPanel value={value} index={15}>
                     <AddAdmin />
                   </TabPanel>
                 }

@@ -229,8 +229,8 @@ insert into mark(approved, comment, mark, reservation_id, sending_time) values (
 insert into mark(approved, comment, mark, reservation_id, sending_time) values (true,'Nista posebno!',3,16, '2022-05-27');
 
 /*DELETE REQUEST*/
-insert into delete_request(description, my_user_id) values('Ne zelim vise da poslujem!',7);
-
+insert into delete_request(description, my_user_id, deleted) values('Ne zelim vise da poslujem!',7, false);
+insert into delete_request(description, my_user_id, deleted) values('Ne svidjaju mi se ponude!',4, false);
 /*QUICK RESERVATION*/
 
 insert into quick_reservation(end_date,end_date_action,number_of_person,price,start_date,start_date_action,offer_id, deleted) values('2022-05-26','2022-06-20',2,250,'2022-05-23','2022-05-01',6, false);
