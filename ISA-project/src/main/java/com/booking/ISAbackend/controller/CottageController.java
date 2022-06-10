@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +53,15 @@ public class CottageController {
     }
 
     @GetMapping("get-all")
-    public ResponseEntity<List<CottageDTO>> getCottages(){
-        try{
-            List<CottageDTO> cottages = cottageService.findAll();
-            return ResponseEntity.ok(cottages);
-        }catch  (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<CottageDTO>> getCottages() throws IOException {
+        List<CottageDTO> cottages = cottageService.findAll();
+        return ResponseEntity.ok(cottages);
+//        try{
+//            List<CottageDTO> cottages = cottageService.findAll();
+//            return ResponseEntity.ok(cottages);
+//        }catch  (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @GetMapping("search")

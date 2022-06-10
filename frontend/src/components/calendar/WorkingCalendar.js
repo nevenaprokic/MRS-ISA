@@ -1,19 +1,19 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import "./WorkingCalendar.scss";
-import Grid from '@mui/material/Grid';
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import CalendarSidebar from './CalendarSidebar';
-import timeGridPlugin from '@fullcalendar/timegrid'
-import {createEventId, getReservationDetails} from '../../services/CalendarService';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { useEffect, useState } from 'react';
-import { getUsernameFromToken } from "../../app/jwtTokenUtils";
+import { getUsernameFromToken, getRoleFromToken } from "../../app/jwtTokenUtils";
 import { getAdventureByInstructorEmail } from '../../services/AdventureService';
 import ReservationDetails from './ReservationDetails';
 import Modal from '@mui/material/Modal';
 import AddUnavailableOfferDates from './AddUnavailableOfferDates';
-import { OfflinePinRounded } from '@mui/icons-material';
 import QuickActionDetails from './QuickActionDetails';
+import { userType } from '../../app/Enum';
+import { getCottageByCottageOwnerEmail } from '../../services/CottageService';
+import { getShipByShipOwnerEmail } from '../../services/ShipService';
 
 
 export default function WorkingCalendar({offers, setOffers}){
@@ -68,9 +68,15 @@ export default function WorkingCalendar({offers, setOffers}){
     }
     setState(s);
 
+    const usersOffers = {
+      [userType.INSTRUCTOR] : getAdventureByInstructorEmail,
+      [userType.COTTAGE_OWNER] : getCottageByCottageOwnerEmail,
+      [userType.SHIP_OWNER] : getShipByShipOwnerEmail,
+    }
+
     async function setData() {
       let username = getUsernameFromToken();
-      const offersData = await getAdventureByInstructorEmail(username);
+      const offersData = await usersOffers[getRoleFromToken()](username);
       setOffers(!!offersData ? offersData.data : {});     
       setEvents([]);
       const offersNameList = []
