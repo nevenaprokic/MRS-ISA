@@ -116,7 +116,6 @@ return(
                 component="img"
                 sx={{ width: 250, display: { xs: 'none', sm: 'block' } }}
                 image= { "data:image/jpg;base64," +   offerData.photos[0]}
-                //alt={post.imageLabel}
             />
             </Card>
         </CardActionArea>

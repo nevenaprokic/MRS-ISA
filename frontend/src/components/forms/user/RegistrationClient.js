@@ -39,17 +39,11 @@ export default function RegistrationClient() {
     const handleClose = () => setOpen(false);
 
     const onSubmit = (data) => {
-      //event.preventDefault();
-      //const data = new FormData(event.currentTarget);
       console.log(data);
       api
             .post("/client/registration", data)
             .then((res) => {
               handleOpen();
-              // toast.success(res.data, {
-              //   position: toast.POSITION.BOTTOM_RIGHT,
-              //   autoClose: 2000,
-              // });
             })
             .catch((err) => {
                 toast.error(err.response.data, {

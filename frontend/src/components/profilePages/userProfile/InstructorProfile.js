@@ -176,7 +176,7 @@ function InstructorProfile({ instructor, close }) {
           <Typography className="adventureListTitle">
               <label>Adventures</label>
           </Typography>
-          { instructor.adventures.map( (adventure) => {return <AdventureDetails key={adventure.id} adventure={adventure} /> }) }
+          { instructor.adventures.map( (adventure) => {return (<AdventureDetails key={adventure.id} adventure={adventure} /> ) } ) }
         </Grid>
       </div>
     );

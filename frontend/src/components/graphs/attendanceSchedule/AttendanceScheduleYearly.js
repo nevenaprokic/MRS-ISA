@@ -75,6 +75,6 @@ export default function AttendanceReportYearly({value}) {
       labels,
       datasets: set,
     };
-    return <Bar options={options} data={data} />;
+    return (<Bar options={options} data={data} />);
   }
 }

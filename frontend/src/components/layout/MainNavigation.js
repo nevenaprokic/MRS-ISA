@@ -11,7 +11,8 @@ function MainNavigation(){
     useEffect(() => {
             localStorage.removeItem("user");
         }, []);
-    return <header className={classes.header}>
+    return (
+    <header className={classes.header}>
         <div><img src={logo} /></div>
         <div className={classes.logo}></div>
         <nav>
@@ -21,7 +22,7 @@ function MainNavigation(){
                 <li><Link to='/log-in'><LoginIcon style={{ verticalAlign: '-4' }} /> Log in</Link></li>
             </ul>
         </nav>
-    </header>
+    </header>);
 }
 
 export default MainNavigation;

@@ -7,12 +7,17 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function MainNavigationHome(){
-    return <header className={classes.header}>
-        <div><img src={logo} /></div>
-        <div className={classes.logo}></div>
-        <div className='headerLine'></div> 
-        {!!getRoleFromToken() && <Link to='/'><LogoutIcon style={{ verticalAlign: '-4' }} /> Log out</Link> }
-    </header>
+    return (
+        <header className={classes.header}>
+            <div><img src={logo} /></div>
+            <div className={classes.logo}></div>
+            <div className='headerLine'></div> 
+            { (!!getRoleFromToken()) ? 
+                <Link to='/'><LogoutIcon style={{ verticalAlign: '-4' }} /> Log out</Link>
+                : <></>
+            }
+        </header>
+    )
 }
 
 export default MainNavigationHome;

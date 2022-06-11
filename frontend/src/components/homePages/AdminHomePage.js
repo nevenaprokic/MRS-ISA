@@ -105,7 +105,6 @@ export default function AdminHomePage() {
           window.location = "/user-home-page/admin";
         }
         else{
-          //window.location = "/log-in";
         } 
        
       }

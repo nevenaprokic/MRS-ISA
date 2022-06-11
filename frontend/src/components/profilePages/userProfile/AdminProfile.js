@@ -45,8 +45,7 @@ function AdminProfile(){
     useEffect(() => {
         async function setData() {
             let requestData = await getAdminByEmail();
-            setAdminData(!!requestData ? requestData.data : {});        //  requestData.data.email;
-
+            setAdminData(!!requestData ? requestData.data : {});       
         return requestData;    
     }
        setData();

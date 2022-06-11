@@ -17,7 +17,6 @@ import { userType } from "../../../app/Enum";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-toast.configure();
 const theme = createTheme({
   palette: {
     primary: { main: "#9DAB86" },
@@ -44,7 +43,6 @@ export default function LogIn() {
       .post("auth/login", data)
       .then((res) => {
         const token = res.data.accessToken;
-        // dekodiranje tokena, da dobijes podatke
         localStorage.setItem("user", token);
         openUserHomePage(token);
       })
@@ -56,8 +54,6 @@ export default function LogIn() {
       });
   };
   function openUserHomePage(token) {
-    //prepraviti da se otvara home page za svaku rolu posebno
-    //window.location = "/user-home-page/instructor";
     let homePageLocation = homePages[jwt(token).role.name];
     if (!!homePageLocation) {
       window.location = homePageLocation;
