@@ -31,7 +31,6 @@ function AddShipPage() {
       formData.append("photos", element, element.name);
     });
 
-    console.log(formData.get("photos"));
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("street", data.street);

@@ -74,7 +74,8 @@ export default function LogIn() {
             sm={4}
             md={7}
             sx={{
-              backgroundImage: "url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)",
+              backgroundImage:
+                "url(https://www.parkettkaiser.de/media/catalog/product/p/a/parkettkaiser-skaben-fototapete-natur-palmen-blau-gruen-055811_r.jpg?width=265&height=265&store=eu-en&image-type=image)",
               backgroundRepeat: "no-repeat",
               backgroundColor: (t) =>
                 t.palette.mode === "light"
@@ -82,7 +83,7 @@ export default function LogIn() {
                   : t.palette.grey[900],
               backgroundSize: "cover",
               backgroundPosition: "center",
-                  }}
+            }}
           />
           <Grid
             item
