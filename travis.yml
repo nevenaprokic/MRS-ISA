@@ -1,0 +1,23 @@
+sudo: required
+language: java
+jdk: oraclejdk11
+
+services:
+  - postgresql
+
+before_install:
+  - cd ISA-project
+  - chmod +x mvnw
+
+script:
+  - ./mvnw clean install -DskipTests=false -B
+
+dist: trusty
+
+before-deploy:
+- cd ..
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: isa-spring-back
