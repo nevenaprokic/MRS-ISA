@@ -11,6 +11,8 @@ import com.booking.ISAbackend.service.ClientService;
 import com.booking.ISAbackend.service.ReservationReportService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -337,6 +339,33 @@ public class ClientServiceImpl implements ClientService {
         );
         return dto;
     }
+
+    @Override
+    @Transactional
+    public List<UserDTO> getAllActiveClients(int page, int pageSize) {
+        Page<Client> clients = clientRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+        int clientNumbers = clientRepository.getNumberOfClients();
+        List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+        for(Client client : clients.getContent()){
+            UserDTO userDTO = createClientDTO(client);
+            userDTOS.add(userDTO);
+            userDTO.setUserNumber(clientNumbers);
+        }
+        return userDTOS;
+    }
+
+    @Transactional
+    public UserDTO createClientDTO(Client client){
+        Role role = client.getRole();
+        int points = client.getPoints();
+        ClientCategory clientCategory = categoryRepository.findByMatchingInterval(points).get(0);
+        String category = clientCategory.getName();
+        int penalty = client.getPenal();
+
+        UserDTO userDTO = new UserDTO(client, client.getAddress(), role.getName(), category, penalty, points);
+        return userDTO;
+    }
+
 
     private String localDateToString(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
