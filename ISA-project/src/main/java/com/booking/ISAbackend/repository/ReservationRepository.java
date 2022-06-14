@@ -117,5 +117,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             "INNER JOIN ReservationReport rr ON rr.reservation.id = r.id WHERE r.endDate < ?2 ")
     List<Integer> findReservationWithReportByInstructorEmeil(String ownerEmail, LocalDate today);
 
+    @Query("SELECT r FROM Reservation  r INNER  JOIN Cottage  c ON r.offer.id = c.id WHERE r.startDate >= ?1 AND r.endDate <= ?2")
+    List<Reservation> findAllPastCottageReservations(LocalDate startDay, LocalDate endDate);
+
+    @Query("SELECT r FROM Reservation  r INNER  JOIN Ship  s ON r.offer.id = s.id WHERE r.startDate >= ?1 AND r.endDate <= ?2")
+    List<Reservation> findAllPastShipReservations(LocalDate startDay, LocalDate endDate);
+
+    @Query("SELECT r FROM Reservation  r INNER  JOIN Adventure  a ON r.offer.id = a.id WHERE r.startDate >= ?1 AND r.endDate <= ?2")
+    List<Reservation> findAllPastAdventureReservations(LocalDate startDay, LocalDate endDate);
+
 
 }

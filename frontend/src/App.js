@@ -32,6 +32,7 @@ import AddAdmin from './components/forms/user/AddAdmin';
 import ReservationReportsList from './components/forms/reservations/ReservationReporstList';
 import ComplaintList from './components/forms/review/ComplaintsList';
 import DeleteAccountRequests from './components/forms/user/DeleteAccountRequests';
+import IncomeStatementAdmin from './components/graphs/incomeStatement/IncomeStatementAdmin';
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
           <Route path='/admin/complaints-review' element={<ComplaintList/>}/>
           <Route path='/admin/reservation-reports' element={<ReservationReportsList/>}/>
           <Route path='/admin/delete-account-requests' element={<DeleteAccountRequests/>}/>
+          <Route path='/admin/business-report' element={<IncomeStatementAdmin/>}/>
         </Routes>
     </div>
   );
