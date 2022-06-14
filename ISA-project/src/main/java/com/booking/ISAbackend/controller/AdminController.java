@@ -3,6 +3,7 @@ package com.booking.ISAbackend.controller;
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.ClientService;
+import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class AdminController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private OfferService offerService;
 
     @GetMapping("profile-info/{email}")
     public ResponseEntity<AdminDTO> getAdminProfileInfo(@PathVariable("email") String email){
@@ -127,6 +131,16 @@ public class AdminController {
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong. Please try again.");
+        }
+    }
+
+    @GetMapping("business-report")
+    public ResponseEntity<BusinessReportDTO> getBusinessReport(@RequestParam String startDate, @RequestParam String endDate){
+        try{
+            return ResponseEntity.ok().body(offerService.getAdminBusinessReportData(startDate, endDate));
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
