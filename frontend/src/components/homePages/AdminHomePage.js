@@ -23,6 +23,7 @@ import { Modal } from "@mui/material";
 import ReservationReportsList from "../forms/reservations/ReservationReporstList";
 import ComplaintList from "../forms/review/ComplaintsList";
 import DeleteAccountRequests from "../forms/user/DeleteAccountRequests";
+import IncomeStatementAdmin from '../graphs/incomeStatement/IncomeStatementAdmin';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -182,6 +183,9 @@ export default function AdminHomePage() {
                 </TabPanel>
                 <TabPanel value={value} index={11}>
                   <LoyalyProgeramPage />
+                </TabPanel>
+                <TabPanel value={value} index={13}>
+                  <IncomeStatementAdmin/>
                 </TabPanel>
                 {adminData.defaultAdmin && (
                   <TabPanel value={value} index={15}>
