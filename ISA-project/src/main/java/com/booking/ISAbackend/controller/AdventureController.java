@@ -104,7 +104,7 @@ public class AdventureController {
         }
     }
 
-    @PostMapping("update-adventure")
+    @PutMapping("update-adventure")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventureData(@RequestBody AdventureDTO newAdventureData){
          try{
@@ -116,7 +116,7 @@ public class AdventureController {
          }
     }
 
-    @PostMapping("update-adventure-services")
+    @PutMapping("update-adventure-services")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventrueAdditionalServices(@RequestBody Map<String, Object> data){
         try{
@@ -195,4 +195,5 @@ public class AdventureController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

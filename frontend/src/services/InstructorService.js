@@ -22,7 +22,7 @@ export function changeInstructorData(newOwnerData){
     let email = getUsernameFromToken();
     newOwnerData["email"] = email;
     api
-    .post("/instructor/change-data", newOwnerData)
+    .put("/instructor/change-data", newOwnerData)
     .then((responseData) => {toast.success(responseData.data, {
                                 position: toast.POSITION.BOTTOM_RIGHT,
                                 autoClose: 1500,

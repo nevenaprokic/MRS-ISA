@@ -38,7 +38,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     public ResponseEntity<String> changeAdminData(@RequestBody UserProfileData newData){
         try{
             userService.changeAdminData(newData);
@@ -66,7 +66,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("change-password/{email}")
+    @PutMapping("change-password/{email}")
     public ResponseEntity<String> changeFirstLoginPassword(@PathVariable String email, @RequestBody HashMap<String, String> data){
         try {
             userService.cahngeAdminFirstPassword(email, data);

@@ -46,7 +46,7 @@ public class LoyaltyProgramController {
         }
     }
 
-    @PostMapping("update-client-category")
+    @PutMapping("update-client-category")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateLoyaltyClientCategory(@RequestBody ClientCategory updateCategory){
         try {
@@ -69,7 +69,7 @@ public class LoyaltyProgramController {
         }
     }
 
-    @PostMapping("update-owner-category")
+    @PutMapping("update-owner-category")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateLoyaltyOwnerCategory(@RequestBody OwnerCategory updateCategory){
         try {
@@ -138,18 +138,18 @@ public class LoyaltyProgramController {
         }
     }
 
-    @PostMapping(value = "/delete-client-category")
+    @DeleteMapping (value = "/delete-client-category/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteClientCategory(@RequestBody int id){
+    public ResponseEntity<String> deleteClientCategory(@PathVariable("id") int id){
 
         boolean deleted = clientCategoryService.delete(id);
         if(deleted) return ResponseEntity.ok("Successfully deleted category");
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/delete-owner-category")
+    @DeleteMapping(value = "/delete-owner-category/{is}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteOwnerCategory(@RequestBody int id){
+    public ResponseEntity<String> deleteOwnerCategory(@PathVariable("id") int id){
 
         boolean deleted = ownerCategoryService.delete(id);
         if(deleted) return ResponseEntity.ok("Successfully deleted category");

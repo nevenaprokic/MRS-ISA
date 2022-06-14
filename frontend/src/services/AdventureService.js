@@ -44,7 +44,7 @@ export function checkUpdateAllowed(adventureData){
 
 export function updateAdventure(adventureData, additionalServices){
     api
-    .post("/adventure/update-adventure", adventureData)
+    .put("/adventure/update-adventure", adventureData)
     .then((responseData) => {
          updateAdditionalServices(adventureData.id, additionalServices);
     })
