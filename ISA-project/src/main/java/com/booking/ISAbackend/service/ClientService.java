@@ -1,9 +1,6 @@
 package com.booking.ISAbackend.service;
 
-import com.booking.ISAbackend.dto.ClientDTO;
-import com.booking.ISAbackend.dto.ClientRequest;
-import com.booking.ISAbackend.dto.ComplaintDTO;
-import com.booking.ISAbackend.dto.OfferDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Client;
 import com.booking.ISAbackend.model.Complaint;
@@ -36,4 +33,6 @@ public interface ClientService {
     List<ComplaintDTO> getAllNotDeletedComplaints();
 
     void respondOnComplaint(String response, int complalintId) throws UserNotFoundException;
+
+    List<UserDTO> getAllActiveClients(int startId, int endId);
 }

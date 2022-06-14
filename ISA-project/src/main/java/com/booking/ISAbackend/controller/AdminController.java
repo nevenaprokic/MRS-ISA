@@ -130,4 +130,51 @@ public class AdminController {
         }
     }
 
+
+    @GetMapping("all-instructors")
+    public ResponseEntity<List<UserDTO>> getAllInstructors( @RequestParam int page, @RequestParam int pageSize){
+        try{
+            return ResponseEntity.ok(userService.getAllActiveInstructors(page, pageSize));
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-cottage-owners")
+    public ResponseEntity<List<UserDTO>> getAllCottageOwners( @RequestParam int page, @RequestParam int pageSize){
+        try{
+            return ResponseEntity.ok(userService.getAllActiveCottageOwners(page, pageSize));
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-ship-owners")
+    public ResponseEntity<List<UserDTO>> getAllShipOwners( @RequestParam int page, @RequestParam int pageSize){
+        try{
+            return ResponseEntity.ok(userService.getAllActiveShipOwners(page, pageSize));
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-admins/{currentAdmin}/{page}/{pageSize}")
+    public ResponseEntity<List<UserDTO>> getAllAdminsExceptCurrent(@PathVariable("currentAdmin") String currentAdmin,  @PathVariable("page") int page,@PathVariable("pageSize") int pageSize){
+        try{
+            return ResponseEntity.ok(userService.getAllActiveAdmins(page, pageSize, currentAdmin));
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-clients")
+    public ResponseEntity<List<UserDTO>> getAllClients( @RequestParam int page, @RequestParam int pageSize){
+        try{
+            return ResponseEntity.ok(clientService.getAllActiveClients(page, pageSize));
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

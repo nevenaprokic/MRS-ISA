@@ -41,5 +41,9 @@ public interface UserService {
     void deleteAccount(String response, int clientId, int deleteRequestId);
     void rejectDeleteAccountRequest(String response, int userId, int deleteRequestId);
 
+    List<UserDTO> getAllActiveShipOwners(int page, int pageSize);
+    List<UserDTO> getAllActiveCottageOwners(int page, int pageSize);
+    List<UserDTO> getAllActiveInstructors(int page, int pageSize);
+    List<UserDTO> getAllActiveAdmins(int page, int pageSize,String currentAdmin);
 
 }

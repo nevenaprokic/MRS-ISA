@@ -14,6 +14,8 @@ import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private OwnerCategoryRepository ownerCategoryRepository;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -349,6 +354,46 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveCottageOwners(int page, int pageSize){
+		Page<CottageOwner> allOwners = cottageOwnerRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int cottageOwnerNumber = cottageOwnerRepository.getNumberOfCottageOwners();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(CottageOwner cottageOwner : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(cottageOwner);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(cottageOwnerNumber);
+		}
+		return userDTOS;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveShipOwners(int page, int pageSize){
+		Page<ShipOwner> allOwners = shipOwnerRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int shipOwnersNum = shipOwnerRepository.getNumberOfShipOwners();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(ShipOwner shipOwner : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(shipOwner);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(shipOwnersNum);
+		}
+		return userDTOS;
+	}
+
+	@Transactional
+	public UserDTO createUserDTO(Owner owner){
+		Role role = owner.getRole();
+		int points = owner.getPoints();
+		OwnerCategory ownerCategory = ownerCategoryRepository.findByMatchingInterval(points).get(0);
+		String category = ownerCategory.getName();
+
+		UserDTO userDTO = new UserDTO(owner, owner.getAddress(), role.getName(), category, -1, points);
+		return userDTO;
+	}
+
 	private String generateNewAdminPassword() {
 		String password = new Random().ints(10, 33, 122).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
 		return password;
@@ -440,6 +485,37 @@ public class UserServiceImpl implements UserService{
 		DeleteRequest deleteRequest = new DeleteRequest(reason, user);
 		deleteRequestRepository.save(deleteRequest);
 		return true;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveInstructors(int page, int pageSize){
+		Page<Instructor> allOwners = instructorRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int numberOfInstructors = instructorRepository.getNumberOfInstructors();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(Instructor instructor : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(instructor);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(numberOfInstructors);
+		}
+		return userDTOS;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveAdmins(int page, int pageSize, String currentAdmin) {
+		Page<Admin> allAdmins = adminRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int numberOfAdmins = adminRepository.getNumberOfAdmins(currentAdmin);
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(Admin admin : allAdmins.getContent()){
+			if(!Objects.equals(admin.getEmail(), currentAdmin)){
+				UserDTO userDTO = new UserDTO(admin, admin.getAddress(), "ADMIN", "/");
+				userDTOS.add(userDTO);
+				userDTO.setUserNumber(numberOfAdmins);
+			}
+
+		}
+		return userDTOS;
 	}
 
 }
