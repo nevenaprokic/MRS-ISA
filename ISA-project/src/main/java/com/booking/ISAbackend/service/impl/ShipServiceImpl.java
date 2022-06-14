@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ShipRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,7 @@ public class ShipServiceImpl implements ShipService {
     @Override
     @Transactional
     public List<ShipDTO> findAll() throws IOException {
-        List<Ship> ships = shipRepository.findAll();
+        List<Ship> ships = shipRepository.findAllActiveShips();
         List<ShipDTO> dto = new ArrayList<>();
         for(Ship s: ships){
             ShipDTO shipDTO = new ShipDTO(s);
@@ -280,6 +282,22 @@ public class ShipServiceImpl implements ShipService {
             shipRepository.save(ship);
 
         }
+    }
+
+    @Override
+    @Transactional
+    public List<ShipDTO> findAllByPages(int page, int pageSize) throws IOException {
+        Page<Ship> ships = shipRepository.findAllActiveShipsByPage(PageRequest.of(page, pageSize));
+        int shipsNum = shipRepository.getNumberOfShips();
+        List<ShipDTO> dto = new ArrayList<>();
+        for(Ship s: ships.getContent()){
+            ShipDTO shipDTO = new ShipDTO(s);
+            shipDTO.setMark(markService.getMark(s.getId()));
+            shipDTO.setOfferNumber(shipsNum);
+            shipDTO.setOwnerName(s.getShipOwner().getFirstName() + " " + s.getShipOwner().getLastName());
+            dto.add(shipDTO);
+        }
+        return dto;
     }
 
 

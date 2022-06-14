@@ -93,7 +93,7 @@ public class AdventureController {
     }
 
     @GetMapping("details")
-    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @PreAuthorize("hasAnyAuthority('INSTRUCTOR', 'ADMIN')")
     public ResponseEntity<AdventureDetailsDTO> getAdventureDetail(@RequestParam String id){
         try{
             AdventureDetailsDTO adventure = adventureService.findAdventureById(Integer.parseInt(id));
@@ -158,7 +158,7 @@ public class AdventureController {
     }
 
     @GetMapping("allowed-operation")
-    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @PreAuthorize("hasAnyAuthority('INSTRUCTOR', 'ADMIN')")
     public ResponseEntity<Boolean> isAllowedAdventureOperation(@RequestParam Integer adventureId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(adventureId);
@@ -170,9 +170,9 @@ public class AdventureController {
 
     }
 
-    @GetMapping("delete")
-    @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    public ResponseEntity<String> deleteAdventure(@RequestParam Integer adventureId){
+    @DeleteMapping("delete/{adventureId}")
+    @PreAuthorize("hasAnyAuthority('INSTRUCTOR', 'ADMIN')")
+    public ResponseEntity<String> deleteAdventure(@PathVariable("adventureId") Integer adventureId){
         try{
             offerService.delete(adventureId);
             return ResponseEntity.ok().body("Successfully delete adventure");
@@ -182,6 +182,18 @@ public class AdventureController {
         }catch(Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
+        }
+    }
+
+    @GetMapping("all-by-pages")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<AdventureDTO>> getAdventures(@RequestParam int page, @RequestParam int pageSize){
+        try{
+            List<AdventureDTO> adventures = adventureService.findAll(page, pageSize);
+            return ResponseEntity.ok(adventures);
+        }catch  (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }

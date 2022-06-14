@@ -2,6 +2,8 @@ package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Adventure;
 import com.booking.ISAbackend.model.Instructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,13 @@ public interface AdventureReporitory extends JpaRepository<Adventure, Integer> {
 
     @Query("SELECT a.id FROM Adventure a")
     List<Integer> getAdveturesId();
+
+    @Query("SELECT a FROM Adventure a WHERE a.deleted = false")
+    Page<Adventure> findAllActiveAdventures(PageRequest request); /*DODATI OVO U BROD I VIKENDICE I ZAMINEITI KOD FIND ALL*/
+
+    @Query( "Select count(distinct a) FROM Adventure a  WHERE a.deleted = false")
+    int getAdventuresNumber();
+
 
 
 }

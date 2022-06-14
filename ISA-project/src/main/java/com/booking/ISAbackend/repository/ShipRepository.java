@@ -1,7 +1,8 @@
 package com.booking.ISAbackend.repository;
 
-import com.booking.ISAbackend.model.Cottage;
 import com.booking.ISAbackend.model.Ship;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +38,14 @@ public interface ShipRepository extends JpaRepository<Ship, Integer> {
 
     @Query("SELECT s.id FROM Ship s")
     List<Integer> getShipsId();
+
+    @Query("SELECT s FROM Ship s WHERE s.deleted = false")
+    Page<Ship> findAllActiveShipsByPage(PageRequest request);
+
+    @Query( "Select count(distinct s) FROM Ship s  WHERE s.deleted = false")
+    int getNumberOfShips();
+
+    @Query("SELECT s FROM Ship s WHERE s.deleted = false")
+    List<Ship> findAllActiveShips();
+
 }

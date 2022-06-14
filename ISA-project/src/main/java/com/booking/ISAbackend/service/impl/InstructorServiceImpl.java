@@ -61,7 +61,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Transactional
     public List<InstructorProfileData> findAll() throws IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
-        List<Instructor> instructors = instructorRepository.findAll();
+        List<Instructor> instructors = instructorRepository.findAllActiveInstructors();
         makeInstructorDTOs(retList, instructors);
         return retList;
     }

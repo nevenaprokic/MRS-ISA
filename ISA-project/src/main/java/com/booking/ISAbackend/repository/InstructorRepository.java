@@ -38,6 +38,9 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
     int getNumberOfInstructors();
 
     @Query("SELECT i FROM Instructor i WHERE i.deleted = false")
-    Page<Instructor> findAllActiveUsers(PageRequest request);
+    Page<Instructor> findAllActiveUsersByPage(PageRequest request);
+
+    @Query("SELECT i FROM Instructor i WHERE i.deleted = false")
+    List<Instructor> findAllActiveInstructors();
 
 }

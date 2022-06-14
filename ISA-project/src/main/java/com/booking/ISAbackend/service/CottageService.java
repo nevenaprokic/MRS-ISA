@@ -22,4 +22,5 @@ public interface CottageService {
     void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTO, int offerId) throws InvalidPriceException, RequiredFiledException;
     void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException;
     void updateCottageAdditionalServices(List<HashMap<String, String>> newServices, Integer offerID) throws InvalidPriceException, RequiredFiledException;
+    List<CottageDTO> findAllByPages(int page, int pageSize) throws IOException;
 }

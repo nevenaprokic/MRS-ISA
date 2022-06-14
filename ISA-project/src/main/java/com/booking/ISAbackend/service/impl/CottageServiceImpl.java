@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +54,7 @@ public class CottageServiceImpl implements CottageService {
     @Override
     @Transactional
     public List<CottageDTO> findAll() throws IOException {
-        List<Cottage> cottages = cottageRepository.findAll();
+        List<Cottage> cottages = cottageRepository.findAllActiveCottages();
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
             CottageDTO cottageDTO = new CottageDTO(c);
@@ -286,5 +288,22 @@ public class CottageServiceImpl implements CottageService {
 
         }
     }
+
+    @Override
+    @Transactional
+    public List<CottageDTO> findAllByPages(int page, int pageSize) throws IOException {
+        Page<Cottage> cottages = cottageRepository.findAllActiveCottagesByPage(PageRequest.of(page, pageSize));
+        int cottagesNum = cottageRepository.getNumberOfCottages();
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages.getContent()){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            cottageDTO.setOfferNumber(cottagesNum);
+            cottageDTO.setOwnerName(c.getCottageOwner().getFirstName() + " " + c.getCottageOwner().getLastName());
+            dto.add(cottageDTO);
+        }
+        return dto;
+    }
+
 
 }

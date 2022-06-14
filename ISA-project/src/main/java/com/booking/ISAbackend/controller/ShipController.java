@@ -146,7 +146,7 @@ public class ShipController {
     }
 
     @GetMapping("allowed-operation")
-    @PreAuthorize("hasAuthority('SHIP_OWNER')")
+    @PreAuthorize("hasAnyAuthority('SHIP_OWNER', 'ADMIN')")
     public ResponseEntity<Boolean> isAllowedShipOperation(@RequestParam Integer shipId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(shipId);
@@ -158,7 +158,7 @@ public class ShipController {
     }
 
     @DeleteMapping("delete")
-    @PreAuthorize("hasAuthority('SHIP_OWNER')")
+    @PreAuthorize("hasAnyAuthority('SHIP_OWNER', 'ADMIN')")
     public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
         try{
             offerService.delete(shipId);
@@ -194,6 +194,18 @@ public class ShipController {
             shipService.updateShipAdditionalServices(additionalServiceDTOS, id);
             return ResponseEntity.ok().body("Successfully change ship");
         }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-by-pages")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<ShipDTO>> getShips(@RequestParam int page, @RequestParam int pageSize){
+        try{
+            List<ShipDTO> ships = shipService.findAllByPages(page, pageSize);
+            return ResponseEntity.ok(ships);
+        }catch  (Exception e){
+
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
