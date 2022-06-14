@@ -64,7 +64,7 @@ public class OfferServiceImpl implements OfferService {
         if (offer == null)
             throw new OfferNotFoundException("Offer not found");
         if(offer.getSubscribedClients().size()!= 0)
-            clientService.removeSubscribedClients(offer.getSubscribedClients());
+            clientService.removeSubscribedClients(offer.getSubscribedClients(), offerId);
         if(offer.getPhotos().size() != 0)
             photoService.removeOldPhotos(offer.getPhotos());
         if(offer.getAdditionalServices().size() != 0)

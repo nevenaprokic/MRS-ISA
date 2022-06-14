@@ -176,11 +176,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeSubscribedClients(List<Client> services){
+    public void removeSubscribedClients(List<Client> services, int offerId){
         Iterator<Client> iterator = services.iterator();
         while(iterator.hasNext()){
+            Client c = iterator.next();
+            unsubscribe(c.getEmail(), String.valueOf(offerId));
             iterator.remove();
-
         }
     }
 
@@ -371,5 +372,23 @@ public class ClientServiceImpl implements ClientService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         return formatter.format(date);
     }
+
+    @Override
+    @Transactional
+    public void deleteClient(int userId) throws AccountDeletionException {
+        Optional<Client> user = clientRepository.findById(userId);
+        if(user.isPresent()){
+            Client client = user.get();
+            List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(client.getId());
+            if(reservations.isEmpty()){
+                client.setDeleted(true);
+                clientRepository.save(client);
+                emailSender.notifyUserForDeleteAccount(client.getEmail(), "Your account is deleted by admin");
+            }else{
+                throw new AccountDeletionException("Account cannot be deleted because user has future reservations.");
+            }
+        }
+    }
+
 
 }
