@@ -302,3 +302,34 @@ function updateAdditionalServices(offerId, additionalServiceDTOS){
                       });
                   });
 }
+
+export function getAllShips(page, pageSize) {
+  return api
+    .get("/ship/all-by-pages/",  {
+      params:{
+        page: page,
+        pageSize: pageSize
+      }
+    })
+    .then((response) => response)
+    .catch((err) => {
+      if (err.response.status === 401) {
+        return (<div>Greska u autentifikaciji</div>)
+      }
+      else if (err.response.status === 403) {
+        return (<div>Greska u autorizaciji</div>)
+      }
+      else if (err.response.status === 404) {
+        return (<div>Trenutno nema nepregledanih recenzija</div>)
+      }
+      else {
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        })
+
+      }
+    }
+
+    )
+}

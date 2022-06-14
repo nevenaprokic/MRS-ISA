@@ -24,6 +24,7 @@ import ReservationReportsList from "../forms/reservations/ReservationReporstList
 import ComplaintList from "../forms/review/ComplaintsList";
 import DeleteAccountRequests from "../forms/user/DeleteAccountRequests";
 import IncomeStatementAdmin from '../graphs/incomeStatement/IncomeStatementAdmin';
+import OffersOverview from '../forms/OffersOverview';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
