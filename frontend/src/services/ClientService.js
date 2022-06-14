@@ -260,3 +260,70 @@ export function makeComplaintForOffer(reservationId, comment){
     toast.error( err.response.data , {position: toast.POSITION.BOTTOM_RIGHT, autoClose:1500});
   });
 }
+
+export function getAllCLients(page, pageSize) {
+  return api
+    .get("/admin/all-clients", {
+      params: {
+        page: page,
+        pageSize: pageSize
+      }
+    })
+    .then((response) => response)
+    .catch((err) => {
+      if (err.response.status === 401) {
+        return (<div>Greska u autentifikaciji</div>)
+      }
+      else if (err.response.status === 403) {
+        return (<div>Greska u autorizaciji</div>)
+      }
+      else if (err.response.status === 404) {
+        return (<div>Trenutno nema nepregledanih recenzija</div>)
+      }
+      else {
+        toast.error("Something went wrong, please try again later.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        })
+
+      }
+    }
+
+    )
+}
+
+export function deleteClient(userId, allUsers, setUsers) {
+  return api
+    .delete("/client/delete-client/" + userId)
+    .then((response) => {
+              toast.success(response.data, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+                          })
+                setUsers(allUsers.filter((user) => user.id !== userId));
+
+
+            })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        return (<div>Greska u autentifikaciji</div>)
+      }
+      else if (err.response.status === 403) {
+        return (<div>Greska u autorizaciji</div>)
+      }
+      else if (err.response.status === 404) {
+        return (<div>Trenutno nema nepregledanih recenzija</div>)
+      }
+      else {
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        })
+
+      }
+    }
+
+    )
+}
+
+
