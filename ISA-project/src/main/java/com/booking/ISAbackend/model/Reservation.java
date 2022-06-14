@@ -1,6 +1,8 @@
 package com.booking.ISAbackend.model;
 
 import com.booking.ISAbackend.model.Client;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import java.time.LocalDate;
@@ -10,6 +12,8 @@ import java.util.Optional;
 import javax.persistence.*;
 
 @Entity
+@SQLDelete(sql = "UPDATE reservation SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH,CascadeType.REFRESH})
 	private List<AdditionalService> additionalServices;
 
 	@Column(nullable = false)
@@ -33,7 +37,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private Boolean deleted;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "offer_id")
 	private Offer offer;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -67,6 +71,16 @@ public class Reservation {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.additionalServices = additionalServices;
+		this.price = price;
+		this.numberOfPerson = numberOfPerson;
+		this.offer = offer;
+		this.client = client;
+		this.deleted = deleted;
+
+	}
+	public Reservation(LocalDate startDate, LocalDate endDate, Double price, Integer numberOfPerson, Offer offer, Client client, Boolean deleted) {
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.price = price;
 		this.numberOfPerson = numberOfPerson;
 		this.offer = offer;
@@ -121,5 +135,37 @@ public class Reservation {
 
 	public ReservationReport getReport() {
 		return report;
+	}
+
+	public void setAdditionalServices(List<AdditionalService> additionalServices) {
+		this.additionalServices = additionalServices;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public void setNumberOfPerson(Integer numberOfPerson) {
+		this.numberOfPerson = numberOfPerson;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setOffer(Offer offer) {
+		this.offer = offer;
 	}
 }

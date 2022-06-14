@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,20 +25,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class CottageServiceImpl implements CottageService {
+
     @Autowired
     private CottageRepository cottageRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AddressRepository addressRepository;
+
     @Autowired
     private AdditionalServiceService additionalServiceService;
+
     @Autowired
     private PhotoService photoService;
+
     @Autowired
     private MarkService markService;
+
     @Autowired
     private ReservationRepository reservationRepository;
+
     @Autowired
     private AdditionalServiceRepository additionalServiceRepository;
 
@@ -44,7 +54,7 @@ public class CottageServiceImpl implements CottageService {
     @Override
     @Transactional
     public List<CottageDTO> findAll() throws IOException {
-        List<Cottage> cottages = cottageRepository.findAll();
+        List<Cottage> cottages = cottageRepository.findAllActiveCottages();
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
             CottageDTO cottageDTO = new CottageDTO(c);
@@ -100,7 +110,7 @@ public class CottageServiceImpl implements CottageService {
     @Transactional
     public List<CottageDTO> searchCottagesClient(OfferSearchParamsDTO params) throws IOException {
         List<Cottage> cottages = cottageRepository.searchCottagesClient(params.getName(), params.getDescription(), params.getAddress());
-        List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDateFrom(), params.getDateTo());
+        List<Cottage> nonAvailableCottages = reservationRepository.nonAvailableCottages(params.getDate());
 
         List<Cottage> availableCottages = cottages.stream()
                 .filter(element -> !nonAvailableCottages.contains(element))
@@ -205,7 +215,7 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException {
+    public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException {
         Cottage cottage = cottageRepository.findCottageById(cottageId);
         String cottageOwnerEmail = cottage.getCottageOwner().getEmail();
         System.out.println(cottageDTO.getName());
@@ -218,7 +228,11 @@ public class CottageServiceImpl implements CottageService {
             cottage.setCancellationConditions(cottageDTO.getCancellationConditions());
             cottage.setPhotos(updateCottagePhotos(cottageDTO.getPhotos(), cottage.getPhotos(), cottageOwnerEmail));
 
+            cottage.setNumberOfModify(cottage.getNumberOfModify()+1);
+
             updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
+
+            Thread.sleep(cottage.getBedNumber()*2000);
             cottageRepository.save(cottage);
         }
     }
@@ -274,5 +288,22 @@ public class CottageServiceImpl implements CottageService {
 
         }
     }
+
+    @Override
+    @Transactional
+    public List<CottageDTO> findAllByPages(int page, int pageSize) throws IOException {
+        Page<Cottage> cottages = cottageRepository.findAllActiveCottagesByPage(PageRequest.of(page, pageSize));
+        int cottagesNum = cottageRepository.getNumberOfCottages();
+        List<CottageDTO> dto = new ArrayList<>();
+        for(Cottage c: cottages.getContent()){
+            CottageDTO cottageDTO = new CottageDTO(c);
+            cottageDTO.setMark(markService.getMark(c.getId()));
+            cottageDTO.setOfferNumber(cottagesNum);
+            cottageDTO.setOwnerName(c.getCottageOwner().getFirstName() + " " + c.getCottageOwner().getLastName());
+            dto.add(cottageDTO);
+        }
+        return dto;
+    }
+
 
 }

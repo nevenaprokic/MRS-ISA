@@ -50,6 +50,7 @@ public class PhotoServiceImpl implements PhotoService {
             String photoName = savePhotoInFileSystem(photoData.getBytes(), email, counter);
             Photo p = new Photo(photoName);
             adventurePhotos.add(p);
+            p.setDeleted(false);
             photoRepository.save(p);
             counter++;
 
@@ -58,7 +59,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
     @Override
     public String savePhotoInFileSystem(byte[] bytes, String ownerEmail, int counter) throws IOException {
-        String folder = "./src/main/frontend/src/components/images/";
+        String folder = "../frontend/src/components/images/";
         LocalDateTime uniqueTime = LocalDateTime.now();
         DateTimeFormatter formater = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
         String photoName = ownerEmail + "_" + uniqueTime.format(formater) + counter + ".jpg";
@@ -74,12 +75,9 @@ public class PhotoServiceImpl implements PhotoService {
         Iterator<Photo> iterator = oldPhotos.iterator();
         while (iterator.hasNext()) {
             Photo photo = iterator.next();
-            String folder = "./src/main/frontend/src/components/images/";
-            Path path = Paths.get(folder + photo.getPath());
-            File file = new File(path.toString());
             iterator.remove();
-            photoRepository.delete(photo);
-            file.delete();
+            photo.setDeleted(true);
+            photoRepository.save(photo);
         }
     }
     @Override
@@ -92,6 +90,7 @@ public class PhotoServiceImpl implements PhotoService {
             String photoName = savePhotoInFileSystem(bytes, email, counter);
             Photo p = new Photo(photoName);
             adventurePhotos.add(p);
+            p.setDeleted(false);
             photoRepository.save(p);
             counter++;
 

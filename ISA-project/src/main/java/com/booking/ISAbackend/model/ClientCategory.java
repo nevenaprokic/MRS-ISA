@@ -27,6 +27,9 @@ public class ClientCategory {
     @Column
     Integer heighLimitPoints;
 
+    @Column
+    String categoryColor;
+
     public ClientCategory(Long id, String name, Double discount, Integer reservationPoints, Integer lowLimitPoints, Integer heighLimitPoints) {
         this.id = id;
         this.name = name;
@@ -34,6 +37,16 @@ public class ClientCategory {
         this.reservationPoints = reservationPoints;
         this.lowLimitPoints = lowLimitPoints;
         this.heighLimitPoints = heighLimitPoints;
+    }
+
+    public ClientCategory(Long id, String name, Double discount, Integer reservationPoints, Integer lowLimitPoints, Integer heighLimitPoints, String categoryColor) {
+        this.id = id;
+        this.name = name;
+        this.discount = discount;
+        this.reservationPoints = reservationPoints;
+        this.lowLimitPoints = lowLimitPoints;
+        this.heighLimitPoints = heighLimitPoints;
+        this.categoryColor = categoryColor;
     }
 
     public ClientCategory() {
@@ -62,5 +75,31 @@ public class ClientCategory {
 
     public Integer getHeighLimitPoints() {
         return heighLimitPoints;
+    }
+
+    public String getCategoryColor() { return categoryColor; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public void setReservationPoints(Integer reservationPoints) {
+        this.reservationPoints = reservationPoints;
+    }
+
+    public void setLowLimitPoints(Integer lowLimitPoints) {
+        this.lowLimitPoints = lowLimitPoints;
+    }
+
+    public void setHeighLimitPoints(Integer heighLimitPoints) {
+        this.heighLimitPoints = heighLimitPoints;
+    }
+
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
     }
 }

@@ -11,6 +11,7 @@ import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class ShipOwnerController {
     private RegistrationRequestService registrationRequestService;
 
     @GetMapping("profile-info")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<ShipOwnerProfileInfoDTO> getShipOwnerProfileInfo(@RequestParam String email){
         try{
             ShipOwnerProfileInfoDTO shipOwner =  userService.getShipOwnerDataByEmail(email);
@@ -33,7 +35,8 @@ public class ShipOwnerController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipOwnerData(@RequestBody ShipOwnerNewDataDTO newData){
         try{
             userService.changeShipOwnerData(newData);
@@ -44,6 +47,7 @@ public class ShipOwnerController {
     }
 
     @PostMapping("send-delete-request")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> sendDeleteRequestShipOwner(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(userService.sendDeleteRequestShipOwner(email, data.get("reason")))

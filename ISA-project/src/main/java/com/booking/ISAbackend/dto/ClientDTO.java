@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.dto;
 
+import com.booking.ISAbackend.model.Client;
+
 public class ClientDTO {
 
     private String email;
@@ -11,10 +13,14 @@ public class ClientDTO {
     private String state;
     private String clientCategory;
     private Integer penal;
+    private Integer offerId;
+    private Integer points;
+    private Double discount;
+
 
     public ClientDTO() {}
 
-    public ClientDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String clientCategory, Integer penal) {
+    public ClientDTO(String email, String firstName, String lastName, String phoneNumber, String street, String city, String state, String clientCategory, Integer penal, Integer points) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,6 +30,38 @@ public class ClientDTO {
         this.state = state;
         this.clientCategory = clientCategory;
         this.penal = penal;
+        this.offerId = 0;
+        this.points = points;
+    }
+
+    public ClientDTO(Client c, Integer id, String category, Double discount) {
+        this.email = c.getEmail();
+        this.firstName = c.getFirstName();
+        this.lastName = c.getLastName();
+        this.phoneNumber = c.getPhoneNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
+        this.clientCategory = category;
+        this.penal = c.getPenal();
+        this.offerId = id;
+        this.points = c.getPoints();
+        this.discount = discount;
+        
+    }
+
+    public ClientDTO(Client c, String category) {
+        this.email = c.getEmail();
+        this.firstName = c.getFirstName();
+        this.lastName = c.getLastName();
+        this.phoneNumber = c.getPhoneNumber();
+        this.street = c.getAddress().getStreet();
+        this.city = c.getAddress().getCity();
+        this.state = c.getAddress().getState();
+        this.clientCategory = category;
+        this.penal = c.getPenal();
+        this.points = c.getPoints();
+
     }
 
     public String getEmail() {
@@ -53,6 +91,10 @@ public class ClientDTO {
     public String getState() {
         return state;
     }
+
+    public int getPoints() {return points; }
+
+    public void setPoints(int points) {this.points = points;}
 
     public String getClientCategory() {
         return clientCategory;
@@ -96,5 +138,13 @@ public class ClientDTO {
 
     public void setPenal(Integer penal) {
         this.penal = penal;
+    }
+
+    public Integer getOfferId() {
+        return offerId;
+    }
+
+    public Double getDiscount() {
+        return discount;
     }
 }

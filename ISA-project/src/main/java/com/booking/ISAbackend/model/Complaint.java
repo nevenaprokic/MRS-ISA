@@ -1,12 +1,17 @@
 package com.booking.ISAbackend.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Complaint {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "my_user_id")
+	private Client client;
 
 	@Column(nullable = false)
 	private String text;
@@ -15,12 +20,22 @@ public class Complaint {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 
+	private boolean deleted;
+
+	private LocalDate recivedTime;
+
+	@Version
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 	public Complaint() {}
 
-	public Complaint(Integer id, String text, Reservation reservation) {
-		this.id = id;
+	public Complaint(String text, Reservation reservation, Client client, boolean deleted, LocalDate recivedTime) {
 		this.text = text;
 		this.reservation = reservation;
+		this.client = client;
+		this.deleted = deleted;
+		this.recivedTime = recivedTime;
 	}
 
 	public Integer getId() {
@@ -46,4 +61,12 @@ public class Complaint {
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+
+	public boolean isDeleted() {return deleted;}
+
+	public void setDeleted(boolean deleted) { this.deleted = deleted; }
+
+	public Client getClient() {return client;}
+
+	public LocalDate getRecivedTime() {return recivedTime;}
 }

@@ -1,26 +1,29 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
-import com.booking.ISAbackend.dto.ClientDTO;
-import com.booking.ISAbackend.dto.ClientRequest;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
-import com.booking.ISAbackend.exceptions.AccountDeletionException;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
+import com.booking.ISAbackend.service.ClientCategoryService;
 import com.booking.ISAbackend.service.ClientService;
+import com.booking.ISAbackend.service.ReservationReportService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -50,7 +53,22 @@ public class ClientServiceImpl implements ClientService {
     private EmailSender emailSender;
 
     @Autowired
-    private ClientCategoryRepository clientCategoryRepository;
+    private ComplaintRepository complaintRepository;
+
+    @Autowired
+    private ClientCategoryService clientCategoryService;
+
+    @Autowired
+    private MarkRepository markRepository;
+
+    @Autowired
+    private OfferRepository offerRepository;
+
+    @Autowired
+    private ClientCategoryRepository categoryRepository;
+
+    @Autowired
+    private ReservationReportService reservationReportService;
 
     @Override
     @Transactional
@@ -65,7 +83,7 @@ public class ClientServiceImpl implements ClientService {
         c.setAddress(a);
         c.setPhoneNumber(cr.getPhoneNumber());
         c.setDeleted(false);
-        c.setClientCategory(clientCategoryRepository.findByName("CASUAL_CLIENT").get(0));
+        c.setPoints(0);
         c.setEmailVerified(false);
         c.setPenal(0);
         c.setRole(roleRepository.findByName("CLIENT").get(0));
@@ -82,6 +100,8 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientDTO findByEmail(String email) {
         Client client = clientRepository.findByEmail(email);
+        if(client == null) return null;
+        ClientCategory category = clientCategoryService.findCategoryByReservationPoints(client.getPoints()).get(0);
         ClientDTO dto = new ClientDTO(
                 client.getEmail(),
                 client.getFirstName(),
@@ -90,8 +110,9 @@ public class ClientServiceImpl implements ClientService {
                 client.getAddress().getStreet(),
                 client.getAddress().getCity(),
                 client.getAddress().getState(),
-                client.getClientCategory().getName(),
-                client.getPenal()
+                category.getName(),
+                client.getPenal(),
+                client.getPoints()
         );
         return dto;
     }
@@ -161,6 +182,194 @@ public class ClientServiceImpl implements ClientService {
             iterator.remove();
 
         }
+    }
+
+    @Override
+    public Boolean canReserve(String email){
+        Integer penalties = clientRepository.getPenalties(email);
+        return penalties < 3;
+    }
+
+    @Override
+    public void makeReview(Integer stars, Integer reservationId, String comment, String email) throws Exception {
+        Optional<Reservation> r = reservationRepository.findById(reservationId);
+        Client c = clientRepository.findByEmail(email);
+        Optional<Mark> om = markRepository.alreadyReviewed(c.getId(), reservationId);
+        if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
+        if(r.isPresent()){
+            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
+            markRepository.save(m);
+        }else{
+            throw new Exception();
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<OfferDTO> getSubscriptions(String email) throws IOException {
+        List<Offer> offers = clientRepository.getSubscriptions(email);
+        List<OfferDTO> subscriptions = new ArrayList<>();
+        for(Offer o : offers){
+            OfferDTO dto = new OfferDTO(o);
+            subscriptions.add(dto);
+        }
+        return subscriptions;
+    }
+
+    @Override
+    @Transactional
+    public void unsubscribe(String email, String offerId) {
+        Integer id = Integer.parseInt(offerId);
+        Client c = clientRepository.findByEmail(email);
+        Offer o = offerRepository.findOfferById(id);
+        c.getSubscribedOffers().removeIf(offer -> Objects.equals(offer.getId(), id));
+        o.getSubscribedClients().removeIf(client -> Objects.equals(client.getId(), c.getId()));
+        clientRepository.save(c);
+        offerRepository.save(o);
+    }
+
+    @Override
+    @Transactional
+    public void subscribe(String email, String offerId) {
+        Integer id = Integer.parseInt(offerId);
+        Client c = clientRepository.findByEmail(email);
+        Offer o = offerRepository.findOfferById(id);
+        List<Offer> offers = c.getSubscribedOffers();
+        offers.add(o);
+        c.setSubscribedOffers(offers);
+
+        List<Client> subs = o.getSubscribedClients();
+        subs.add(c);
+        o.setSubscribedClients(subs);
+        clientRepository.save(c);
+        offerRepository.save(o);
+    }
+
+    @Override
+    @Transactional
+    public Boolean isSubscribed(String email, String offerId) {
+        Integer id = Integer.parseInt(offerId);
+        Offer o = offerRepository.findOfferById(id);
+        for(Client c : o.getSubscribedClients())
+            if(c.getEmail().equals(email))
+                return true;
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public void makeComplaint(Integer reservationId, String comment, String email) throws Exception {
+        Optional<Reservation> r = reservationRepository.findById(reservationId);
+        Client c = clientRepository.findByEmail(email);
+        Optional<Complaint> m = Optional.ofNullable(complaintRepository.alreadyReviewed(c.getId(), reservationId));
+        if(m.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
+        if(r.isPresent()){
+            Complaint a = new Complaint(comment, r.get(), c, false, LocalDate.now());
+            complaintRepository.save(a);
+        }else{
+            throw new Exception();
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<ComplaintDTO> getAllNotDeletedComplaints() {
+        List<ComplaintDTO> complaints =  new ArrayList<ComplaintDTO>();
+        List<Complaint> notReviewedComplaints = complaintRepository.findAllNotDeleted();
+        for(Complaint complaint : notReviewedComplaints){
+            complaints.add(createComplaintDTO(complaint));
+        }
+        return complaints;
+    }
+
+    @Override
+    @Transactional
+    public void respondOnComplaint(String response, int complalintId) throws UserNotFoundException {
+        Optional<Complaint> complaint = complaintRepository.findById(complalintId);
+        if(complaint.isPresent()){
+            Complaint complaintForResponse = complaint.get();
+            Client client = complaintForResponse.getClient();
+            Reservation reservation = complaintForResponse.getReservation();
+            Owner owner = reservationReportService.findReservationOwner(reservation);
+            sendComplaintResponseToUsers(owner, client, reservation, response);
+            complaintForResponse.setDeleted(true);
+            complaintRepository.save(complaintForResponse);
+
+        }
+    }
+
+    @Transactional
+    public void sendComplaintResponseToUsers(Owner owner, Client client, Reservation reservation, String text) {
+        String clientMessage = "Response for complaint on reservation '" + reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + "-" + reservation.getEndDate() + ":  "  + text;
+
+        String ownerMessage = "Response for complaint on reservation  " +  reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + " - " + reservation.getEndDate() + ": " + text;
+
+        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
+        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
+    }
+
+    @Scheduled(cron="0 0 0 1 1/1 *")
+    @Transactional
+    public void removePenalties(){
+
+        clientRepository.removePenalties();
+    }
+
+//    @Scheduled(fixedRate=2000L)
+//    public void printSomething(){
+//        System.out.println("Something");
+//    }
+
+    @Transactional
+    public ComplaintDTO createComplaintDTO(Complaint complaint){
+        Reservation reservation = complaint.getReservation();
+        Client client = reservation.getClient();
+        ClientCategory category = categoryRepository.findByMatchingInterval(client.getPoints()).get(0);
+        //int id, String text, String offerName, String clientName, String clientCategory, int clientPenalty, String reservationStartDate, String reservationEndDate
+        ComplaintDTO dto = new ComplaintDTO(complaint.getId(), complaint.getText(),
+                reservation.getOffer().getName(),
+                client.getFirstName() + " " + client.getLastName(),
+                category.getName(),
+                client.getPenal(),
+                localDateToString(reservation.getStartDate()),
+                localDateToString(reservation.getEndDate()),
+                localDateToString(complaint.getRecivedTime())
+        );
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public List<UserDTO> getAllActiveClients(int page, int pageSize) {
+        Page<Client> clients = clientRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+        int clientNumbers = clientRepository.getNumberOfClients();
+        List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+        for(Client client : clients.getContent()){
+            UserDTO userDTO = createClientDTO(client);
+            userDTOS.add(userDTO);
+            userDTO.setUserNumber(clientNumbers);
+        }
+        return userDTOS;
+    }
+
+    @Transactional
+    public UserDTO createClientDTO(Client client){
+        Role role = client.getRole();
+        int points = client.getPoints();
+        ClientCategory clientCategory = categoryRepository.findByMatchingInterval(points).get(0);
+        String category = clientCategory.getName();
+        int penalty = client.getPenal();
+
+        UserDTO userDTO = new UserDTO(client, client.getAddress(), role.getName(), category, penalty, points);
+        return userDTO;
+    }
+
+
+    private String localDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
     }
 
 }

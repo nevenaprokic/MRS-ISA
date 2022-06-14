@@ -6,14 +6,14 @@ import java.time.LocalDate;
 
 public class OfferSearchParamsDTO {
 
+    private String firstName;
+    private String lastName;
     private String name;
     private String description;
     private String address;
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate dateFrom;
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate dateTo;
+    private LocalDate date;
 
     public OfferSearchParamsDTO(){}
 
@@ -21,8 +21,15 @@ public class OfferSearchParamsDTO {
         this.name = name;
         this.description = description;
         this.address = address;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
+        this.date = dateFrom;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getName() {
@@ -37,12 +44,16 @@ public class OfferSearchParamsDTO {
         return address;
     }
 
-    public LocalDate getDateFrom() {
-        return dateFrom;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public LocalDate getDateTo() {
-        return dateTo;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setName(String name) {
@@ -57,11 +68,7 @@ public class OfferSearchParamsDTO {
         this.address = address;
     }
 
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public void setDateTo(LocalDate dateTo) {
-        this.dateTo = dateTo;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

@@ -1,22 +1,20 @@
 package com.booking.ISAbackend.service.impl;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 import com.booking.ISAbackend.dto.*;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPasswordException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.email.EmailService;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 
 import com.booking.ISAbackend.repository.*;
-import com.booking.ISAbackend.service.AdventureService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,9 +41,22 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private OwnerCategoryServiceImpl ownerCategoryService;
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
+	@Autowired
+	private AdminRepository adminRepository;
+
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
+	private OwnerCategoryRepository ownerCategoryRepository;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -74,7 +85,8 @@ public class UserServiceImpl implements UserService{
 		InstructorProfileData dto = null;
 		Instructor i = findInstructorByEmail(email);
 		if(i != null){
-			dto = new InstructorProfileData(i);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(i.getPoints()).get(0);
+			dto = new InstructorProfileData(i, category);
 			return dto;
 		}
 		return dto;
@@ -86,7 +98,8 @@ public class UserServiceImpl implements UserService{
 		CottageOwnerProfileInfoDTO dto = null;
 		CottageOwner cottageOwner = findCottageOwnerByEmail(email);
 		if(cottageOwner != null){
-			dto = new CottageOwnerProfileInfoDTO(cottageOwner);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(cottageOwner.getPoints()).get(0);
+			dto = new CottageOwnerProfileInfoDTO(cottageOwner, category);
 			return dto;
 		}
 		return dto;
@@ -106,11 +119,89 @@ public class UserServiceImpl implements UserService{
 		ShipOwnerProfileInfoDTO dto = null;
 		ShipOwner shipOwner = findShipOwnerByEmail(email);
 		if(shipOwner != null){
-			dto = new ShipOwnerProfileInfoDTO(shipOwner);
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(shipOwner.getPoints()).get(0);
+			dto = new ShipOwnerProfileInfoDTO(shipOwner, category);
 			return dto;
 		}
 		return dto;
 	}
+
+	@Override
+	public void cahngeAdminFirstPassword(String email, HashMap<String, String> data) throws InvalidPasswordException {
+		Admin currentUser = adminRepository.findByEmail(email);
+		System.out.println(email);
+		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
+		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
+			currentUser.setPassword(newPasswordHash);
+			currentUser.setFirstLogin(false);
+			userRepository.save(currentUser);
+			return;
+		}
+		throw new InvalidPasswordException("Data is invalid.");
+	}
+
+	@Override
+	@Transactional
+	public List<DeleteAccountRequestDTO> getAllDeleteAcountRequests() {
+		List<DeleteRequest> deleteRequests = deleteRequestRepository.findAllActiveRequests();
+		List<DeleteAccountRequestDTO> activeDeleteRequests = new ArrayList<DeleteAccountRequestDTO>();
+		for(DeleteRequest request : deleteRequests){
+			DeleteAccountRequestDTO dto  = createDeleteRequestDTO(request);
+			activeDeleteRequests.add(dto);
+		}
+		return activeDeleteRequests;
+	}
+
+	@Override
+	public void deleteAccount(String response, int userId, int deleteRequestId) {
+		Optional<MyUser> user = userRepository.findById(userId);
+		Optional<DeleteRequest> deleteRequest = deleteRequestRepository.findById(deleteRequestId);
+		if(user.isPresent() && deleteRequest.isPresent()){
+			MyUser myUser = user.get();
+			DeleteRequest request = deleteRequest.get();
+			myUser.setDeleted(true);
+			request.setDeleted(true);
+			userRepository.save(myUser);
+			deleteRequestRepository.save(request);
+			sendDeleteAccountMail(myUser.getEmail(), response);
+		}
+	}
+
+	private void sendDeleteAccountMail(String email, String reason) {
+		String message = "Yore account IS DELETED with following explanation: " + reason;
+		emailService.notifyUserForDeleteAccountResponse(email, message);
+	}
+
+	private void sendRejectDeleteAccountMail(String email, String reason) {
+		String message = "Yore account IS NOT DELETED with following explanation: " + reason;
+		emailService.notifyUserForDeleteAccountResponse(email, message);
+	}
+
+	@Override
+	public void rejectDeleteAccountRequest(String response, int userId, int deleteRequestId) {
+		Optional<MyUser> user = userRepository.findById(userId);
+		Optional<DeleteRequest> deleteRequest = deleteRequestRepository.findById(deleteRequestId);
+		if(user.isPresent() && deleteRequest.isPresent()){
+			MyUser myUser = user.get();
+			DeleteRequest request = deleteRequest.get();
+			request.setDeleted(true);
+			deleteRequestRepository.save(request);
+			sendRejectDeleteAccountMail(myUser.getEmail(), response);
+		}
+	}
+
+	@Transactional
+	public DeleteAccountRequestDTO createDeleteRequestDTO(DeleteRequest request) {
+		MyUser user = request.getMyUser();
+		DeleteAccountRequestDTO dto = new DeleteAccountRequestDTO(user.getId(),
+																	user.getFirstName(),
+																	user.getLastName(),
+																	user.getRole().getName(),
+																	request.getDescription(),
+																	request.getId());
+		return dto;
+	}
+
 	@Override
 	public ShipOwner findShipOwnerByEmail(String email){
 		MyUser user = userRepository.findByEmail(email);
@@ -120,10 +211,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public UserProfileData findAdminByEmail(String email) {
-		MyUser user = userRepository.findByEmail(email);
-		UserProfileData adminData = new UserProfileData(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhoneNumber(),
-							user.getAddress().getStreet(), user.getAddress().getCity(), user.getAddress().getState());
+	public AdminDTO findAdminByEmail(String email) {
+		Admin admin = adminRepository.findByEmail(email);
+		AdminDTO adminData = new AdminDTO(admin.getEmail(), admin.getFirstName(), admin.getLastName(), admin.getPhoneNumber(),
+				admin.getAddress().getStreet(), admin.getAddress().getCity(), admin.getAddress().getState(),
+				admin.isEmailVerified(), admin.isDefaultAdmin(), admin.isFirstLogin());
 		return adminData;
 	}
 
@@ -155,6 +247,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		MyUser currentUser = userRepository.findByEmail(email);
+		System.out.println(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
 		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
 			currentUser.setPassword(newPasswordHash);
@@ -236,6 +329,73 @@ public class UserServiceImpl implements UserService{
 				userRepository.save(instructor);
 			}
 		}
+	}
+
+	@Override
+	@Transactional
+	public void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException, AlreadyExitingUsernameException {
+		MyUser user = userRepository.findByEmail(data.getEmail());
+		if(validateUserNewData(data) && user == null){
+			Address address = new Address(data.getStreet(), data.getCity(), data.getState());
+			addressRepository.save(address);
+			boolean profileDeleted =false;
+			String password = generateNewAdminPassword();
+			Role role = roleRepository.findByName("ADMIN").get(0);
+			Admin newAdmin = new Admin(data.getFirstName(),
+					data.getLastName(), passwordEncoder.encode(password), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address, true, false );
+
+			newAdmin.setEmailVerified(true);
+			userRepository.save(newAdmin);
+			emailService.notifyNewAdmin(data.getEmail(), password);
+		}
+		else{
+			throw new AlreadyExitingUsernameException("Email address already exists.");
+		}
+	}
+
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveCottageOwners(int page, int pageSize){
+		Page<CottageOwner> allOwners = cottageOwnerRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int cottageOwnerNumber = cottageOwnerRepository.getNumberOfCottageOwners();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(CottageOwner cottageOwner : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(cottageOwner);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(cottageOwnerNumber);
+		}
+		return userDTOS;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveShipOwners(int page, int pageSize){
+		Page<ShipOwner> allOwners = shipOwnerRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int shipOwnersNum = shipOwnerRepository.getNumberOfShipOwners();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(ShipOwner shipOwner : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(shipOwner);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(shipOwnersNum);
+		}
+		return userDTOS;
+	}
+
+	@Transactional
+	public UserDTO createUserDTO(Owner owner){
+		Role role = owner.getRole();
+		int points = owner.getPoints();
+		OwnerCategory ownerCategory = ownerCategoryRepository.findByMatchingInterval(points).get(0);
+		String category = ownerCategory.getName();
+
+		UserDTO userDTO = new UserDTO(owner, owner.getAddress(), role.getName(), category, -1, points);
+		return userDTO;
+	}
+
+	private String generateNewAdminPassword() {
+		String password = new Random().ints(10, 33, 122).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
+		return password;
 	}
 
 	private boolean instructorDataValidation(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
@@ -324,6 +484,37 @@ public class UserServiceImpl implements UserService{
 		DeleteRequest deleteRequest = new DeleteRequest(reason, user);
 		deleteRequestRepository.save(deleteRequest);
 		return true;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveInstructors(int page, int pageSize){
+		Page<Instructor> allOwners = instructorRepository.findAllActiveUsersByPage(PageRequest.of(page, pageSize));
+		int numberOfInstructors = instructorRepository.getNumberOfInstructors();
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(Instructor instructor : allOwners.getContent()){
+			UserDTO userDTO = createUserDTO(instructor);
+			userDTOS.add(userDTO);
+			userDTO.setUserNumber(numberOfInstructors);
+		}
+		return userDTOS;
+	}
+
+	@Override
+	@Transactional
+	public List<UserDTO> getAllActiveAdmins(int page, int pageSize, String currentAdmin) {
+		Page<Admin> allAdmins = adminRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		int numberOfAdmins = adminRepository.getNumberOfAdmins(currentAdmin);
+		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+		for(Admin admin : allAdmins.getContent()){
+			if(!Objects.equals(admin.getEmail(), currentAdmin)){
+				UserDTO userDTO = new UserDTO(admin, admin.getAddress(), "ADMIN", "/");
+				userDTOS.add(userDTO);
+				userDTO.setUserNumber(numberOfAdmins);
+			}
+
+		}
+		return userDTOS;
 	}
 
 }

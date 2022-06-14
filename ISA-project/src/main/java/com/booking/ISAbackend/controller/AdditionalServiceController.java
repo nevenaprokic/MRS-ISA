@@ -19,16 +19,5 @@ import java.util.List;
 @RequestMapping("additional-service")
 public class AdditionalServiceController {
 
-    @Autowired
-    private OfferService offerService;
 
-    @GetMapping("get-info")
-    public ResponseEntity<List<AdditionalServiceDTO>> getAdditionalServiceByOffer(@RequestParam String id){
-        try{
-            List<AdditionalServiceDTO> additionalServices = offerService.findAdditionalServiceByOffer(Integer.parseInt(id));
-            return ResponseEntity.ok(additionalServices);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
 }

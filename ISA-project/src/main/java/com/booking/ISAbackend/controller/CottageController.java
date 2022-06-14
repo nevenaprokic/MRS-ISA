@@ -10,22 +10,27 @@ import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("cottage")
-public class CottageController {
+public class
+CottageController {
     @Autowired
     private CottageService cottageService;
     @Autowired
     private OfferService offerService;
 
     @GetMapping("get-cottages-by-owner-email")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> getCottageByCottageOwnerEmail(@RequestParam String email){
         try{
             List<CottageDTO> cottages = cottageService.findCottageByCottageOwnerEmail(email);
@@ -46,18 +51,18 @@ public class CottageController {
         }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
 
-
     @GetMapping("get-all")
-    public ResponseEntity<List<CottageDTO>> getCottages(){
-        try{
-            List<CottageDTO> cottages = cottageService.findAll();
-            return ResponseEntity.ok(cottages);
-        }catch  (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<CottageDTO>> getCottages() throws IOException {
+        List<CottageDTO> cottages = cottageService.findAll();
+        return ResponseEntity.ok(cottages);
+//        try{
+//            List<CottageDTO> cottages = cottageService.findAll();
+//            return ResponseEntity.ok(cottages);
+//        }catch  (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @GetMapping("search")
@@ -71,6 +76,7 @@ public class CottageController {
         }
     }
     @GetMapping("search-by-owner")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<List<CottageDTO>> searchCottagesByCottageOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String cottageOwnerUsername){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesByCottageOwner(name, maxPeople, address, price, cottageOwnerUsername);
@@ -81,6 +87,7 @@ public class CottageController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> addCottage(@RequestParam("email") String ownerEmail,
                                              @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                              @RequestParam("offerName") String offerName,
@@ -112,6 +119,7 @@ public class CottageController {
 
     }
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -127,6 +135,7 @@ public class CottageController {
     }
 
     @PostMapping("search-client")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<CottageDTO>> searchCottagesClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<CottageDTO> cottages = cottageService.searchCottagesClient(params);
@@ -136,6 +145,7 @@ public class CottageController {
         }
     }
     @GetMapping("allowed-operation")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER', 'ADMIN')")
     public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer cottageId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(cottageId);
@@ -147,7 +157,8 @@ public class CottageController {
 
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER', 'ADMIN')")
     public ResponseEntity<String> deleteCottage(@RequestParam Integer cottageId){
         try{
             offerService.delete(cottageId);
@@ -160,18 +171,22 @@ public class CottageController {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
-    @PostMapping("update")
+    @PutMapping("update")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageData(@RequestBody CottageDTO newCottageData){
         try{
             cottageService.updateCottage(newCottageData, newCottageData.getId());
             return ResponseEntity.ok().body("Successfully update cottage.");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("update-cottage-services")
+    @PutMapping("update-cottage-services")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public ResponseEntity<String> changeCottageAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -181,6 +196,17 @@ public class CottageController {
             cottageService.updateCottageAdditionalServices(additionalServiceDTOS, id);
             return ResponseEntity.ok().body("Successfully change cottage");
         }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-by-pages")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<CottageDTO>> getCottages(@RequestParam int page, @RequestParam int pageSize){
+        try{
+            List<CottageDTO> cottages = cottageService.findAllByPages(page, pageSize);
+            return ResponseEntity.ok(cottages);
+        }catch  (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

@@ -3,6 +3,7 @@ package com.booking.ISAbackend.model;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -37,6 +38,7 @@ public class Offer {
 	
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<QuickReservation> quickReservations;
+
 	@OneToMany(mappedBy = "offer", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 
@@ -47,8 +49,17 @@ public class Offer {
 	private List<Client> subscribedClients;
 
 	@Version
-	@Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
 	private Long version;
+
+	@Column(nullable = false, columnDefinition = "integer DEFAULT 0")
+	private Long numberOfReservations;
+
+	@Column(nullable = false, columnDefinition = "integer DEFAULT 0")
+	private Long numberOfQuickReservations;
+
+	@Column(nullable = false, columnDefinition = "integer DEFAULT 0")
+	private Long numberOfModify;
 
 
 	public Offer(String name, String description, Double price, List<Photo> photos, Integer numberOfPerson, String rulesOfConduct, List<AdditionalService> additionalServices, String cancellationConditions, Boolean deleted, Address address, List<QuickReservation> quickReservations, List<Reservation> reservations, List<Client> subscribedClients) {
@@ -92,7 +103,11 @@ public class Offer {
 	}
 
 	public List<Photo> getPhotos() {
-		return photos;
+		List<Photo> notDeleted = new ArrayList<>();
+		for(Photo photo: photos){
+			notDeleted.add(photo);
+		}
+		return notDeleted;
 	}
 
 	public Integer getNumberOfPerson() {
@@ -143,6 +158,10 @@ public class Offer {
 		this.price = price;
 	}
 
+	public void setUnavailableDate(List<UnavailableOfferDates> unavailableDate) {
+		this.unavailableDate = unavailableDate;
+	}
+
 	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
 	}
@@ -175,12 +194,20 @@ public class Offer {
 		this.quickReservations = quickReservations;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
 	}
 
 	public void setSubscribedClients(List<Client> subscribedClients) {
 		this.subscribedClients = subscribedClients;
+	}
+
+	public List<UnavailableOfferDates> getUnavailableDate() {
+		return unavailableDate;
 	}
 
 	@Override
@@ -194,5 +221,29 @@ public class Offer {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, name, description);
+	}
+
+	public void setNumberOfReservations(Long numberOfReservations) {
+		this.numberOfReservations = numberOfReservations;
+	}
+
+	public Long getNumberOfReservations() {
+		return numberOfReservations;
+	}
+
+	public Long getNumberOfQuickReservation() {
+		return numberOfQuickReservations;
+	}
+
+	public void setNumberOfQuickReservation(Long numberOfQuickReservation) {
+		this.numberOfQuickReservations = numberOfQuickReservation;
+	}
+
+	public Long getNumberOfModify() {
+		return numberOfModify;
+	}
+
+	public void setNumberOfModify(Long numberOfModify) {
+		this.numberOfModify = numberOfModify;
 	}
 }

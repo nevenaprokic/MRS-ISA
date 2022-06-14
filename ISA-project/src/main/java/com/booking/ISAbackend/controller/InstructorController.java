@@ -3,6 +3,7 @@ package com.booking.ISAbackend.controller;
 
 import com.booking.ISAbackend.dto.InstructorNewDataDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
+import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
 import com.booking.ISAbackend.exceptions.InvalidAddressException;
 import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
@@ -15,6 +16,7 @@ import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +44,17 @@ public class InstructorController {
         }
     }
 
+    @PostMapping("search-client")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public ResponseEntity<List<InstructorProfileData>> searchInstructorsClient(@RequestBody OfferSearchParamsDTO params){
+        try{
+            List<InstructorProfileData> instructors  = instructorService.searchInstructorsClient(params);
+            return ResponseEntity.ok(instructors);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("get-all")
     public ResponseEntity<List<InstructorProfileData>> getAll(){
         try{
@@ -52,6 +65,7 @@ public class InstructorController {
         }
     }
     @PostMapping("delete-profile-request")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> sendDeleteRequestInstructor(@RequestParam String email, @RequestBody HashMap<String, String> data) {
         try{
             if(instructorService.sendDeleteRequest(email, data.get("reason")))
@@ -64,6 +78,7 @@ public class InstructorController {
     }
 
     @PostMapping("change-data")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
         try{
             userService.changeInstrctorData(newData);

@@ -28,6 +28,10 @@ public class CottageDTO {
     private String state;
     private List<AdditionalServiceDTO> additionalServices;
     private Double mark;
+    private int offerNumber;
+    private String ownerName;
+
+
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
@@ -67,7 +71,7 @@ public class CottageDTO {
     private List<String> getPhoto(Cottage c) throws IOException {
         List<String> photos = new ArrayList<>();
         for(Photo p: c.getPhotos()){
-            String pathFile = "./src/main/frontend/src/components/images/" + p.getPath();
+            String pathFile = "../frontend/src/components/images/" + p.getPath();
             byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
             String photoData = Base64.getEncoder().encodeToString(bytes);
             photos.add(photoData);
@@ -138,7 +142,26 @@ public class CottageDTO {
     public Double getMark() {
         return mark;
     }
+
     public void setMark(Double mark) {
         this.mark = mark;
     }
+
+    public String getOwnerName(){
+        return ownerName;
+    }
+
+    public void setOwnerName(String name){
+        ownerName  =name;
+    }
+
+    public int getOfferNumber(){
+        return offerNumber;
+    }
+
+    public void setOfferNumber(int offerNumber){
+        this.offerNumber = offerNumber;
+    }
+
+
 }

@@ -1,12 +1,13 @@
 package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Cottage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -34,4 +35,16 @@ public interface CottageRepository extends JpaRepository<Cottage, Integer> {
             " AND (lower(c.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', c.name, '%')))"+
             " AND (c.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (c.price <= :price OR :price = -1) AND (c.cottageOwner.email = :email) ")
     List<Cottage> searchCottagesByCottageOwnerEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
+
+    @Query("SELECT c.id FROM Cottage c")
+    List<Integer> getCottagesId();
+
+    @Query("SELECT c FROM Cottage c WHERE c.deleted = false")
+    Page<Cottage> findAllActiveCottagesByPage(PageRequest request);
+
+    @Query( "Select count(distinct c) FROM Cottage c  WHERE c.deleted = false")
+    int getNumberOfCottages();
+
+    @Query( "SELECT c FROM Cottage  c WHERE c.deleted = false")
+    public List<Cottage> findAllActiveCottages();
 }

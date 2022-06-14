@@ -16,7 +16,12 @@ public class QuickReservationDTO {
     private List<String> additionalServices;
     private Double price;
     private Integer numberOfPerson;
-
+    private String OfferName;
+    private String offerPhoto;
+    private String startDateStr;
+    private String endDateActionStr;
+    private String startDateActionStr;
+    private String endDateStr;
     public QuickReservationDTO(){}
 
     public QuickReservationDTO(LocalDate startDate, LocalDate endDateAction, LocalDate startDateAction, LocalDate endDate, List<String> additionalServices, Double price, Integer numberOfPerson) {
@@ -37,6 +42,7 @@ public class QuickReservationDTO {
         this.additionalServices = getAdditionalServices(res.getAdditionalServices());
         this.price = res.getPrice();
         this.numberOfPerson = res.getNumberOfPerson();
+
     }
     private List<String> getAdditionalServices(List<AdditionalService> services){
         List<String> additionalServices = new ArrayList<>();
@@ -108,5 +114,43 @@ public class QuickReservationDTO {
 
     public void setNumberOfPerson(Integer numberOfPerson) {
         this.numberOfPerson = numberOfPerson;
+    }
+
+    public String getOfferName(){return this.OfferName;}
+
+    public void setOfferName(String offerName) {this.OfferName = offerName;}
+    public void setOfferPhoto(String offerPhoto) {this.offerPhoto = offerPhoto;}
+    public String getOfferPhoto() {return this.offerPhoto;}
+
+    public String getStartDateStr() {
+        return startDateStr;
+    }
+
+    public String getEndDateActionStr() {
+        return endDateActionStr;
+    }
+
+    public String getStartDateActionStr() {
+        return startDateActionStr;
+    }
+
+    public String getEndDateStr() {
+        return endDateStr;
+    }
+
+    public void setStartDateStr(String startDateStr) {
+        this.startDateStr = startDateStr;
+    }
+
+    public void setEndDateActionStr(String endDateActionStr) {
+        this.endDateActionStr = endDateActionStr;
+    }
+
+    public void setStartDateActionStr(String startDateActionStr) {
+        this.startDateActionStr = startDateActionStr;
+    }
+
+    public void setEndDateStr(String endDateStr) {
+        this.endDateStr = endDateStr;
     }
 }

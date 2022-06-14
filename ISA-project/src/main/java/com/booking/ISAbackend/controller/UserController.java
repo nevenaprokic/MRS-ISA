@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,8 @@ public class UserController {
 	@Autowired
 	private RegistrationRequestService registrationRequestService;
 
-
-
 	@PostMapping("registration-owner")
+	@PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
 	public ResponseEntity<String> sendOwnerRegistration(@RequestBody OwnerRegistrationRequestDTO request){
 		try {
 			boolean userIsExists = registrationRequestService.save(request);
@@ -43,13 +43,13 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("update-password")
-	public ResponseEntity<String> updatePassword(@RequestParam String email, @RequestBody HashMap<String, String> data) {
+	@PostMapping("update-password/{email}")
+	public ResponseEntity<String> updatePassword(@PathVariable String email, @RequestBody HashMap<String, String> data) {
 		try {
 			userService.isOldPasswordCorrect(email, data);
 			return ResponseEntity.ok("Successfully changed password.");
 		} catch (InvalidPasswordException e) {
-			return ResponseEntity.status(400).body("Old password is not correct.");
+			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}
 

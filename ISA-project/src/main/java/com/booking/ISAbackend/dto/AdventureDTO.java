@@ -20,6 +20,10 @@ public class AdventureDTO {
     private String city;
     private String state;
     private String additionalEquipment;
+    private Double mark;
+    private int offerNumber;
+    private String ownerName;
+
 
 
     public int getId() {
@@ -141,4 +145,30 @@ public class AdventureDTO {
     public AdventureDTO() {
 
     }
+
+    public Double getMark() {
+        return mark;
+    }
+
+    public void setMark(Double mark) {
+        this.mark = mark;
+    }
+
+    public String getOwnerName(){
+        return ownerName;
+    }
+
+    public void setOwnerName(String name){
+        ownerName  =name;
+    }
+
+    public int getOfferNumber() {
+        return offerNumber;
+    }
+
+    public void setOfferNumber(int offerNumber){
+        this.offerNumber = offerNumber;
+    }
+
+
 }

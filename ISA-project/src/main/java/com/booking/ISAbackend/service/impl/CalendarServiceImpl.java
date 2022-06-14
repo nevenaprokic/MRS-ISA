@@ -1,16 +1,15 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.dto.CalendarItem;
+import com.booking.ISAbackend.dto.QuickReservationDTO;
 import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.dto.UnavailableDateDTO;
 import com.booking.ISAbackend.exceptions.BusyDateIntervalException;
 import com.booking.ISAbackend.exceptions.InvalidDateInterval;
+import com.booking.ISAbackend.exceptions.PassedDateException;
 import com.booking.ISAbackend.exceptions.UnavailableDatesAlreadyDefine;
 import com.booking.ISAbackend.model.*;
-import com.booking.ISAbackend.repository.OfferRepository;
-import com.booking.ISAbackend.repository.ReservationRepository;
-import com.booking.ISAbackend.repository.UnavailabelOfferDatesRepository;
-import com.booking.ISAbackend.repository.UserRepository;
+import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,9 @@ public class CalendarServiceImpl implements CalendarService {
     @Autowired
     OfferRepository offerRepository;
 
+    @Autowired
+    QuickReservationRepository quickReservationRepository;
+
     @Override
     @Transactional
     public List<CalendarItem> getCalendarInfo(String ownerEmail, int offerId) {
@@ -51,8 +53,8 @@ public class CalendarServiceImpl implements CalendarService {
         int id = user.getId();
         List<Reservation> reservations = reservationRepository.findAllByOfferId(offerId);
         List<UnavailableOfferDates> unavailableOfferDates = unavailabelOfferDatesRepository.findByOfferId(offerId);
-
-        return generateCalendarItems(reservations, unavailableOfferDates);
+        List<QuickReservation> quickreservations = quickReservationRepository.findQuickReservationsByOfferId(offerId);
+        return generateCalendarItems(reservations, unavailableOfferDates, quickreservations);
     }
 
     @Override
@@ -78,18 +80,19 @@ public class CalendarServiceImpl implements CalendarService {
                     clientName,
                     offerPhoto
                     );
+            reservationDTO.setClientEmail(client.getEmail());
             return  reservationDTO;
         }
         return null;
 
     }
     @Override
-    public void addOffersUnavailableDates(UnavailableDateDTO unavailableDates) throws BusyDateIntervalException, InvalidDateInterval, UnavailableDatesAlreadyDefine {
+    public void addOffersUnavailableDates(UnavailableDateDTO unavailableDates) throws BusyDateIntervalException, InvalidDateInterval, UnavailableDatesAlreadyDefine, PassedDateException {
         Offer offer = offerRepository.getById(unavailableDates.getOfferId());
         LocalDate start = revertToDate(unavailableDates.getStartDate());
         LocalDate end = revertToDate(unavailableDates.getEndDate());
-        List<Reservation> reservationsInSelectedInterval = reservationRepository.findByOfferIdAndDates(start, end);
-        if (!reservationsInSelectedInterval.isEmpty()) throw new BusyDateIntervalException();
+        if(start.isBefore(LocalDate.now())) throw new PassedDateException();
+        if (!isAvailablePeriod(offer.getId(), start, end)) throw new BusyDateIntervalException();
         if(!checkDateInterval(start, end)) throw  new InvalidDateInterval();
         List<UnavailableOfferDates> exitingUnavailableDatesInInterval = unavailabelOfferDatesRepository.findDatesByOfferInInterval(start, end,unavailableDates.getOfferId());
         if(!exitingUnavailableDatesInInterval.isEmpty()) throw  new UnavailableDatesAlreadyDefine();
@@ -97,25 +100,83 @@ public class CalendarServiceImpl implements CalendarService {
         unavailabelOfferDatesRepository.save(dates);
     }
 
+    @Override
+    @Transactional
+    public QuickReservationDTO getActionDetails(int actionId) throws IOException {
+        Optional<QuickReservation> action = quickReservationRepository.findById(actionId);
+        if(action.isPresent()){
+            QuickReservation quickReservation = action.get();
+            Offer offer = quickReservation.getOffer();
+            String offerPhoto = getOfferPhoto(offer);
+
+            QuickReservationDTO actionDTO = new QuickReservationDTO(quickReservation);
+            actionDTO.setOfferName(offer.getName());
+            actionDTO.setOfferPhoto(offerPhoto);
+            actionDTO.setEndDateActionStr(localDateToString(quickReservation.getEndDateAction()));
+            actionDTO.setStartDateActionStr(localDateToString(quickReservation.getStartDateAction()));
+            actionDTO.setEndDateStr(localDateToString(quickReservation.getEndDate()));
+            actionDTO.setStartDateStr(localDateToString(quickReservation.getStartDate()));
+            return  actionDTO;
+        }
+        return null;
+    }
 
     @Transactional
-    public List<CalendarItem> generateCalendarItems(List<Reservation> reservations, List<UnavailableOfferDates> unavailableOfferDates){
+    public List<CalendarItem> generateCalendarItems(List<Reservation> reservations, List<UnavailableOfferDates> unavailableOfferDates, List<QuickReservation> quickreservations){
         List<CalendarItem> calendarItems = new ArrayList<CalendarItem>();
-        //int id, boolean isReservation, String startDate, String endDate, String title
 
+        createCalendarItemsFromReservations(calendarItems, reservations);
+        createCalendarItemsFromUnavailableDates(calendarItems, unavailableOfferDates);
+        createCalendarItemsFromActions(calendarItems, quickreservations);
+
+        return calendarItems;
+    }
+
+    private boolean isAvailablePeriod(int offerId, LocalDate startDate, LocalDate endDate){
+        List<Reservation> reservations = reservationRepository.findAllByOfferId(offerId);
+        for(Reservation reservation : reservations){
+            if((reservation.getStartDate().compareTo(startDate) <= 0) && (startDate.compareTo(reservation.getEndDate()) <= 0))
+                return false;
+            if((reservation.getStartDate().compareTo(endDate) <= 0) && (endDate.compareTo(reservation.getEndDate()) <= 0))
+                return false;
+        }
+        List<QuickReservation> quickReservations = quickReservationRepository.findQuickReservationsByOfferId(offerId);
+        for(QuickReservation action : quickReservations){
+            if((action.getStartDate().compareTo(startDate) <= 0) && (startDate.compareTo(action.getEndDate()) <= 0))
+                return false;
+            if((action.getStartDate().compareTo(endDate) <= 0) && (endDate.compareTo(action.getEndDate()) <= 0))
+                return false;
+        }
+        return true;
+    }
+
+    private void createCalendarItemsFromReservations(List<CalendarItem> calendarItems, List<Reservation> reservations){
         for(Reservation reservation : reservations){
             Offer of = reservation.getOffer();
             String title = "Reservation: " + of.getName();
-            CalendarItem item = new CalendarItem(reservation.getId(), true, reservation.getStartDate().toString(), reservation.getEndDate().toString(), title);
+            CalendarItem item = new CalendarItem(reservation.getId(), true, reservation.getStartDate().toString(), reservation.getEndDate().toString(), title, false);
             calendarItems.add(item);
         }
+    }
 
+    private void createCalendarItemsFromUnavailableDates(List<CalendarItem> calendarItems, List<UnavailableOfferDates> unavailableOfferDates){
         for(UnavailableOfferDates date : unavailableOfferDates){
             String title = "Unavailable";
-            CalendarItem item = new CalendarItem(date.getId(), false, date.getStartDate().toString(), date.getEndDate().toString(), title);
+            CalendarItem item = new CalendarItem(date.getId(), false, date.getStartDate().toString(), date.getEndDate().toString(), title, false);
             calendarItems.add(item);
         }
-        return calendarItems;
+    }
+
+    private void createCalendarItemsFromActions(List<CalendarItem> calendarItems, List<QuickReservation> actions){
+        for(QuickReservation reservation : actions){
+            String title = "Quick Action";
+            CalendarItem item = new CalendarItem(reservation.getId(),
+                    false, reservation.getStartDateAction().toString(),
+                    reservation.getEndDateAction().toString(),
+                    title,
+                    true);
+            calendarItems.add(item);
+        }
     }
 
     private String localDateToString(LocalDate date){
@@ -132,7 +193,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     private String convertPhoto(String photoName) throws IOException {
-        String pathFile = "./src/main/frontend/src/components/images/" + photoName;
+        String pathFile = "../frontend/src/components/images/" + photoName;
         byte[] bytes = Files.readAllBytes(Paths.get(pathFile));
         String photoData = Base64.getEncoder().encodeToString(bytes);
         return photoData;
