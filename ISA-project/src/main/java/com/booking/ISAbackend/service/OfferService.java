@@ -2,7 +2,9 @@ package com.booking.ISAbackend.service;
 
 import com.booking.ISAbackend.dto.AdditionalServiceDTO;
 import com.booking.ISAbackend.dto.AddressDTO;
+import com.booking.ISAbackend.dto.BusinessReportDTO;
 import com.booking.ISAbackend.exceptions.OfferNotFoundException;
+import com.booking.ISAbackend.exceptions.UserNotFoundException;
 import com.booking.ISAbackend.model.AdditionalService;
 import com.booking.ISAbackend.model.Address;
 
@@ -14,4 +16,6 @@ public interface OfferService {
     void delete(Integer offerId) throws OfferNotFoundException;
     Boolean checkOperationAllowed(Integer offerId);
     Boolean checkUnavailableDate(Integer offerId,String startDate,Integer dateNumber);
+
+    BusinessReportDTO getAdminBusinessReportData(String startDate, String endDate) throws UserNotFoundException;
 }
