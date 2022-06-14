@@ -167,7 +167,6 @@ public class AdventureController {
         catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @DeleteMapping("delete/{adventureId}")

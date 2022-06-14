@@ -163,7 +163,7 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
               </div>
 
               {getRoleFromToken() != null &&
-              getRoleFromToken() != userType.CLIENT ? (
+              getRoleFromToken() == userType.SHIP_OWNER ? (
                 <div className="changeBtn">
                   <Button
                     style={{ marginLeft: "35%" }}

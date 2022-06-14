@@ -188,4 +188,37 @@ export function checkReservation(adventureData) {
       )
   }
 
+  export function deleteAdventureByAdmin(adventureId, setAdventuers, allAdventures) {
+    api
+      .get("/adventure/allowed-operation", {
+        params: {
+          adventureId: adventureId,
+        },
+      })
+      .then((response) => {
+        if (response.data) {
+          deleteAdventure(adventureId, setAdventuers, allAdventures)
+        }
+        else{
+          toast.error(
+            "Delete is not allowed besause offer has future reservations",
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 1500,
+            }
+          );
+        }
+      })
+      .catch((err) => {
+        console.log("tuu");
+        toast.error(
+          "Something went wrong, please try again later.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
+  }
+
 

@@ -333,3 +333,36 @@ export function getAllShips(page, pageSize) {
 
     )
 }
+
+export function deleteShipByAdmin(shipId, setAdventuers, allAdventures) {
+  api
+    .get("/ship/allowed-operation", {
+      params: {
+        shipId: shipId,
+      },
+    })
+    .then((response) => {
+      if (response.data) {
+        deleteShip(shipId, setAdventuers, allAdventures)
+      }
+      else{
+        toast.error(
+          "Delete is not allowed besause offer has future reservations",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      }
+    })
+    .catch((err) => {
+      console.log("tuu");
+      toast.error(
+        "Something went wrong, please try again later.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}
