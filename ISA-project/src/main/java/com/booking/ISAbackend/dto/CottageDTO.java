@@ -28,6 +28,10 @@ public class CottageDTO {
     private String state;
     private List<AdditionalServiceDTO> additionalServices;
     private Double mark;
+    private int offerNumber;
+    private String ownerName;
+
+
 
 
     public CottageDTO(Integer id,String name, String description, Double price, List<String> photos, Integer numberOfPerson, String rulesOfConduct, String cancellationConditions, Integer roomNumber, Integer bedNumber) {
@@ -142,4 +146,22 @@ public class CottageDTO {
     public void setMark(Double mark) {
         this.mark = mark;
     }
+
+    public String getOwnerName(){
+        return ownerName;
+    }
+
+    public void setOwnerName(String name){
+        ownerName  =name;
+    }
+
+    public int getOfferNumber(){
+        return offerNumber;
+    }
+
+    public void setOfferNumber(int offerNumber){
+        this.offerNumber = offerNumber;
+    }
+
+
 }

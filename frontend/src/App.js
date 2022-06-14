@@ -33,6 +33,8 @@ import ReservationReportsList from './components/forms/reservations/ReservationR
 import ComplaintList from './components/forms/review/ComplaintsList';
 import DeleteAccountRequests from './components/forms/user/DeleteAccountRequests';
 import IncomeStatementAdmin from './components/graphs/incomeStatement/IncomeStatementAdmin';
+import UsersOveview from './components/forms/user/UsersOverview';
+import OffersOverview from './components/forms/OffersOverview';
 
 function App() {
   return (
@@ -70,6 +72,8 @@ function App() {
           <Route path='/admin/reservation-reports' element={<ReservationReportsList/>}/>
           <Route path='/admin/delete-account-requests' element={<DeleteAccountRequests/>}/>
           <Route path='/admin/business-report' element={<IncomeStatementAdmin/>}/>
+          <Route path='/admin/users' element={<UsersOveview/>}/>
+          <Route path='/admin/offers' element={<OffersOverview/>}/>
         </Routes>
     </div>
   );

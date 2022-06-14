@@ -163,7 +163,7 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
                 />
               </div>
               {getRoleFromToken() != null &&
-              getRoleFromToken() != userType.CLIENT ? (
+              getRoleFromToken() == userType.INSTRUCTOR ? (
                 <div className="changeBtn">
                   <Button variant="contained" onClick={handleOpenForm}>
                     Change info

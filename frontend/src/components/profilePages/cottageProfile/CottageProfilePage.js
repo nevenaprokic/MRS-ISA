@@ -160,7 +160,7 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
                 />
               </div>
               {getRoleFromToken() != null &&
-              getRoleFromToken() != userType.CLIENT ? (
+              getRoleFromToken() == userType.COTTAGE_OWNER ? (
                 <div className="changeBtn">
                   <Button
                     style={{ marginLeft: "35%" }}
