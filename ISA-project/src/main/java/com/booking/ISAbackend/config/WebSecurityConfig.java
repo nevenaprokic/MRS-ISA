@@ -92,12 +92,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/calendar/**").hasAnyAuthority("COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/client/**").hasAnyAuthority( "CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/cottage-owner/**").hasAnyAuthority("COTTAGE_OWNER","ADMIN")
-                .antMatchers("/loyalty/**").hasAuthority("ADMIN")
+                .antMatchers("/loyalty/**").hasAnyAuthority("CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/mark/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/registration-request/**").hasAuthority("ADMIN")
                 .antMatchers("/reservation/**").hasAnyAuthority("CLIENT", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/reservation-report/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
                 .antMatchers("/ship-owner/**").hasAnyAuthority("SHIP_OWNER","ADMIN")
+                .antMatchers("/adventure/**").hasAnyAuthority("INSTRUCTOR","ADMIN")
                 .antMatchers("/user/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER","CLIENT")
 
                 // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici

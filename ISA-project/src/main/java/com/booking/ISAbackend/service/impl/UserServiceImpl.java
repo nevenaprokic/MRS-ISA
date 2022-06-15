@@ -502,7 +502,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional
 	public List<UserDTO> getAllActiveInstructors(int page, int pageSize){
-		Page<Instructor> allOwners = instructorRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+		Page<Instructor> allOwners = instructorRepository.findAllActiveUsersByPage(PageRequest.of(page, pageSize));
 		int numberOfInstructors = instructorRepository.getNumberOfInstructors();
 		List<UserDTO> userDTOS = new ArrayList<UserDTO>();
 		for(Instructor instructor : allOwners.getContent()){

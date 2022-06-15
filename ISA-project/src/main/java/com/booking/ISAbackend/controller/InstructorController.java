@@ -75,7 +75,7 @@ public class InstructorController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
         try{

@@ -5,6 +5,7 @@ import com.booking.ISAbackend.service.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,8 @@ public class MarkController {
         try{
             markService.acceptMark(markId);
             return ResponseEntity.ok("Successfully accepted mark");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this mark so you can't.");
         }catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong, please try again later");
         }
@@ -62,6 +65,8 @@ public class MarkController {
         try{
             markService.discardMark(markId);
             return ResponseEntity.ok("Successfully reject mark");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this mark so you can't.");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again later");

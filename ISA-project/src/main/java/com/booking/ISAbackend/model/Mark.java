@@ -21,6 +21,10 @@ public class Mark {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 
+	@Version
+	@Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+	private Long version;
+
 	public Mark(){}
 
 	public Mark(Integer mark, String comment, Boolean approved, Reservation reservation, Client client) {

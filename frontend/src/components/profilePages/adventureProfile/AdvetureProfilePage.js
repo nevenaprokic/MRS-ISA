@@ -22,6 +22,7 @@ import DeleteAdventure from "../../forms/adventure/DeleteAdventure";
 import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
+import ImagesGallery from "../../layout/ImageGallery";
 
 const theme = createTheme({
   palette: {
@@ -163,7 +164,7 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
                 />
               </div>
               {getRoleFromToken() != null &&
-              getRoleFromToken() != userType.CLIENT ? (
+              getRoleFromToken() == userType.INSTRUCTOR ? (
                 <div className="changeBtn">
                   <Button variant="contained" onClick={handleOpenForm}>
                     Change info
@@ -214,7 +215,8 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
               />
             </Modal>
 
-            <ImagesBox images={images} />
+            {/* <ImagesBox images={images} /> */}
+            <ImagesGallery photos={images}></ImagesGallery>
             <QuickActionBox offer={adventureData} />
             <MapBox
               street={adventureData.street}

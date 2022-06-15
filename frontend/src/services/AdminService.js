@@ -7,7 +7,7 @@ export function changeAdminData(newAdminData){
     let email = getUsernameFromToken();
     newAdminData["email"] = email;
     api
-    .post("/admin/change-data", newAdminData)
+    .put("/admin/change-data", newAdminData)
     .then((responseData) => {toast.success(responseData.data, {
                                 position: toast.POSITION.BOTTOM_RIGHT,
                                 autoClose: 1500,
@@ -48,7 +48,7 @@ export function addNewAdmin(adminData){
 export function firstLoginChangePassword(adminData, close){
   console.log(adminData);
     api
-    .post("/admin/change-password/" + getUsernameFromToken(), adminData)
+    .put("/admin/change-password/" + getUsernameFromToken(), adminData)
     .then(res =>{
         let data = {
           email: getUsernameFromToken(),

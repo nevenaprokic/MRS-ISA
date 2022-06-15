@@ -289,3 +289,67 @@ function updateAdditionalServices(offerId, additionalServiceDTOS){
                       });
                   });
 }
+
+export function getAllCottages(page, pageSize) {
+  return api
+    .get("/cottage/all-by-pages/",  {
+      params:{
+        page: page,
+        pageSize: pageSize
+      }
+    })
+    .then((response) => response)
+    .catch((err) => {
+      if (err.response.status === 401) {
+        return (<div>Greska u autentifikaciji</div>)
+      }
+      else if (err.response.status === 403) {
+        return (<div>Greska u autorizaciji</div>)
+      }
+      else if (err.response.status === 404) {
+        return (<div>Trenutno nema nepregledanih recenzija</div>)
+      }
+      else {
+        toast.error(err.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        })
+
+      }
+    }
+
+    )
+}
+
+export function deleteCottageByAdmin(cottageId, setAdventuers, allAdventures) {
+  api
+    .get("/cottage/allowed-operation", {
+      params: {
+        cottageId: cottageId,
+      },
+    })
+    .then((response) => {
+      if (response.data) {
+        deleteCottage(cottageId, setAdventuers, allAdventures)
+      }
+      else{
+        toast.error(
+          "Delete is not allowed besause offer has future reservations",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      }
+    })
+    .catch((err) => {
+      console.log("tuu");
+      toast.error(
+        "Something went wrong, please try again later.",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 1500,
+        }
+      );
+    });
+}

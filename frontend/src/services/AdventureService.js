@@ -44,7 +44,7 @@ export function checkUpdateAllowed(adventureData){
 
 export function updateAdventure(adventureData, additionalServices){
     api
-    .post("/adventure/update-adventure", adventureData)
+    .put("/adventure/update-adventure", adventureData)
     .then((responseData) => {
          updateAdditionalServices(adventureData.id, additionalServices);
     })
@@ -149,6 +149,70 @@ export function checkReservation(adventureData) {
       .catch((err) => {
         toast.error(
           "Somethnig went wrong. Please wait a fiew seconds and try again.",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          }
+        );
+      });
+  }
+
+  export function getAllAdventures(page, pageSize) {
+    return api
+      .get("/adventure/all-by-pages/", {
+        params: {
+          page: page,
+          pageSize: pageSize
+        }
+      })
+      .then((response) => response)
+      .catch((err) => {
+        if (err.response.status === 401) {
+          return (<div>Greska u autentifikaciji</div>)
+        }
+        else if (err.response.status === 403) {
+          return (<div>Greska u autorizaciji</div>)
+        }
+        else if (err.response.status === 404) {
+          return (<div>Trenutno nema nepregledanih recenzija</div>)
+        }
+        else {
+          toast.error(err.response.data, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 1500,
+          })
+  
+        }
+      }
+  
+      )
+  }
+
+  export function deleteAdventureByAdmin(adventureId, setAdventuers, allAdventures) {
+    api
+      .get("/adventure/allowed-operation", {
+        params: {
+          adventureId: adventureId,
+        },
+      })
+      .then((response) => {
+        if (response.data) {
+          deleteAdventure(adventureId, setAdventuers, allAdventures)
+        }
+        else{
+          toast.error(
+            "Delete is not allowed besause offer has future reservations",
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 1500,
+            }
+          );
+        }
+      })
+      .catch((err) => {
+        console.log("tuu");
+        toast.error(
+          "Something went wrong, please try again later.",
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: 1500,
