@@ -1,3 +1,4 @@
+
 import api from "../app/api";
 import { getRoleFromToken, getUsernameFromToken } from "../app/jwtTokenUtils";
 import { toast } from "react-toastify";
@@ -193,6 +194,36 @@ export function rejectDeleteAccountOnRequest(response, request, setDeleteRequest
   }
 })
 }
+
+export function getBusinessReportData(startDate, endDate){
+  return api
+  .get("/admin/business-report", {
+    params:{
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0],
+    }
+  })
+  .then((response) => response)
+  .catch((err) => {
+    if (err.response.status === 401){
+      return(<div>Greska u autentifikaciji</div>)
+    }
+    else if (err.response.status === 403){
+      return(<div>Greska u autorizaciji</div>)
+    }
+    else if (err.response.status === 404){
+      return(<div>Trenutno nema nepregledanih recenzija</div>)
+    }
+    else{
+      toast.error(err.response.data, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 1500,
+    })
+
+  }
+})
+}
+
   
 export function getAllAdmin(page, pageSize) {
   return api
