@@ -142,7 +142,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void cahngeAdminFirstPassword(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		Admin currentUser = adminRepository.findByEmail(email);
-		System.out.println(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
 		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
 			currentUser.setPassword(newPasswordHash);
@@ -260,7 +259,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException {
 		MyUser currentUser = userRepository.findByEmail(email);
-		System.out.println(email);
 		String newPasswordHash = passwordEncoder.encode(data.get("newPassword1"));
 		if (!data.get("newPassword1").equals("") && data.get("newPassword1").equals(data.get("newPassword2")) && passwordEncoder.matches(data.get("oldPassword"), currentUser.getPassword())) {
 			currentUser.setPassword(newPasswordHash);

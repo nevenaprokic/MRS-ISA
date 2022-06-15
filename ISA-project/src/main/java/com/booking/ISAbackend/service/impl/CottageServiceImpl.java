@@ -218,7 +218,6 @@ public class CottageServiceImpl implements CottageService {
     public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException {
         Cottage cottage = cottageRepository.findCottageById(cottageId);
         String cottageOwnerEmail = cottage.getCottageOwner().getEmail();
-        System.out.println(cottageDTO.getName());
         if (cottage != null && validateUpdateCottage(cottageDTO)){
             cottage.setName(cottage.getName());
             cottage.setPrice(Double.valueOf(cottageDTO.getPrice()));

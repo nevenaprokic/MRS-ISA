@@ -23,7 +23,7 @@ import { Modal } from "@mui/material";
 import ReservationReportsList from "../forms/reservations/ReservationReporstList";
 import ComplaintList from "../forms/review/ComplaintsList";
 import DeleteAccountRequests from "../forms/user/DeleteAccountRequests";
-import UsersOveview from '../forms/user/UsersOverview';
+import UsersOveview from "../forms/user/UsersOverview";
 import IncomeStatementAdmin from "../graphs/incomeStatement/IncomeStatementAdmin";
 import OffersOverview from "../forms/OffersOverview";
 
@@ -130,8 +130,6 @@ export default function AdminHomePage() {
                     minWidth: "20%",
                   }}
                 >
-                  <Tab label="Home page" {...a11yProps(0)} />
-                  <Divider />
                   <Tab label="Profile page" {...a11yProps(1)} />
                   <Divider />
                   <Tab label="Users" {...a11yProps(2)} />
@@ -151,53 +149,38 @@ export default function AdminHomePage() {
                     <Tab label="Add new admin" {...a11yProps(10)} />
                   )}
                 </Tabs>
+
                 <TabPanel value={value} index={0}>
-                  <p
-                    style={{
-                      marginTop: "0px",
-                      marginBottom: "0px",
-                      fontSize: "30px",
-                      color: "#CC7351",
-                    }}
-                  >
-                    Search
-                    <SearchIcon />
-                  </p>
-                  <Divider />
-                  <br />
-                  <br />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
                   <AdminProfile />
                 </TabPanel>
-                <TabPanel value={value} index={4}>
-                    <UsersOveview />
-                </TabPanel>
-                <TabPanel value={value} index={7}>
-                  <ReservationReportsList />
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                  {/* <UsersOveview /> */}
+                <TabPanel value={value} index={2}>
+                  <UsersOveview />
                 </TabPanel>
                 <TabPanel value={value} index={5}>
+                  <ReservationReportsList />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  {/* <UsersOveview /> */}
+                </TabPanel>
+                <TabPanel value={value} index={3}>
                   <RegistrationRequestsList />
                 </TabPanel>
-                <TabPanel value={value} index={6}>
+                <TabPanel value={value} index={4}>
                   <NotApprovedMarks />
                 </TabPanel>
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={6}>
                   <ComplaintList />
                 </TabPanel>
-                <TabPanel value={value} index={9}>
+                <TabPanel value={value} index={7}>
                   <DeleteAccountRequests />
                 </TabPanel>
-                <TabPanel value={value} index={13}>
+                <TabPanel value={value} index={11}>
                   <LoyalyProgeramPage />
                 </TabPanel>
-                <TabPanel value={value} index={11}>
+                <TabPanel value={value} index={9}>
                   <OffersOverview />
                 </TabPanel>
-                <TabPanel value={value} index={15}>
+                <TabPanel value={value} index={13}>
                   <IncomeStatementAdmin />
                 </TabPanel>
                 {adminData.defaultAdmin && (

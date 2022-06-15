@@ -33,13 +33,19 @@ import ReservationReportsList from "./components/forms/reservations/ReservationR
 import ComplaintList from "./components/forms/review/ComplaintsList";
 import DeleteAccountRequests from "./components/forms/user/DeleteAccountRequests";
 import IncomeStatementAdmin from "./components/graphs/incomeStatement/IncomeStatementAdmin";
-// import UsersOveview from './components/forms/user/UsersOverview';
 import OffersOverview from "./components/forms/OffersOverview";
+import AuthetificationFailed from "./components/errorPages/AuthetificationFailed";
+import AuthorizationFailed from "./components/errorPages/AuthorizationFailed";
 
 function App() {
   return (
     <div>
       <Routes>
+        <Route path="/authorization-failed" element={<AuthorizationFailed />} />
+        <Route
+          path="/autentification-failed"
+          element={<AuthetificationFailed />}
+        />
         <Route path="/" element={<UnauthenticatedUserHomePage />} />
         <Route path="/log-in" element={<LogIn />} />
         <Route path="/registration" element={<Registration />} exact />

@@ -318,11 +318,6 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.removePenalties();
     }
 
-//    @Scheduled(fixedRate=2000L)
-//    public void printSomething(){
-//        System.out.println("Something");
-//    }
-
     @Transactional
     public ComplaintDTO createComplaintDTO(Complaint complaint){
         Reservation reservation = complaint.getReservation();

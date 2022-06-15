@@ -132,7 +132,6 @@ public class OfferServiceImpl implements OfferService {
         reportData.setCottagesIncome(cottagesForReport);
         reportData.setShipsIncome(shipsForReport);
 
-        System.out.println(totalReportPrice);
         return reportData;
     }
 

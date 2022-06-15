@@ -214,7 +214,6 @@ public class ShipServiceImpl implements ShipService {
     public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException {
         Ship ship = shipRepository.findShipById(shipId);
         String shipOwnerEmail = ship.getShipOwner().getEmail();
-        System.out.println(shipDTO.getName());
         if (ship != null && validateUpdateShip(shipDTO)){
             ship.setName(ship.getName());
             ship.setPrice(Double.valueOf(shipDTO.getPrice()));

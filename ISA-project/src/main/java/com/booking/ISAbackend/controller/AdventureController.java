@@ -131,12 +131,10 @@ public class AdventureController {
         }
     }
 
-    @GetMapping("search-adventures/{email}")
+    @GetMapping("search-adventures")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @PathVariable("email") String email){
-
+    public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
         try{
-            System.out.println(name + " " + address + " " + maxPeople + " " + price + " " + email);
             List<AdventureDTO> advetures = adventureService.searchAdventuresByInstructor(name, maxPeople, address, price, email);
             return ResponseEntity.ok(advetures);
         }catch  (Exception e){

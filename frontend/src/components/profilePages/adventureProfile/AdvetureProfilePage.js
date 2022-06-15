@@ -1,7 +1,7 @@
 import "./AdventureProfilePage.scss";
 import ImagesBox from "./ImagesBox";
 import QuickActionBox from "../cottageProfile/QuickActionBox";
-import BasicAdventureInfiBox from "./BasicAdventureInfoBox";
+import BasicAdventureInfoBox from "./BasicAdventureInfoBox";
 import AdditionalDescriptionBox from "./AdditionalDescriptionBox";
 import PriceList from "../cottageProfile/Pricelist";
 import { Grid, Button } from "@mui/material";
@@ -225,7 +225,7 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
             />
             <Grid container xs={12}>
               <Grid item xs={12} sm={6}>
-                <BasicAdventureInfiBox basicInfo={adventureData} />
+                <BasicAdventureInfoBox basicInfo={adventureData} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <AdditionalDescriptionBox additionalDate={adventureData} />

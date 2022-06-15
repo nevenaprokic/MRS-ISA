@@ -19,7 +19,7 @@ public interface ShipRepository extends JpaRepository<Ship, Integer> {
             " OR lower(c.address.street) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.street, '%'))"+
             " OR lower(c.address.state) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.state, '%')))"+
             " AND (lower(c.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', c.name, '%')))"+
-            " AND (c.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (c.price <= :price OR :price = -1) ")
+            " AND (c.numberOfPerson <= :maxPeople OR :maxPeople = -1) AND (c.price <= :price OR :price = -1) ")
     List<Ship> searchShips(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price);
 
     @Query("SELECT c FROM Ship c JOIN FETCH c.address WHERE (lower(c.address.city) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', c.address.city, '%'))" +
@@ -33,7 +33,7 @@ public interface ShipRepository extends JpaRepository<Ship, Integer> {
             " OR lower(s.address.street) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', s.address.street, '%'))"+
             " OR lower(s.address.state) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', s.address.state, '%')))"+
             " AND (lower(s.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', s.name, '%')))"+
-            " AND (s.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (s.price <= :price OR :price = -1) AND (s.shipOwner.email = :email) ")
+            " AND (s.numberOfPerson <= :maxPeople OR :maxPeople = -1) AND (s.price <= :price OR :price = -1) AND (s.shipOwner.email = :email) ")
     List<Ship> searchShipsByShipOwnerEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
 
     @Query("SELECT s.id FROM Ship s")
