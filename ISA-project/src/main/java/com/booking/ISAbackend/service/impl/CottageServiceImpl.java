@@ -231,7 +231,6 @@ public class CottageServiceImpl implements CottageService {
 
             updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
 
-            Thread.sleep(cottage.getBedNumber()*2000);
             cottageRepository.save(cottage);
         }
     }

@@ -54,9 +54,9 @@ public class ClientController {
 
     @PostMapping("update-profile-info")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<String> updateInfo(@RequestParam String email, @RequestBody ClientDTO dto) {
+    public ResponseEntity<String> updateInfo(@RequestBody ClientDTO dto) {
         try{
-            clientService.updateInfo(email, dto);
+            clientService.updateInfo(dto.getEmail(), dto);
             return ResponseEntity.ok("Successfully updated personal info");
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
 
@@ -75,9 +75,9 @@ public class ClientController {
         }
     }
 
-    @GetMapping("deletion-requested")
+    @GetMapping("deletion-requested/{email}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<Boolean> alreadyRequestedDeletion(@RequestParam String email){
+    public ResponseEntity<Boolean> alreadyRequestedDeletion(@PathVariable("email") String email){
         return ResponseEntity.ok(clientService.alreadyRequestedDeletion(email));
     }
 

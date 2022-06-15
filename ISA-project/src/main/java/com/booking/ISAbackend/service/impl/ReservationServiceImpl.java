@@ -84,7 +84,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         offer.setNumberOfReservations(offer.getNumberOfReservations() + 1);
         Reservation r = new Reservation(params.getDate(), params.getEndingDate(), ys, params.getTotal(), params.getGuests(), offer, user, false);
-        Thread.sleep(r.getClient().getPenal() * 3000L);
+
         reservationRepository.save(r);
     }
 
@@ -166,7 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
         Reservation newReservation = reservationRepository.save(reservation);
         offer.getReservations().add(newReservation);
-        Thread.sleep(client.getPenal()*2000);
+  
         offerRepository.save(offer);
         sendEmail(client.getEmail(), reservation);
         return newReservation.getId();

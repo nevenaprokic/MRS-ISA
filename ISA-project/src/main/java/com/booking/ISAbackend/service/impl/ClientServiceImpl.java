@@ -154,6 +154,7 @@ public class ClientServiceImpl implements ClientService {
                 address.setState(dto.getState());
             }
         }
+        clientRepository.save(c);
     }
 
     @Override

@@ -20,7 +20,7 @@ export const sendDeleteRequestClient = (data) => {
 export const isDeletionRequested = (handleOpenDelete) => {
   let deleted = false;
   api
-      .get("/client/deletion-requested?email=" + getUsernameFromToken())
+      .get("/client/deletion-requested/" + getUsernameFromToken())
       .then((res) => {
           deleted = res.data;
           if(!deleted)

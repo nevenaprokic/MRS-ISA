@@ -83,7 +83,6 @@ public class QuickReservationServiceImpl implements QuickReservationService {
         QuickReservation newQuickReservation = quickReservationRepository.save(quickReservation);
         offer.getQuickReservations().add(newQuickReservation);
 
-        Thread.sleep(dto.getDaysReservation()*2000);
         offerRepository.save(offer);
         sendEmail(offer, dto.getStartDateAction());
         return newQuickReservation.getId();
