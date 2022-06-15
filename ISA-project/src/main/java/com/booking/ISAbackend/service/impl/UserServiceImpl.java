@@ -589,6 +589,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void deleteAdmin(int userId) {
+		//
 		Admin admin = adminRepository.findById(userId);
 		admin.setDeleted(true);
 		adminRepository.save(admin);
