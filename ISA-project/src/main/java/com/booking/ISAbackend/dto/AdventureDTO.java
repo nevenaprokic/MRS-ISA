@@ -24,8 +24,6 @@ public class AdventureDTO {
     private int offerNumber;
     private String ownerName;
 
-
-
     public int getId() {
         return id;
     }
