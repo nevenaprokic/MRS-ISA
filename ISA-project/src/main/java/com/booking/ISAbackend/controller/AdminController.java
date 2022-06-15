@@ -9,6 +9,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -94,6 +95,8 @@ public class AdminController {
         try{
             clientService.respondOnComplaint(response, complaintId);
             return ResponseEntity.ok().body("Successfully send response on complaint");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Other admin just the other admin has just responded to the complaint so you can't.");
         }
         catch (Exception e){
             e.printStackTrace();
@@ -117,6 +120,8 @@ public class AdminController {
         try{
             userService.deleteAccount(message, userId, requestId);
             return ResponseEntity.ok().body("Successfully delete user account");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this delete request so you can't.");
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong. Please try again.");
@@ -128,6 +133,8 @@ public class AdminController {
         try{
             userService.rejectDeleteAccountRequest(message, userId, requestId);
             return ResponseEntity.ok().body("Successfully reject delete request");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this delete request so you can't.");
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong. Please try again.");
