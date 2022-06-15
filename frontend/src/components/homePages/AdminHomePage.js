@@ -23,8 +23,8 @@ import { Modal } from "@mui/material";
 import ReservationReportsList from "../forms/reservations/ReservationReporstList";
 import ComplaintList from "../forms/review/ComplaintsList";
 import DeleteAccountRequests from "../forms/user/DeleteAccountRequests";
-import IncomeStatementAdmin from '../graphs/incomeStatement/IncomeStatementAdmin';
-import OffersOverview from '../forms/OffersOverview';
+import IncomeStatementAdmin from "../graphs/incomeStatement/IncomeStatementAdmin";
+import OffersOverview from "../forms/OffersOverview";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -129,24 +129,24 @@ export default function AdminHomePage() {
                     minWidth: "20%",
                   }}
                 >
-                                      <Tab label="Home page" {...a11yProps(0)} />
-                    <Divider />
-                    <Tab label="Profile page" {...a11yProps(1)} />
-                    <Divider />
-                    <Tab label="Users" {...a11yProps(2)} />
-                    <Tab label="Registration requests" {...a11yProps(3)} />
-                    <Tab label="Unchecked marks" {...a11yProps(4)} />
-                    <Tab label="Reservation reports" {...a11yProps(5)} />
-                    <Tab label="Complaints" {...a11yProps(6)} />
-                    <Tab label="Delete account requests" {...a11yProps(7)} />                    
-                    <Divider />
-                    <Tab label="Offers" {...a11yProps(8)} />
-                    <Divider />
-                    <Tab label="Loyalty program" {...a11yProps(9)} />
-                    <Divider />
-                    <Tab label="Business reports" {...a11yProps(10)} />
-                    <Divider />
-                    {adminData.defaultAdmin && (
+                  <Tab label="Home page" {...a11yProps(0)} />
+                  <Divider />
+                  <Tab label="Profile page" {...a11yProps(1)} />
+                  <Divider />
+                  <Tab label="Users" {...a11yProps(2)} />
+                  <Tab label="Registration requests" {...a11yProps(3)} />
+                  <Tab label="Unchecked marks" {...a11yProps(4)} />
+                  <Tab label="Reservation reports" {...a11yProps(5)} />
+                  <Tab label="Complaints" {...a11yProps(6)} />
+                  <Tab label="Delete account requests" {...a11yProps(7)} />
+                  <Divider />
+                  <Tab label="Offers" {...a11yProps(8)} />
+                  <Divider />
+                  <Tab label="Loyalty program" {...a11yProps(9)} />
+                  <Divider />
+                  <Tab label="Business reports" {...a11yProps(10)} />
+                  <Divider />
+                  {adminData.defaultAdmin && (
                     <Tab label="Add new admin" {...a11yProps(10)} />
                   )}
                 </Tabs>
@@ -167,34 +167,34 @@ export default function AdminHomePage() {
                   <br />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <AdminProfile />
+                  <AdminProfile />
                 </TabPanel>
                 <TabPanel value={value} index={7}>
-                    <ReservationReportsList />
+                  <ReservationReportsList />
                 </TabPanel>
                 <TabPanel value={value} index={4}>
-                    <UsersOveview />
+                  {/* <UsersOveview /> */}
                 </TabPanel>
                 <TabPanel value={value} index={5}>
-                    <RegistrationRequestsList />
+                  <RegistrationRequestsList />
                 </TabPanel>
                 <TabPanel value={value} index={6}>
-                    <NotApprovedMarks />
+                  <NotApprovedMarks />
                 </TabPanel>
                 <TabPanel value={value} index={8}>
-                    <ComplaintList />
+                  <ComplaintList />
                 </TabPanel>
                 <TabPanel value={value} index={9}>
-                    <DeleteAccountRequests />
+                  <DeleteAccountRequests />
                 </TabPanel>
                 <TabPanel value={value} index={13}>
-                  <LoyalyProgeramPage/>
+                  <LoyalyProgeramPage />
                 </TabPanel>
                 <TabPanel value={value} index={11}>
-                  <OffersOverview/>
+                  <OffersOverview />
                 </TabPanel>
                 <TabPanel value={value} index={15}>
-                  <IncomeStatementAdmin/>
+                  <IncomeStatementAdmin />
                 </TabPanel>
                 {adminData.defaultAdmin && (
                   <TabPanel value={value} index={15}>

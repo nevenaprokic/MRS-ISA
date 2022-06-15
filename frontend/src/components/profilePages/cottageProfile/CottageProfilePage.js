@@ -26,6 +26,7 @@ import {
   unsubscribe,
   isSubscribed,
 } from "../../../services/ClientService";
+import ImagesBox from "../adventureProfile/ImagesBox";
 import ImagesGallery from "../../layout/ImageGallery";
 
 const theme = createTheme({
