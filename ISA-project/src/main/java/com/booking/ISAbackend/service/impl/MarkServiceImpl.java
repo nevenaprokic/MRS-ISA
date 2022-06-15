@@ -3,9 +3,11 @@ package com.booking.ISAbackend.service.impl;
 import com.booking.ISAbackend.dto.MarkDTO;
 import com.booking.ISAbackend.dto.ReservationDTO;
 import com.booking.ISAbackend.email.EmailService;
+import com.booking.ISAbackend.exceptions.UserNotFoundException;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.MarkService;
+import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class MarkServiceImpl implements MarkService {
     private AdventureReporitory adventureReporitory;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private ReservationReportService reservationReportService;
 
     @Override
     public Double getMark(Integer idOffer){
@@ -98,11 +102,20 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public void acceptMark(int markId) {
+    @Transactional
+    public void acceptMark(int markId) throws UserNotFoundException {
         Optional<Mark> mark = markRepository.findById(markId);
         if(mark.isPresent()){
             Mark m = mark.get();
             m.setApproved(true);
+            m.setReviewed(true);
+            Reservation reservation = m.getReservation();
+            Owner owner = reservationReportService.findReservationOwner(reservation);
+            String message = "You have received new review for reservation " + reservation.getOffer().getName() +
+                    " from " + reservation.getStartDate().toString() +
+                    " to " + reservation.getEndDate().toString() +
+                    "\r\n\" + Received review: " + m.getComment();
+            sendEmailNotification(owner, message);
             markRepository.save(m);
         }
     }
@@ -113,19 +126,21 @@ public class MarkServiceImpl implements MarkService {
         Optional<Mark> mark = markRepository.findById(markId);
         if(mark.isPresent()){
             Mark m = mark.get();
-            markRepository.delete(m);
-            sendEmailNotification(m);
+            m.setReviewed(true);
+            markRepository.save(m);
+            Reservation reservation = m.getReservation();
+            Client client = reservation.getClient();
+            String message = "Your review for reservation " + reservation.getOffer().getName() +
+                    " from " + reservation.getStartDate().toString() +
+                    " to " + reservation.getEndDate().toString() +
+                    " has been rejected.";
+            sendEmailNotification(client, message);
         }
     }
 
     @Transactional
-    public void sendEmailNotification(Mark mark) {
-        Reservation reservation = mark.getReservation();
-        Client client = reservation.getClient();
-        String message = "Your review for reservation " + reservation.getOffer().getName()  +
-                " from " + reservation.getStartDate().toString() +
-                " to " + reservation.getEndDate().toString() +
-                " has been rejected.";
-        emailService.notifyCliendDiscardMark(client.getEmail(),message);
+    public void sendEmailNotification(MyUser user, String message) {
+
+        emailService.notifyUserAboutMark(user.getEmail(), message);
     }
 }

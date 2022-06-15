@@ -199,7 +199,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Mark> om = markRepository.alreadyReviewed(c.getId(), reservationId);
         if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
+            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now(), false);
             markRepository.save(m);
         }else{
             throw new Exception();
@@ -308,8 +308,8 @@ public class ClientServiceImpl implements ClientService {
         String ownerMessage = "Response for complaint on reservation  " +  reservation.getOffer().getName() + "' for period:  " +
                 reservation.getStartDate().toString() + " - " + reservation.getEndDate() + ": " + text;
 
-        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
-        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
+        emailSender.sendResponseOnComplaint(owner.getEmail(), ownerMessage);
+        emailSender.sendResponseOnComplaint(client.getEmail(), clientMessage);
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")
