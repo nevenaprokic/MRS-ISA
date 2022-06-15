@@ -1,5 +1,7 @@
 package com.booking.ISAbackend.service.impl;
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,6 +13,7 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 
 import com.booking.ISAbackend.repository.*;
+import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +60,16 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private OwnerCategoryRepository ownerCategoryRepository;
+
+	@Autowired
+	private AdventureReporitory adventureReporitory;
+	@Autowired
+	private CottageRepository cottageRepository;
+	@Autowired
+	private ShipRepository shipRepository;
+
+	@Autowired
+	private OfferService offerService;
 
 	@Override
 	public MyUser findById(Integer id) {
@@ -169,12 +182,12 @@ public class UserServiceImpl implements UserService{
 
 	private void sendDeleteAccountMail(String email, String reason) {
 		String message = "Yore account IS DELETED with following explanation: " + reason;
-		emailService.notifyUserForDeleteAccountResponse(email, message);
+		emailService.notifyUserForDeleteAccount(email, message);
 	}
 
 	private void sendRejectDeleteAccountMail(String email, String reason) {
 		String message = "Yore account IS NOT DELETED with following explanation: " + reason;
-		emailService.notifyUserForDeleteAccountResponse(email, message);
+		emailService.notifyUserForDeleteAccount(email, message);
 	}
 
 	@Override
@@ -516,5 +529,72 @@ public class UserServiceImpl implements UserService{
 		}
 		return userDTOS;
 	}
+
+	@Override
+	public void deleteInstructor(int userId) throws IOException, OfferNotFoundException, AccountDeletionException {
+		Instructor instr = instructorRepository.findById(userId);
+		List<Reservation> listOfReservation = reservationRepository.findFutureByInstructorEmail(instr.getEmail(), LocalDate.now());
+		if(listOfReservation.isEmpty()){
+			List<Adventure> instructorAdventures =  adventureReporitory.findAdventureByInstructorEmail(instr.getEmail());
+			for(Adventure adventure : instructorAdventures){
+				offerService.delete(adventure.getId());
+			}
+			instr.setDeleted(true);
+			instructorRepository.save(instr);
+			emailService.notifyUserForDeleteAccount(instr.getEmail(), "Your account is deleted by admin");
+		}
+		else{
+			throw new AccessDeniedException("Account cant be deleted because user has futre reservations");
+		}
+
+
+	}
+
+	@Override
+	public void deleteCottageOwner(int userId) throws OfferNotFoundException, AccessDeniedException {
+		CottageOwner cottageOwner = cottageOwnerRepository.findById(userId);
+		List<Reservation> listOfReservation = reservationRepository.findFutureByCottageOwnerEmail(cottageOwner.getEmail(), LocalDate.now());
+		if(listOfReservation.isEmpty()) {
+			List<Cottage> ownerCottages = cottageRepository.findCottageByCottageOwnerEmail(cottageOwner.getEmail());
+			for (Cottage cottage : ownerCottages) {
+				offerService.delete(cottage.getId());
+
+			}
+			cottageOwner.setDeleted(true);
+			cottageOwnerRepository.save(cottageOwner);
+			emailService.notifyUserForDeleteAccount(cottageOwner.getEmail(), "Your account is deleted by admin");
+		}
+		else{
+			throw new AccessDeniedException("Account cant be deleted because user has futre reservations");
+		}
+	}
+
+	@Override
+	public void deleteShipOwner(int userId) throws OfferNotFoundException, AccessDeniedException {
+		ShipOwner shipOwner = shipOwnerRepository.findById(userId);
+		List<Reservation> listOfReservation = reservationRepository.findFutureByShipOwnerEmail(shipOwner.getEmail(), LocalDate.now());
+		if(listOfReservation.isEmpty()) {
+			List<Ship> ownerShips =  shipRepository.findShipByShipOwnerEmail(shipOwner.getEmail());
+			for(Ship ship : ownerShips ){
+				offerService.delete(ship.getId());
+			}
+			shipOwner.setDeleted(true);
+			shipOwnerRepository.save(shipOwner);
+			emailService.notifyUserForDeleteAccount(shipOwner.getEmail(), "Your account is deleted by admin");
+		}
+		else{
+			throw new AccessDeniedException("Account cant be deleted because user has futre reservations");
+		}
+	}
+
+	@Override
+	public void deleteAdmin(int userId) {
+		//
+		Admin admin = adminRepository.findById(userId);
+		admin.setDeleted(true);
+		adminRepository.save(admin);
+		emailService.notifyUserForDeleteAccount(admin.getEmail(), "Your account is deleted by admin");
+	}
+
 
 }

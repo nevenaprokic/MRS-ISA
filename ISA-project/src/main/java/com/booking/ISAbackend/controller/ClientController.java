@@ -210,4 +210,18 @@ public class ClientController {
             return ResponseEntity.status(400).body("Something went wrong.");
         }
     }
+
+
+    @DeleteMapping("delete-client/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> deleteClient(@PathVariable("userId") int userId){
+        try{
+            clientService.deleteClient(userId);
+            return ResponseEntity.ok("Successfully deleted account");
+        } catch (AccountDeletionException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong please try again");
+        }
+    }
 }

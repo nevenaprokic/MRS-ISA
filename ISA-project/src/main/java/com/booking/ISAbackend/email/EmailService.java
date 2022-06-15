@@ -134,7 +134,7 @@ public class EmailService implements EmailSender{
     }
 
     @Override
-    public void notifyUserForDeleteAccountResponse(String email, String message) {
+    public void notifyUserForDeleteAccount(String email, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));

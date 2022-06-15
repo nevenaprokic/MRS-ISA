@@ -1,5 +1,6 @@
 package com.booking.ISAbackend.service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,5 +46,10 @@ public interface UserService {
     List<UserDTO> getAllActiveCottageOwners(int page, int pageSize);
     List<UserDTO> getAllActiveInstructors(int page, int pageSize);
     List<UserDTO> getAllActiveAdmins(int page, int pageSize,String currentAdmin);
+
+    void deleteInstructor(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
+    void deleteCottageOwner(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
+    void deleteShipOwner(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
+    void deleteAdmin(int userId);
 
 }

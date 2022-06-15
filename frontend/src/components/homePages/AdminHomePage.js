@@ -23,6 +23,7 @@ import { Modal } from "@mui/material";
 import ReservationReportsList from "../forms/reservations/ReservationReporstList";
 import ComplaintList from "../forms/review/ComplaintsList";
 import DeleteAccountRequests from "../forms/user/DeleteAccountRequests";
+import UsersOveview from '../forms/user/UsersOverview';
 import IncomeStatementAdmin from "../graphs/incomeStatement/IncomeStatementAdmin";
 import OffersOverview from "../forms/OffersOverview";
 
@@ -168,6 +169,9 @@ export default function AdminHomePage() {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   <AdminProfile />
+                </TabPanel>
+                <TabPanel value={value} index={4}>
+                    <UsersOveview />
                 </TabPanel>
                 <TabPanel value={value} index={7}>
                   <ReservationReportsList />
