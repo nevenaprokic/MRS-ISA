@@ -248,7 +248,7 @@ public class UserServiceImpl implements UserService{
 
 	}
 
-	private boolean validateUserNewData(UserProfileData newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
+	public boolean validateUserNewData(UserProfileData newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		return  Validator.onlyLetterAndSpacesValidation(newData.getFirstName()) &&
 				Validator.onlyLetterAndSpacesValidation(newData.getLastName()) &&
 				Validator.phoneNumberValidation(newData.getPhoneNumber()) &&
@@ -350,14 +350,13 @@ public class UserServiceImpl implements UserService{
 			Address address = new Address(data.getStreet(), data.getCity(), data.getState());
 			addressRepository.save(address);
 			boolean profileDeleted =false;
-			String password = generateNewAdminPassword();
 			Role role = roleRepository.findByName("ADMIN").get(0);
 			Admin newAdmin = new Admin(data.getFirstName(),
-					data.getLastName(), passwordEncoder.encode(password), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address, true, false );
+					data.getLastName(), passwordEncoder.encode(data.getEmail()), data.getPhoneNumber(), data.getEmail(), profileDeleted,role, address, true, false );
 
 			newAdmin.setEmailVerified(true);
 			userRepository.save(newAdmin);
-			emailService.notifyNewAdmin(data.getEmail(), password);
+			emailService.notifyNewAdmin(data.getEmail(), data.getEmail());
 		}
 		else{
 			throw new AlreadyExitingUsernameException("Email address already exists.");
@@ -404,10 +403,6 @@ public class UserServiceImpl implements UserService{
 		return userDTO;
 	}
 
-	private String generateNewAdminPassword() {
-		String password = new Random().ints(10, 33, 122).mapToObj(i -> String.valueOf((char)i)).collect(Collectors.joining());
-		return password;
-	}
 
 	private boolean instructorDataValidation(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		return  Validator.phoneNumberValidation(newData.getPhoneNumber()) &&
