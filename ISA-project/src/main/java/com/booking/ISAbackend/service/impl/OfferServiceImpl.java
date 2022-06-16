@@ -70,8 +70,10 @@ public class OfferServiceImpl implements OfferService {
         Offer offer = offerRepository.findOfferById(offerId);
         if (offer == null)
             throw new OfferNotFoundException("Offer not found");
-        if(offer.getSubscribedClients().size()!= 0)
+        if(offer.getSubscribedClients().size()!= 0){
             clientService.removeSubscribedClients(offer.getSubscribedClients(), offerId);
+            offer.getSubscribedClients().clear();
+        }
         if(offer.getPhotos().size() != 0)
             photoService.removeOldPhotos(offer.getPhotos());
         if(offer.getAdditionalServices().size() != 0)
