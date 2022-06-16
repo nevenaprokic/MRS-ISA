@@ -109,21 +109,22 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public CottageOwnerProfileInfoDTO getCottageOwnerDataByEmail(String email) {
 		CottageOwnerProfileInfoDTO dto = null;
-		CottageOwner cottageOwner = findCottageOwnerByEmail(email);
-		if(cottageOwner != null){
-			OwnerCategory category = ownerCategoryService.findByReservationpoints(cottageOwner.getPoints()).get(0);
-			dto = new CottageOwnerProfileInfoDTO(cottageOwner, category);
+		Optional<CottageOwner> cottageOwner = findCottageOwnerByEmail(email);
+		if(cottageOwner.isPresent()){
+			CottageOwner cottageOwn = cottageOwner.get();
+			OwnerCategory category = ownerCategoryService.findByReservationpoints(cottageOwn.getPoints()).get(0);
+			dto = new CottageOwnerProfileInfoDTO(cottageOwn, category);
 			return dto;
 		}
 		return dto;
 	}
 
 	@Override
-	public CottageOwner findCottageOwnerByEmail(String email){
+	public Optional<CottageOwner> findCottageOwnerByEmail(String email){
 		MyUser user = userRepository.findByEmail(email);
 		Optional<CottageOwner> cottageOwner = cottageOwnerRepository.findById(user.getId());
 
-		return cottageOwner.orElse(null);
+		return cottageOwner;
 	}
 
 	@Override

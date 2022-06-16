@@ -179,10 +179,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void removeSubscribedClients(List<Client> services, int offerId){
         Iterator<Client> iterator = services.iterator();
-        while(iterator.hasNext()){
+        while(iterator.hasNext()) {
             Client c = iterator.next();
             unsubscribe(c.getEmail(), String.valueOf(offerId));
-            iterator.remove();
         }
     }
 

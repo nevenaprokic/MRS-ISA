@@ -140,10 +140,10 @@ public class CottageServiceImpl implements CottageService {
     @Override
     @Transactional
     public int addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException, IOException {
-        CottageOwner cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
-        if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.getCottages())){
+        Optional<CottageOwner> cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
+        if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.get().getCottages())){
             if(validateCottage(cottageDTO)){
-                return saveCottage(cottageDTO, cottageOwner).getId();
+                return saveCottage(cottageDTO, cottageOwner.get()).getId();
             }
         }
         else{

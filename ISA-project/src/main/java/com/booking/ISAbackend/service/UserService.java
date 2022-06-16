@@ -3,6 +3,7 @@ package com.booking.ISAbackend.service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.exceptions.*;
@@ -20,7 +21,7 @@ public interface UserService {
     void changeInstrctorData(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     void addNewAdmin(UserProfileData data) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException, AlreadyExitingUsernameException;
 
-    CottageOwner findCottageOwnerByEmail(String email);
+    Optional<CottageOwner> findCottageOwnerByEmail(String email);
 
     Boolean isOldPasswordCorrect(String email, HashMap<String, String> data) throws InvalidPasswordException;
     ShipOwner findShipOwnerByEmail(String email);

@@ -79,7 +79,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     @Override
     public void addReservationReport(NewReservationReportDTO dto){
         Optional<Client> client = clientRepository.findById(dto.getClientId());
-        Optional<Reservation> reservation = reservationRepository.findById(dto.getReservationId());
+         Optional<Reservation> reservation = reservationRepository.findById(dto.getReservationId());
         Boolean penalOption = false;
         if(Impression.NEGATIVE == dto.getValueImpression())
             penalOption = true;
