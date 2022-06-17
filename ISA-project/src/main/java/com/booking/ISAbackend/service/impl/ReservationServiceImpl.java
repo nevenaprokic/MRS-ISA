@@ -148,12 +148,6 @@ public class ReservationServiceImpl implements ReservationService {
         Offer offer = offerRepository.findOfferById(dto.getOfferId());
         Client client = clientRepository.findByEmail(dto.getClientUserName());
 
-//        List<AdditionalService> newAdditionalService = new ArrayList<>();
-//        for(AdditionalService a: dto.getServices()){
-//            AdditionalService additionalService = additionalServiceRepository.save(new AdditionalService(a.getName(),a.getPrice()));
-//            newAdditionalService.add(additionalService);
-//        }
-
         List<Optional<AdditionalService>> services = new ArrayList<>();
         for(AdditionalService s : dto.getServices()){
             services.add(additionalServiceRepository.findById(s.getId()));
@@ -174,7 +168,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     void sendEmail(String client, Reservation reservation){
-        emailSender.notifyClientNewReservation("markoooperic123+++fdf@gmail.com", reservation);
+        emailSender.notifyClientNewReservation(client, reservation);
 
     }
 

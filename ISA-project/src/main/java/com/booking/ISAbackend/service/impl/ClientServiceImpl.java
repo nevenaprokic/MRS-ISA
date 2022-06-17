@@ -177,14 +177,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeSubscribedClients(List<Client> services, int offerId){
-        Iterator<Client> iterator = services.iterator();
-        while(iterator.hasNext()) {
-            Client c = iterator.next();
-            unsubscribe(c.getEmail(), String.valueOf(offerId));
+    public void removeSubscribedClients(List<Client> services, int offerId, String offerName){
+        for(Client c : services){
+            c.getSubscribedOffers().removeIf(offer -> Objects.equals(offer.getId(), offerId));
+            clientRepository.save(c);
+            sendEmail(c.getEmail(), offerName);
         }
     }
 
+    private void sendEmail(String clientEmail, String offerName){
+        emailSender.notifyClientDeleteOffer(clientEmail, offerName);
+    }
     @Override
     public Boolean canReserve(String email){
         Integer penalties = clientRepository.getPenalties(email);

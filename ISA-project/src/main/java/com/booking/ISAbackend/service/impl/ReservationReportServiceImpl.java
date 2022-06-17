@@ -79,14 +79,14 @@ public class ReservationReportServiceImpl implements ReservationReportService {
     @Override
     public void addReservationReport(NewReservationReportDTO dto){
         Optional<Client> client = clientRepository.findById(dto.getClientId());
-         Optional<Reservation> reservation = reservationRepository.findById(dto.getReservationId());
+        Optional<Reservation> reservation = reservationRepository.findById(dto.getReservationId());
         Boolean penalOption = false;
         if(Impression.NEGATIVE == dto.getValueImpression())
             penalOption = true;
         Boolean automaticallyPenal = false;
         if(!dto.getValueShowUp())
             automaticallyPenal = true;
-            if(client.isPresent()){
+            if(client.isPresent() && reservation.isPresent()){
                 addPenalToClient(client.get());
             }
         if(client.isPresent() && reservation.isPresent()){
@@ -102,6 +102,7 @@ public class ReservationReportServiceImpl implements ReservationReportService {
         int penals = client.getPenal();
         penals +=1 ;
         client.setPenal(penals);
+        clientRepository.save(client);
     }
 
     @Override

@@ -88,9 +88,9 @@ public class QuickReservationServiceImpl implements QuickReservationService {
         return newQuickReservation.getId();
     }
     @Transactional
-    void sendEmail(Offer offer, String date){ //treba uraditi pretplacene
-//        for(MyUser u : offer.getSubscribedClients())
-        emailSender.notifySubscribersNewQuickReservation("natasha.lakovic@gmail.com", offer.getName(), date);
+    void sendEmail(Offer offer, String date){
+        for(MyUser u : offer.getSubscribedClients())
+            emailSender.notifySubscribersNewQuickReservation(u.getEmail(), offer.getName(), date);
     }
 
     @Override

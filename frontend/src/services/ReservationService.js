@@ -150,6 +150,8 @@ export function getAllReportShipOwner(){
         )
 }
 export function addReport(params){
+    console.log("PARAMETRI");
+    console.log(params)
     api
     .post("/reservation-report/add", params)
     .then((responseData) => {

@@ -527,7 +527,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteInstructor(int userId) throws IOException, OfferNotFoundException, AccountDeletionException {
+	public void deleteInstructor(int userId) throws IOException, OfferNotFoundException, AccountDeletionException, InterruptedException {
 		Instructor instr = instructorRepository.findById(userId);
 		List<Reservation> listOfReservation = reservationRepository.findFutureByInstructorEmail(instr.getEmail(), LocalDate.now());
 		if(listOfReservation.isEmpty()){
@@ -547,7 +547,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteCottageOwner(int userId) throws OfferNotFoundException, AccessDeniedException {
+	public void deleteCottageOwner(int userId) throws OfferNotFoundException, AccessDeniedException, InterruptedException {
 		CottageOwner cottageOwner = cottageOwnerRepository.findById(userId);
 		List<Reservation> listOfReservation = reservationRepository.findFutureByCottageOwnerEmail(cottageOwner.getEmail(), LocalDate.now());
 		if(listOfReservation.isEmpty()) {
@@ -566,7 +566,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteShipOwner(int userId) throws OfferNotFoundException, AccessDeniedException {
+	public void deleteShipOwner(int userId) throws OfferNotFoundException, AccessDeniedException, InterruptedException {
 		ShipOwner shipOwner = shipOwnerRepository.findById(userId);
 		List<Reservation> listOfReservation = reservationRepository.findFutureByShipOwnerEmail(shipOwner.getEmail(), LocalDate.now());
 		if(listOfReservation.isEmpty()) {
