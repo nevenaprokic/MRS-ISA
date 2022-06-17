@@ -135,5 +135,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation  r INNER  JOIN Adventure  a ON r.offer.id = a.id WHERE r.startDate >= ?1 AND r.endDate <= ?2")
     List<Reservation> findAllPastAdventureReservations(LocalDate startDay, LocalDate endDate);
 
+    @Query("SELECT r FROM Reservation r WHERE r.deleted = false AND r.offer.id = ?1 AND r.endDate < ?2")
+    List<Reservation> findAllPasedByOfferId(Integer id, LocalDate today);
 
 }

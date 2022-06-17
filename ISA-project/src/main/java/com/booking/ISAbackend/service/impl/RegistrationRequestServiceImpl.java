@@ -64,7 +64,7 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
     @Override
     @Transactional
     public List<OwnerRegistrationRequestDTO> getAll() {
-        List<RegistrationRequest> allRegistrationRequests = registrationRequestRepository.findAll();
+        List<RegistrationRequest> allRegistrationRequests = registrationRequestRepository.findAllNotDeleted();
         List<OwnerRegistrationRequestDTO> requestDTOS = new ArrayList<OwnerRegistrationRequestDTO>();
         for(RegistrationRequest request : allRegistrationRequests){
             if(!request.getDeleted()) {
