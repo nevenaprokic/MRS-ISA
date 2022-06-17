@@ -16,6 +16,7 @@ import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -323,6 +324,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@CacheEvict(value="instructors", allEntries=true)
 	public void changeInstrctorData(InstructorNewDataDTO newData) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException {
 		UserProfileData data = new UserProfileData(newData.getEmail(), newData.getFirstName(), newData.getLastName(), newData.getPhoneNumber(),
 				newData.getStreet(), newData.getCity(), newData.getState());

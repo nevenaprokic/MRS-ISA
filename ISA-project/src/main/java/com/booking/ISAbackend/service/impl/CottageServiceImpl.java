@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,8 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public List<CottageDTO> findAll() throws IOException {
+    @Cacheable("cottages")
+    public List<CottageDTO> findAll() throws IOException, InterruptedException {
         List<Cottage> cottages = cottageRepository.findAllActiveCottages();
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
@@ -139,6 +142,7 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
+    @CacheEvict(value="cottages", allEntries=true)
     public int addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException, IOException {
         Optional<CottageOwner> cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
         if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.get().getCottages())){
@@ -215,6 +219,7 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
+    @CacheEvict(value="cottages", allEntries=true)
     public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException {
         Cottage cottage = cottageRepository.findCottageById(cottageId);
         String cottageOwnerEmail = cottage.getCottageOwner().getEmail();

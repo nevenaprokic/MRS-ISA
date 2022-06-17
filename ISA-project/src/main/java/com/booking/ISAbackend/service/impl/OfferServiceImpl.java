@@ -13,6 +13,8 @@ import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +68,10 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value="cottages", allEntries=true),
+            @CacheEvict(value="ships", allEntries=true),
+            @CacheEvict(value="instructors", allEntries=true)})
     public void delete(Integer offerId) throws OfferNotFoundException {
         Offer offer = offerRepository.findOfferById(offerId);
         if (offer == null)

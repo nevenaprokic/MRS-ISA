@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface CottageService {
-    List<CottageDTO> findAll() throws IOException;
+    List<CottageDTO> findAll() throws IOException, InterruptedException;
     List<CottageDTO> findCottageByCottageOwnerEmail(String email) throws IOException;
     CottageDTO findCottageById(Integer id) throws IOException;
     Address findAddressByCottageId(Integer id);

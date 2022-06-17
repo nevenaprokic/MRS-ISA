@@ -12,6 +12,8 @@ import com.booking.ISAbackend.service.CottageService;
 import com.booking.ISAbackend.service.InstructorService;
 import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -91,7 +93,6 @@ public class InstructorController {
 
     @GetMapping("profile-info")
     public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
-        //odraditi autentifikaciju i autorizaciju
         InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
         if(instructor != null){
             return ResponseEntity.ok(instructor);

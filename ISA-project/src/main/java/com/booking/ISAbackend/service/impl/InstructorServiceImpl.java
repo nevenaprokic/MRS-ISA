@@ -14,6 +14,7 @@ import com.booking.ISAbackend.service.InstructorService;
 import com.booking.ISAbackend.service.OwnerCategoryService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +60,7 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     @Transactional
+    @Cacheable("instructors")
     public List<InstructorProfileData> findAll() throws IOException {
         List<InstructorProfileData> retList = new ArrayList<>();
         List<Instructor> instructors = instructorRepository.findAllActiveInstructors();

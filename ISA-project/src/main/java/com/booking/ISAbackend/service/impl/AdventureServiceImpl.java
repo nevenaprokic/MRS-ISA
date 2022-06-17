@@ -8,6 +8,7 @@ import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Override
     @Transactional
+    @CacheEvict(value="instructors", allEntries=true)
     public int addAdventure(NewAdventureDTO adventure) throws AdventureAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException {
         Instructor instructor = userService.findInstructorByEmail(adventure.getOwnerEmail());
         if(!isAdventureAlreadyExists(adventure.getOfferName(), instructor.getAdventures())){
@@ -146,6 +148,7 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Override
     @Transactional
+    @CacheEvict(value="instructors", allEntries=true)
     public void updateAdventure(AdventureDTO adventureInfo, int adventureId) throws InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, IOException {
             Adventure adventure = findAdventureByI(adventureId);
             String instructorEmail = adventure.getInstructor().getEmail();
@@ -196,22 +199,12 @@ public class AdventureServiceImpl implements AdventureService {
         }
     }
 
-//    private AdditionalService findAdditionalService(List<AdditionalService> currentAdditionalServices, String serviceName) {
-//        for(AdditionalService oldService : currentAdditionalServices){
-//            if(oldService.getName().equals(serviceName)){
-//                return oldService;
-//            }
-//        }
-//        return null;
-//    }
-
     @Override
     @Transactional
     public List<AdventureDTO> searchAdventuresByInstructor(String name, Integer maxPeople, String address, Double price, String email) throws IOException {
         List<Adventure> matchingAdventures = adventureRepository.searchAdventureByInstructorEmail(name,maxPeople,address,price,email);
         List<AdventureDTO> adventureDTOs = new ArrayList<AdventureDTO>();
         for (Adventure a: matchingAdventures){
-            //int id, String ownerEmail, String offerName, String description, String price
             AdventureDTO dto = new AdventureDTO(a.getId(), a.getInstructor().getEmail(), a.getName(), a.getDescription(), String.valueOf(a.getPrice()), getPhoto(a));
             dto.setMark(markService.getMark(a.getId()));
             adventureDTOs.add(dto);

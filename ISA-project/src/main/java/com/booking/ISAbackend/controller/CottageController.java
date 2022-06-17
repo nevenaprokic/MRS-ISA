@@ -8,6 +8,8 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.CottageService;
 import com.booking.ISAbackend.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -54,15 +56,13 @@ CottageController {
     }
 
     @GetMapping("get-all")
-    public ResponseEntity<List<CottageDTO>> getCottages() throws IOException {
-        List<CottageDTO> cottages = cottageService.findAll();
-        return ResponseEntity.ok(cottages);
-//        try{
-//            List<CottageDTO> cottages = cottageService.findAll();
-//            return ResponseEntity.ok(cottages);
-//        }catch  (Exception e){
-//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//        }
+    public ResponseEntity<List<CottageDTO>> getCottages() {
+        try{
+            List<CottageDTO> cottages = cottageService.findAll();
+            return ResponseEntity.ok(cottages);
+        }catch  (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("search")

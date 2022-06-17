@@ -8,6 +8,7 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,6 +52,7 @@ public class ShipController {
         }
 
     }
+
     @GetMapping("search-by-owner")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
@@ -62,6 +64,7 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("add")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
