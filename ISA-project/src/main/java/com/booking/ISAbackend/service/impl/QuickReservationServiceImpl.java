@@ -69,16 +69,20 @@ public class QuickReservationServiceImpl implements QuickReservationService {
 
     @Override
     @Transactional
-    public Integer addNewQuickReservation(NewQuickReservationDTO dto) {
+    public Integer addNewQuickReservation(NewQuickReservationDTO dto) throws InterruptedException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateAction = LocalDate.parse(dto.getStartDateAction(), formatter);
         LocalDate endDateAction = startDateAction.plusDays(dto.getDaysAction());
         LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
         LocalDate endDateReservation = startDateReservation.plusDays(dto.getDaysReservation());
         Offer offer = offerRepository.findOfferById(dto.getOfferId());
+
+        offer.setNumberOfQuickReservation(offer.getNumberOfQuickReservation()+1);
+
         QuickReservation quickReservation = new QuickReservation(startDateReservation, endDateAction, startDateAction, endDateReservation, dto.getPrice(), dto.getPeopleNum(), false, offer);
         QuickReservation newQuickReservation = quickReservationRepository.save(quickReservation);
         offer.getQuickReservations().add(newQuickReservation);
+
         offerRepository.save(offer);
         sendEmail(offer, dto.getStartDateAction());
         return newQuickReservation.getId();

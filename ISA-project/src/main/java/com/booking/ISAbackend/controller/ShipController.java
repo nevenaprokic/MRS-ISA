@@ -8,8 +8,10 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +29,7 @@ public class ShipController {
     private OfferService offerService;
 
     @GetMapping("get-all-by-owner")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> getShipByShipOwnerEmail(@RequestParam String email) {
         try {
             List<ShipDTO> ships = shipService.findShipByShipOwnerEmail(email);
@@ -49,7 +52,9 @@ public class ShipController {
         }
 
     }
+
     @GetMapping("search-by-owner")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
         try{
             List<ShipDTO> ships = shipService.searchShipByShipOwner(name, maxPeople, address, price, shipOwnerUsername);
@@ -59,7 +64,9 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
                                           @RequestParam(value = "photos", required = false) List<MultipartFile> photos,
                                           @RequestParam("offerName") String offerName,
@@ -115,6 +122,7 @@ public class ShipController {
         }
     }
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForShip(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -130,6 +138,7 @@ public class ShipController {
     }
 
     @PostMapping("search-client")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<ShipDTO>> searchShipsClient(@RequestBody OfferSearchParamsDTO params){
         try{
             List<ShipDTO> ships = shipService.searchShipsClient(params);
@@ -140,7 +149,8 @@ public class ShipController {
     }
 
     @GetMapping("allowed-operation")
-    public ResponseEntity<Boolean> isAllowedCottageOperation(@RequestParam Integer shipId){
+    @PreAuthorize("hasAnyAuthority('SHIP_OWNER', 'ADMIN')")
+    public ResponseEntity<Boolean> isAllowedShipOperation(@RequestParam Integer shipId){
         try{
             Boolean allowedOperation = offerService.checkOperationAllowed(shipId);
             return ResponseEntity.ok(allowedOperation);
@@ -150,7 +160,8 @@ public class ShipController {
         }
     }
 
-    @GetMapping("delete")
+    @DeleteMapping("delete")
+    @PreAuthorize("hasAnyAuthority('SHIP_OWNER', 'ADMIN')")
     public ResponseEntity<String> deleteShip(@RequestParam Integer shipId){
         try{
             offerService.delete(shipId);
@@ -163,7 +174,8 @@ public class ShipController {
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
-    @PostMapping("update")
+    @PutMapping("update")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipData(@RequestBody ShipDTO newShipData){
         try{
             shipService.updateShip(newShipData, newShipData.getId());
@@ -174,7 +186,8 @@ public class ShipController {
         }
     }
 
-    @PostMapping("update-ship-services")
+    @PutMapping("update-ship-services")
+    @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> changeShipAdditionalServices(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
@@ -184,6 +197,18 @@ public class ShipController {
             shipService.updateShipAdditionalServices(additionalServiceDTOS, id);
             return ResponseEntity.ok().body("Successfully change ship");
         }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("all-by-pages")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<ShipDTO>> getShips(@RequestParam int page, @RequestParam int pageSize){
+        try{
+            List<ShipDTO> ships = shipService.findAllByPages(page, pageSize);
+            return ResponseEntity.ok(ships);
+        }catch  (Exception e){
+
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

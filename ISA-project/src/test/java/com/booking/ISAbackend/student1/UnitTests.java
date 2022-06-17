@@ -11,13 +11,16 @@ import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.impl.ClientServiceImpl;
 import com.booking.ISAbackend.service.impl.ReservationServiceImpl;
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -28,6 +31,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,13 +67,12 @@ public class UnitTests {
     MarkRepository markRepository;
 
     @Test()
-    @Transactional
     public void makeReview() throws Exception {
         // 1. Definisanje ponašanja mock objekata
         Reservation r = new Reservation();
         r.setId(1);
-        r.setStartDate(LocalDate.of(2022, 4, 17));
-        r.setStartDate(LocalDate.of(2022, 4, 18));
+        r.setStartDate(LocalDate.of(2023, 4, 17));
+        r.setStartDate(LocalDate.of(2023, 4, 18));
         r.setPrice(600.00);
         r.setDeleted(false);
         r.setNumberOfPerson(4);
@@ -84,6 +90,7 @@ public class UnitTests {
         
         Mark m = new Mark();
         m.setClient(c);
+        m.setApproved(false);
         m.setReservation(r);
         m.setComment("Super je bilo!");
 
@@ -102,18 +109,20 @@ public class UnitTests {
         //Mockito.verify(markRepository, Mockito.times(1)).save(m);
 
         Mockito.verify(markRepository, Mockito.times(1)).alreadyReviewed(1, 1);
+        Assertions.assertEquals(false, m.getApproved());
+        Mockito.verify(clientRepository, Mockito.times(1)).findByEmail(c.getEmail());
     }
 
     @Test
-    public void makeReservation() throws NotAllowedToMakeReservationException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException {
+    public void makeReservation() throws NotAllowedToMakeReservationException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, InterruptedException {
 
         Reservation r = new Reservation();
         r.setId(13);
 
         ReservationParamsDTO params = new ReservationParamsDTO();
         params.setEmail("pera@gmail.com");
-        params.setDate(LocalDate.of(2022, 6, 30));
-        params.setEndingDate(LocalDate.of(2022, 7, 1));
+        params.setDate(LocalDate.of(2023, 6, 30));
+        params.setEndingDate(LocalDate.of(2023, 7, 1));
         params.setGuests(1);
         params.setServices(new ArrayList<AdditionalService>());
         params.setTotal(40.00);
@@ -131,6 +140,8 @@ public class UnitTests {
         c.setEmailVerified(true);
 
         Offer o = new Offer();
+        o.setVersion(1L);
+        o.setNumberOfReservations(3L);
         o.setUnavailableDate(new ArrayList<>());
         List<Offer> nonAvailables = new ArrayList<>();
         Offer nonAvailable = new Offer();
@@ -151,16 +162,15 @@ public class UnitTests {
     }
 
     @Test(expected = NotAllowedToMakeReservationException.class)
-    @Rollback(value = true)
-    public void makeReservationFail() throws NotAllowedToMakeReservationException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException {
+    public void makeReservationFail() throws NotAllowedToMakeReservationException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, InterruptedException {
 
         Reservation r = new Reservation();
         r.setId(13);
 
         ReservationParamsDTO params = new ReservationParamsDTO();
         params.setEmail("pera@gmail.com");
-        params.setDate(LocalDate.of(2022, 6, 30));
-        params.setEndingDate(LocalDate.of(2022, 7, 1));
+        params.setDate(LocalDate.of(2023, 6, 30));
+        params.setEndingDate(LocalDate.of(2023, 7, 1));
         params.setGuests(1);
         params.setServices(new ArrayList<AdditionalService>());
         params.setTotal(40.00);
@@ -178,7 +188,9 @@ public class UnitTests {
         c.setEmailVerified(true);
 
         Offer o = new Offer();
+        o.setNumberOfReservations(3L);
         o.setUnavailableDate(new ArrayList<>());
+        o.setVersion(1L);
         List<Offer> nonAvailables = new ArrayList<>();
         Offer nonAvailable = new Offer();
         nonAvailable.setId(3);
@@ -195,6 +207,4 @@ public class UnitTests {
         Assertions.assertThrows(NotAllowedToMakeReservationException.class, () -> reservationServiceMock.makeReservation(params));
         Mockito.verifyNoInteractions(additionalServiceRepository);
     }
-
-
 }

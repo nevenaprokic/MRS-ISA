@@ -9,6 +9,8 @@ import com.booking.ISAbackend.service.QuickReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -35,6 +37,7 @@ public class QuickReservationController {
     }
 
     @GetMapping("already-exist")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> alreadyExistQuickReservationForOffer(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dateNumber){
         try {
             Boolean check = quickReservationService.checkQuickReservationByOfferId(Integer.parseInt(offerId), startDate,Integer.parseInt(dateNumber));
@@ -46,6 +49,7 @@ public class QuickReservationController {
     }
 
     @GetMapping("available-period")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<Boolean> isAvailablePeriod(@RequestParam String offerId, @RequestParam String startDate, @RequestParam String dateNumber){
         try {
             Boolean check = offerService.checkUnavailableDate(Integer.parseInt(offerId), startDate,Integer.parseInt(dateNumber));
@@ -55,16 +59,20 @@ public class QuickReservationController {
         }
     }
     @PostMapping("add")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> addNewQuickReservation(@RequestBody NewQuickReservationDTO dto){
         try{
             Integer quickReservationId =  quickReservationService.addNewQuickReservation(dto);
             return ResponseEntity.ok(String.valueOf(quickReservationId));
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. Please try again and create new quick reservation.");
         }catch(Exception ex){
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
 
     @PostMapping("add-additional-services")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','INSTRUCTOR','SHIP_OWNER')")
     public ResponseEntity<String> addAdditionalServiceForCottage(@RequestBody Map<String, Object> data){
         try{
             HashMap<String, Object> paramsMap =  (HashMap<String, Object>) data.get("params");

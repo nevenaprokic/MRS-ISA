@@ -2,6 +2,8 @@ package com.booking.ISAbackend.repository;
 
 import com.booking.ISAbackend.model.Instructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +30,17 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
             "AND (lower(c.lastName) LIKE lower(concat('%', :lastName, '%')) OR lower(:lastName) LIKE lower(concat('%', c.lastName, '%')))"
     )
     List<Instructor> searchInstructorsClient(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("address")String address);
+
+    @Query("SELECT DISTINCT i FROM Instructor i INNER JOIN Adventure a ON a.id = ?1 WHERE a.instructor.id = i.id")
+    Instructor findInstructorByAdventure(int adventureId);
+
+    @Query( "Select count(distinct inst) FROM Instructor inst  WHERE inst.deleted = false")
+    int getNumberOfInstructors();
+
+    @Query("SELECT i FROM Instructor i WHERE i.deleted = false")
+    Page<Instructor> findAllActiveUsersByPage(PageRequest request);
+
+    @Query("SELECT i FROM Instructor i WHERE i.deleted = false")
+    List<Instructor> findAllActiveInstructors();
+
 }

@@ -5,6 +5,7 @@ import com.booking.ISAbackend.security.RestAuthenticationEntryPoint;
 import com.booking.ISAbackend.security.TokenAuthenticationFilter;
 import com.booking.ISAbackend.security.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+
 public
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -83,9 +85,21 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
                 // svim korisnicima dopusti da pristupe sledecim putanjama:
-                .authorizeRequests().antMatchers("/**").permitAll()		// /auth/**
+                .authorizeRequests()//.antMatchers("/**").permitAll()		// /auth/**
                 .antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 .antMatchers("/api/foo").permitAll()		// /api/foo
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/calendar/**").hasAnyAuthority("COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/client/**").hasAnyAuthority( "CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/cottage-owner/**").hasAnyAuthority("COTTAGE_OWNER","ADMIN")
+                .antMatchers("/loyalty/**").hasAnyAuthority("CLIENT","ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/mark/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/registration-request/**").hasAuthority("ADMIN")
+                .antMatchers("/reservation/**").hasAnyAuthority("CLIENT", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/reservation-report/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER")
+                .antMatchers("/ship-owner/**").hasAnyAuthority("SHIP_OWNER","ADMIN")
+                .antMatchers("/adventure/**").hasAnyAuthority("INSTRUCTOR","ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("ADMIN", "COTTAGE_OWNER","INSTRUCTOR","SHIP_OWNER","CLIENT")
 
                 // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                 // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
@@ -114,17 +128,18 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/client/registration");
-        web.ignoring().antMatchers(HttpMethod.POST, "/adventure/addAdventure");
-        web.ignoring().antMatchers(HttpMethod.POST,"/cottage/addCottage");
-        web.ignoring().antMatchers(HttpMethod.POST, "/cottage/add-additional-services");
-        web.ignoring().antMatchers(HttpMethod.POST, "/adventure/add-additional-services");
-        web.ignoring().antMatchers(HttpMethod.POST, "/ship/addShip");
-        web.ignoring().antMatchers(HttpMethod.POST, "/ship/add-additional-services");
-        web.ignoring().antMatchers(HttpMethod.POST, "/changeCottageOwnerData");
-        web.ignoring().antMatchers(HttpMethod.POST, "/changeShipOwnerData");
-        web.ignoring().antMatchers(HttpMethod.POST, "/loyalty/update-client-category");
-        web.ignoring().antMatchers(HttpMethod.POST, "/loyalty/update-owner-category");
-        web.ignoring().antMatchers(HttpMethod.PUT, "/**");
+        web.ignoring().antMatchers(HttpMethod.GET,"/cottage/get-all");
+        web.ignoring().antMatchers(HttpMethod.GET,"/cottage/get-info");
+        web.ignoring().antMatchers(HttpMethod.GET,"/cottage/search");
+        web.ignoring().antMatchers(HttpMethod.GET,"/ship/get-all");
+        web.ignoring().antMatchers(HttpMethod.GET,"/ship/get-info");
+        web.ignoring().antMatchers(HttpMethod.GET,"/ship/search");
+        web.ignoring().antMatchers(HttpMethod.GET,"/instructor/get-all");
+        web.ignoring().antMatchers(HttpMethod.GET,"/instructor/profile-info");
+        web.ignoring().antMatchers(HttpMethod.GET,"/instructor/search");
+        web.ignoring().antMatchers(HttpMethod.GET,"/quick-reservation/get");
+        web.ignoring().antMatchers(HttpMethod.GET,"/address/get-info");
+
         // Ovim smo dozvolili pristup statickim resursima aplikacije
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js");

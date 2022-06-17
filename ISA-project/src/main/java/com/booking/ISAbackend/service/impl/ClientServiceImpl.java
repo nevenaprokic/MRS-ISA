@@ -1,18 +1,18 @@
 package com.booking.ISAbackend.service.impl;
 
 import com.booking.ISAbackend.confirmationToken.ConfirmationTokenService;
-import com.booking.ISAbackend.dto.AdditionalServiceDTO;
-import com.booking.ISAbackend.dto.ClientDTO;
-import com.booking.ISAbackend.dto.ClientRequest;
-import com.booking.ISAbackend.dto.OfferDTO;
+import com.booking.ISAbackend.dto.*;
 import com.booking.ISAbackend.email.EmailSender;
 import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.*;
 import com.booking.ISAbackend.repository.*;
 import com.booking.ISAbackend.service.ClientCategoryService;
 import com.booking.ISAbackend.service.ClientService;
+import com.booking.ISAbackend.service.ReservationReportService;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -62,6 +63,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private OfferRepository offerRepository;
+
+    @Autowired
+    private ClientCategoryRepository categoryRepository;
+
+    @Autowired
+    private ReservationReportService reservationReportService;
 
     @Override
     @Transactional
@@ -147,6 +154,7 @@ public class ClientServiceImpl implements ClientService {
                 address.setState(dto.getState());
             }
         }
+        clientRepository.save(c);
     }
 
     @Override
@@ -169,11 +177,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeSubscribedClients(List<Client> services){
+    public void removeSubscribedClients(List<Client> services, int offerId){
         Iterator<Client> iterator = services.iterator();
-        while(iterator.hasNext()){
-            iterator.remove();
-
+        while(iterator.hasNext()) {
+            Client c = iterator.next();
+            unsubscribe(c.getEmail(), String.valueOf(offerId));
         }
     }
 
@@ -190,7 +198,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Mark> om = markRepository.alreadyReviewed(c.getId(), reservationId);
         if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
+            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now(), false);
             markRepository.save(m);
         }else{
             throw new Exception();
@@ -257,21 +265,125 @@ public class ClientServiceImpl implements ClientService {
         Optional<Complaint> m = Optional.ofNullable(complaintRepository.alreadyReviewed(c.getId(), reservationId));
         if(m.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Complaint a = new Complaint(comment, r.get(), c);
+            Complaint a = new Complaint(comment, r.get(), c, false, LocalDate.now());
             complaintRepository.save(a);
         }else{
             throw new Exception();
         }
     }
 
+    @Override
+    @Transactional
+    public List<ComplaintDTO> getAllNotDeletedComplaints() {
+        List<ComplaintDTO> complaints =  new ArrayList<ComplaintDTO>();
+        List<Complaint> notReviewedComplaints = complaintRepository.findAllNotDeleted();
+        for(Complaint complaint : notReviewedComplaints){
+            complaints.add(createComplaintDTO(complaint));
+        }
+        return complaints;
+    }
+
+    @Override
+    @Transactional
+    public void respondOnComplaint(String response, int complalintId) throws UserNotFoundException {
+        Optional<Complaint> complaint = complaintRepository.findById(complalintId);
+        if(complaint.isPresent()){
+            Complaint complaintForResponse = complaint.get();
+            Client client = complaintForResponse.getClient();
+            Reservation reservation = complaintForResponse.getReservation();
+            Owner owner = reservationReportService.findReservationOwner(reservation);
+            sendComplaintResponseToUsers(owner, client, reservation, response);
+            complaintForResponse.setDeleted(true);
+            complaintRepository.save(complaintForResponse);
+
+        }
+    }
+
+    @Transactional
+    public void sendComplaintResponseToUsers(Owner owner, Client client, Reservation reservation, String text) {
+        String clientMessage = "Response for complaint on reservation '" + reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + "-" + reservation.getEndDate() + ":  "  + text;
+
+        String ownerMessage = "Response for complaint on reservation  " +  reservation.getOffer().getName() + "' for period:  " +
+                reservation.getStartDate().toString() + " - " + reservation.getEndDate() + ": " + text;
+
+        emailSender.sendResponseOnComplaint(owner.getEmail(), ownerMessage);
+        emailSender.sendResponseOnComplaint(client.getEmail(), clientMessage);
+    }
+
     @Scheduled(cron="0 0 0 1 1/1 *")
     @Transactional
     public void removePenalties(){
+
         clientRepository.removePenalties();
     }
 
-//    @Scheduled(fixedRate=2000L)
-//    public void printSomething(){
-//        System.out.println("Something");
-//    }
+    @Transactional
+    public ComplaintDTO createComplaintDTO(Complaint complaint){
+        Reservation reservation = complaint.getReservation();
+        Client client = reservation.getClient();
+        ClientCategory category = categoryRepository.findByMatchingInterval(client.getPoints()).get(0);
+        //int id, String text, String offerName, String clientName, String clientCategory, int clientPenalty, String reservationStartDate, String reservationEndDate
+        ComplaintDTO dto = new ComplaintDTO(complaint.getId(), complaint.getText(),
+                reservation.getOffer().getName(),
+                client.getFirstName() + " " + client.getLastName(),
+                category.getName(),
+                client.getPenal(),
+                localDateToString(reservation.getStartDate()),
+                localDateToString(reservation.getEndDate()),
+                localDateToString(complaint.getRecivedTime())
+        );
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public List<UserDTO> getAllActiveClients(int page, int pageSize) {
+        Page<Client> clients = clientRepository.findAllActiveUsers(PageRequest.of(page, pageSize));
+        int clientNumbers = clientRepository.getNumberOfClients();
+        List<UserDTO> userDTOS = new ArrayList<UserDTO>();
+        for(Client client : clients.getContent()){
+            UserDTO userDTO = createClientDTO(client);
+            userDTOS.add(userDTO);
+            userDTO.setUserNumber(clientNumbers);
+        }
+        return userDTOS;
+    }
+
+    @Transactional
+    public UserDTO createClientDTO(Client client){
+        Role role = client.getRole();
+        int points = client.getPoints();
+        ClientCategory clientCategory = categoryRepository.findByMatchingInterval(points).get(0);
+        String category = clientCategory.getName();
+        int penalty = client.getPenal();
+
+        UserDTO userDTO = new UserDTO(client, client.getAddress(), role.getName(), category, penalty, points);
+        return userDTO;
+    }
+
+
+    private String localDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        return formatter.format(date);
+    }
+
+    @Override
+    @Transactional
+    public void deleteClient(int userId) throws AccountDeletionException {
+        Optional<Client> user = clientRepository.findById(userId);
+        if(user.isPresent()){
+            Client client = user.get();
+            List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(client.getId());
+            if(reservations.isEmpty()){
+                client.setDeleted(true);
+                clientRepository.save(client);
+                emailSender.notifyUserForDeleteAccount(client.getEmail(), "Your account is deleted by admin");
+            }else{
+                throw new AccountDeletionException("Account cannot be deleted because user has future reservations.");
+            }
+        }
+    }
+
+
 }

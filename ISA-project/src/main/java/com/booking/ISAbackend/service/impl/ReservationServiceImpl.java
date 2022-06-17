@@ -9,8 +9,10 @@ import com.booking.ISAbackend.service.AdditionalServiceService;
 import com.booking.ISAbackend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OptimisticLockException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void makeReservation(ReservationParamsDTO params) throws OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException {
+    public void makeReservation(ReservationParamsDTO params) throws OptimisticLockException, OfferNotAvailableException, PreviouslyCanceledReservationException, ClientNotAvailableException, NotAllowedToMakeReservationException, InterruptedException {
         Optional<Integer> isCanceled = reservationRepository.checkIfCanceled(params.getEmail(), params.getDate(), params.getOfferId());
         Integer penalties = clientRepository.getPenalties(params.getEmail());
         if(penalties >= 3)
@@ -80,7 +82,9 @@ public class ReservationServiceImpl implements ReservationService {
             x.ifPresent(ys::add);
         }
 
+        offer.setNumberOfReservations(offer.getNumberOfReservations() + 1);
         Reservation r = new Reservation(params.getDate(), params.getEndingDate(), ys, params.getTotal(), params.getGuests(), offer, user, false);
+
         reservationRepository.save(r);
     }
 
@@ -136,7 +140,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
     @Override
     @Transactional
-    public Integer makeReservationOwner(NewReservationDTO dto){
+    public Integer makeReservationOwner(NewReservationDTO dto) throws InterruptedException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate startDateReservation = LocalDate.parse(dto.getStartDateReservation(), formatter);
@@ -158,9 +162,11 @@ public class ReservationServiceImpl implements ReservationService {
         for (Optional<AdditionalService> x : services) {
             x.ifPresent(newAdditionalService::add);
         }
+        offer.setNumberOfReservations(offer.getNumberOfReservations()+1);
         Reservation reservation = new Reservation(startDateReservation, endDateReservation,newAdditionalService, dto.getPrice()*dto.getDaysReservation(), dto.getPeopleNum(), offer, client, false);
         Reservation newReservation = reservationRepository.save(reservation);
         offer.getReservations().add(newReservation);
+
         offerRepository.save(offer);
         sendEmail(client.getEmail(), reservation);
         return newReservation.getId();
@@ -267,6 +273,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public void cancelReservation(Integer id) throws CancellingReservationException {
         Optional<Reservation> r = reservationRepository.findById(id);
         LocalDate today = r.get().getStartDate();
@@ -274,6 +281,8 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Integer> exists = Optional.ofNullable(reservationRepository.checkCancelCondition(id, boundary, LocalDate.now()));
         if(exists.isPresent())
             throw new CancellingReservationException("Cannot cancel reservation.");
+        Offer o = r.get().getOffer();
+        o.setNumberOfReservations(o.getNumberOfReservations() - 1);
         reservationRepository.deleteById(id);
     }
 

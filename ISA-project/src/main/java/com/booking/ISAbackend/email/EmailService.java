@@ -92,11 +92,11 @@ public class EmailService implements EmailSender{
     }
 
     @Override
-    public void notifyCliendDiscardMark(String email, String message) {
+    public void notifyUserAboutMark(String email, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(email);
         mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
-        mail.setSubject("Review rejected");
+        mail.setSubject("Review information");
         mail.setText(message);
         javaMailSender.send(mail);
     }
@@ -109,6 +109,36 @@ public class EmailService implements EmailSender{
         mail.setSubject("New admin registration");
         String message = "You have been added as one of admins in our application. Your password for first login is: " + password +
                 " . After first login you have to change password.";
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
+    @Override
+    public void notifyUserAboutReservationReport(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response for reservation report");
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
+    @Override
+    public void sendResponseOnComplaint(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response on complaint");
+        mail.setText(message);
+        javaMailSender.send(mail);
+    }
+
+    @Override
+    public void notifyUserForDeleteAccount(String email, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Response on delete account request");
         mail.setText(message);
         javaMailSender.send(mail);
     }

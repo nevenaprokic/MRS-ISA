@@ -38,4 +38,23 @@ public class NewReservationReportDTO {
         return reservationId;
     }
 
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setValueShowUp(Boolean valueShowUp) {
+        this.valueShowUp = valueShowUp;
+    }
+
+    public void setValueImpression(Impression valueImpression) {
+        this.valueImpression = valueImpression;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
 }

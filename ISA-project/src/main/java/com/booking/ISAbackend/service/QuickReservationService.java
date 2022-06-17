@@ -11,6 +11,6 @@ import java.util.List;
 public interface QuickReservationService {
     List<QuickReservationDTO> findQuickReservationByOfferId(Integer id);
     Boolean checkQuickReservationByOfferId(Integer offerId, String startDate, Integer dateNumber);
-    Integer addNewQuickReservation(NewQuickReservationDTO dto);
+    Integer addNewQuickReservation(NewQuickReservationDTO dto) throws InterruptedException;
     void addAdditionalServices(List<HashMap<String, String>> additionalServiceDTOs, Integer quickId) throws InvalidPriceException, RequiredFiledException;
 }
