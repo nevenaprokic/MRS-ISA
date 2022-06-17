@@ -35,6 +35,7 @@ public class QuickReservationServiceImpl implements QuickReservationService {
     @Transactional
     public List<QuickReservationDTO> findQuickReservationByOfferId(Integer id){
         List<QuickReservation> listOfAllQuickReservation = quickReservationRepository.findQuickReservationsByOfferId(id);
+
         List<QuickReservation> listOfCurrentQuickReservation = new ArrayList<>();
         LocalDate today = LocalDate.now();
 

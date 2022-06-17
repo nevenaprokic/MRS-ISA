@@ -40,7 +40,7 @@ public class MarkController {
     public ResponseEntity<List<MarkDTO>> getAllUncheckedMarks(){
         try{
             List<MarkDTO> marks = markService.getAllUncheckesMarks();
-            return new ResponseEntity<>(marks, marks.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(marks,  HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -70,6 +70,18 @@ public class MarkController {
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again later");
+        }
+    }
+
+    @GetMapping("offer-marks")
+
+    public ResponseEntity<List<MarkDTO>> getAllMarksForOffer(@RequestParam int offerId){
+        try{
+            return ResponseEntity.ok().body(markService.getAllMarksForOffer(offerId));
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
         }
     }
 

@@ -23,6 +23,7 @@ import Divider from "@mui/material/Divider";
 import { getRoleFromToken } from "../../../app/jwtTokenUtils";
 import { userType } from "../../../app/Enum";
 import ImagesGallery from "../../layout/ImageGallery";
+import MarksContainer from "../cottageProfile/MarksContainer";
 
 const theme = createTheme({
   palette: {
@@ -235,6 +236,7 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
               offer={adventureData}
               additionalServices={createServiceData()}
             />
+            <MarksContainer offerId={adventureData.id} />
           </div>
         </ThemeProvider>
       </div>

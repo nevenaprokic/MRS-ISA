@@ -10,10 +10,12 @@ import com.booking.ISAbackend.service.MarkService;
 import com.booking.ISAbackend.service.ReservationReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,6 +138,20 @@ public class MarkServiceImpl implements MarkService {
                     " has been rejected.";
             sendEmailNotification(client, message);
         }
+    }
+
+    @Override
+    @Transactional
+    public List<MarkDTO> getAllMarksForOffer(int offerId) throws IOException {
+        List<Mark> offerMarks = markRepository.findAllMarkByOfferId(offerId);
+        System.out.println(offerMarks.size());
+        List<MarkDTO> marks = new ArrayList<MarkDTO>();
+        for( Mark mark : offerMarks){
+             Reservation r = mark.getReservation();
+             MarkDTO dto = new MarkDTO(mark, new ReservationDTO(r));
+             marks.add(dto);
+        }
+        return marks;
     }
 
     @Transactional

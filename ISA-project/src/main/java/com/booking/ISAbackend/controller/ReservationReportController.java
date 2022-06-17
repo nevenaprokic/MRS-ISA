@@ -104,7 +104,7 @@ public class ReservationReportController {
     public ResponseEntity<List<ReservationReportAdminDTO>> getAllNotReviewedReports(){
         try{
             List<ReservationReportAdminDTO> reports = reservationReportService.getAllNotReviewedWIthPenaltyOption();
-            return new ResponseEntity<>(reports, reports.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(reports, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
