@@ -36,7 +36,7 @@ api.interceptors.response.use(
         window.location = "/authorization-failed";
       }
       default: {
-        Promise.reject(error);
+        return Promise.reject(error);
       }
     }
   }

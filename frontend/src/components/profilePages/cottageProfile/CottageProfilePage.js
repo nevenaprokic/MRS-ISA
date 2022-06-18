@@ -246,7 +246,9 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
               offer={cottageData}
               additionalServices={createServiceData()}
             />
-            <MarksContainer offerId={cottageData.id} />
+            {getRoleFromToken() != null && (
+              <MarksContainer offerId={cottageData.id} />
+            )}
           </div>
         </ThemeProvider>
       </div>

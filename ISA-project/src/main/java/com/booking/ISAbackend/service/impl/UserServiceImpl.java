@@ -174,6 +174,7 @@ public class UserServiceImpl implements UserService{
 			MyUser myUser = user.get();
 			DeleteRequest request = deleteRequest.get();
 			myUser.setDeleted(true);
+			myUser.setEmailVerified(false);
 			request.setDeleted(true);
 			userRepository.save(myUser);
 			deleteRequestRepository.save(request);

@@ -380,6 +380,7 @@ public class ClientServiceImpl implements ClientService {
             List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(client.getId());
             if(reservations.isEmpty()){
                 client.setDeleted(true);
+                client.setEmailVerified(false);
                 clientRepository.save(client);
                 emailSender.notifyUserForDeleteAccount(client.getEmail(), "Your account is deleted by admin");
             }else{

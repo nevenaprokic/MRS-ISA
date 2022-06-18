@@ -236,7 +236,9 @@ function AdventureProfilePage({ id, close, childToParentMediaCard }) {
               offer={adventureData}
               additionalServices={createServiceData()}
             />
-            <MarksContainer offerId={adventureData.id} />
+            {getRoleFromToken() != null && (
+              <MarksContainer offerId={adventureData.id} />
+            )}
           </div>
         </ThemeProvider>
       </div>

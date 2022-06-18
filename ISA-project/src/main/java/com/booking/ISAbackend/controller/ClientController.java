@@ -31,7 +31,6 @@ public class ClientController {
     private ReservationService reservationService;
 
     @PostMapping("registration")
-    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<String> addClient(@RequestBody ClientRequest request, UriComponentsBuilder ucBuilder) throws InterruptedException {
 
         ClientDTO existUser = this.clientService.findByEmail(request.getEmail());
@@ -202,10 +201,9 @@ public class ClientController {
         try{
             Integer reservationId = Integer.parseInt(data.get("reservationId"));
             clientService.makeComplaint(reservationId, data.get("comment"), data.get("email"));
-            //return ResponseEntity.ok("Complaint has been successfully added.");
             return new ResponseEntity<String>("Complaint has been successfully added.", HttpStatus.CREATED);
         }catch (FeedbackAlreadyGivenException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Something went wrong.");
         }

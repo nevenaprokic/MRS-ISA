@@ -74,7 +74,6 @@ public class MarkController {
     }
 
     @GetMapping("offer-marks")
-
     public ResponseEntity<List<MarkDTO>> getAllMarksForOffer(@RequestParam int offerId){
         try{
             return ResponseEntity.ok().body(markService.getAllMarksForOffer(offerId));

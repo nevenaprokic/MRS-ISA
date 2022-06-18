@@ -249,7 +249,9 @@ function ShipProfilePage({ id, close, childToParentMediaCard }) {
               offer={shipData}
               additionalServices={createServiceData()}
             />
-            <MarksContainer offerId={shipData.id} />
+            {getRoleFromToken() != null && (
+              <MarksContainer offerId={shipData.id} />
+            )}
           </div>
         </ThemeProvider>
       </div>
