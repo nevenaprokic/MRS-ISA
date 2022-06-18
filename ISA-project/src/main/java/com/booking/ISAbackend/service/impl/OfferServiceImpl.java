@@ -74,7 +74,7 @@ public class OfferServiceImpl implements OfferService {
             @CacheEvict(value="instructors", allEntries=true)})
     public void delete(Integer offerId) throws OfferNotFoundException, InterruptedException {
         Offer offer = offerRepository.findOfferById(offerId);
-        offer.setNumberOfReservations(offer.getNumberOfReservations()+1);
+        offer.setNumberOfModify(offer.getNumberOfModify()+1);
         if (offer == null)
             throw new OfferNotFoundException("Offer not found");
         if(offer.getSubscribedClients().size()!= 0){
@@ -89,7 +89,6 @@ public class OfferServiceImpl implements OfferService {
             quickReservationRepository.deleteByOfferId(offerId);
         if(offer.getReservations().size() != 0)
             reservationRepository.deleteByOfferId(offerId);
-        Thread.sleep(3000);
         offerRepository.updateDeleteByOfferId(offerId);
     }
     @Override

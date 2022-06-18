@@ -228,9 +228,8 @@ public class ShipServiceImpl implements ShipService {
             ship.setCancellationConditions(shipDTO.getCancellationConditions());
             ship.setPhotos(updateShipPhotos(shipDTO.getPhotos(), ship.getPhotos(), shipOwnerEmail));
 
-            ship.setNumberOfReservations(ship.getNumberOfReservations()+1);
+            ship.setNumberOfModify(ship.getNumberOfModify()+1);
             updateShipAddress(ship.getAddress(), new AddressDTO(shipDTO.getStreet(), shipDTO.getCity(), shipDTO.getState()));
-            Thread.sleep(4000);
             shipRepository.save(ship);
         }
     }

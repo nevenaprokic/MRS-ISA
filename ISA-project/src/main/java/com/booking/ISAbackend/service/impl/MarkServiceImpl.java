@@ -144,7 +144,6 @@ public class MarkServiceImpl implements MarkService {
     @Transactional
     public List<MarkDTO> getAllMarksForOffer(int offerId) throws IOException {
         List<Mark> offerMarks = markRepository.findAllMarkByOfferId(offerId);
-        System.out.println(offerMarks.size());
         List<MarkDTO> marks = new ArrayList<MarkDTO>();
         for( Mark mark : offerMarks){
              Reservation r = mark.getReservation();
