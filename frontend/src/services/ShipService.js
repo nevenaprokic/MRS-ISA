@@ -252,6 +252,7 @@ export function deleteShip(shipId) {
       },
     })
     .then((response) => {
+      console.log("USAO");
       toast.success(
         "You successfully deleted the ship!",
         {
@@ -261,8 +262,9 @@ export function deleteShip(shipId) {
       );
     })
     .catch((err) => {
+      console.log("USAO");
       toast.error(
-        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        err.response.data,
         {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,

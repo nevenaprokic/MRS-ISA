@@ -13,7 +13,7 @@ import java.util.List;
 public interface OfferService {
     AddressDTO findAddressByOfferId(Integer id);
     List<AdditionalServiceDTO> findAdditionalServiceByOffer(Integer id);
-    void delete(Integer offerId) throws OfferNotFoundException;
+    void delete(Integer offerId) throws OfferNotFoundException, InterruptedException;
     Boolean checkOperationAllowed(Integer offerId);
     Boolean checkUnavailableDate(Integer offerId,String startDate,Integer dateNumber);
 

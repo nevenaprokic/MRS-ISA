@@ -232,10 +232,10 @@ public class CottageServiceImpl implements CottageService {
             cottage.setCancellationConditions(cottageDTO.getCancellationConditions());
             cottage.setPhotos(updateCottagePhotos(cottageDTO.getPhotos(), cottage.getPhotos(), cottageOwnerEmail));
 
-            cottage.setNumberOfModify(cottage.getNumberOfModify()+1);
+            cottage.setNumberOfReservations(cottage.getNumberOfReservations()+1);
 
             updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
-
+            Thread.sleep(cottage.getBedNumber()*2000);
             cottageRepository.save(cottage);
         }
     }

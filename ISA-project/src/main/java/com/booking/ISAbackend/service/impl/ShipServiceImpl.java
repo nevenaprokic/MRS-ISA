@@ -216,7 +216,7 @@ public class ShipServiceImpl implements ShipService {
     @Override
     @Transactional
     @CacheEvict(value="ships", allEntries=true)
-    public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException {
+    public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException, InterruptedException {
         Ship ship = shipRepository.findShipById(shipId);
         String shipOwnerEmail = ship.getShipOwner().getEmail();
         if (ship != null && validateUpdateShip(shipDTO)){
@@ -228,7 +228,9 @@ public class ShipServiceImpl implements ShipService {
             ship.setCancellationConditions(shipDTO.getCancellationConditions());
             ship.setPhotos(updateShipPhotos(shipDTO.getPhotos(), ship.getPhotos(), shipOwnerEmail));
 
+            ship.setNumberOfReservations(ship.getNumberOfReservations()+1);
             updateShipAddress(ship.getAddress(), new AddressDTO(shipDTO.getStreet(), shipDTO.getCity(), shipDTO.getState()));
+            Thread.sleep(4000);
             shipRepository.save(ship);
         }
     }

@@ -48,9 +48,9 @@ public interface UserService {
     List<UserDTO> getAllActiveInstructors(int page, int pageSize);
     List<UserDTO> getAllActiveAdmins(int page, int pageSize,String currentAdmin);
 
-    void deleteInstructor(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
-    void deleteCottageOwner(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
-    void deleteShipOwner(int userId)  throws IOException, OfferNotFoundException, AccountDeletionException;
+    void deleteInstructor(int userId) throws IOException, OfferNotFoundException, AccountDeletionException, InterruptedException;
+    void deleteCottageOwner(int userId) throws IOException, OfferNotFoundException, AccountDeletionException, InterruptedException;
+    void deleteShipOwner(int userId) throws IOException, OfferNotFoundException, AccountDeletionException, InterruptedException;
     void deleteAdmin(int userId);
 
 }

@@ -15,7 +15,7 @@ public interface ClientService {
     void updateInfo(String email, ClientDTO dto) throws OnlyLettersAndSpacesException, InvalidPhoneNumberException, InvalidAddressException;
     void requestAccountDeletion(String email, String reason) throws AccountDeletionException;
     boolean alreadyRequestedDeletion(String email);
-    void removeSubscribedClients(List<Client> services,int offerId);
+    void removeSubscribedClients(List<Client> services,int offerId, String offerName);
     Boolean canReserve(String email);
 
     void makeReview(Integer stars, Integer offerId, String comment, String email) throws Exception;

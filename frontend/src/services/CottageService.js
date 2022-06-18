@@ -239,6 +239,7 @@ export function deleteCottage(cottageId) {
       },
     })
     .then((response) => {
+      console.log("USAO");
       toast.success(
         "You successfully deleted the cottage!",
         {
@@ -248,8 +249,9 @@ export function deleteCottage(cottageId) {
       );
     })
     .catch((err) => {
+      console.log("USAO");
       toast.error(
-        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        err.response.data,
         {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,
@@ -261,9 +263,10 @@ export function updateCottage(cottageData, additionalServices){
   api
   .put("/cottage/update", cottageData)
   .then((responseData) => {
+    console.log("USAO dobro");
        updateAdditionalServices(cottageData.id, additionalServices);
   })
-  .catch((err) => {toast.error(err.response.data, {
+  .catch((err) => { console.log("USAO"); toast.error(err.response.data, {
                   position: toast.POSITION.BOTTOM_RIGHT,
                   autoClose: 1500,
               });

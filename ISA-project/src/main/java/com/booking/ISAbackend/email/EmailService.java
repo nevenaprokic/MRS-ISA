@@ -143,5 +143,15 @@ public class EmailService implements EmailSender{
         javaMailSender.send(mail);
     }
 
+    @Override
+    public void notifyClientDeleteOffer(String clientEmail, String offerName){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(clientEmail);
+        mail.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username")));
+        mail.setSubject("Delete offer");
+        mail.setText("The offer (" + offerName+ ") you subscribed to has been deleted!");
+        javaMailSender.send(mail);
+    }
+
 
 }

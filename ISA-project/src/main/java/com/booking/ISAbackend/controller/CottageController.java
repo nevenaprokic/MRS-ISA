@@ -166,6 +166,8 @@ CottageController {
         }catch (OfferNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch(Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");

@@ -1,6 +1,5 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Layout from "./components/layout/Layout";
 import Registration from "./components/forms/user/Registration";
 import LogIn from "./components/forms/user/Login";
 import RegistrationOwner from "./components/forms/user/RegistrationOwner";
@@ -11,7 +10,6 @@ import RegistrationClient from "./components/forms/user/RegistrationClient";
 import ChangeOwnerData from "./components/forms/user/ChangeOwnerData";
 import ClientProfile from "./components/profilePages/userProfile/ClientProfile";
 import CottageOwnerHomePage from "./components/homePages/CottageOwnerHomePage";
-import MainNavigation from "./components/layout/MainNavigation";
 import CottageProfilePage from "./components/profilePages/cottageProfile/CottageProfilePage";
 import AdventureProfilePage from "./components/profilePages/adventureProfile/AdvetureProfilePage";
 import ClientHomePage from "./components/homePages/ClientHomePage";
@@ -36,6 +34,11 @@ import IncomeStatementAdmin from "./components/graphs/incomeStatement/IncomeStat
 import OffersOverview from "./components/forms/OffersOverview";
 import AuthetificationFailed from "./components/errorPages/AuthetificationFailed";
 import AuthorizationFailed from "./components/errorPages/AuthorizationFailed";
+
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 function App() {
   return (
