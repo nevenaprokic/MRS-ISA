@@ -231,7 +231,7 @@ export function checkReservation(cottageData) {
       );
     });
 }
-export function deleteCottage(cottageId) {
+export function deleteCottage(cottageId, setOffers, allOffers) {
   return api
     .delete("/cottage/delete", {
       params: {
@@ -247,6 +247,7 @@ export function deleteCottage(cottageId) {
           autoClose: 1500,
         }
       );
+      setOffers(allOffers.filter((offer)=> offer.id !== cottageId));
     })
     .catch((err) => {
       console.log("USAO");
@@ -334,6 +335,7 @@ export function deleteCottageByAdmin(cottageId, setAdventuers, allAdventures) {
     .then((response) => {
       if (response.data) {
         deleteCottage(cottageId, setAdventuers, allAdventures)
+        
       }
       else{
         toast.error(

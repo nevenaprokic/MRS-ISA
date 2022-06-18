@@ -148,19 +148,16 @@ export function checkReservation(adventureData) {
       );
     });
 }
-export function deleteAdventure(adventureId) {
+export function deleteAdventure(adventureId, setOffers, allOffers) {
   console.log("id", adventureId);
   return api
-    .get("/adventure/delete", {
-      params: {
-        adventureId: adventureId,
-      },
-    })
+    .delete("/adventure/delete/" +  adventureId)
     .then((response) => {
       toast.success("You successfully deleted the cottage!", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 1500,
       });
+      setOffers(allOffers.filter((offer)=> offer.id !== adventureId));
     })
     .catch((err) => {
       toast.error(
@@ -212,6 +209,7 @@ export function deleteAdventureByAdmin(
     .then((response) => {
       if (response.data) {
         deleteAdventure(adventureId, setAdventuers, allAdventures);
+       
       } else {
         toast.error(
           "Delete is not allowed besause offer has future reservations",

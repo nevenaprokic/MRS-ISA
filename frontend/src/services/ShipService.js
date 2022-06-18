@@ -244,7 +244,7 @@ export function checkReservation(shipData) {
       );
     });
 }
-export function deleteShip(shipId) {
+export function deleteShip(shipId, setOffers, allOffers) {
   return api
     .delete("/ship/delete", {
       params: {
@@ -260,6 +260,7 @@ export function deleteShip(shipId) {
           autoClose: 1500,
         }
       );
+      setOffers(allOffers.filter((offer)=> offer.id !== shipId));
     })
     .catch((err) => {
       console.log("USAO");
@@ -345,7 +346,8 @@ export function deleteShipByAdmin(shipId, setAdventuers, allAdventures) {
     })
     .then((response) => {
       if (response.data) {
-        deleteShip(shipId, setAdventuers, allAdventures)
+        deleteShip(shipId, setAdventuers, allAdventures);
+        //setAdventuers(allAdventures.filter((offer)=> offer.id !== shipId));
       }
       else{
         toast.error(
