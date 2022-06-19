@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ReservationReportRepository extends JpaRepository<ReservationReport, Integer> {
 
-    @Query("SELECT r FROM ReservationReport r WHERE r.penalOption = true AND r.reviewed = false AND r.automaticallyPenal=false")
+    @Query("SELECT r FROM ReservationReport r WHERE r.penalOption = true AND r.reviewed = false AND r.automaticallyPenal=false ORDER BY r.sentDate ASC")
     List<ReservationReport> findAllNotReviewedForPenalty();
 }

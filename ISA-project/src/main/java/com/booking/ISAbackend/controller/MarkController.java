@@ -68,7 +68,6 @@ public class MarkController {
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("The other admin has just responded to this mark so you can't.");
         }catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again later");
         }
     }
@@ -78,7 +77,6 @@ public class MarkController {
         try{
             return ResponseEntity.ok().body(markService.getAllMarksForOffer(offerId));
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
         }

@@ -110,10 +110,8 @@ CottageController {
             int cottageId = cottageService.addCottage(cottageDTO);
             return ResponseEntity.ok(String.valueOf(cottageId));
         } catch (InvalidPriceException | CottageAlreadyExistsException | InvalidPeopleNumberException | InvalidRoomNumberException | InvalidBedNumberException | RequiredFiledException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
 
@@ -129,7 +127,6 @@ CottageController {
             cottageService.addAdditionalServices(additionalServiceDTO, id);
             return ResponseEntity.ok().body("Successfully added new cottage");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -164,12 +161,10 @@ CottageController {
             offerService.delete(cottageId);
             return ResponseEntity.ok().body("Successfully delete cottage");
         }catch (OfferNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -182,7 +177,6 @@ CottageController {
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

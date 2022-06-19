@@ -35,7 +35,6 @@ public class RegistrationRequestController {
             return ResponseEntity.ok(updateRequestsList);
         }
         catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -48,7 +47,6 @@ public class RegistrationRequestController {
             return ResponseEntity.ok(updateRequestsList);
         }
         catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,7 @@ public class InstructorController {
         try{
             userService.deleteInstructor(userId);
             return ResponseEntity.ok("Successfully deleted account");
-        } catch (AccountDeletionException | OfferNotFoundException e) {
+        } catch (AccessDeniedException | OfferNotFoundException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong please try again");

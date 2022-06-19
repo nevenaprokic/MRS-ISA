@@ -65,10 +65,8 @@ public class CottageOwnerController {
             userService.deleteCottageOwner(userId);
             return ResponseEntity.ok("Successfully deleted account");
         } catch (AccountDeletionException | OfferNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong please try again");
         }
     }

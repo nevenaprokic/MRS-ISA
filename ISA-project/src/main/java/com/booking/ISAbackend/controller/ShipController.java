@@ -93,10 +93,8 @@ public class ShipController {
             int shipId = shipService.addShip(shipDTO);
             return ResponseEntity.ok(String.valueOf(shipId));
         } catch (ShipAlreadyExistsException | InvalidPriceException | InvalidAddressException | InvalidPeopleNumberException | InvalidSizeException | InvalidMotorNumberException | InvalidMotorPowerException | InvalidMaxSpeedException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -133,7 +131,6 @@ public class ShipController {
             shipService.addAdditionalServices(additionalServiceDTO, id);
             return ResponseEntity.ok().body("Successfully added new ship");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -168,12 +165,10 @@ public class ShipController {
             offerService.delete(shipId);
             return ResponseEntity.ok().body("Successfully delete ship");
         }catch (OfferNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -186,7 +181,6 @@ public class ShipController {
         }catch (ObjectOptimisticLockingFailureException ex){
             return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

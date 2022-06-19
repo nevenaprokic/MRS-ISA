@@ -132,7 +132,7 @@ public class Validator {
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public static boolean onlyLetterAndSpacesValidation(String dataForValidation) throws OnlyLettersAndSpacesException {

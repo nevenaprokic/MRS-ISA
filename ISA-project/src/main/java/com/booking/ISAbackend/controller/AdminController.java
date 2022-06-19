@@ -45,7 +45,6 @@ public class AdminController {
             userService.changeAdminData(newData);
             return ResponseEntity.ok("Successfully changed you data");
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
@@ -56,12 +55,10 @@ public class AdminController {
                 userService.addNewAdmin(newAdminData);
                 return ResponseEntity.ok().body("Successfully added new admin.");
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (AlreadyExitingUsernameException e){
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try agan later.");
         }
 
@@ -85,7 +82,6 @@ public class AdminController {
         try{
             return ResponseEntity.ok().body(clientService.getAllNotDeletedComplaints());
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -99,7 +95,6 @@ public class AdminController {
             return ResponseEntity.status(400).body("Other admin just the other admin has just responded to the complaint so you can't.");
         }
         catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong. Please try again");
 
         }
@@ -184,7 +179,6 @@ public class AdminController {
         try{
             return ResponseEntity.ok().body(offerService.getAdminBusinessReportData(startDate, endDate));
         }catch(Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

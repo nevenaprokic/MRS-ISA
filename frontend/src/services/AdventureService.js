@@ -157,7 +157,10 @@ export function deleteAdventure(adventureId, setOffers, allOffers) {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 1500,
       });
-      setOffers(allOffers.filter((offer)=> offer.id !== adventureId));
+      if(!!setOffers && !!allOffers){
+        setOffers(allOffers.filter((offer)=> offer.id !== adventureId));
+      }
+     
     })
     .catch((err) => {
       toast.error(

@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, Integer> {
 
-    @Query("SELECT r FROM RegistrationRequest r WHERE r.deleted = false")
+    @Query("SELECT r FROM RegistrationRequest r WHERE r.deleted = false ORDER BY r.sendingTime ASC")
     List<RegistrationRequest> findAllNotDeleted();
 }

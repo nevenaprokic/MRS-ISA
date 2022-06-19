@@ -246,7 +246,9 @@ export function deleteCottage(cottageId, setOffers, allOffers) {
           autoClose: 1500,
         }
       );
-      setOffers(allOffers.filter((offer)=> offer.id !== cottageId));
+      if(!!setOffers && !!allOffers){
+        setOffers(allOffers.filter((offer)=> offer.id !== cottageId));
+      }
     })
     .catch((err) => {
       toast.error(

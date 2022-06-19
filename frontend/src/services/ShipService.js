@@ -260,7 +260,9 @@ export function deleteShip(shipId, setOffers, allOffers) {
           autoClose: 1500,
         }
       );
-      setOffers(allOffers.filter((offer)=> offer.id !== shipId));
+      if(!!setOffers && !!allOffers){
+        setOffers(allOffers.filter((offer)=> offer.id !== shipId));
+      }
     })
     .catch((err) => {
       console.log("USAO");

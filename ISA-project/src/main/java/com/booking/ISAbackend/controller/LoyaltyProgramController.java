@@ -30,7 +30,6 @@ public class LoyaltyProgramController {
         try{
             return ResponseEntity.ok(ownerCategoryService.findAll());
         }catch (Exception e){
-            e.printStackTrace();;
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -41,7 +40,6 @@ public class LoyaltyProgramController {
         try{
             return ResponseEntity.ok(clientCategoryService.findAll());
         }catch (Exception e){
-            e.printStackTrace();;
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

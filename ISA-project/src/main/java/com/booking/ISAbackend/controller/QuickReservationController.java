@@ -82,7 +82,6 @@ public class QuickReservationController {
             quickReservationService.addAdditionalServices(additionalServiceDTO, id);
             return ResponseEntity.ok().body("Successfully added new quick reservation");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
