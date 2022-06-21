@@ -86,8 +86,8 @@ public class AdminController {
         }
     }
 
-    @PutMapping("complaint-response/{response}/{complaintId}")
-    public ResponseEntity<String> respondOnComplaint(@PathVariable("response")  String response, @PathVariable("complaintId") int complaintId){
+    @PutMapping("complaint-response/{complaintId}")
+    public ResponseEntity<String> respondOnComplaint( @PathVariable("complaintId") int complaintId, @RequestBody  String response){
         try{
             clientService.respondOnComplaint(response, complaintId);
             return ResponseEntity.ok().body("Successfully send response on complaint");

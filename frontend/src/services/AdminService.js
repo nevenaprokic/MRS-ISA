@@ -106,7 +106,7 @@ export function sentResponseOnComplaint(
   complaints
 ) {
   api
-    .put("admin/complaint-response/" + response + "/" + complaintID)
+    .put("admin/complaint-response/" + complaintID, response)
     .then((response) => {
       toast.success(response.data, {
         position: toast.POSITION.BOTTOM_RIGHT,
