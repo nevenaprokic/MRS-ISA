@@ -2,23 +2,23 @@
 
 ## Članovi tima
 
-Jovan Jovančević SW1/2019
-Nataša Laković SW2/2019
-Nevena Prokić SW6/2019
+Jovan Jovančević SW1/2019 <br />
+Nataša Laković SW2/2019 <br />
+Nevena Prokić SW6/2019 <br />
 
 ## Način pokretanja - lokalno
 
-- Backend
-Razvojno okruženje : IntelliJ IDEA 2021.3.3
-Java : 11
-Spring Boot : 2.6.6
-Maven : 4.0.0
-Ostali dependency mogu se naći u pom.xml projekta.
+- Backend <br />
+Razvojno okruženje : IntelliJ IDEA 2021.3.3 <br />
+Java : 11 <br />
+Spring Boot : 2.6.6 <br />
+Maven : 4.0.0 <br />
+Ostali dependency mogu se naći u pom.xml projekta. <br />
 
-- Frontend
-Razvojno okruženje : Visual Studio Code 2022
-React : 17.0.2
-Potrebno je pozicionirati se u folder frontend i izvšiti komandu _npm install_ u terminalu Visual Studio Code-a. Za pokretanje je potrebno uneti komandu _npm start_.
+- Frontend <br />
+Razvojno okruženje : Visual Studio Code 2022 <br />
+React : 17.0.2 <br />
+Potrebno je pozicionirati se u folder frontend i izvšiti komandu _npm install_ u terminalu Visual Studio Code-a. Za pokretanje je potrebno uneti komandu _npm start_. <br />
 
 ## Deploy na Heroku
 - Backend 
