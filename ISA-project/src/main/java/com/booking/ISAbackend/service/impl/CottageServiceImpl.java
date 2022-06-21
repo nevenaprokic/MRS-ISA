@@ -202,6 +202,9 @@ public class CottageServiceImpl implements CottageService {
                 Integer.parseInt(cottage.getRoomNumber()),
                 Integer.parseInt(cottage.getBedNumber()),
                 cottageOwner);
+        newCottage.setNumberOfModify(0L);
+        newCottage.setNumberOfReservations(0L);
+        newCottage.setNumberOfQuickReservation(0L);
 
         return cottageRepository.save(newCottage);
     }

@@ -200,6 +200,9 @@ public class ShipServiceImpl implements ShipService {
                 ship.getNavigationEquipment(),
                 ship.getAdditionalEquipment(),
                 shipOwner);
+        newShip.setNumberOfModify(0L);
+        newShip.setNumberOfReservations(0L);
+        newShip.setNumberOfQuickReservation(0L);
 
         return shipRepository.save(newShip);
     }

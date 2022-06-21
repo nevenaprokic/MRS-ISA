@@ -100,7 +100,8 @@ CottageController {
                                              @RequestParam("cancelationConditions") String cancelationConditions,
                                              @RequestParam("peopleNum") String peopleNum,
                                              @RequestParam("roomNumber") String roomNumber,
-                                             @RequestParam("bedNumber") String bedNumber){
+                                             @RequestParam("bedNumber") String bedNumber) throws CottageAlreadyExistsException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, IOException, RequiredFiledException, InvalidAddressException {
+
 
         try {
             NewCottageDTO cottageDTO = new NewCottageDTO(ownerEmail, offerName, description, price, photos,

@@ -80,7 +80,7 @@ function addAddtionalServices(quickId, additionalServiceDTO) {
       })
       .then((responseData) => console.log("Uspesno"))
       .catch((errMessage) => {
-        toast.error(err.response.data, {
+        toast.error(errMessage.response.data, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 2000,
         });

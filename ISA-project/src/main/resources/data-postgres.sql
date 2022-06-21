@@ -215,6 +215,9 @@ insert into reservation(deleted,end_date,number_of_person,price,start_date,my_us
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-04-09',2,300,'2022-04-01',1,2);
 
 insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-05-08',2,300,'2022-05-06',1,2);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-06-26',2,300,'2022-06-20',4,12);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-06-27',2,300,'2022-06-20',2,5);
+insert into reservation(deleted,end_date,number_of_person,price,start_date,my_user_id,offer_id) values (false,'2022-06-26',2,300,'2022-06-20',3,10);
 
 /*MARK*/
 insert into mark(approved, comment, mark, reservation_id, sending_time, reviewed) values (false,'Odlican ambijent!',5,3, '2022-05-09', false);
