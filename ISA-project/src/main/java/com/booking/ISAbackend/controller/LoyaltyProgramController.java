@@ -145,7 +145,7 @@ public class LoyaltyProgramController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping(value = "/delete-owner-category/{is}")
+    @DeleteMapping(value = "/delete-owner-category/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteOwnerCategory(@PathVariable("id") int id){
 

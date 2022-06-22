@@ -22,6 +22,9 @@ export default function DeleteCategory({
   categoryType,
   setLoyaltyCategories,
 }) {
+
+  console.log(categoryType)
+
   const handleClose = () => {
     closeDialog();
   };

@@ -70,7 +70,7 @@ function MarksContainer({offerId}){
     }
     else if(!!error){
         return(
-            toast.err(error.data, {
+            toast.error(error.data, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 1500,
             })

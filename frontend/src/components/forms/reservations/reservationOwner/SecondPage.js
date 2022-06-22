@@ -132,6 +132,7 @@ export default function SecondPage({
             />
           </Grid>
           <Grid item xs={12}>
+            {console.log(reservation)}
             <label
               style={{ marginBottom: "5%", color: "#CC7351", fontSize: "23px" }}
             >

@@ -28,6 +28,7 @@ export default function FirstPage({ clients, setReservation, offers, role }) {
           ...prevState,
           offerName: currentOffer.offerName,
           offerId: currentOffer.id,
+          price: currentOffer.price,
         };
       });
     else {

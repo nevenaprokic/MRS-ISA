@@ -68,7 +68,7 @@ export function acceptMark(mark, setMarks, allUncheckedMarks){
                         });
                         setMarks(allUncheckedMarks.filter((uncheckedMark) => uncheckedMark.id !== mark.id))
                      })
-    .catch((err) => {toast.err(err.response.data, {
+    .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
                     });
@@ -84,7 +84,7 @@ export function rejectMark(mark, setMarks, allUncheckedMarks){
                         });
                         setMarks(allUncheckedMarks.filter((uncheckedMark) => uncheckedMark.id !== mark.id))
                      })
-    .catch((err) => {toast.err(err.response.data, {
+    .catch((err) => {toast.error(err.response.data, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                         autoClose: 1500,
                     });

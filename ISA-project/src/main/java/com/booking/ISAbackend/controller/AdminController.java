@@ -104,7 +104,7 @@ public class AdminController {
     public ResponseEntity<DeleteAccountRequestDTO> getAllDeleteAccountRequests(){
         try{
             List<DeleteAccountRequestDTO> deleteAccountRequest = userService.getAllDeleteAcountRequests();
-            return new ResponseEntity(deleteAccountRequest, deleteAccountRequest.size() != 0 ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+            return new ResponseEntity(deleteAccountRequest,  HttpStatus.OK );
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
