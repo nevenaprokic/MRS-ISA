@@ -20,6 +20,9 @@ Razvojno okruženje : Visual Studio Code 2022 <br />
 React : 17.0.2 <br />
 Potrebno je pozicionirati se u folder frontend i izvšiti komandu _npm install_ u terminalu Visual Studio Code-a. Za pokretanje je potrebno uneti komandu _npm start_. <br />
 
+## Skripta za pokretanje baze
+Nalazi se u okviru aplikacije, u data-postgres.sql <br />
+
 ## Deploy na Heroku
 - Backend 
 https://isa-spring-back.herokuapp.com
