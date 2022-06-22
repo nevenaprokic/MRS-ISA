@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,8 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
-    public List<CottageDTO> findAll() throws IOException {
+    @Cacheable("cottages")
+    public List<CottageDTO> findAll() throws IOException, InterruptedException {
         List<Cottage> cottages = cottageRepository.findAllActiveCottages();
         List<CottageDTO> dto = new ArrayList<>();
         for(Cottage c: cottages){
@@ -139,11 +142,12 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
+    @CacheEvict(value="cottages", allEntries=true)
     public int addCottage(NewCottageDTO cottageDTO) throws CottageAlreadyExistsException, InvalidPriceException, InvalidPeopleNumberException, RequiredFiledException, InvalidAddressException, InvalidBedNumberException, InvalidRoomNumberException, IOException {
-        CottageOwner cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
-        if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.getCottages())){
+        Optional<CottageOwner> cottageOwner = userService.findCottageOwnerByEmail(cottageDTO.getOwnerEmail());
+        if(!isCottageAlreadyExists(cottageDTO.getOfferName(), cottageOwner.get().getCottages())){
             if(validateCottage(cottageDTO)){
-                return saveCottage(cottageDTO, cottageOwner).getId();
+                return saveCottage(cottageDTO, cottageOwner.get()).getId();
             }
         }
         else{
@@ -198,6 +202,9 @@ public class CottageServiceImpl implements CottageService {
                 Integer.parseInt(cottage.getRoomNumber()),
                 Integer.parseInt(cottage.getBedNumber()),
                 cottageOwner);
+        newCottage.setNumberOfModify(0L);
+        newCottage.setNumberOfReservations(0L);
+        newCottage.setNumberOfQuickReservation(0L);
 
         return cottageRepository.save(newCottage);
     }
@@ -215,10 +222,10 @@ public class CottageServiceImpl implements CottageService {
 
     @Override
     @Transactional
+    @CacheEvict(value="cottages", allEntries=true)
     public void updateCottage(CottageDTO cottageDTO, Integer cottageId) throws IOException, InvalidPriceException, InvalidRoomNumberException, InvalidBedNumberException, InvalidPeopleNumberException, InvalidAddressException, InterruptedException {
         Cottage cottage = cottageRepository.findCottageById(cottageId);
         String cottageOwnerEmail = cottage.getCottageOwner().getEmail();
-        System.out.println(cottageDTO.getName());
         if (cottage != null && validateUpdateCottage(cottageDTO)){
             cottage.setName(cottage.getName());
             cottage.setPrice(Double.valueOf(cottageDTO.getPrice()));
@@ -231,8 +238,6 @@ public class CottageServiceImpl implements CottageService {
             cottage.setNumberOfModify(cottage.getNumberOfModify()+1);
 
             updateCottageAddress(cottage.getAddress(), new AddressDTO(cottageDTO.getStreet(), cottageDTO.getCity(), cottageDTO.getState()));
-
-            Thread.sleep(cottage.getBedNumber()*2000);
             cottageRepository.save(cottage);
         }
     }

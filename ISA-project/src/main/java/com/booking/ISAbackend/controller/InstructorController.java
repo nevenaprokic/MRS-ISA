@@ -5,21 +5,22 @@ import com.booking.ISAbackend.dto.InstructorNewDataDTO;
 import com.booking.ISAbackend.dto.InstructorProfileData;
 import com.booking.ISAbackend.dto.OfferSearchParamsDTO;
 import com.booking.ISAbackend.dto.ShipDTO;
-import com.booking.ISAbackend.exceptions.InvalidAddressException;
-import com.booking.ISAbackend.exceptions.InvalidPhoneNumberException;
-import com.booking.ISAbackend.exceptions.OnlyLettersAndSpacesException;
+import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.model.Instructor;
 import com.booking.ISAbackend.model.Ship;
 import com.booking.ISAbackend.service.CottageService;
 import com.booking.ISAbackend.service.InstructorService;
 import com.booking.ISAbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +78,7 @@ public class InstructorController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeInstructorData(@RequestBody InstructorNewDataDTO newData){
         try{
@@ -93,11 +94,23 @@ public class InstructorController {
 
     @GetMapping("profile-info")
     public ResponseEntity<InstructorProfileData> getInstructorProfileInfo(@RequestParam String email){
-        //odraditi autentifikaciju i autorizaciju
         InstructorProfileData instructor =  userService.getInstructorDataByEmail(email);
         if(instructor != null){
             return ResponseEntity.ok(instructor);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("delete-instructor/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> deleteInstructor(@PathVariable("userId") int userId){
+        try{
+            userService.deleteInstructor(userId);
+            return ResponseEntity.ok("Successfully deleted account");
+        } catch (AccessDeniedException | OfferNotFoundException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(400).body("Something went wrong please try again");
+        }
     }
 }

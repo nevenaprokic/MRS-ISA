@@ -71,7 +71,6 @@ export function makeQuickReservation(data, additionalServicesInputList) {
     });
 }
 function addAddtionalServices(quickId, additionalServiceDTO) {
-    console.log(additionalServiceDTO);
     api
       .post("/quick-reservation/add-additional-services", {
         params: {
@@ -80,5 +79,10 @@ function addAddtionalServices(quickId, additionalServiceDTO) {
         },
       })
       .then((responseData) => console.log("Uspesno"))
-      .catch((errMessage) => alert(errMessage.data));
+      .catch((errMessage) => {
+        toast.error(errMessage.response.data, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+      });
   }

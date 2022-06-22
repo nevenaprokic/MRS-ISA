@@ -231,7 +231,7 @@ export function checkReservation(cottageData) {
       );
     });
 }
-export function deleteCottage(cottageId) {
+export function deleteCottage(cottageId, setOffers, allOffers) {
   return api
     .delete("/cottage/delete", {
       params: {
@@ -246,10 +246,13 @@ export function deleteCottage(cottageId) {
           autoClose: 1500,
         }
       );
+      if(!!setOffers && !!allOffers){
+        setOffers(allOffers.filter((offer)=> offer.id !== cottageId));
+      }
     })
     .catch((err) => {
       toast.error(
-        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        err.response.data,
         {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,
@@ -331,6 +334,7 @@ export function deleteCottageByAdmin(cottageId, setAdventuers, allAdventures) {
     .then((response) => {
       if (response.data) {
         deleteCottage(cottageId, setAdventuers, allAdventures)
+        
       }
       else{
         toast.error(

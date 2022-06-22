@@ -8,8 +8,10 @@ import com.booking.ISAbackend.exceptions.*;
 import com.booking.ISAbackend.service.OfferService;
 import com.booking.ISAbackend.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +53,7 @@ public class ShipController {
         }
 
     }
+
     @GetMapping("search-by-owner")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<List<ShipDTO>> searchShipByShipOwner(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String shipOwnerUsername){
@@ -62,6 +65,7 @@ public class ShipController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("add")
     @PreAuthorize("hasAuthority('SHIP_OWNER')")
     public ResponseEntity<String> addShip(@RequestParam("email") String ownerEmail,
@@ -89,10 +93,8 @@ public class ShipController {
             int shipId = shipService.addShip(shipDTO);
             return ResponseEntity.ok(String.valueOf(shipId));
         } catch (ShipAlreadyExistsException | InvalidPriceException | InvalidAddressException | InvalidPeopleNumberException | InvalidSizeException | InvalidMotorNumberException | InvalidMotorPowerException | InvalidMaxSpeedException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -129,7 +131,6 @@ public class ShipController {
             shipService.addAdditionalServices(additionalServiceDTO, id);
             return ResponseEntity.ok().body("Successfully added new ship");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -164,10 +165,10 @@ public class ShipController {
             offerService.delete(shipId);
             return ResponseEntity.ok().body("Successfully delete ship");
         }catch (OfferNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -177,8 +178,9 @@ public class ShipController {
         try{
             shipService.updateShip(newShipData, newShipData.getId());
             return ResponseEntity.ok().body("Successfully update ship.");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Someone has made reservation for this offer at the same time. You can't make change.");
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

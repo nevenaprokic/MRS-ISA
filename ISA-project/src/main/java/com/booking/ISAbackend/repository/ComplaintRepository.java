@@ -14,7 +14,7 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Integer> {
     @Query("SELECT m FROM Complaint m WHERE m.client.id=?1 AND m.reservation.id=?2")
     Complaint alreadyReviewed(Integer id, Integer reservationId);
 
-    @Query("SELECT c FROM Complaint c WHERE c.deleted = false")
+    @Query("SELECT c FROM Complaint c WHERE c.deleted = false ORDER BY c.recivedTime ASC")
     List<Complaint> findAllNotDeleted();
 
 

@@ -239,7 +239,7 @@ function ReservationReportsList() {
     async function setData() {
       const responseData = await getAllNotReviewedReservationReports();
 
-      setReports(!!responseData.data ? responseData.data : {});
+      setReports(!!responseData.data ? responseData.data : []);
     }
     setData();
   }, []);

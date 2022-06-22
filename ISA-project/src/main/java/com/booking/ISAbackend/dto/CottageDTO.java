@@ -163,5 +163,59 @@ public class CottageDTO {
         this.offerNumber = offerNumber;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public void setNumberOfPerson(Integer numberOfPerson) {
+        this.numberOfPerson = numberOfPerson;
+    }
+
+    public void setRulesOfConduct(String rulesOfConduct) {
+        this.rulesOfConduct = rulesOfConduct;
+    }
+
+    public void setCancellationConditions(String cancellationConditions) {
+        this.cancellationConditions = cancellationConditions;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setBedNumber(Integer bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setAdditionalServices(List<AdditionalServiceDTO> additionalServices) {
+        this.additionalServices = additionalServices;
+    }
 }

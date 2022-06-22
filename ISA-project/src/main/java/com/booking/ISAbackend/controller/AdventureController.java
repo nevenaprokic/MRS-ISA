@@ -53,11 +53,9 @@ public class AdventureController {
 
         }
         catch (InvalidPriceException | AdventureAlreadyExistsException |InvalidPeopleNumberException | RequiredFiledException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
@@ -67,17 +65,16 @@ public class AdventureController {
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> addAdditionalServiceForAdventure(@RequestBody Map<String, Object> data){
         try{
-
-
             HashMap<String, Object>paramsMap =  (HashMap<String, Object>) data.get("params");
             int id = Integer.parseInt(paramsMap.get("offerId").toString());
             List<HashMap<String, String>> additionalServiceDTOS = (List<HashMap<String, String>>) paramsMap.get("additionalServiceDTOS");
 
             adventureService.addAdditionalServices(additionalServiceDTOS, id);
             return ResponseEntity.ok().body("Successfully added new adventure");
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (InvalidPriceException | RequiredFiledException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Something went wrong please try again later");
         }
     }
 
@@ -99,24 +96,22 @@ public class AdventureController {
             AdventureDetailsDTO adventure = adventureService.findAdventureById(Integer.parseInt(id));
             return ResponseEntity.ok(adventure);
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("update-adventure")
+    @PutMapping("update-adventure")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventureData(@RequestBody AdventureDTO newAdventureData){
          try{
              adventureService.updateAdventure(newAdventureData, newAdventureData.getId());
              return ResponseEntity.ok().body("");
          }catch (Exception e){
-             e.printStackTrace();
              return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
          }
     }
 
-    @PostMapping("update-adventure-services")
+    @PutMapping("update-adventure-services")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> changeAdventrueAdditionalServices(@RequestBody Map<String, Object> data){
         try{
@@ -131,12 +126,10 @@ public class AdventureController {
         }
     }
 
-    @GetMapping("search-adventures/{email}")
+    @GetMapping("search-adventures")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @PathVariable("email") String email){
-
+    public ResponseEntity<List<AdventureDTO>> searchAdventures(@RequestParam String name, @RequestParam String address, @RequestParam Integer maxPeople, @RequestParam Double price, @RequestParam String email){
         try{
-            System.out.println(name + " " + address + " " + maxPeople + " " + price + " " + email);
             List<AdventureDTO> advetures = adventureService.searchAdventuresByInstructor(name, maxPeople, address, price, email);
             return ResponseEntity.ok(advetures);
         }catch  (Exception e){
@@ -176,10 +169,8 @@ public class AdventureController {
             offerService.delete(adventureId);
             return ResponseEntity.ok().body("Successfully delete adventure");
         }catch (OfferNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try again.");
         }
     }
@@ -191,8 +182,8 @@ public class AdventureController {
             List<AdventureDTO> adventures = adventureService.findAll(page, pageSize);
             return ResponseEntity.ok(adventures);
         }catch  (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

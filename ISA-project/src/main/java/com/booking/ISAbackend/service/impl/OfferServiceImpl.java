@@ -13,6 +13,8 @@ import com.booking.ISAbackend.repository.QuickReservationRepository;
 import com.booking.ISAbackend.repository.ReservationRepository;
 import com.booking.ISAbackend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,12 +68,19 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public void delete(Integer offerId) throws OfferNotFoundException {
+    @Caching(evict = {
+            @CacheEvict(value="cottages", allEntries=true),
+            @CacheEvict(value="ships", allEntries=true),
+            @CacheEvict(value="instructors", allEntries=true)})
+    public void delete(Integer offerId) throws OfferNotFoundException, InterruptedException {
         Offer offer = offerRepository.findOfferById(offerId);
+        offer.setNumberOfModify(offer.getNumberOfModify()+1);
         if (offer == null)
             throw new OfferNotFoundException("Offer not found");
-        if(offer.getSubscribedClients().size()!= 0)
-            clientService.removeSubscribedClients(offer.getSubscribedClients());
+        if(offer.getSubscribedClients().size()!= 0){
+            clientService.removeSubscribedClients(offer.getSubscribedClients(), offerId, offer.getName());
+            offer.getSubscribedClients().clear();
+        }
         if(offer.getPhotos().size() != 0)
             photoService.removeOldPhotos(offer.getPhotos());
         if(offer.getAdditionalServices().size() != 0)
@@ -132,7 +141,6 @@ public class OfferServiceImpl implements OfferService {
         reportData.setCottagesIncome(cottagesForReport);
         reportData.setShipsIncome(shipsForReport);
 
-        System.out.println(totalReportPrice);
         return reportData;
     }
 

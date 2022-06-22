@@ -26,7 +26,9 @@ import {
   unsubscribe,
   isSubscribed,
 } from "../../../services/ClientService";
+import ImagesBox from "../adventureProfile/ImagesBox";
 import ImagesGallery from "../../layout/ImageGallery";
+import MarksContainer from "./MarksContainer";
 
 const theme = createTheme({
   palette: {
@@ -244,6 +246,9 @@ function CottageProfilePage({ id, close, childToParentMediaCard }) {
               offer={cottageData}
               additionalServices={createServiceData()}
             />
+            {getRoleFromToken() != null && (
+              <MarksContainer offerId={cottageData.id} />
+            )}
           </div>
         </ThemeProvider>
       </div>

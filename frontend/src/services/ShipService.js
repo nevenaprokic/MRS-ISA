@@ -244,7 +244,7 @@ export function checkReservation(shipData) {
       );
     });
 }
-export function deleteShip(shipId) {
+export function deleteShip(shipId, setOffers, allOffers) {
   return api
     .delete("/ship/delete", {
       params: {
@@ -252,6 +252,7 @@ export function deleteShip(shipId) {
       },
     })
     .then((response) => {
+      console.log("USAO");
       toast.success(
         "You successfully deleted the ship!",
         {
@@ -259,10 +260,14 @@ export function deleteShip(shipId) {
           autoClose: 1500,
         }
       );
+      if(!!setOffers && !!allOffers){
+        setOffers(allOffers.filter((offer)=> offer.id !== shipId));
+      }
     })
     .catch((err) => {
+      console.log("USAO");
       toast.error(
-        "Somethnig went wrong. Please wait a fiew seconds and try again.",
+        err.response.data,
         {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 1500,
@@ -343,7 +348,8 @@ export function deleteShipByAdmin(shipId, setAdventuers, allAdventures) {
     })
     .then((response) => {
       if (response.data) {
-        deleteShip(shipId, setAdventuers, allAdventures)
+        deleteShip(shipId, setAdventuers, allAdventures);
+        //setAdventuers(allAdventures.filter((offer)=> offer.id !== shipId));
       }
       else{
         toast.error(

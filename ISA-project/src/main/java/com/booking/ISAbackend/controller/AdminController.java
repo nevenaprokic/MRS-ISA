@@ -9,6 +9,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,13 +39,12 @@ public class AdminController {
         }
     }
 
-    @PostMapping("change-data")
+    @PutMapping("change-data")
     public ResponseEntity<String> changeAdminData(@RequestBody UserProfileData newData){
         try{
             userService.changeAdminData(newData);
             return ResponseEntity.ok("Successfully changed you data");
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
@@ -55,18 +55,16 @@ public class AdminController {
                 userService.addNewAdmin(newAdminData);
                 return ResponseEntity.ok().body("Successfully added new admin.");
         } catch (OnlyLettersAndSpacesException | InvalidPhoneNumberException | InvalidAddressException e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (AlreadyExitingUsernameException e){
             return ResponseEntity.status(400).body(e.getMessage());
         }catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong, please try agan later.");
         }
 
     }
 
-    @PostMapping("change-password/{email}")
+    @PutMapping("change-password/{email}")
     public ResponseEntity<String> changeFirstLoginPassword(@PathVariable String email, @RequestBody HashMap<String, String> data){
         try {
             userService.cahngeAdminFirstPassword(email, data);
@@ -84,19 +82,19 @@ public class AdminController {
         try{
             return ResponseEntity.ok().body(clientService.getAllNotDeletedComplaints());
         }catch (Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("complaint-response/{response}/{complaintId}")
-    public ResponseEntity<String> respondOnComplaint(@PathVariable("response")  String response, @PathVariable("complaintId") int complaintId){
+    @PutMapping("complaint-response/{complaintId}")
+    public ResponseEntity<String> respondOnComplaint( @PathVariable("complaintId") int complaintId, @RequestBody  String response){
         try{
             clientService.respondOnComplaint(response, complaintId);
             return ResponseEntity.ok().body("Successfully send response on complaint");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("Other admin just the other admin has just responded to the complaint so you can't.");
         }
         catch (Exception e){
-            e.printStackTrace();
             return ResponseEntity.status(400).body("Something went wrong. Please try again");
 
         }
@@ -117,6 +115,8 @@ public class AdminController {
         try{
             userService.deleteAccount(message, userId, requestId);
             return ResponseEntity.ok().body("Successfully delete user account");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this delete request so you can't.");
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong. Please try again.");
@@ -128,6 +128,8 @@ public class AdminController {
         try{
             userService.rejectDeleteAccountRequest(message, userId, requestId);
             return ResponseEntity.ok().body("Successfully reject delete request");
+        }catch (ObjectOptimisticLockingFailureException ex){
+            return ResponseEntity.status(400).body("The other admin has just responded to this delete request so you can't.");
         }
         catch (Exception e){
             return ResponseEntity.status(400).body("Something went wrong. Please try again.");
@@ -177,7 +179,6 @@ public class AdminController {
         try{
             return ResponseEntity.ok().body(offerService.getAdminBusinessReportData(startDate, endDate));
         }catch(Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

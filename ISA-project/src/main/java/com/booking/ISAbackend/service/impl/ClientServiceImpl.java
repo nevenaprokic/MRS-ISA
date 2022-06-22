@@ -154,6 +154,7 @@ public class ClientServiceImpl implements ClientService {
                 address.setState(dto.getState());
             }
         }
+        clientRepository.save(c);
     }
 
     @Override
@@ -176,14 +177,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeSubscribedClients(List<Client> services){
-        Iterator<Client> iterator = services.iterator();
-        while(iterator.hasNext()){
-            iterator.remove();
-
+    public void removeSubscribedClients(List<Client> services, int offerId, String offerName){
+        for(Client c : services){
+            c.getSubscribedOffers().removeIf(offer -> Objects.equals(offer.getId(), offerId));
+            clientRepository.save(c);
+            sendEmail(c.getEmail(), offerName);
         }
     }
 
+    private void sendEmail(String clientEmail, String offerName){
+        emailSender.notifyClientDeleteOffer(clientEmail, offerName);
+    }
     @Override
     public Boolean canReserve(String email){
         Integer penalties = clientRepository.getPenalties(email);
@@ -197,7 +201,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Mark> om = markRepository.alreadyReviewed(c.getId(), reservationId);
         if(om.isPresent()) throw new FeedbackAlreadyGivenException("You have already given the feedback");
         if(r.isPresent()){
-            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now());
+            Mark m = new Mark(stars, comment, false, r.get(), c, LocalDate.now(), false);
             markRepository.save(m);
         }else{
             throw new Exception();
@@ -306,8 +310,8 @@ public class ClientServiceImpl implements ClientService {
         String ownerMessage = "Response for complaint on reservation  " +  reservation.getOffer().getName() + "' for period:  " +
                 reservation.getStartDate().toString() + " - " + reservation.getEndDate() + ": " + text;
 
-        emailSender.notifyUserAboutReservationReport(owner.getEmail(), ownerMessage);
-        emailSender.notifyUserAboutReservationReport(client.getEmail(), clientMessage);
+        emailSender.sendResponseOnComplaint(owner.getEmail(), ownerMessage);
+        emailSender.sendResponseOnComplaint(client.getEmail(), clientMessage);
     }
 
     @Scheduled(cron="0 0 0 1 1/1 *")
@@ -316,11 +320,6 @@ public class ClientServiceImpl implements ClientService {
 
         clientRepository.removePenalties();
     }
-
-//    @Scheduled(fixedRate=2000L)
-//    public void printSomething(){
-//        System.out.println("Something");
-//    }
 
     @Transactional
     public ComplaintDTO createComplaintDTO(Complaint complaint){
@@ -371,5 +370,24 @@ public class ClientServiceImpl implements ClientService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         return formatter.format(date);
     }
+
+    @Override
+    @Transactional
+    public void deleteClient(int userId) throws AccountDeletionException {
+        Optional<Client> user = clientRepository.findById(userId);
+        if(user.isPresent()){
+            Client client = user.get();
+            List<Reservation> reservations = reservationRepository.findClientsUpcomingReservations(client.getId());
+            if(reservations.isEmpty()){
+                client.setDeleted(true);
+                client.setEmailVerified(false);
+                clientRepository.save(client);
+                emailSender.notifyUserForDeleteAccount(client.getEmail(), "Your account is deleted by admin");
+            }else{
+                throw new AccountDeletionException("Account cannot be deleted because user has future reservations.");
+            }
+        }
+    }
+
 
 }

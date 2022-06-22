@@ -11,6 +11,8 @@ import com.booking.ISAbackend.repository.ShipRepository;
 import com.booking.ISAbackend.service.*;
 import com.booking.ISAbackend.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     @Transactional
+    @Cacheable("ships")
     public List<ShipDTO> findAll() throws IOException {
         List<Ship> ships = shipRepository.findAllActiveShips();
         List<ShipDTO> dto = new ArrayList<>();
@@ -131,6 +134,7 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     @Transactional
+    @CacheEvict(value="ships", allEntries=true)
     public int addShip(NewShipDTO shipDTO) throws InvalidMotorNumberException, InvalidPriceException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException, InvalidPeopleNumberException, InvalidAddressException, ShipAlreadyExistsException, IOException {
         ShipOwner shipOwner = userService.findShipOwnerByEmail(shipDTO.getOwnerEmail());
         if(!isShipAlreadyExists(shipDTO.getOfferName(), shipOwner.getShips())){
@@ -196,6 +200,9 @@ public class ShipServiceImpl implements ShipService {
                 ship.getNavigationEquipment(),
                 ship.getAdditionalEquipment(),
                 shipOwner);
+        newShip.setNumberOfModify(0L);
+        newShip.setNumberOfReservations(0L);
+        newShip.setNumberOfQuickReservation(0L);
 
         return shipRepository.save(newShip);
     }
@@ -211,10 +218,10 @@ public class ShipServiceImpl implements ShipService {
     }
     @Override
     @Transactional
-    public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException {
+    @CacheEvict(value="ships", allEntries=true)
+    public void updateShip(ShipDTO shipDTO, Integer shipId) throws IOException, InvalidPriceException, InvalidPeopleNumberException, InvalidAddressException, InvalidMotorNumberException, InvalidMaxSpeedException, InvalidSizeException, InvalidMotorPowerException, InterruptedException {
         Ship ship = shipRepository.findShipById(shipId);
         String shipOwnerEmail = ship.getShipOwner().getEmail();
-        System.out.println(shipDTO.getName());
         if (ship != null && validateUpdateShip(shipDTO)){
             ship.setName(ship.getName());
             ship.setPrice(Double.valueOf(shipDTO.getPrice()));
@@ -224,6 +231,7 @@ public class ShipServiceImpl implements ShipService {
             ship.setCancellationConditions(shipDTO.getCancellationConditions());
             ship.setPhotos(updateShipPhotos(shipDTO.getPhotos(), ship.getPhotos(), shipOwnerEmail));
 
+            ship.setNumberOfModify(ship.getNumberOfModify()+1);
             updateShipAddress(ship.getAddress(), new AddressDTO(shipDTO.getStreet(), shipDTO.getCity(), shipDTO.getState()));
             shipRepository.save(ship);
         }

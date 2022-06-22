@@ -19,9 +19,10 @@ public interface AdventureReporitory extends JpaRepository<Adventure, Integer> {
             " OR lower(a.address.street) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', a.address.street, '%'))"+
             " OR lower(a.address.state) LIKE lower(concat('%', :address, '%')) OR lower(:address) LIKE lower(concat('%', a.address.state, '%')))"+
             " AND (lower(a.name) LIKE lower(concat('%', :name, '%')) OR lower(:name) LIKE lower(concat('%', a.name, '%')))"+
-            " AND (a.numberOfPerson = :maxPeople OR :maxPeople = -1) AND (a.price <= :price OR :price = -1) AND (a.instructor.email = :email) ")
+            " AND (a.numberOfPerson <= :maxPeople OR :maxPeople = -1) AND (a.price <= :price OR :price = -1) AND (a.instructor.email = :email) ")
     List<Adventure> searchAdventureByInstructorEmail(@Param("name") String name, @Param("maxPeople") int maxPeople, @Param("address")String address, @Param("price") double price, @Param("email") String email);
 
+    @Query("SELECT a FROM Adventure a WHERE a.deleted = false")
     List<Adventure> findAllByInstructor(Instructor i);
 
     @Query("SELECT a.id FROM Adventure a")

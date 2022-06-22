@@ -31,7 +31,6 @@ public class CalendarContoler {
             List<CalendarItem> calendarItems = calendarService.getCalendarInfo(ownerEmail, offerId);
             return ResponseEntity.ok(calendarItems);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -42,7 +41,6 @@ public class CalendarContoler {
             ReservationDTO reservation = calendarService.getReservationDetails(reservationId);
             return ResponseEntity.ok(reservation);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -72,7 +70,6 @@ public class CalendarContoler {
             QuickReservationDTO action = calendarService.getActionDetails(actionId);
             return ResponseEntity.ok(action);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
